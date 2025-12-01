@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-accent: #2337ff;
-  --color-accent-dark: #000d8a;
-  --color-gray-dark: rgb(34, 41, 57);
-  --color-gray: rgb(96, 115, 159);
-  --color-gray-light: rgb(229, 233, 240);
-  --color-black: rgb(15, 18, 25);
+  --color-accent: #5a9690;
+  --color-accent-dark: #2f5755;
+  --color-gray-dark: #432323;
+  --color-gray: #5a9690;
+  --color-gray-light: #e0d9d9;
+  --color-black: #432323;
 }
 
 @font-face {
@@ -28,7 +28,7 @@
 body {
   font-family: "Atkinson", sans-serif;
   @apply text-gray-dark text-xl leading-relaxed break-words;
-  background: linear-gradient(rgba(229, 233, 240, 0.5), rgba(255, 255, 255, 1))
+  background: linear-gradient(rgba(224, 217, 217, 0.5), rgba(255, 255, 255, 1))
     no-repeat;
   background-size: 100% 600px;
 }
