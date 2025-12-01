@@ -69,6 +69,8 @@ terraform init && terraform apply
 | Account | Cloudflare Pages | Edit       |
 | Zone    | DNS              | Edit       |
 
+After applying, authorize GitHub in Cloudflare: **Workers & Pages** → project → **Settings** → **Builds & deployments** → **Connect to GitHub**.
+
 ## 👀 Want to learn more?
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
