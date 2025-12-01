@@ -1,0 +1,33 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "mt-16 pt-8 border-t border-gray-light w-[80%] mx-auto",
+    className,
+  ]}
+>
+  <h3 class="text-lg m-0 mb-6 text-gray uppercase tracking-wider text-center">
+    Comments
+  </h3>
+  <script
+    src="https://giscus.app/client.js"
+    data-repo={import.meta.env.PUBLIC_GISCUS_REPO}
+    data-repo-id={import.meta.env.PUBLIC_GISCUS_REPO_ID}
+    data-category={import.meta.env.PUBLIC_GISCUS_CATEGORY}
+    data-category-id={import.meta.env.PUBLIC_GISCUS_CATEGORY_ID}
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="light"
+    data-lang="en"
+    crossorigin="anonymous"
+    async></script>
+</div>
