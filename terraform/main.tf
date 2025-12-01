@@ -39,11 +39,13 @@ resource "cloudflare_pages_project" "blog" {
     production {
       environment_variables = {
         NODE_VERSION = "20"
+        SITE_URL     = "https://${var.custom_domain}"
       }
     }
     preview {
       environment_variables = {
         NODE_VERSION = "20"
+        SITE_URL     = "https://${var.custom_domain}"
       }
     }
   }
