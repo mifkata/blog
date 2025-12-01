@@ -38,14 +38,22 @@ resource "cloudflare_pages_project" "blog" {
   deployment_configs {
     production {
       environment_variables = {
-        NODE_VERSION = "20"
-        SITE_URL     = "https://${var.custom_domain}"
+        NODE_VERSION              = "20"
+        SITE_URL                  = "https://${var.custom_domain}"
+        PUBLIC_GISCUS_REPO        = var.giscus_repo
+        PUBLIC_GISCUS_REPO_ID     = var.giscus_repo_id
+        PUBLIC_GISCUS_CATEGORY    = var.giscus_category
+        PUBLIC_GISCUS_CATEGORY_ID = var.giscus_category_id
       }
     }
     preview {
       environment_variables = {
-        NODE_VERSION = "20"
-        SITE_URL     = "https://${var.custom_domain}"
+        NODE_VERSION              = "20"
+        SITE_URL                  = "https://${var.custom_domain}"
+        PUBLIC_GISCUS_REPO        = var.giscus_repo
+        PUBLIC_GISCUS_REPO_ID     = var.giscus_repo_id
+        PUBLIC_GISCUS_CATEGORY    = var.giscus_category
+        PUBLIC_GISCUS_CATEGORY_ID = var.giscus_category_id
       }
     }
   }

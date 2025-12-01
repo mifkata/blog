@@ -5,5 +5,11 @@ github_repo           = "blog"
 custom_domain         = "mifkata.com"
 cloudflare_zone_id    = "your-zone-id"
 
+# Giscus comments - get values from https://giscus.app
+giscus_repo        = "mifkata/blog"
+giscus_repo_id     = ""
+giscus_category    = "Announcements"
+giscus_category_id = ""
+
 # Set CLOUDFLARE_API_TOKEN environment variable instead of putting it here
 # export TF_VAR_cloudflare_api_token="your-api-token"

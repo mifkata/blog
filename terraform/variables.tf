@@ -34,3 +34,23 @@ variable "cloudflare_zone_id" {
   description = "The Cloudflare zone ID (found in dashboard under Overview)"
   type        = string
 }
+
+variable "giscus_repo" {
+  description = "GitHub repo for Giscus comments (e.g., mifkata/blog)"
+  type        = string
+}
+
+variable "giscus_repo_id" {
+  description = "Giscus repo ID (from giscus.app)"
+  type        = string
+}
+
+variable "giscus_category" {
+  description = "Giscus discussion category name"
+  type        = string
+}
+
+variable "giscus_category_id" {
+  description = "Giscus category ID (from giscus.app)"
+  type        = string
+}
