@@ -6,16 +6,35 @@ export async function getStaticPaths() {
   const posts = await getCollection("blog");
   return posts.map((post) => ({
     params: { slug: post.id },
-    props: post,
+    props: { post, allPosts: posts },
   }));
 }
-type Props = CollectionEntry<"blog">;
 
-const post = Astro.props;
+interface Props {
+  post: CollectionEntry<"blog">;
+  allPosts: CollectionEntry<"blog">[];
+}
+
+const { post, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
 const h2Headings = headings.filter((h) => h.depth === 2);
+
+// Get related posts based on matching tags
+const currentTags = post.data.tags || [];
+const relatedPosts = allPosts
+  .filter((p) => p.id !== post.id)
+  .map((p) => {
+    const matchingTags = (p.data.tags || []).filter((tag) =>
+      currentTags.includes(tag),
+    );
+    return { post: p, matchCount: matchingTags.length };
+  })
+  .filter((p) => p.matchCount > 0)
+  .sort((a, b) => b.matchCount - a.matchCount)
+  .slice(0, 3)
+  .map((p) => p.post);
 ---
 
-<BlogPost {...post.data} headings={h2Headings}>
+<BlogPost {...post.data} headings={h2Headings} relatedPosts={relatedPosts}>
   <Content />
 </BlogPost>

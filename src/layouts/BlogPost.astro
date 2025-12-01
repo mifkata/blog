@@ -8,7 +8,10 @@ import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
 import Tag from "../components/Tag.astro";
 
-type Props = CollectionEntry<"blog">["data"] & { headings?: MarkdownHeading[] };
+type Props = CollectionEntry<"blog">["data"] & {
+  headings?: MarkdownHeading[];
+  relatedPosts?: CollectionEntry<"blog">[];
+};
 
 const {
   title,
@@ -18,8 +21,10 @@ const {
   heroImage,
   tags,
   headings = [],
+  relatedPosts = [],
 } = Astro.props;
 const showToc = headings.length >= 2;
+const showSidebar = showToc || relatedPosts.length > 0;
 ---
 
 <html lang="en">
@@ -29,48 +34,60 @@ const showToc = headings.length >= 2;
 
   <body>
     <Header />
-    <main class="w-[calc(100%-2em)] max-w-full m-0">
+    <main class="max-w-[1200px] mx-auto px-6 py-12">
       <article>
-        <div class="w-full">
-          {
-            heroImage && (
+        <!-- Hero Image -->
+        {
+          heroImage && (
+            <div class="mb-8">
               <Image
-                width={1020}
-                height={510}
+                width={1200}
+                height={600}
                 src={heroImage}
                 alt=""
-                class="block mx-auto rounded-xl shadow-lg"
+                class="w-full rounded-xl shadow-lg"
               />
-            )
-          }
-        </div>
-        <div class="flex gap-8 max-w-[1200px] mx-auto">
-          <div class="flex-1 min-w-0 max-w-[720px] p-4 text-gray-dark prose">
-            <div class="mb-4 py-4 text-center leading-none">
-              <div class="mb-2 text-gray">
+            </div>
+          )
+        }
+
+        <div class="flex gap-12">
+          <!-- Main Content -->
+          <div class="flex-1 min-w-0 max-w-[720px]">
+            <!-- Article Header -->
+            <header class="mb-8 pb-8 border-b border-gray-light">
+              <div class="flex items-center gap-4 text-sm text-gray mb-4">
                 <FormattedDate date={pubDate} />
                 {
                   updatedDate && (
-                    <div class="italic">
-                      Last updated on <FormattedDate date={updatedDate} />
-                    </div>
+                    <span class="italic">
+                      Updated <FormattedDate date={updatedDate} />
+                    </span>
                   )
                 }
               </div>
-              <h1 class="m-0 mb-2">{title}</h1>
+              <h1 class="text-4xl md:text-5xl m-0 mb-4">{title}</h1>
               {
                 tags && tags.length > 0 && (
-                  <div class="flex gap-2 justify-center flex-wrap mt-2">
+                  <div class="flex gap-2 flex-wrap">
                     {tags.map((t) => (
                       <Tag tag={t} />
                     ))}
                   </div>
                 )
               }
-              <hr class="mt-4" />
+            </header>
+
+            <!-- Article Content -->
+            <div class="prose prose-lg">
+              <slot />
             </div>
-            <slot />
-            <div class="mt-8">
+
+            <!-- Comments -->
+            <div class="mt-12 pt-8 border-t border-gray-light">
+              <h3 class="text-lg m-0 mb-6 text-gray uppercase tracking-wider">
+                Comments
+              </h3>
               <script
                 src="https://giscus.app/client.js"
                 data-repo={import.meta.env.PUBLIC_GISCUS_REPO}
@@ -88,22 +105,65 @@ const showToc = headings.length >= 2;
                 async></script>
             </div>
           </div>
+
+          <!-- Sidebar -->
           {
-            showToc && (
-              <aside class="hidden lg:block w-[200px] shrink-0 sticky top-8 self-start p-4 mt-8">
-                <h2 class="text-sm m-0 mb-2 text-gray uppercase">Contents</h2>
-                <ul class="list-none m-0 p-0">
-                  {headings.map((heading) => (
-                    <li class="mb-1">
-                      <a
-                        href={`#${heading.slug}`}
-                        class="text-sm text-gray-dark no-underline hover:text-accent"
-                      >
-                        {heading.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+            showSidebar && (
+              <aside class="hidden lg:block w-[250px] shrink-0">
+                <div class="sticky top-8 space-y-8">
+                  {/* Table of Contents */}
+                  {showToc && (
+                    <div>
+                      <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider">
+                        Table of Contents
+                      </h3>
+                      <ul class="list-none m-0 p-0 space-y-2">
+                        {headings.map((heading) => (
+                          <li>
+                            <a
+                              href={`#${heading.slug}`}
+                              class="text-sm text-gray-dark no-underline hover:text-accent transition-colors"
+                            >
+                              {heading.text}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Related Posts */}
+                  {relatedPosts.length > 0 && (
+                    <div>
+                      <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider">
+                        Related Posts
+                      </h3>
+                      <ul class="list-none m-0 p-0 space-y-4">
+                        {relatedPosts.map((post) => (
+                          <li>
+                            <a
+                              href={`/blog/${post.id}/`}
+                              class="group block no-underline"
+                            >
+                              {post.data.heroImage && (
+                                <Image
+                                  width={250}
+                                  height={140}
+                                  src={post.data.heroImage}
+                                  alt=""
+                                  class="rounded-lg mb-2 group-hover:shadow-md transition-shadow"
+                                />
+                              )}
+                              <span class="text-sm text-gray-dark group-hover:text-accent transition-colors line-clamp-2">
+                                {post.data.title}
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </aside>
             )
           }
