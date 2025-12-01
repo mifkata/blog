@@ -48,3 +48,17 @@ resource "cloudflare_pages_project" "blog" {
     }
   }
 }
+
+resource "cloudflare_pages_domain" "blog" {
+  account_id   = var.cloudflare_account_id
+  project_name = cloudflare_pages_project.blog.name
+  domain       = var.custom_domain
+}
+
+resource "cloudflare_record" "root" {
+  zone_id = var.cloudflare_zone_id
+  name    = "@"
+  content = cloudflare_pages_project.blog.subdomain
+  type    = "CNAME"
+  proxied = true
+}

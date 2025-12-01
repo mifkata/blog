@@ -24,3 +24,13 @@ variable "github_repo" {
   description = "GitHub repository name"
   type        = string
 }
+
+variable "custom_domain" {
+  description = "Custom domain to bind to the Pages project (must already exist in Cloudflare)"
+  type        = string
+}
+
+variable "cloudflare_zone_id" {
+  description = "The Cloudflare zone ID (found in dashboard under Overview)"
+  type        = string
+}

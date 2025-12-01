@@ -53,6 +53,22 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## 🚀 Deployment to Cloudflare Pages
+
+```sh
+cd terraform
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars with your values
+terraform init && terraform apply
+```
+
+### Required API Token Permissions
+
+| Scope   | Resource         | Permission |
+| :------ | :--------------- | :--------- |
+| Account | Cloudflare Pages | Edit       |
+| Zone    | DNS              | Edit       |
+
 ## 👀 Want to learn more?
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

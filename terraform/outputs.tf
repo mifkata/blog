@@ -12,3 +12,8 @@ output "pages_project_domains" {
   description = "The domains associated with the Cloudflare Pages project"
   value       = cloudflare_pages_project.blog.domains
 }
+
+output "custom_domain" {
+  description = "The custom domain bound to the Pages project"
+  value       = cloudflare_pages_domain.blog.domain
+}
