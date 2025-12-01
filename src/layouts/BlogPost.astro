@@ -1,14 +1,16 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { headings?: MarkdownHeading[] };
 
-const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags, headings = [] } = Astro.props;
+const showToc = headings.length >= 2;
 ---
 
 <html lang="en">
@@ -30,9 +32,9 @@ const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.prop
 				box-shadow: var(--box-shadow);
 			}
 			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
+				flex: 1;
+				min-width: 0;
+				max-width: 720px;
 				padding: 1em;
 				color: rgb(var(--gray-dark));
 			}
@@ -71,6 +73,47 @@ const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.prop
 				background: rgb(var(--accent));
 				color: white;
 			}
+			.content-wrapper {
+				display: flex;
+				gap: 2rem;
+				max-width: 1200px;
+				margin: 0 auto;
+			}
+			.toc {
+				width: 200px;
+				flex-shrink: 0;
+				position: sticky;
+				top: 2rem;
+				align-self: flex-start;
+				padding: 1rem;
+			}
+			.toc h2 {
+				font-size: 0.875rem;
+				margin: 0 0 0.5rem 0;
+				color: rgb(var(--gray));
+				text-transform: uppercase;
+			}
+			.toc ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			.toc li {
+				margin-bottom: 0.25rem;
+			}
+			.toc a {
+				font-size: 0.875rem;
+				color: rgb(var(--gray-dark));
+				text-decoration: none;
+			}
+			.toc a:hover {
+				color: rgb(var(--accent));
+			}
+			@media (max-width: 900px) {
+				.toc {
+					display: none;
+				}
+			}
 		</style>
 	</head>
 
@@ -81,47 +124,61 @@ const { title, description, pubDate, updatedDate, heroImage, tags } = Astro.prop
 				<div class="hero-image">
 					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
 				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						{tags && tags.length > 0 && (
-							<div class="tags">
-								{tags.map((tag) => (
-									<a href={`/tags/${tag}/`}>{tag}</a>
-								))}
+				<div class="content-wrapper">
+					<div class="prose">
+						<div class="title">
+							<div class="date">
+								<FormattedDate date={pubDate} />
+								{
+									updatedDate && (
+										<div class="last-updated-on">
+											Last updated on <FormattedDate date={updatedDate} />
+										</div>
+									)
+								}
 							</div>
-						)}
-						<hr />
+							<h1>{title}</h1>
+							{tags && tags.length > 0 && (
+								<div class="tags">
+									{tags.map((tag) => (
+										<a href={`/tags/${tag}/`}>{tag}</a>
+									))}
+								</div>
+							)}
+							<hr />
+						</div>
+						<slot />
+						<div class="comments">
+							<script
+								src="https://giscus.app/client.js"
+								data-repo={import.meta.env.PUBLIC_GISCUS_REPO}
+								data-repo-id={import.meta.env.PUBLIC_GISCUS_REPO_ID}
+								data-category={import.meta.env.PUBLIC_GISCUS_CATEGORY}
+								data-category-id={import.meta.env.PUBLIC_GISCUS_CATEGORY_ID}
+								data-mapping="pathname"
+								data-strict="0"
+								data-reactions-enabled="1"
+								data-emit-metadata="0"
+								data-input-position="top"
+								data-theme="light"
+								data-lang="en"
+								crossorigin="anonymous"
+								async
+							></script>
+						</div>
 					</div>
-					<slot />
-					<div class="comments">
-						<script
-							src="https://giscus.app/client.js"
-							data-repo={import.meta.env.PUBLIC_GISCUS_REPO}
-							data-repo-id={import.meta.env.PUBLIC_GISCUS_REPO_ID}
-							data-category={import.meta.env.PUBLIC_GISCUS_CATEGORY}
-							data-category-id={import.meta.env.PUBLIC_GISCUS_CATEGORY_ID}
-							data-mapping="pathname"
-							data-strict="0"
-							data-reactions-enabled="1"
-							data-emit-metadata="0"
-							data-input-position="top"
-							data-theme="light"
-							data-lang="en"
-							crossorigin="anonymous"
-							async
-						></script>
-					</div>
+					{showToc && (
+						<aside class="toc">
+							<h2>Contents</h2>
+							<ul>
+								{headings.map((heading) => (
+									<li>
+										<a href={`#${heading.slug}`}>{heading.text}</a>
+									</li>
+								))}
+							</ul>
+						</aside>
+					)}
 				</div>
 			</article>
 		</main>

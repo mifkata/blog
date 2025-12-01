@@ -12,9 +12,10 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const h2Headings = headings.filter((h) => h.depth === 2);
 ---
 
-<BlogPost {...post.data}>
+<BlogPost {...post.data} headings={h2Headings}>
 	<Content />
 </BlogPost>
