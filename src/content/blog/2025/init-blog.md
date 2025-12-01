@@ -1,9 +1,9 @@
 ---
-title: 'Init: blog'
-description: 'My first blog post'
-pubDate: 'Dec 1 2025'
-heroImage: '../../../assets/blog/2025/1201-init-blog.png'
-tags: ['astro', 'cloudflare', 'terraform']
+title: "Init: blog"
+description: "My first blog post"
+pubDate: "Dec 1 2025"
+heroImage: "../../../assets/blog/2025/1201-init-blog.png"
+tags: ["astro", "cloudflare", "terraform"]
 ---
 
 This is the very first blog post on my new blog.
@@ -20,7 +20,7 @@ npm create astro@latest -- --template blog
 
 ## @todo
 
-* Update UI
-* Add tags and 404 pages
-* Update About
-* Update Home page
+- Update UI
+- Add tags and 404 pages
+- Update About
+- Update Home page
