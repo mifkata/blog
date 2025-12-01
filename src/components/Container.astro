@@ -1,0 +1,14 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"main"> {
+  size?: "default" | "wide";
+}
+
+const { size = "default", class: className, ...props } = Astro.props;
+const maxWidth = size === "wide" ? "max-w-[960px]" : "max-w-[720px]";
+---
+
+<main class:list={[maxWidth, "mx-auto px-4 py-12", className]} {...props}>
+  <slot />
+</main>

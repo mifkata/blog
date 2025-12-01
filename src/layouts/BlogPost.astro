@@ -6,6 +6,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
+import Tag from "../components/Tag.astro";
 
 type Props = CollectionEntry<"blog">["data"] & { headings?: MarkdownHeading[] };
 
@@ -24,146 +25,52 @@ const showToc = headings.length >= 2;
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} />
-    <style>
-      main {
-        width: calc(100% - 2em);
-        max-width: 100%;
-        margin: 0;
-      }
-      .hero-image {
-        width: 100%;
-      }
-      .hero-image img {
-        display: block;
-        margin: 0 auto;
-        border-radius: 12px;
-        box-shadow: var(--box-shadow);
-      }
-      .prose {
-        flex: 1;
-        min-width: 0;
-        max-width: 720px;
-        padding: 1em;
-        color: rgb(var(--gray-dark));
-      }
-      .title {
-        margin-bottom: 1em;
-        padding: 1em 0;
-        text-align: center;
-        line-height: 1;
-      }
-      .title h1 {
-        margin: 0 0 0.5em 0;
-      }
-      .date {
-        margin-bottom: 0.5em;
-        color: rgb(var(--gray));
-      }
-      .last-updated-on {
-        font-style: italic;
-      }
-      .tags {
-        display: flex;
-        gap: 0.5rem;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-top: 0.5rem;
-      }
-      .tags a {
-        padding: 0.25rem 0.5rem;
-        background: rgb(var(--gray-light));
-        border-radius: 4px;
-        text-decoration: none;
-        color: rgb(var(--gray-dark));
-        font-size: 0.875rem;
-      }
-      .tags a:hover {
-        background: rgb(var(--accent));
-        color: white;
-      }
-      .content-wrapper {
-        display: flex;
-        gap: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      .toc {
-        width: 200px;
-        flex-shrink: 0;
-        position: sticky;
-        top: 2rem;
-        align-self: flex-start;
-        padding: 1rem;
-        margin-top: 2rem;
-      }
-      .toc h2 {
-        font-size: 0.875rem;
-        margin: 0 0 0.5rem 0;
-        color: rgb(var(--gray));
-        text-transform: uppercase;
-      }
-      .toc ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      .toc li {
-        margin-bottom: 0.25rem;
-      }
-      .toc a {
-        font-size: 0.875rem;
-        color: rgb(var(--gray-dark));
-        text-decoration: none;
-      }
-      .toc a:hover {
-        color: rgb(var(--accent));
-      }
-      @media (max-width: 900px) {
-        .toc {
-          display: none;
-        }
-      }
-    </style>
   </head>
 
   <body>
     <Header />
-    <main>
+    <main class="w-[calc(100%-2em)] max-w-full m-0">
       <article>
-        <div class="hero-image">
+        <div class="w-full">
           {
             heroImage && (
-              <Image width={1020} height={510} src={heroImage} alt="" />
+              <Image
+                width={1020}
+                height={510}
+                src={heroImage}
+                alt=""
+                class="block mx-auto rounded-xl shadow-lg"
+              />
             )
           }
         </div>
-        <div class="content-wrapper">
-          <div class="prose">
-            <div class="title">
-              <div class="date">
+        <div class="flex gap-8 max-w-[1200px] mx-auto">
+          <div class="flex-1 min-w-0 max-w-[720px] p-4 text-gray-dark prose">
+            <div class="mb-4 py-4 text-center leading-none">
+              <div class="mb-2 text-gray">
                 <FormattedDate date={pubDate} />
                 {
                   updatedDate && (
-                    <div class="last-updated-on">
+                    <div class="italic">
                       Last updated on <FormattedDate date={updatedDate} />
                     </div>
                   )
                 }
               </div>
-              <h1>{title}</h1>
+              <h1 class="m-0 mb-2">{title}</h1>
               {
                 tags && tags.length > 0 && (
-                  <div class="tags">
-                    {tags.map((tag) => (
-                      <a href={`/tags/${tag}/`}>{tag}</a>
+                  <div class="flex gap-2 justify-center flex-wrap mt-2">
+                    {tags.map((t) => (
+                      <Tag tag={t} />
                     ))}
                   </div>
                 )
               }
-              <hr />
+              <hr class="mt-4" />
             </div>
             <slot />
-            <div class="comments">
+            <div class="mt-8">
               <script
                 src="https://giscus.app/client.js"
                 data-repo={import.meta.env.PUBLIC_GISCUS_REPO}
@@ -183,12 +90,17 @@ const showToc = headings.length >= 2;
           </div>
           {
             showToc && (
-              <aside class="toc">
-                <h2>Contents</h2>
-                <ul>
+              <aside class="hidden lg:block w-[200px] shrink-0 sticky top-8 self-start p-4 mt-8">
+                <h2 class="text-sm m-0 mb-2 text-gray uppercase">Contents</h2>
+                <ul class="list-none m-0 p-0">
                   {headings.map((heading) => (
-                    <li>
-                      <a href={`#${heading.slug}`}>{heading.text}</a>
+                    <li class="mb-1">
+                      <a
+                        href={`#${heading.slug}`}
+                        class="text-sm text-gray-dark no-underline hover:text-accent"
+                      >
+                        {heading.text}
+                      </a>
                     </li>
                   ))}
                 </ul>

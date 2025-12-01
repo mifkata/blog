@@ -1,5 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import Container from "../components/Container.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_TITLE } from "../consts";
@@ -9,30 +10,14 @@ import { SITE_TITLE } from "../consts";
 <html lang="en">
   <head>
     <BaseHead title={`404 | ${SITE_TITLE}`} description="Page not found" />
-    <style>
-      main {
-        text-align: center;
-        padding: 4rem 1rem;
-      }
-      h1 {
-        font-size: 4rem;
-        margin: 0;
-      }
-      p {
-        color: rgb(var(--gray));
-      }
-      a {
-        color: rgb(var(--accent));
-      }
-    </style>
   </head>
   <body>
     <Header />
-    <main>
-      <h1>404</h1>
-      <p>Page not found.</p>
-      <a href="/">Go home</a>
-    </main>
+    <Container class="text-center">
+      <h1 class="text-7xl m-0">404</h1>
+      <p class="text-gray">Page not found.</p>
+      <a href="/" class="text-accent">Go home</a>
+    </Container>
     <Footer />
   </body>
 </html>

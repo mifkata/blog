@@ -15,37 +15,21 @@ const total = posts.length;
 <html lang="en">
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    <style>
-      ul {
-        list-style: none;
-        margin: 2rem 0;
-        padding: 0;
-      }
-      li {
-        margin-bottom: 0.5rem;
-      }
-      li a {
-        text-decoration: none;
-        color: rgb(var(--black));
-      }
-      li a:hover {
-        color: rgb(var(--accent));
-      }
-      .number {
-        color: rgb(var(--gray));
-        margin-right: 0.5rem;
-      }
-    </style>
   </head>
   <body>
     <Header />
-    <main>
-      <ul>
+    <main class="max-w-[720px] mx-auto px-4 py-12">
+      <ul class="list-none m-0 p-0 my-8">
         {
           posts.map((post, index) => (
-            <li>
-              <span class="number">{total - index}.</span>
-              <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+            <li class="mb-2">
+              <span class="text-gray mr-2">{total - index}.</span>
+              <a
+                href={`/blog/${post.id}/`}
+                class="no-underline text-black hover:text-accent"
+              >
+                {post.data.title}
+              </a>
             </li>
           ))
         }

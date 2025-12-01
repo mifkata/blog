@@ -10,78 +10,35 @@ interface Props {
 const { src, alt, width = 1280 } = Astro.props;
 ---
 
-<figure class="labeled-image">
-  <Image {src} {alt} {width} class="clickable" />
-  <figcaption><slot /></figcaption>
+<figure class="labeled-image my-6 p-0">
+  <Image
+    {src}
+    {alt}
+    {width}
+    class="clickable block mx-auto rounded-lg cursor-zoom-in"
+  />
+  <figcaption
+    class="text-center text-sm text-gray mt-2 italic [&_a]:text-accent"
+  >
+    <slot />
+  </figcaption>
 </figure>
 
-<div class="modal" aria-hidden="true">
-  <div class="modal-backdrop"></div>
-  <div class="modal-content">
+<div class="modal hidden fixed inset-0 z-[1000]" aria-hidden="true">
+  <div class="modal-backdrop absolute inset-0 bg-black/90"></div>
+  <div
+    class="modal-content relative p-[3%] w-full h-full flex items-center justify-center box-border"
+  >
     <Image
       src={src}
       alt={alt}
       width={src.width}
       height={src.height}
       quality="max"
+      class="max-w-full max-h-full object-contain rounded-lg"
     />
   </div>
 </div>
-
-<style>
-  figure {
-    margin: 1.5rem 0;
-    padding: 0;
-  }
-  figure img {
-    display: block;
-    margin: 0 auto;
-    border-radius: 8px;
-    cursor: zoom-in;
-  }
-  figcaption {
-    text-align: center;
-    font-size: 0.875rem;
-    color: rgb(var(--gray));
-    margin-top: 0.5rem;
-    font-style: italic;
-  }
-  figcaption :global(a) {
-    color: rgb(var(--accent));
-  }
-  .modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-  }
-  .modal.open {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.9);
-  }
-  .modal-content {
-    position: relative;
-    padding: 3%;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-  .modal-content img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    border-radius: 8px;
-  }
-</style>
 
 <script>
   function setupImageModals() {
@@ -96,13 +53,15 @@ const { src, alt, width = 1280 } = Astro.props;
         const modalContent = modal.querySelector<HTMLElement>(".modal-content");
 
         img.addEventListener("click", () => {
-          modal.classList.add("open");
+          modal.classList.remove("hidden");
+          modal.classList.add("flex", "items-center", "justify-center");
           modal.setAttribute("aria-hidden", "false");
           document.body.style.overflow = "hidden";
         });
 
         const closeModal = () => {
-          modal.classList.remove("open");
+          modal.classList.add("hidden");
+          modal.classList.remove("flex", "items-center", "justify-center");
           modal.setAttribute("aria-hidden", "true");
           document.body.style.overflow = "";
         };
@@ -124,9 +83,10 @@ const { src, alt, width = 1280 } = Astro.props;
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         document
-          .querySelectorAll<HTMLElement>(".modal.open")
+          .querySelectorAll<HTMLElement>(".modal:not(.hidden)")
           .forEach((modal) => {
-            modal.classList.remove("open");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex", "items-center", "justify-center");
             modal.setAttribute("aria-hidden", "true");
             document.body.style.overflow = "";
           });
