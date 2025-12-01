@@ -16,7 +16,7 @@ The original code for this blog can be found on [GitHub](https://github.com/mifk
 npm create astro@latest -- --template blog
 ```
 
-![image](../../../assets/blog/2025/1201-init-blog-footer.png)
+![the original blog footer](../../../assets/blog/2025/1201-init-blog-footer.png)
 
 ## @todo
 
