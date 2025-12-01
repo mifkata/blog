@@ -1,72 +1,246 @@
 ---
-import Layout from "../layouts/BlogPost.astro";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_TITLE } from "../consts";
+
+const skills = {
+  languages: ["JavaScript", "TypeScript", "Python", "Go", "SQL"],
+  frameworks: ["React", "Node.js", "Astro", "Next.js", "Express"],
+  tools: ["AWS", "Docker", "Terraform", "Git", "Linux"],
+};
+
+const experience = [
+  {
+    title: "Senior Software Engineer",
+    company: "Company A",
+    dates: "2022 - Present",
+    current: true,
+    achievements: [
+      "Led migration from monolith to microservices architecture",
+      "Implemented CI/CD pipelines reducing deployment time by 60%",
+      "Mentored junior developers and conducted code reviews",
+    ],
+  },
+  {
+    title: "Software Engineer",
+    company: "Company B",
+    dates: "2019 - 2022",
+    current: false,
+    achievements: [
+      "Built and maintained high-traffic web applications",
+      "Optimized database queries improving response times by 40%",
+      "Collaborated with cross-functional teams on product features",
+    ],
+  },
+  {
+    title: "Junior Developer",
+    company: "Company C",
+    dates: "2017 - 2019",
+    current: false,
+    achievements: [
+      "Developed frontend components using React",
+      "Participated in agile development processes",
+    ],
+  },
+];
+
+const education = [
+  {
+    degree: "B.S. in Computer Science",
+    institution: "University Name",
+  },
+];
+
+const certifications = [
+  "AWS Certified Solutions Architect",
+  "Terraform Associate",
+];
 ---
 
-<Layout
-  title="About Me"
-  description="Software engineer passionate about building for the web and exploring AI-assisted development"
-  pubDate={new Date("December 01 2025")}
-  showComments={false}
->
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo
-    integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis
-    egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In
-    hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat.
-    Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu
-    non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim.
-    Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed
-    vulputate mi. Dictumst quisque sagittis purus sit amet.
-  </p>
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`About | ${SITE_TITLE}`}
+      description="Software engineer passionate about building for the web and exploring AI-assisted development"
+    />
+  </head>
+  <body>
+    <Header />
+    <main class="max-w-[1200px] mx-auto px-6 py-12">
+      <!-- Hero Section -->
+      <section class="mb-16">
+        <h1 class="text-4xl md:text-5xl mb-12">About Me</h1>
+        <div class="grid md:grid-cols-[280px_1fr] gap-12">
+          <!-- Profile Image -->
+          <div>
+            <div
+              class="w-full aspect-square bg-gray-light rounded-xl overflow-hidden"
+            >
+              <div
+                class="w-full h-full flex items-center justify-center text-gray"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="80"
+                  height="80"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+            </div>
+          </div>
 
-  <p>
-    Morbi tristique senectus et netus. Id semper risus in hendrerit gravida
-    rutrum quisque non tellus. Habitasse platea dictumst quisque sagittis purus
-    sit amet. Tellus molestie nunc non blandit massa. Cursus vitae congue mauris
-    rhoncus. Accumsan tortor posuere ac ut. Fringilla urna porttitor rhoncus
-    dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-    massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius
-    morbi enim nunc. Bibendum neque egestas congue quisque egestas diam. Cras
-    ornare arcu dui vivamus arcu felis bibendum. Dignissim suspendisse in est
-    ante in nibh mauris. Sed tempus urna et pharetra pharetra massa massa
-    ultricies mi.
-  </p>
+          <!-- Bio -->
+          <div>
+            <p class="text-xl mb-6">
+              I'm Andriyan Ivanov, a software engineer with a passion for
+              building robust, scalable systems. My journey began with web
+              development and has evolved into exploring distributed systems and
+              AI-assisted workflows.
+            </p>
+            <p class="mb-6">
+              Philosophy is <strong class="text-black">clean code</strong>,
+              <strong class="text-black">thorough testing</strong>, and
+              <strong class="text-black">user-centric design</strong>. I believe
+              in continuous learning and sharing knowledge with the community.
+            </p>
+            <p class="text-gray">
+              <span class="text-accent font-medium">Current focus:</span> Exploring
+              how AI agents can transform software development — from ideation to
+              deployment.
+            </p>
+          </div>
+        </div>
+      </section>
 
-  <p>
-    Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque.
-    Diam sit amet nisl suscipit. Lacus viverra vitae congue eu consequat ac
-    felis donec. Egestas integer eget aliquet nibh praesent tristique magna sit
-    amet. Eget magna fermentum iaculis eu non diam. In vitae turpis massa sed
-    elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-    dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra.
-    Posuere ac ut consequat semper viverra nam. Laoreet suspendisse interdum
-    consectetur libero id faucibus. Diam phasellus vestibulum lorem sed risus
-    ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-    facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed
-    risus pretium quam vulputate. Viverra suspendisse potenti nullam ac tortor
-    vitae purus faucibus ornare. Fringilla urna porttitor rhoncus dolor purus
-    non. Amet dictum sit amet justo donec enim.
-  </p>
+      <!-- Technical Skills -->
+      <section class="mb-16">
+        <h2 class="text-2xl mb-8">Technical Skills & Expertise</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div>
+            <h3
+              class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
+            >
+              Languages
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {
+                skills.languages.map((skill) => (
+                  <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
+                    {skill}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+          <div>
+            <h3
+              class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
+            >
+              Frameworks & Libraries
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {
+                skills.frameworks.map((skill) => (
+                  <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
+                    {skill}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+          <div>
+            <h3
+              class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
+            >
+              Tools & Infrastructure
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {
+                skills.tools.map((skill) => (
+                  <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
+                    {skill}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </section>
 
-  <p>
-    Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac
-    ut consequat semper viverra. Tellus mauris a diam maecenas sed enim ut sem
-    viverra. Venenatis urna cursus eget nunc scelerisque viverra mauris in. Arcu
-    ac tortor dignissim convallis aenean et tortor at. Curabitur gravida arcu ac
-    tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-    pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim
-    sit amet. Ut enim blandit volutpat maecenas volutpat blandit aliquam etiam.
-    Id donec ultrices tincidunt arcu. Id cursus metus aliquam eleifend mi.
-  </p>
+      <!-- Professional Experience -->
+      <section class="mb-16">
+        <h2 class="text-2xl mb-8">Professional Experience</h2>
+        <div class="space-y-8">
+          {
+            experience.map((job) => (
+              <div class="relative pl-8 border-l-2 border-gray-light">
+                <div
+                  class:list={[
+                    "absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2",
+                    job.current
+                      ? "bg-accent border-accent"
+                      : "bg-white border-gray-light",
+                  ]}
+                />
+                <div class="mb-2">
+                  <h3 class="text-xl m-0 inline">{job.title}</h3>
+                  <span class="text-gray"> at {job.company}</span>
+                  <span class="text-gray text-sm ml-2">— {job.dates}</span>
+                </div>
+                <ul class="list-disc list-inside text-gray-dark space-y-1">
+                  {job.achievements.map((achievement) => (
+                    <li>{achievement}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </section>
 
-  <p>
-    Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus
-    imperdiet. Id porta nibh venenatis cras sed felis eget velit. Ipsum a arcu
-    cursus vitae. Facilisis magna etiam tempor orci eu lobortis elementum.
-    Tincidunt dui ut ornare lectus sit. Quisque non tellus orci ac. Blandit
-    libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed
-    pulvinar proin gravida. Egestas integer eget aliquet nibh praesent tristique
-    magna.
-  </p>
-</Layout>
+      <!-- Education & Certifications -->
+      <section class="mb-16">
+        <h2 class="text-2xl mb-8">Education & Certifications</h2>
+        <div class="space-y-4">
+          {
+            education.map((edu) => (
+              <p class="m-0">
+                <strong class="text-black">{edu.degree}</strong>
+                <span class="text-gray"> — {edu.institution}</span>
+              </p>
+            ))
+          }
+          {
+            certifications.map((cert) => (
+              <p class="m-0 text-gray-dark">{cert}</p>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="text-center py-12 border-t border-gray-light">
+        <p class="text-xl text-gray mb-6">
+          I'm always open to discussing new challenges and opportunities.
+        </p>
+        <a
+          href="mailto:hello@example.com"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white rounded hover:bg-accent-dark transition-colors no-underline"
+        >
+          Let's Connect
+        </a>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
