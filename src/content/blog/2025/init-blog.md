@@ -2,7 +2,7 @@
 title: 'Init: blog'
 description: 'My first blog post'
 pubDate: 'Dec 1 2025'
-heroImage: '../../assets/blog/20251201-init-blog.png'
+heroImage: '../../../assets/blog/2025/1201-init-blog.png'
 tags: ['astro', 'cloudflare', 'terraform']
 ---
 
@@ -16,7 +16,7 @@ The original code for this blog can be found on [GitHub](https://github.com/mifk
 npm create astro@latest -- --template blog
 ```
 
-![image](../../assets/blog/20251201-init-blog-footer.png)
+![image](../../../assets/blog/2025/1201-init-blog-footer.png)
 
 ## @todo
 
