@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Designing Data-Intensive Applications",
+    "author": "Martin Kleppmann",
+    "url": "https://www.goodreads.com/book/show/23463279-designing-data-intensive-applications"
+  },
+  {
+    "title": "Elixir in Action",
+    "author": "Saša Jurić",
+    "url": "https://www.goodreads.com/book/show/38732242-elixir-in-action"
+  },
+  {
+    "title": "Deep Learning with Python",
+    "author": "François Chollet",
+    "url": "https://www.goodreads.com/book/show/235364769-deep-learning-with-python-third-edition"
+  },
+  {
+    "title": "Programming Erlang",
+    "author": "Joe Armstrong",
+    "url": "https://www.goodreads.com/book/show/808814.Programming_Erlang"
+  },
+  {
+    "title": "Craft GraphQL APIs in Elixir With Absinthe",
+    "author": "Bruce Williams & Ben Wilson",
+    "url": "https://www.goodreads.com/book/show/34921690-craft-graphql-apis-in-elixir-with-absinthe"
+  },
+  {
+    "title": "The Rust Programming Language",
+    "author": "Steve Klabnik & Carol Nichols",
+    "url": "https://www.goodreads.com/book/show/63891183-the-rust-programming-language-2nd-edition"
+  },
+  {
+    "title": "SwiftUI Cookbook",
+    "author": "Giordano Scalzo & Edgar Nzokwe",
+    "url": "https://www.goodreads.com/book/show/201119516-swiftui-cookbook"
+  },
+  {
+    "title": "Mastering Swift 6",
+    "author": "Jon Hoffman",
+    "url": "https://www.goodreads.com/book/show/219237326-mastering-swift-6"
+  },
+  {
+    "title": "The Art of Game Design: A Book of Lenses",
+    "author": "Jesse Schell",
+    "url": "https://www.goodreads.com/book/show/3396933-the-art-of-game-design"
+  }
+]

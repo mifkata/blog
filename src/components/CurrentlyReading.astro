@@ -1,0 +1,29 @@
+---
+import books from "../data/books.json";
+---
+
+<section class="max-w-[960px] mx-auto px-6 py-12">
+  <div class="flex items-center gap-3 mb-6">
+    <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
+      Currently Reading
+    </h3>
+    <div class="flex-1 h-px bg-gray-light"></div>
+  </div>
+  <div class="bg-gray-light/50 p-6 rounded-lg border-l-4 border-accent">
+    <ul class="m-0 p-0 list-none space-y-2">
+      {
+        books.map((book) => (
+          <li class="text-gray-dark">
+            <a
+              href={book.url}
+              class="text-accent font-medium hover:text-accent-dark"
+            >
+              {book.title}
+            </a>{" "}
+            — {book.author}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

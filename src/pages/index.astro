@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import Button from "../components/Button.astro";
+import CurrentlyReading from "../components/CurrentlyReading.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
@@ -35,12 +36,12 @@ const recentPosts = posts.slice(0, 3);
               <p class="text-lg mb-2">Hello, my name is</p>
               <h1 class="text-5xl md:text-6xl mb-4">Andriyan Ivanov.</h1>
               <h2 class="text-3xl md:text-4xl text-gray mb-6">
-                I build Internet systems that scale.
+                I make software.
               </h2>
               <p class="text-xl text-gray-dark mb-8 max-w-[560px]">
-                Software Engineer passionate about efficient large-scale systems
+                Software Engineer passionate about efficient scalable system
                 design and sharing knowledge. Welcome to my personal website
-                where I write about technology, AI and software development.
+                where I write about tech, AI and coding.
               </p>
               <div class="flex flex-wrap gap-4">
                 <Button href="/blog" variant="inverse" class="px-6 py-3">
@@ -62,31 +63,13 @@ const recentPosts = posts.slice(0, 3);
             <span class="text-accent">$</span>
             <span class="text-white ml-2">cat current_focus.txt</span>
             <div class="mt-2 text-gray-light opacity-80">
-              {">"} Currently exploring coding with AI, Elixir backends and designing
+              {">"} Exploring vibe coding with AI, mastering Elixir and designing
               distributed systems.
             </div>
           </div>
         </section>
-
-        <!-- Current Focus Section -->
-        <section class="max-w-[960px] mx-auto px-6 py-12">
-          <div class="flex items-center gap-3 mb-6">
-            <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
-              Current Focus
-            </h3>
-            <div class="flex-1 h-px bg-gray-light"></div>
-          </div>
-          <div class="bg-gray-light/50 p-6 rounded-lg border-l-4 border-accent">
-            <p class="m-0 text-gray-dark">
-              <span class="text-accent font-medium">Vibe Coding</span> — Exploring
-              how AI agents can transform the way we build software, from idea to
-              deployment.
-            </p>
-          </div>
-        </section>
-
         <!-- Featured Showcase Section -->
-        <section class="max-w-[960px] mx-auto px-6 py-12">
+        <section class="max-w-[960px] mx-auto px-6 pb-12">
           <div class="flex items-center gap-3 mb-8">
             <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
               Featured Showcase
@@ -155,7 +138,7 @@ const recentPosts = posts.slice(0, 3);
         </section>
 
         <!-- Recent Posts Section -->
-        <section class="max-w-[960px] mx-auto px-6 py-12">
+        <section class="max-w-[960px] mx-auto px-6">
           <div class="flex items-center justify-between mb-8">
             <div class="flex items-center gap-3">
               <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
@@ -190,6 +173,8 @@ const recentPosts = posts.slice(0, 3);
             }
           </ul>
         </section>
+
+        <CurrentlyReading />
       </main>
       <Footer />
     </div>
