@@ -37,6 +37,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -44,6 +45,7 @@ body {
   @apply text-gray-dark text-lg leading-relaxed break-words;
   background: linear-gradient(to right, #f4e9d7 25%, #666 50%, #f4e9d7 75%);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .content-wrapper {
@@ -52,8 +54,17 @@ body {
     -20px 0 40px rgba(0, 0, 0, 0.08),
     20px 0 40px rgba(0, 0, 0, 0.08);
   max-width: 1024px;
+  width: 100%;
   margin: 0 auto;
   min-height: 100vh;
+}
+
+@media (max-width: 1024px) {
+  .content-wrapper {
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+  }
 }
 
 .content-wrapper > main {

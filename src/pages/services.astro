@@ -99,14 +99,14 @@ const clients = [
   <body>
     <div class="content-wrapper">
       <Header />
-      <main class="max-w-[960px] mx-auto px-6 py-12">
+      <main class="w-full max-w-[960px] mx-auto px-6 py-12">
         <!-- Hero Section -->
         <section class="mb-8">
           <h1 class="text-4xl md:text-5xl mb-6">Services</h1>
-          <p class="text-xl text-gray max-w-[700px] mb-4">
+          <p class="text-xl text-gray mb-4">
             I design, build, and scale modern digital products — end to end.
           </p>
-          <p class="text-gray-dark max-w-[700px]">
+          <p class="text-gray-dark">
             With 25+ years of professional experience, I work as a full-stack
             software engineering consultant through my company, <strong
               class="text-black">Tricky Click</strong
@@ -121,11 +121,11 @@ const clients = [
             <Tool size={28} class="text-[#6FA4AF]" />
             What I Do
           </h2>
-          <div class="grid md:grid-cols-2 gap-6">
+          <div class="grid md:grid-cols-2 gap-6 overflow-hidden">
             {
               services.map((service) => (
-                <div class="p-6 border border-gray-light rounded-xl hover:border-accent transition-colors">
-                  <div class="flex items-start gap-4">
+                <div class="p-4 sm:p-6 border border-gray-light rounded-xl hover:border-accent transition-colors overflow-hidden min-w-0">
+                  <div class="flex items-start gap-3 sm:gap-4">
                     <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
                       {service.icon === "server" && (
                         <Server size={20} class="text-accent" />
@@ -143,7 +143,7 @@ const clients = [
                         <Users size={20} class="text-accent" />
                       )}
                     </div>
-                    <div>
+                    <div class="min-w-0">
                       <h3 class="text-lg m-0 mb-2 !text-[#6FA4AF]">
                         {service.title}
                       </h3>

@@ -15,10 +15,10 @@ const commitSha = import.meta.env.CF_PAGES_COMMIT_SHA?.slice(0, 7);
   >
     <!-- Left: Copyright & Contacts -->
     <div class="space-y-1">
-      <p class="m-0 whitespace-nowrap">
+      <p class="m-0 md:whitespace-nowrap">
         👨‍💻 &copy; {today.getFullYear()} Andriyan Ivanov
       </p>
-      <p class="m-0 whitespace-nowrap">
+      <p class="m-0 md:whitespace-nowrap">
         🛠️ Full-stack engineer (Backend · Frontend · DevOps · QA)
       </p>
       <p class="m-0 italic mt-2">
@@ -27,7 +27,7 @@ const commitSha = import.meta.env.CF_PAGES_COMMIT_SHA?.slice(0, 7);
         Bukowski
       </p>
       <p
-        class="m-0 flex items-center justify-center md:justify-start gap-2 whitespace-nowrap"
+        class="m-0 flex items-center justify-center md:justify-start gap-2 md:whitespace-nowrap"
       >
         ✉️ <a href="mailto:hi@mifkata.com" class="hover:text-accent"
           >hi@mifkata.com</a
@@ -50,13 +50,13 @@ const commitSha = import.meta.env.CF_PAGES_COMMIT_SHA?.slice(0, 7);
     </div>
     <!-- Middle: Info -->
     <div class="space-y-1">
-      <p class="m-0 whitespace-nowrap">
+      <p class="m-0 md:whitespace-nowrap">
         📚 Currently learning: <a
           href="https://elixir-lang.org"
           class="hover:text-accent">Elixir</a
         >
       </p>
-      <p class="m-0 whitespace-nowrap">
+      <p class="m-0 md:whitespace-nowrap">
         🏷️ <a href="/tags" class="hover:text-accent">Tags</a> · <a
           href="/sitemap-index.xml"
           class="hover:text-accent">Sitemap</a
@@ -65,8 +65,10 @@ const commitSha = import.meta.env.CF_PAGES_COMMIT_SHA?.slice(0, 7);
           class="hover:text-accent">Source</a
         >
       </p>
-      <p class="m-0 whitespace-nowrap">🔒 No ads. No trackers. No cookies.</p>
-      <p class="m-0 whitespace-nowrap">
+      <p class="m-0 md:whitespace-nowrap">
+        🔒 No ads. No trackers. No cookies.
+      </p>
+      <p class="m-0 md:whitespace-nowrap">
         🚀 Last updated: {lastUpdated} · Built with <a
           href="https://astro.build"
           class="hover:text-accent">Astro</a
