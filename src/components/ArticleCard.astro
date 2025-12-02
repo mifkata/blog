@@ -1,0 +1,54 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "./FormattedDate.astro";
+import Tag from "./Tag.astro";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+  class?: string;
+  showTags?: boolean;
+}
+
+const { post, class: className, showTags = true } = Astro.props;
+---
+
+<article class:list={["group grid md:grid-cols-[200px_1fr] gap-6", className]}>
+  {
+    post.data.heroImage && (
+      <a href={`/blog/${post.id}/`}>
+        <Image
+          width={200}
+          height={120}
+          src={post.data.heroImage}
+          alt=""
+          class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
+        />
+      </a>
+    )
+  }
+  <div class="flex flex-col justify-center">
+    <a href={`/blog/${post.id}/`} class="no-underline">
+      <h4
+        class="text-xl m-0 mb-2 text-black group-hover:text-accent transition-colors"
+      >
+        {post.data.title}
+      </h4>
+    </a>
+    <p class="text-gray m-0 mb-2 line-clamp-2">
+      {post.data.synopsis || post.data.description}
+    </p>
+    <div class="flex items-center gap-4 text-sm text-gray">
+      <FormattedDate date={post.data.pubDate} />
+      {
+        showTags && post.data.tags && (
+          <div class="hidden md:flex gap-2">
+            {post.data.tags.slice(0, 2).map((tag) => (
+              <Tag tag={tag} class="text-xs" />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</article>

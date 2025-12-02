@@ -35,6 +35,10 @@
   font-display: swap;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Kedebideri", sans-serif;
   @apply text-gray-dark text-lg leading-relaxed break-words;
@@ -77,6 +81,7 @@ h5,
 h6 {
   font-family: "Fugaz One", sans-serif;
   @apply text-black leading-tight mb-2;
+  scroll-margin-top: 7rem;
 }
 
 h1 {

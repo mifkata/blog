@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import ArticleCard from "../../components/ArticleCard.astro";
 import BaseHead from "../../components/BaseHead.astro";
 import Footer from "../../components/Footer.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
@@ -51,14 +52,17 @@ const otherPosts = posts.slice(1);
                 )}
                 <div>
                   <div class="text-sm text-accent uppercase tracking-wider mb-2">
-                    Featured Post
+                    Latest Post
                   </div>
                   <a href={`/blog/${featuredPost.id}/`} class="no-underline">
                     <h2 class="text-3xl md:text-4xl m-0 mb-4 text-black group-hover:text-accent transition-colors">
                       {featuredPost.data.title}
                     </h2>
                   </a>
-                  <p class="text-gray mb-4">{featuredPost.data.description}</p>
+                  <p class="text-gray mb-4">
+                    {featuredPost.data.synopsis ||
+                      featuredPost.data.description}
+                  </p>
                   <div class="flex items-center gap-4 text-sm text-gray">
                     <FormattedDate date={featuredPost.data.pubDate} />
                     {featuredPost.data.tags && (
@@ -85,43 +89,7 @@ const otherPosts = posts.slice(1);
           </div>
 
           <div class="space-y-8">
-            {
-              otherPosts.map((post) => (
-                <article class="group grid md:grid-cols-[200px_1fr] gap-6">
-                  {post.data.heroImage && (
-                    <a href={`/blog/${post.id}/`}>
-                      <Image
-                        width={200}
-                        height={120}
-                        src={post.data.heroImage}
-                        alt=""
-                        class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
-                      />
-                    </a>
-                  )}
-                  <div class="flex flex-col justify-center">
-                    <a href={`/blog/${post.id}/`} class="no-underline">
-                      <h4 class="text-xl m-0 mb-2 text-black group-hover:text-accent transition-colors">
-                        {post.data.title}
-                      </h4>
-                    </a>
-                    <p class="text-gray m-0 mb-2 line-clamp-2">
-                      {post.data.description}
-                    </p>
-                    <div class="flex items-center gap-4 text-sm text-gray">
-                      <FormattedDate date={post.data.pubDate} />
-                      {post.data.tags && (
-                        <div class="hidden md:flex gap-2">
-                          {post.data.tags.slice(0, 2).map((tag) => (
-                            <Tag tag={tag} class="text-xs" />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </article>
-              ))
-            }
+            {otherPosts.map((post) => <ArticleCard post={post} />)}
           </div>
         </section>
       </main>
