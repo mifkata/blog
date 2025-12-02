@@ -5,57 +5,27 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_TITLE } from "../consts";
 
-const skills = {
-  languages: ["JavaScript", "TypeScript", "Python", "Go", "SQL"],
-  frameworks: ["React", "Node.js", "Astro", "Next.js", "Express"],
-  tools: ["AWS", "Docker", "Terraform", "Git", "Linux"],
-};
-
-const experience = [
-  {
-    title: "Senior Software Engineer",
-    company: "Company A",
-    dates: "2022 - Present",
-    current: true,
-    achievements: [
-      "Led migration from monolith to microservices architecture",
-      "Implemented CI/CD pipelines reducing deployment time by 60%",
-      "Mentored junior developers and conducted code reviews",
-    ],
-  },
-  {
-    title: "Software Engineer",
-    company: "Company B",
-    dates: "2019 - 2022",
-    current: false,
-    achievements: [
-      "Built and maintained high-traffic web applications",
-      "Optimized database queries improving response times by 40%",
-      "Collaborated with cross-functional teams on product features",
-    ],
-  },
-  {
-    title: "Junior Developer",
-    company: "Company C",
-    dates: "2017 - 2019",
-    current: false,
-    achievements: [
-      "Developed frontend components using React",
-      "Participated in agile development processes",
-    ],
-  },
+const quirks = [
+  "I read multiple books at the same time and finish them unpredictably.",
+  "I talk to my dog as if he's a rational adult — because he basically is.",
+  "I hate small talk but can talk for hours about motorcycles, psychology, or why a line of code is ugly.",
+  "I don't watch much new media; I rewatch the same favourite shows like comfort rituals.",
+  "When I travel, I reliably end up doing something stupid just to feel alive.",
+  "I adore individuals and distrust crowds.",
+  "I hoard browser tabs like a digital dragon.",
+  "I give brutally honest feedback, but only when asked — unsolicited advice is rude.",
+  "I cook by instinct, not recipe.",
+  "I count the number 19 with my fingers constantly, for no good reason.",
 ];
 
-const education = [
-  {
-    degree: "B.S. in Computer Science",
-    institution: "University Name",
-  },
-];
-
-const certifications = [
-  "AWS Certified Solutions Architect",
-  "Terraform Associate",
+const lifeOutsideWork = [
+  { icon: "book", label: "Books" },
+  { icon: "bike", label: "Motorcycles" },
+  { icon: "plane", label: "Travel" },
+  { icon: "cooking", label: "Cooking" },
+  { icon: "music", label: "Music" },
+  { icon: "heart", label: "My daughter" },
+  { icon: "dog", label: "My dog" },
 ];
 ---
 
@@ -64,7 +34,7 @@ const certifications = [
   <head>
     <BaseHead
       title={`About | ${SITE_TITLE}`}
-      description="Software engineer passionate about building for the web and exploring AI-assisted development"
+      description="Born in Varna, Bulgaria. Started working at 17. Still comparing myself to 'real' engineers after 25+ years."
     />
   </head>
   <body>
@@ -72,172 +42,222 @@ const certifications = [
       <Header />
       <main class="max-w-[960px] mx-auto px-6 py-12">
         <!-- Hero Section -->
-        <section class="mb-16">
-          <h1 class="text-4xl md:text-5xl mb-12">About Me</h1>
-          <div class="grid md:grid-cols-[280px_1fr] gap-12">
-            <!-- Profile Image -->
-            <div>
-              <div
-                class="w-full aspect-square bg-gray-light rounded-xl overflow-hidden"
-              >
-                <div
-                  class="w-full h-full flex items-center justify-center text-gray"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="80"
-                    height="80"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                </div>
-              </div>
-            </div>
+        <section class="mb-12">
+          <h1 class="text-4xl md:text-5xl mb-6">About Me</h1>
+          <p class="text-xl text-gray max-w-[700px]">
+            Born in Varna, Bulgaria. Started working when most people were still
+            figuring out what to study.
+          </p>
+        </section>
 
-            <!-- Bio -->
-            <div>
-              <p class="text-xl mb-6">
-                I'm Andriyan Ivanov, a software engineer with a passion for
-                building robust, scalable systems. My journey began with web
-                development and has evolved into exploring distributed systems
-                and AI-assisted workflows.
-              </p>
-              <p class="mb-6">
-                Philosophy is <strong class="text-black">clean code</strong>,
-                <strong class="text-black">thorough testing</strong>, and
-                <strong class="text-black">user-centric design</strong>. I
-                believe in continuous learning and sharing knowledge with the
-                community.
-              </p>
-              <p class="text-gray">
-                <span class="text-accent font-medium">Current focus:</span> Exploring
-                how AI agents can transform software development — from ideation to
-                deployment.
-              </p>
-            </div>
+        <!-- Origin Story -->
+        <section class="mb-12">
+          <div class="prose max-w-none">
+            <p>
+              By 19 I'd moved to Sofia alone, broke, and stubborn enough to
+              think that was a good idea. I spent my teenage years ignoring
+              school, obsessed with computers, video games, and the idea of
+              becoming a hacker. When I got my first PC in '98, I thought I'd be
+              a designer, but life shoved me into programming — PHP, websites,
+              anything that paid rent. That's how it started.
+            </p>
           </div>
         </section>
 
-        <!-- Technical Skills -->
-        <section class="mb-16">
-          <h2 class="text-2xl mb-8">Technical Skills & Expertise</h2>
-          <div class="grid md:grid-cols-3 gap-8">
-            <div>
-              <h3
-                class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
-              >
-                Languages
-              </h3>
-              <div class="flex flex-wrap gap-2">
-                {
-                  skills.languages.map((skill) => (
-                    <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
-                      {skill}
-                    </span>
-                  ))
-                }
-              </div>
-            </div>
-            <div>
-              <h3
-                class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
-              >
-                Frameworks & Libraries
-              </h3>
-              <div class="flex flex-wrap gap-2">
-                {
-                  skills.frameworks.map((skill) => (
-                    <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
-                      {skill}
-                    </span>
-                  ))
-                }
-              </div>
-            </div>
-            <div>
-              <h3
-                class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
-              >
-                Tools & Infrastructure
-              </h3>
-              <div class="flex flex-wrap gap-2">
-                {
-                  skills.tools.map((skill) => (
-                    <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
-                      {skill}
-                    </span>
-                  ))
-                }
-              </div>
-            </div>
-          </div>
+        <!-- Life Outside Work -->
+        <section class="mb-12">
+          <h2 class="text-2xl mb-6 flex items-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#6FA4AF]"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 6v6l4 2"></path>
+            </svg>
+            Outside of Work
+          </h2>
+          <p class="text-gray-dark mb-6">
+            My world is made of <strong class="text-black">books</strong>, <strong
+              class="text-black">motorcycles</strong
+            >, <strong class="text-black">travel</strong>, <strong
+              class="text-black">cooking</strong
+            >, <strong class="text-black">music</strong>, <strong
+              class="text-black">my daughter</strong
+            >, and <strong class="text-black">my dog</strong> — the two creatures
+            I'd gladly die for.
+          </p>
+          <p class="text-gray-dark">
+            I get obsessive about learning; even after 25+ years of programming,
+            I still compare myself to "real" engineers and feel like I'm far
+            behind. Coffee in the morning is non-negotiable. Everything else can
+            fall apart.
+          </p>
         </section>
 
-        <!-- Professional Experience -->
-        <section class="mb-16">
-          <h2 class="text-2xl mb-8">Professional Experience</h2>
-          <div class="space-y-8">
-            {
-              experience.map((job) => (
-                <div class="relative pl-8 border-l-2 border-gray-light">
-                  <div
-                    class:list={[
-                      "absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2",
-                      job.current
-                        ? "bg-accent border-accent"
-                        : "bg-white border-gray-light",
-                    ]}
-                  />
-                  <div class="mb-2">
-                    <h3 class="text-xl m-0 inline">{job.title}</h3>
-                    <span class="text-gray"> at {job.company}</span>
-                    <span class="text-gray text-sm ml-2">— {job.dates}</span>
-                  </div>
-                  <ul class="list-disc list-inside text-gray-dark space-y-1">
-                    {job.achievements.map((achievement) => (
-                      <li>{achievement}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))
-            }
-          </div>
+        <!-- Values -->
+        <section class="mb-12">
+          <h2 class="text-2xl mb-6 flex items-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#B8C4A9]"
+            >
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              ></path>
+            </svg>
+            Values
+          </h2>
+          <p class="text-gray-dark mb-4">
+            I value <strong class="text-black">intelligence</strong> and <strong
+              class="text-black">kindness</strong
+            >, even if I don't always model them. I can be stupidly impulsive
+            and meet unkindness with unkindness. I believe <strong
+              class="text-black">freedom</strong
+            > and <strong class="text-black">love</strong> matter more than anything,
+            and most of my decision-making is a strange equilibrium between passion
+            and thought.
+          </p>
         </section>
 
-        <!-- Education & Certifications -->
-        <section class="mb-16">
-          <h2 class="text-2xl mb-8">Education & Certifications</h2>
-          <div class="space-y-4">
+        <!-- How People See Me -->
+        <section class="mb-12">
+          <h2 class="text-2xl mb-6 flex items-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-accent"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            How People See Me
+          </h2>
+          <p class="text-gray-dark mb-4">
+            People tend to misread me. I come off as strange to the average
+            person, so I gravitate toward creatives and oddballs who find me
+            normal. My humor is dark, sarcastic, and occasionally snobbish. I
+            talk a lot. I can sound arrogant.
+          </p>
+          <p class="text-gray-dark">
+            Some think I'm mean when they first meet me, but if they stay long
+            enough, they discover I'm different in a way they actually enjoy. I
+            make friends easily, but I keep my circle small on purpose.
+          </p>
+        </section>
+
+        <!-- Quirks -->
+        <section class="mb-12">
+          <h2 class="text-2xl mb-6 flex items-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#D97D55]"
+            >
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+              ></polygon>
+            </svg>
+            Quirks
+          </h2>
+          <p class="text-gray mb-4 text-sm uppercase tracking-wider">
+            Because everyone has them — mine are just louder
+          </p>
+          <ul class="space-y-3">
             {
-              education.map((edu) => (
-                <p class="m-0">
-                  <strong class="text-black">{edu.degree}</strong>
-                  <span class="text-gray"> — {edu.institution}</span>
-                </p>
+              quirks.map((quirk) => (
+                <li class="flex items-start gap-3 text-gray-dark">
+                  <span class="text-[#D97D55] mt-1.5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                    </svg>
+                  </span>
+                  {quirk}
+                </li>
               ))
             }
-            {
-              certifications.map((cert) => (
-                <p class="m-0 text-gray-dark">{cert}</p>
-              ))
-            }
-          </div>
+          </ul>
+        </section>
+
+        <!-- Current Focus -->
+        <section class="mb-12">
+          <h2 class="text-2xl mb-6 flex items-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#6FA4AF]"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            Right Now
+          </h2>
+          <p class="text-gray-dark">
+            I'm learning languages, going to the gym, and pushing myself through
+            university because I want to teach someday. Maybe that's my way of
+            giving back — or maybe I just like making things harder than they
+            need to be.
+          </p>
         </section>
 
         <!-- CTA -->
         <section class="text-center py-12 border-t border-gray-light">
-          <p class="text-xl text-gray mb-6">
-            I'm always open to discussing new challenges and opportunities.
+          <p class="text-xl text-gray mb-2">Want to work together?</p>
+          <p class="text-gray-dark mb-6">
+            Check out my <a
+              href="/services"
+              class="text-accent hover:text-accent-dark">services</a
+            > or <a href="/resume" class="text-accent hover:text-accent-dark"
+              >resume</a
+            >.
           </p>
-          <Button href="mailto:hello@example.com" class="px-6 py-3">
-            Let's Connect
+          <Button href="mailto:hi@mifkata.com" class="px-6 py-3">
+            Get in Touch
           </Button>
         </section>
       </main>
