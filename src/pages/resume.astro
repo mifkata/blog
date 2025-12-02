@@ -1,0 +1,406 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Button from "../components/Button.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_TITLE } from "../consts";
+
+const skills = {
+  backend: [
+    "Node.js",
+    "TypeScript",
+    "Fastify",
+    "Express",
+    "GraphQL",
+    "REST APIs",
+  ],
+  frontend: ["React", "Next.js", "Angular", "Tailwind", "Storybook"],
+  databases: ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
+  cloud: ["AWS", "GCP", "Kubernetes", "Docker", "Terraform"],
+  testing: ["Jest", "Playwright", "Cypress", "Mocha"],
+  tools: ["Git", "CI/CD", "Jenkins", "CircleCI", "GitHub Actions"],
+};
+
+const experience = [
+  {
+    title: "Software Engineering Consultant",
+    company: "Tricky Click (Owner)",
+    location: "Global",
+    dates: "Nov 2016 – Present",
+    current: true,
+    description:
+      "Operating as an independent consultant via a limited company, delivering high-level engineering solutions for global clients through agencies including Vertex, Accenture, Xoomworks, and 101 Ways.",
+    roles: [
+      {
+        client: "Checkatrade",
+        period: "Feb 2024 – Apr 2025",
+        highlights: [
+          "Led foundational design of a new microservice ecosystem enabling technical transformation",
+          "Built unified BFF layer for native mobile app, later decomposed into independent services",
+          "Established schema-driven, self-documenting API standards using Fastify and TypeScript",
+          "Delivered reusable tooling, boilerplates, and top-down integration test frameworks",
+          "Rebuilt web frontend using React micro-frontends and Contentful-based workflows",
+          "Executed large-scale migration from WordPress to headless CMS",
+        ],
+        tech: "Node.js, TypeScript, Fastify, TypeORM, React, Next.js, Tailwind, Playwright, PostgreSQL, GCP, Kubernetes, Docker, Contentful",
+      },
+      {
+        client: "McKinsey & Company — Cleansheet Platform",
+        period: "Apr 2023 – Feb 2024",
+        highlights: [
+          "Delivered features across computationally heavy SaaS platform for manufacturing cost optimisation",
+          "Developed frontend and backend features in large distributed environment",
+          "Improved CI/CD reliability, optimised pipelines, and containerisation refinements",
+        ],
+        tech: "Node.js, TypeScript, React, Redux, AWS (Lambda, EC2, ECS, S3), Redis, PostgreSQL, Jenkins",
+      },
+      {
+        client: "FT.com (Financial Times)",
+        period: "Mar 2022 – Mar 2023 & Jun 2020 – Apr 2021",
+        highlights: [
+          "Built enterprise tools for B2B subscription and account management",
+          "Developed REST and GraphQL microservices integrated with Next.js applications",
+          "Worked on landing pages, paywalls, subscription flows, and performance-sensitive features",
+        ],
+        tech: "Node.js, GraphQL, TypeScript, Next.js, React, Jest, CircleCI, AWS, Redis, PostgreSQL",
+      },
+      {
+        client: "NextBasket.com",
+        period: "Nov 2022 – Feb 2023",
+        highlights: [
+          "Served as Interim Principal Engineer for well-funded startup",
+          "Performed full audit of architecture, code quality, and engineering processes",
+          "Provided solutions to systemic technical and organisational issues",
+          "Supported backend, frontend, QA, and SRE teams for better cross-functional flow",
+        ],
+        tech: "Architecture, Team Enablement, Process Improvement",
+      },
+      {
+        client: "Synaesthesia.cloud",
+        period: "Mar 2022 – Jun 2022",
+        highlights: [
+          "Re-engineered document-analysis ETL pipeline into modular serverless architecture",
+          "Split monolithic prototype into multiple microservices and functions",
+          "Established infrastructure provisioning and deployments via Terraform",
+        ],
+        tech: "Node.js, Fastify, Next.js, React, Terraform, GCP (Cloud Functions, GCS)",
+      },
+      {
+        client: "Expert-Series.com (Financial Times)",
+        period: "Apr 2021 – Mar 2022",
+        highlights: [
+          "Built new product using Node/Next.js monolith with SSR",
+          "Integrated complex billing flows via Zuora and Checkout.com",
+          "Implemented backend APIs, frontend UI, and CI/CD pipelines",
+        ],
+        tech: "Node.js, TypeScript, Fastify, Next.js, React, Swagger, Knex, PostgreSQL, AWS, Heroku",
+      },
+      {
+        client: "Toptal (Core Team)",
+        period: "Sep 2019 – Apr 2020",
+        highlights: [
+          "Joined core team as Growth Engineer for page performance and SEO optimisation",
+          "Integrated acquired web estates and built high-impact SSR pages",
+          "Contributed to Terraform-powered infrastructure and automated deployments",
+        ],
+        tech: "React, TypeScript, Next.js, Ruby on Rails, BigQuery, Terraform, Docker, Jenkins",
+      },
+      {
+        client: "DAZN",
+        period: "Apr 2018 – Mar 2019",
+        highlights: [
+          "Built reactive frontend components with MobX and React",
+          "Developed Node.js microservices and infrastructure-as-code using Terraform",
+          "Strengthened platform reliability with unit, integration, E2E, and load tests",
+        ],
+        tech: "React, MobX, Node.js, Express, Terraform, AWS, Docker, Jenkins, Selenium",
+      },
+      {
+        client: "Glimpse.me",
+        period: "May 2017 – Apr 2018",
+        highlights: [
+          "Delivered core features across backend, frontend, and sockets microservices",
+          "Built Node.js backend, Angular 4 SPA, and real-time socket infrastructure",
+        ],
+        tech: "Sails.js, Express, Angular 4, Redis, PostgreSQL, MongoDB, SocketCluster, JWT",
+      },
+      {
+        client: "Adaptemy",
+        period: "Nov 2016 – Aug 2017",
+        highlights: [
+          "Re-architected large AngularJS SPA into ES6 modular system",
+          "Implemented offline-first capabilities using service workers",
+          "Built React/Redux QTI editor for educational content",
+        ],
+        tech: "AngularJS, ES6, React, Redux, Service Workers",
+      },
+    ],
+  },
+  {
+    title: "Senior Software Engineer",
+    company: "EPAM Systems",
+    location: "Bulgaria",
+    dates: "Mar 2015 – Dec 2016",
+    current: false,
+    description:
+      "Frontend engineering for complex financial applications, trading platforms, and algorithmic decisioning systems.",
+    highlights: [
+      "Developed AngularJS and React applications for trading platforms",
+      "Delivered high-performance UIs with strong test coverage",
+      "Produced reusable components and UI frameworks",
+    ],
+    tech: "AngularJS, React, Redux, ES6, Bootstrap, Karma, Jasmine, Mocha",
+  },
+  {
+    title: "Software Architect",
+    company: "Zeduki",
+    location: "Remote",
+    dates: "Oct 2014 – Jan 2015",
+    current: false,
+    description:
+      "Designed migration strategy from legacy PHP platform to scalable modern backend stack.",
+    tech: "Slim PHP, Doctrine 2, Twig, AngularJS",
+  },
+  {
+    title: "Senior Software Engineer",
+    company: "EveryMatch",
+    location: "Israel",
+    dates: "Jun 2014 – Oct 2014",
+    current: false,
+    description:
+      "Delivered full Angular SPA integrated with .NET/MongoDB backend, including hundreds of custom components.",
+    tech: "AngularJS, .NET, MongoDB",
+  },
+  {
+    title: "Senior Software Engineer",
+    company: "Tech Huddle",
+    location: "Sofia",
+    dates: "Feb 2014 – May 2014",
+    current: false,
+    description:
+      "Migrated high-traffic mobile site from legacy PHP to Yii framework.",
+    tech: "PHP, Yii, MySQL, JavaScript",
+  },
+  {
+    title: "Senior Software Engineer",
+    company: "Fantastic Services",
+    location: "UK/Bulgaria",
+    dates: "Apr 2013 – Oct 2013",
+    current: false,
+    description:
+      "Built Magento e-commerce store and designed large real-time support platform serving thousands of websites.",
+    tech: "Magento, Custom Architecture, PHP",
+  },
+  {
+    title: "QA / Engineer / Creative Lead",
+    company: "WebMatrix",
+    location: "Bulgaria",
+    dates: "Sep 2010 – Oct 2012",
+    current: false,
+    description:
+      "Transitioned from QA to development on penny auction sites and web-based games. Managed creative team for game content delivery.",
+    tech: "Symfony, jQuery, PHP, MySQL, Joomla",
+  },
+];
+
+const earlyCareer = {
+  period: "2000 – 2010",
+  description:
+    "PHP developer, webmaster, and freelancer building full sites, affiliate platforms, CMS systems, and custom tooling.",
+  companies: [
+    "Mansion Productions (MPA2/MPA3)",
+    "Virus Advertising",
+    "Black Sea Consulting",
+    "Freelance",
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={`Resume | ${SITE_TITLE}`}
+      description="25+ years of software engineering experience across backend, frontend, DevOps, and architecture"
+    />
+  </head>
+  <body>
+    <div class="content-wrapper">
+      <Header />
+      <main class="max-w-[960px] mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <section class="mb-12">
+          <h1 class="text-4xl md:text-5xl mb-6">Resume</h1>
+          <p class="text-xl text-gray max-w-[700px] mb-4">
+            25+ years building software — from affiliate sites in 2000 to
+            microservice architectures today.
+          </p>
+          <p class="text-gray-dark max-w-[700px]">
+            Full-stack engineer specialising in Node.js, TypeScript, React, and
+            cloud infrastructure. Currently consulting through <strong
+              class="text-black">Tricky Click</strong
+            > for global clients.
+          </p>
+        </section>
+
+        <!-- Skills -->
+        <section class="mb-12">
+          <h2 class="text-2xl mb-6 flex items-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#6FA4AF]"
+            >
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            Technical Skills
+          </h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {
+              Object.entries(skills).map(([category, items]) => (
+                <div>
+                  <h3 class="text-sm text-gray uppercase tracking-wider mb-3 font-normal">
+                    {category}
+                  </h3>
+                  <div class="flex flex-wrap gap-2">
+                    {items.map((skill) => (
+                      <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-sm">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <!-- Experience -->
+        <section class="mb-12">
+          <h2 class="text-2xl mb-8 flex items-center gap-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-[#B8C4A9]"
+            >
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+            Professional Experience
+          </h2>
+
+          <div class="space-y-10">
+            {
+              experience.map((job) => (
+                <div class="relative pl-6 border-l-2 border-gray-light">
+                  <div
+                    class:list={[
+                      "absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2",
+                      job.current
+                        ? "bg-accent border-accent"
+                        : "bg-white border-gray-light",
+                    ]}
+                  />
+                  <div class="mb-4">
+                    <h3 class="text-xl m-0">{job.title}</h3>
+                    <p class="text-accent m-0 font-medium">{job.company}</p>
+                    <p class="text-gray text-sm m-0">
+                      {job.location} · {job.dates}
+                    </p>
+                  </div>
+                  <p class="text-gray-dark mb-4">{job.description}</p>
+
+                  {job.roles && (
+                    <div class="space-y-6">
+                      {job.roles.map((role) => (
+                        <div class="bg-gray-light/30 rounded-lg p-4">
+                          <div class="flex flex-wrap items-baseline gap-2 mb-2">
+                            <h4 class="text-base m-0 !text-[#6FA4AF]">
+                              {role.client}
+                            </h4>
+                            <span class="text-gray text-sm">{role.period}</span>
+                          </div>
+                          <ul class="list-disc list-outside ml-4 text-gray-dark text-sm space-y-1 mb-3">
+                            {role.highlights.map((h) => (
+                              <li>{h}</li>
+                            ))}
+                          </ul>
+                          <p class="text-xs text-gray m-0">
+                            <span class="font-medium">Tech:</span> {role.tech}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {job.highlights && (
+                    <ul class="list-disc list-outside ml-4 text-gray-dark space-y-1 mb-3">
+                      {job.highlights.map((h) => (
+                        <li>{h}</li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {job.tech && !job.roles && (
+                    <p class="text-sm text-gray m-0">
+                      <span class="font-medium">Tech:</span> {job.tech}
+                    </p>
+                  )}
+                </div>
+              ))
+            }
+
+            <!-- Early Career -->
+            <div class="relative pl-6 border-l-2 border-gray-light">
+              <div
+                class="absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2 bg-white border-gray-light"
+              >
+              </div>
+              <div class="mb-4">
+                <h3 class="text-xl m-0">Early Career</h3>
+                <p class="text-gray text-sm m-0">{earlyCareer.period}</p>
+              </div>
+              <p class="text-gray-dark mb-3">{earlyCareer.description}</p>
+              <div class="flex flex-wrap gap-2">
+                {
+                  earlyCareer.companies.map((company) => (
+                    <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-sm">
+                      {company}
+                    </span>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="text-center py-12 border-t border-gray-light">
+          <p class="text-xl text-gray mb-2">Interested in working together?</p>
+          <p class="text-gray-dark mb-6">
+            I'm available for contract engagements and consulting work.
+          </p>
+          <Button href="mailto:hi@mifkata.com" class="px-6 py-3">
+            Get in Touch
+          </Button>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>
