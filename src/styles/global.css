@@ -7,6 +7,8 @@
   --color-gray: #5a9690;
   --color-gray-light: #e0d9d9;
   --color-black: #432323;
+  --color-button: #d97d55;
+  --color-button-light: #f4e9d7;
 }
 
 @font-face {
@@ -18,23 +20,53 @@
 }
 
 @font-face {
-  font-family: "Science Gothic";
-  src: url("/fonts/science-gothic.woff2") format("woff2");
-  font-weight: 100 900;
+  font-family: "Kedebideri";
+  src: url("/fonts/kedebideri-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fugaz One";
+  src: url("/fonts/fugaz-one.woff2") format("woff2");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 body {
   font-family: "Kedebideri", sans-serif;
-  @apply text-gray-dark text-xl leading-relaxed break-words;
-  background: linear-gradient(rgba(224, 217, 217, 0.5), rgba(255, 255, 255, 1))
-    no-repeat;
-  background-size: 100% 600px;
+  @apply text-gray-dark text-lg leading-relaxed break-words;
+  background: linear-gradient(to right, #f4e9d7 25%, #666 50%, #f4e9d7 75%);
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  @apply bg-white border-x border-gray-light flex flex-col;
+  box-shadow:
+    -20px 0 40px rgba(0, 0, 0, 0.08),
+    20px 0 40px rgba(0, 0, 0, 0.08);
+  max-width: 1024px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.content-wrapper > main {
+  @apply flex-1;
 }
 
 a {
-  @apply text-accent hover:text-accent-dark;
+  @apply text-accent hover:text-accent-dark transition-colors;
+}
+
+.prose a {
+  @apply underline decoration-accent/30 underline-offset-2;
+  @apply hover:bg-accent/10 hover:decoration-accent;
+  @apply px-0.5 -mx-0.5 rounded;
+  transition:
+    background-color 0.2s ease,
+    text-decoration-color 0.2s ease;
 }
 
 h1,
@@ -43,7 +75,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Science Gothic", sans-serif;
+  font-family: "Fugaz One", sans-serif;
   @apply text-black leading-tight mb-2;
 }
 
@@ -69,6 +101,27 @@ h5 {
 
 p {
   @apply mb-4;
+}
+
+.prose ul {
+  @apply list-disc pl-6 mb-4;
+}
+
+.prose ol {
+  @apply list-decimal pl-6 mb-4;
+}
+
+.prose li {
+  @apply mb-2;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  @apply uppercase tracking-wide;
 }
 
 img {
@@ -101,6 +154,6 @@ table {
 
 @media (max-width: 720px) {
   body {
-    @apply text-lg;
+    @apply text-base;
   }
 }

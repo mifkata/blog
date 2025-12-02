@@ -1,0 +1,24 @@
+---
+interface Props {
+  href?: string;
+  variant?: "normal" | "inverse";
+  class?: string;
+}
+
+const { href, variant = "normal", class: className } = Astro.props;
+
+const baseStyles =
+  "inline-flex items-center gap-2 px-4 py-2 rounded no-underline transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md";
+const variantStyles = {
+  normal:
+    "bg-button-light !text-button border border-button hover:bg-button-light/80",
+  inverse: "bg-button !text-button-light hover:bg-button/85",
+};
+
+const classes = [baseStyles, variantStyles[variant], className];
+const Element = href ? "a" : "button";
+---
+
+<Element href={href} class:list={classes}>
+  <slot />
+</Element>

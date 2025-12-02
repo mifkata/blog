@@ -21,92 +21,90 @@ const otherPosts = posts.slice(1);
     <BaseHead title={`Blog | ${SITE_TITLE}`} description="All blog posts" />
   </head>
   <body>
-    <Header />
-    <main class="max-w-[1200px] mx-auto px-6 py-12">
-      <!-- Page Header -->
-      <div class="mb-12">
-        <h1 class="text-4xl md:text-5xl mb-4">Blog</h1>
-        <p class="text-xl text-gray max-w-[600px]">
-          Thoughts on software engineering, AI-assisted development, and
-          building things for the web.
-        </p>
-      </div>
+    <div class="content-wrapper">
+      <Header />
+      <main class="max-w-[960px] mx-auto px-6 py-12">
+        <!-- Page Header -->
+        <div class="mb-12">
+          <h1 class="text-4xl md:text-5xl mb-4">Blog</h1>
+          <p class="text-xl text-gray max-w-[600px]">
+            Thoughts on software engineering, AI-assisted development, and
+            building things for the web.
+          </p>
+        </div>
 
-      <!-- Featured Post -->
-      {
-        featuredPost && (
-          <section class="mb-16">
-            <a
-              href={`/blog/${featuredPost.id}/`}
-              class="group block no-underline"
-            >
+        <!-- Featured Post -->
+        {
+          featuredPost && (
+            <section class="mb-16 group">
               <div class="grid md:grid-cols-2 gap-8 items-center">
                 {featuredPost.data.heroImage && (
-                  <Image
-                    width={720}
-                    height={400}
-                    src={featuredPost.data.heroImage}
-                    alt=""
-                    class="rounded-xl shadow-lg group-hover:shadow-xl transition-shadow"
-                  />
+                  <a href={`/blog/${featuredPost.id}/`}>
+                    <Image
+                      width={720}
+                      height={400}
+                      src={featuredPost.data.heroImage}
+                      alt=""
+                      class="rounded-xl shadow-lg group-hover:shadow-xl transition-shadow"
+                    />
+                  </a>
                 )}
                 <div>
                   <div class="text-sm text-accent uppercase tracking-wider mb-2">
                     Featured Post
                   </div>
-                  <h2 class="text-3xl md:text-4xl m-0 mb-4 text-black group-hover:text-accent transition-colors">
-                    {featuredPost.data.title}
-                  </h2>
+                  <a href={`/blog/${featuredPost.id}/`} class="no-underline">
+                    <h2 class="text-3xl md:text-4xl m-0 mb-4 text-black group-hover:text-accent transition-colors">
+                      {featuredPost.data.title}
+                    </h2>
+                  </a>
                   <p class="text-gray mb-4">{featuredPost.data.description}</p>
                   <div class="flex items-center gap-4 text-sm text-gray">
                     <FormattedDate date={featuredPost.data.pubDate} />
                     {featuredPost.data.tags && (
                       <div class="flex gap-2">
                         {featuredPost.data.tags.slice(0, 2).map((tag) => (
-                          <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-xs">
-                            {tag}
-                          </span>
+                          <Tag tag={tag} class="text-xs" />
                         ))}
                       </div>
                     )}
                   </div>
                 </div>
               </div>
-            </a>
-          </section>
-        )
-      }
+            </section>
+          )
+        }
 
-      <!-- All Posts -->
-      <section>
-        <div class="flex items-center gap-3 mb-8">
-          <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
-            All Posts
-          </h3>
-          <div class="flex-1 h-px bg-gray-light"></div>
-        </div>
+        <!-- All Posts -->
+        <section>
+          <div class="flex items-center gap-3 mb-8">
+            <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
+              All Posts
+            </h3>
+            <div class="flex-1 h-px bg-gray-light"></div>
+          </div>
 
-        <div class="space-y-8">
-          {
-            otherPosts.map((post) => (
-              <article class="group">
-                <a
-                  href={`/blog/${post.id}/`}
-                  class="grid md:grid-cols-[200px_1fr] gap-6 no-underline"
-                >
+          <div class="space-y-8">
+            {
+              otherPosts.map((post) => (
+                <article class="group grid md:grid-cols-[200px_1fr] gap-6">
                   {post.data.heroImage && (
-                    <Image
-                      width={200}
-                      height={120}
-                      src={post.data.heroImage}
-                      alt=""
-                      class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
-                    />
+                    <a href={`/blog/${post.id}/`}>
+                      <Image
+                        width={200}
+                        height={120}
+                        src={post.data.heroImage}
+                        alt=""
+                        class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
+                      />
+                    </a>
                   )}
                   <div class="flex flex-col justify-center">
-                    <h4 class="text-xl m-0 mb-2 text-black group-hover:text-accent transition-colors">
-                      {post.data.title}
-                    </h4>
+                    <a href={`/blog/${post.id}/`} class="no-underline">
+                      <h4 class="text-xl m-0 mb-2 text-black group-hover:text-accent transition-colors">
+                        {post.data.title}
+                      </h4>
+                    </a>
                     <p class="text-gray m-0 mb-2 line-clamp-2">
                       {post.data.description}
                     </p>
@@ -115,21 +113,19 @@ const otherPosts = posts.slice(1);
                       {post.data.tags && (
                         <div class="hidden md:flex gap-2">
                           {post.data.tags.slice(0, 2).map((tag) => (
-                            <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-xs">
-                              {tag}
-                            </span>
+                            <Tag tag={tag} class="text-xs" />
                           ))}
                         </div>
                       )}
                     </div>
                   </div>
-                </a>
-              </article>
-            ))
-          }
-        </div>
-      </section>
-    </main>
-    <Footer />
+                </article>
+              ))
+            }
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>

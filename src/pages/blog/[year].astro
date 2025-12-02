@@ -36,15 +36,17 @@ const { posts } = Astro.props;
     />
   </head>
   <body>
-    <Header />
-    <Container>
-      <section>
-        <h1>Posts from {year}</h1>
-        <ul class="flex flex-wrap gap-8 list-none m-0 p-0 mt-8">
-          {posts.map((post) => <PostCard post={post} />)}
-        </ul>
-      </section>
-    </Container>
-    <Footer />
+    <div class="content-wrapper">
+      <Header />
+      <Container>
+        <section>
+          <h1>Posts from {year}</h1>
+          <ul class="flex flex-wrap gap-8 list-none m-0 p-0 mt-8">
+            {posts.map((post) => <PostCard post={post} />)}
+          </ul>
+        </section>
+      </Container>
+      <Footer />
+    </div>
   </body>
 </html>

@@ -36,128 +36,130 @@ const showSidebar = showToc || relatedPosts.length > 0;
   </head>
 
   <body>
-    <Header />
-    <main class="max-w-[1200px] mx-auto px-6 py-12">
-      <article>
-        <!-- Hero Image -->
-        {
-          heroImage && (
-            <div class="mb-8">
-              <Image
-                width={1200}
-                height={600}
-                src={heroImage}
-                alt=""
-                class="w-full rounded-xl shadow-lg"
-              />
-            </div>
-          )
-        }
-
-        <div class:list={["flex gap-12", { "justify-center": !showSidebar }]}>
-          <!-- Main Content -->
-          <div
-            class:list={[
-              "min-w-0 max-w-[720px]",
-              showSidebar ? "flex-1" : "w-full",
-            ]}
-          >
-            <!-- Article Header -->
-            <header class="mb-8 pb-8 border-b border-gray-light">
-              <div class="flex items-center gap-4 text-sm text-gray mb-4">
-                <FormattedDate date={pubDate} />
-                {
-                  updatedDate && (
-                    <span class="italic">
-                      Updated <FormattedDate date={updatedDate} />
-                    </span>
-                  )
-                }
-              </div>
-              <h1 class="text-4xl md:text-5xl m-0 mb-4">{title}</h1>
-              {
-                tags && tags.length > 0 && (
-                  <div class="flex gap-2 flex-wrap">
-                    {tags.map((t) => (
-                      <Tag tag={t} />
-                    ))}
-                  </div>
-                )
-              }
-            </header>
-
-            <!-- Article Content -->
-            <div class="prose prose-lg">
-              <slot />
-            </div>
-          </div>
-
-          <!-- Sidebar -->
+    <div class="content-wrapper">
+      <Header />
+      <main class="max-w-[960px] mx-auto px-6 py-12">
+        <article>
+          <!-- Hero Image -->
           {
-            showSidebar && (
-              <aside class="hidden lg:block w-[250px] shrink-0">
-                <div class="sticky top-8 space-y-8">
-                  {/* Table of Contents */}
-                  {showToc && (
-                    <div>
-                      <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider">
-                        Table of Contents
-                      </h3>
-                      <ul class="list-none m-0 p-0 space-y-2">
-                        {headings.map((heading) => (
-                          <li>
-                            <a
-                              href={`#${heading.slug}`}
-                              class="text-sm text-gray-dark no-underline hover:text-accent transition-colors"
-                            >
-                              {heading.text}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Related Posts */}
-                  {relatedPosts.length > 0 && (
-                    <div>
-                      <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider">
-                        Related Posts
-                      </h3>
-                      <ul class="list-none m-0 p-0 space-y-4">
-                        {relatedPosts.map((post) => (
-                          <li>
-                            <a
-                              href={`/blog/${post.id}/`}
-                              class="group block no-underline"
-                            >
-                              {post.data.heroImage && (
-                                <Image
-                                  width={250}
-                                  height={140}
-                                  src={post.data.heroImage}
-                                  alt=""
-                                  class="rounded-lg mb-2 group-hover:shadow-md transition-shadow"
-                                />
-                              )}
-                              <span class="text-sm text-gray-dark group-hover:text-accent transition-colors line-clamp-2">
-                                {post.data.title}
-                              </span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </aside>
+            heroImage && (
+              <div class="mb-8">
+                <Image
+                  width={1200}
+                  height={600}
+                  src={heroImage}
+                  alt=""
+                  class="w-full rounded-xl shadow-lg"
+                />
+              </div>
             )
           }
-        </div>
 
-        {showComments && <Comments />}
-      </article>
-    </main>
-    <Footer />
+          <div class:list={["flex gap-12", { "justify-center": !showSidebar }]}>
+            <!-- Main Content -->
+            <div
+              class:list={[
+                "min-w-0 max-w-[720px]",
+                showSidebar ? "flex-1" : "w-full",
+              ]}
+            >
+              <!-- Article Header -->
+              <header class="mb-8 pb-8 border-b border-gray-light">
+                <h1 class="text-4xl md:text-5xl m-0 mb-4">{title}</h1>
+                <div class="flex items-center gap-4 text-sm text-gray mb-4">
+                  <FormattedDate date={pubDate} />
+                  {
+                    updatedDate && (
+                      <span class="italic">
+                        Updated <FormattedDate date={updatedDate} />
+                      </span>
+                    )
+                  }
+                </div>
+                {
+                  tags && tags.length > 0 && (
+                    <div class="flex gap-2 flex-wrap">
+                      {tags.map((t) => (
+                        <Tag tag={t} />
+                      ))}
+                    </div>
+                  )
+                }
+              </header>
+
+              <!-- Article Content -->
+              <div class="prose prose-lg">
+                <slot />
+              </div>
+            </div>
+
+            <!-- Sidebar -->
+            {
+              showSidebar && (
+                <aside class="hidden lg:block shrink-0">
+                  <div class="sticky top-8 space-y-8">
+                    {/* Table of Contents */}
+                    {showToc && (
+                      <div>
+                        <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider w-[250px]">
+                          Table of Contents
+                        </h3>
+                        <ul class="list-none m-0 p-0 space-y-1">
+                          {headings.map((heading) => (
+                            <li>
+                              <a
+                                href={`#${heading.slug}`}
+                                class="text-md text-gray-dark no-underline hover:text-accent transition-colors"
+                              >
+                                {heading.text}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Related Posts */}
+                    {relatedPosts.length > 0 && (
+                      <div>
+                        <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider">
+                          Related Posts
+                        </h3>
+                        <ul class="list-none m-0 p-0 space-y-4">
+                          {relatedPosts.map((post) => (
+                            <li>
+                              <a
+                                href={`/blog/${post.id}/`}
+                                class="group block no-underline"
+                              >
+                                {post.data.heroImage && (
+                                  <Image
+                                    width={250}
+                                    height={140}
+                                    src={post.data.heroImage}
+                                    alt=""
+                                    class="rounded-lg mb-2 group-hover:shadow-md transition-shadow"
+                                  />
+                                )}
+                                <span class="text-sm text-gray-dark group-hover:text-accent transition-colors line-clamp-2">
+                                  {post.data.title}
+                                </span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </aside>
+              )
+            }
+          </div>
+
+          {showComments && <Comments />}
+        </article>
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>

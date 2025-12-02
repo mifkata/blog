@@ -1,46 +1,44 @@
 ---
 import { SITE_TITLE } from "../consts";
+import Button from "./Button.astro";
 import HeaderLink from "./HeaderLink.astro";
 ---
 
-<header class="px-6 py-4 bg-white">
-  <nav class="max-w-[1200px] mx-auto flex items-center justify-between">
-    <a
-      href="/"
-      class="text-2xl font-bold text-black no-underline hover:text-accent"
-    >
-      {SITE_TITLE}
-    </a>
-    <div class="hidden md:flex items-center gap-6">
-      <HeaderLink href="/" number="01">Home</HeaderLink>
-      <HeaderLink href="/about" number="02">About</HeaderLink>
-      <HeaderLink href="/blog" number="03">Blog</HeaderLink>
-      <HeaderLink href="/tags" number="04">Tags</HeaderLink>
+<header class="px-6 py-4 bg-white sticky top-0 z-50 shadow-sm">
+  <nav class="max-w-[960px] mx-auto flex items-center justify-between">
+    <h1 class="text-2xl m-0 lg:ml-8">
+      <a href="/" class="text-black no-underline hover:text-accent">
+        {"<MIFKATA />"}
+      </a>
+    </h1>
+    <div class="hidden md:flex items-center gap-8 lg:mr-6">
+      <div class="flex items-center gap-6 uppercase">
+        <HeaderLink href="/" number="01">Home</HeaderLink>
+        <HeaderLink href="/about" number="02">About</HeaderLink>
+        <HeaderLink href="/blog" number="03">Blog</HeaderLink>
+      </div>
+      <Button href="/about">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          ></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        Resume
+      </Button>
     </div>
-    <a
-      href="/about"
-      class="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded no-underline hover:bg-accent-dark transition-colors"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-        ></path>
-        <polyline points="14 2 14 8 20 8"></polyline>
-        <line x1="16" y1="13" x2="8" y2="13"></line>
-        <line x1="16" y1="17" x2="8" y2="17"></line>
-        <polyline points="10 9 9 9 8 9"></polyline>
-      </svg>
-      Resume
-    </a>
     <button
       class="md:hidden p-2 text-black"
       id="mobile-menu-toggle"
@@ -64,11 +62,10 @@ import HeaderLink from "./HeaderLink.astro";
     </button>
   </nav>
   <div class="hidden md:hidden" id="mobile-menu">
-    <div class="flex flex-col gap-4 py-4">
+    <div class="flex flex-col gap-4 py-4 uppercase">
       <HeaderLink href="/" number="01">Home</HeaderLink>
       <HeaderLink href="/about" number="02">About</HeaderLink>
       <HeaderLink href="/blog" number="03">Blog</HeaderLink>
-      <HeaderLink href="/tags" number="04">Tags</HeaderLink>
     </div>
   </div>
 </header>

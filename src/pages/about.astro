@@ -1,5 +1,6 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import Button from "../components/Button.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_TITLE } from "../consts";
@@ -67,180 +68,180 @@ const certifications = [
     />
   </head>
   <body>
-    <Header />
-    <main class="max-w-[1200px] mx-auto px-6 py-12">
-      <!-- Hero Section -->
-      <section class="mb-16">
-        <h1 class="text-4xl md:text-5xl mb-12">About Me</h1>
-        <div class="grid md:grid-cols-[280px_1fr] gap-12">
-          <!-- Profile Image -->
-          <div>
-            <div
-              class="w-full aspect-square bg-gray-light rounded-xl overflow-hidden"
-            >
+    <div class="content-wrapper">
+      <Header />
+      <main class="max-w-[960px] mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <section class="mb-16">
+          <h1 class="text-4xl md:text-5xl mb-12">About Me</h1>
+          <div class="grid md:grid-cols-[280px_1fr] gap-12">
+            <!-- Profile Image -->
+            <div>
               <div
-                class="w-full h-full flex items-center justify-center text-gray"
+                class="w-full aspect-square bg-gray-light rounded-xl overflow-hidden"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="80"
-                  height="80"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bio -->
-          <div>
-            <p class="text-xl mb-6">
-              I'm Andriyan Ivanov, a software engineer with a passion for
-              building robust, scalable systems. My journey began with web
-              development and has evolved into exploring distributed systems and
-              AI-assisted workflows.
-            </p>
-            <p class="mb-6">
-              Philosophy is <strong class="text-black">clean code</strong>,
-              <strong class="text-black">thorough testing</strong>, and
-              <strong class="text-black">user-centric design</strong>. I believe
-              in continuous learning and sharing knowledge with the community.
-            </p>
-            <p class="text-gray">
-              <span class="text-accent font-medium">Current focus:</span> Exploring
-              how AI agents can transform software development — from ideation to
-              deployment.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Technical Skills -->
-      <section class="mb-16">
-        <h2 class="text-2xl mb-8">Technical Skills & Expertise</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-          <div>
-            <h3
-              class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
-            >
-              Languages
-            </h3>
-            <div class="flex flex-wrap gap-2">
-              {
-                skills.languages.map((skill) => (
-                  <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
-                    {skill}
-                  </span>
-                ))
-              }
-            </div>
-          </div>
-          <div>
-            <h3
-              class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
-            >
-              Frameworks & Libraries
-            </h3>
-            <div class="flex flex-wrap gap-2">
-              {
-                skills.frameworks.map((skill) => (
-                  <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
-                    {skill}
-                  </span>
-                ))
-              }
-            </div>
-          </div>
-          <div>
-            <h3
-              class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
-            >
-              Tools & Infrastructure
-            </h3>
-            <div class="flex flex-wrap gap-2">
-              {
-                skills.tools.map((skill) => (
-                  <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
-                    {skill}
-                  </span>
-                ))
-              }
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Professional Experience -->
-      <section class="mb-16">
-        <h2 class="text-2xl mb-8">Professional Experience</h2>
-        <div class="space-y-8">
-          {
-            experience.map((job) => (
-              <div class="relative pl-8 border-l-2 border-gray-light">
                 <div
-                  class:list={[
-                    "absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2",
-                    job.current
-                      ? "bg-accent border-accent"
-                      : "bg-white border-gray-light",
-                  ]}
-                />
-                <div class="mb-2">
-                  <h3 class="text-xl m-0 inline">{job.title}</h3>
-                  <span class="text-gray"> at {job.company}</span>
-                  <span class="text-gray text-sm ml-2">— {job.dates}</span>
+                  class="w-full h-full flex items-center justify-center text-gray"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="80"
+                    height="80"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
                 </div>
-                <ul class="list-disc list-inside text-gray-dark space-y-1">
-                  {job.achievements.map((achievement) => (
-                    <li>{achievement}</li>
-                  ))}
-                </ul>
               </div>
-            ))
-          }
-        </div>
-      </section>
+            </div>
 
-      <!-- Education & Certifications -->
-      <section class="mb-16">
-        <h2 class="text-2xl mb-8">Education & Certifications</h2>
-        <div class="space-y-4">
-          {
-            education.map((edu) => (
-              <p class="m-0">
-                <strong class="text-black">{edu.degree}</strong>
-                <span class="text-gray"> — {edu.institution}</span>
+            <!-- Bio -->
+            <div>
+              <p class="text-xl mb-6">
+                I'm Andriyan Ivanov, a software engineer with a passion for
+                building robust, scalable systems. My journey began with web
+                development and has evolved into exploring distributed systems
+                and AI-assisted workflows.
               </p>
-            ))
-          }
-          {
-            certifications.map((cert) => (
-              <p class="m-0 text-gray-dark">{cert}</p>
-            ))
-          }
-        </div>
-      </section>
+              <p class="mb-6">
+                Philosophy is <strong class="text-black">clean code</strong>,
+                <strong class="text-black">thorough testing</strong>, and
+                <strong class="text-black">user-centric design</strong>. I
+                believe in continuous learning and sharing knowledge with the
+                community.
+              </p>
+              <p class="text-gray">
+                <span class="text-accent font-medium">Current focus:</span> Exploring
+                how AI agents can transform software development — from ideation to
+                deployment.
+              </p>
+            </div>
+          </div>
+        </section>
 
-      <!-- CTA -->
-      <section class="text-center py-12 border-t border-gray-light">
-        <p class="text-xl text-gray mb-6">
-          I'm always open to discussing new challenges and opportunities.
-        </p>
-        <a
-          href="mailto:hello@example.com"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white rounded hover:bg-accent-dark transition-colors no-underline"
-        >
-          Let's Connect
-        </a>
-      </section>
-    </main>
-    <Footer />
+        <!-- Technical Skills -->
+        <section class="mb-16">
+          <h2 class="text-2xl mb-8">Technical Skills & Expertise</h2>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div>
+              <h3
+                class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
+              >
+                Languages
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                {
+                  skills.languages.map((skill) => (
+                    <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
+                      {skill}
+                    </span>
+                  ))
+                }
+              </div>
+            </div>
+            <div>
+              <h3
+                class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
+              >
+                Frameworks & Libraries
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                {
+                  skills.frameworks.map((skill) => (
+                    <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
+                      {skill}
+                    </span>
+                  ))
+                }
+              </div>
+            </div>
+            <div>
+              <h3
+                class="text-sm text-gray uppercase tracking-wider mb-4 font-normal"
+              >
+                Tools & Infrastructure
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                {
+                  skills.tools.map((skill) => (
+                    <span class="px-3 py-1 bg-gray-light rounded text-gray-dark text-sm">
+                      {skill}
+                    </span>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Professional Experience -->
+        <section class="mb-16">
+          <h2 class="text-2xl mb-8">Professional Experience</h2>
+          <div class="space-y-8">
+            {
+              experience.map((job) => (
+                <div class="relative pl-8 border-l-2 border-gray-light">
+                  <div
+                    class:list={[
+                      "absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2",
+                      job.current
+                        ? "bg-accent border-accent"
+                        : "bg-white border-gray-light",
+                    ]}
+                  />
+                  <div class="mb-2">
+                    <h3 class="text-xl m-0 inline">{job.title}</h3>
+                    <span class="text-gray"> at {job.company}</span>
+                    <span class="text-gray text-sm ml-2">— {job.dates}</span>
+                  </div>
+                  <ul class="list-disc list-inside text-gray-dark space-y-1">
+                    {job.achievements.map((achievement) => (
+                      <li>{achievement}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <!-- Education & Certifications -->
+        <section class="mb-16">
+          <h2 class="text-2xl mb-8">Education & Certifications</h2>
+          <div class="space-y-4">
+            {
+              education.map((edu) => (
+                <p class="m-0">
+                  <strong class="text-black">{edu.degree}</strong>
+                  <span class="text-gray"> — {edu.institution}</span>
+                </p>
+              ))
+            }
+            {
+              certifications.map((cert) => (
+                <p class="m-0 text-gray-dark">{cert}</p>
+              ))
+            }
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="text-center py-12 border-t border-gray-light">
+          <p class="text-xl text-gray mb-6">
+            I'm always open to discussing new challenges and opportunities.
+          </p>
+          <Button href="mailto:hello@example.com" class="px-6 py-3">
+            Let's Connect
+          </Button>
+        </section>
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>
