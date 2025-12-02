@@ -1,7 +1,7 @@
 ---
 interface Props {
   href?: string;
-  variant?: "normal" | "inverse";
+  variant?: "normal" | "inverse" | "ghost";
   class?: string;
 }
 
@@ -11,8 +11,11 @@ const baseStyles =
   "inline-flex items-center gap-2 px-4 py-2 rounded no-underline transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md";
 const variantStyles = {
   normal:
-    "bg-button-light !text-button border border-button hover:bg-button-light/80",
-  inverse: "bg-button !text-button-light hover:bg-button/85",
+    "bg-gradient-to-br from-button-light to-[#e8d4bc] !text-button border border-button hover:from-[#f0e2cc] hover:to-[#dcc6a8]",
+  inverse:
+    "bg-gradient-to-br from-[#e8935f] to-[#b85a38] !text-button-light hover:from-[#db8652] hover:to-[#a84f30]",
+  ghost:
+    "bg-transparent !text-button border border-button hover:bg-button-light/50",
 };
 
 const classes = [baseStyles, variantStyles[variant], className];

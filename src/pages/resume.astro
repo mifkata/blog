@@ -5,21 +5,45 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_TITLE } from "../consts";
 
-const skills = {
-  backend: [
-    "Node.js",
-    "TypeScript",
-    "Fastify",
-    "Express",
-    "GraphQL",
-    "REST APIs",
-  ],
-  frontend: ["React", "Next.js", "Angular", "Tailwind", "Storybook"],
-  databases: ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
-  cloud: ["AWS", "GCP", "Kubernetes", "Docker", "Terraform"],
-  testing: ["Jest", "Playwright", "Cypress", "Mocha"],
-  tools: ["Git", "CI/CD", "Jenkins", "CircleCI", "GitHub Actions"],
-};
+const skills = [
+  {
+    name: "backend",
+    icon: "server",
+    items: [
+      "Node.js",
+      "TypeScript",
+      "Fastify",
+      "Express",
+      "GraphQL",
+      "REST APIs",
+    ],
+  },
+  {
+    name: "frontend",
+    icon: "layout",
+    items: ["React", "Next.js", "Angular", "Tailwind", "Storybook"],
+  },
+  {
+    name: "databases",
+    icon: "database",
+    items: ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
+  },
+  {
+    name: "cloud",
+    icon: "cloud",
+    items: ["AWS", "GCP", "Kubernetes", "Docker", "Terraform"],
+  },
+  {
+    name: "testing",
+    icon: "check",
+    items: ["Jest", "Playwright", "Cypress", "Mocha"],
+  },
+  {
+    name: "tools",
+    icon: "tool",
+    items: ["Git", "CI/CD", "Jenkins", "CircleCI", "GitHub Actions"],
+  },
+];
 
 const experience = [
   {
@@ -245,7 +269,7 @@ const earlyCareer = {
 
         <!-- Skills -->
         <section class="mb-12">
-          <h2 class="text-2xl mb-6 flex items-center gap-3">
+          <h2 class="text-2xl mb-6 pb-6 flex items-center gap-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -265,15 +289,114 @@ const earlyCareer = {
           </h2>
           <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
             {
-              Object.entries(skills).map(([category, items]) => (
+              skills.map((skill) => (
                 <div>
-                  <h3 class="text-sm text-gray uppercase tracking-wider mb-3 font-normal">
-                    {category}
-                  </h3>
+                  <span class="text-sm text-gray uppercase tracking-wider mb-3 font-normal flex items-center gap-2">
+                    {skill.icon === "server" && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        class="text-[#6FA4AF]"
+                      >
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+                        <rect
+                          x="2"
+                          y="14"
+                          width="20"
+                          height="8"
+                          rx="2"
+                          ry="2"
+                        />
+                        <line x1="6" y1="6" x2="6.01" y2="6" />
+                        <line x1="6" y1="18" x2="6.01" y2="18" />
+                      </svg>
+                    )}
+                    {skill.icon === "layout" && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        class="text-[#6FA4AF]"
+                      >
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <line x1="3" y1="9" x2="21" y2="9" />
+                        <line x1="9" y1="21" x2="9" y2="9" />
+                      </svg>
+                    )}
+                    {skill.icon === "database" && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        class="text-[#6FA4AF]"
+                      >
+                        <ellipse cx="12" cy="5" rx="9" ry="3" />
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                      </svg>
+                    )}
+                    {skill.icon === "cloud" && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        class="text-[#6FA4AF]"
+                      >
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+                      </svg>
+                    )}
+                    {skill.icon === "check" && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        class="text-[#6FA4AF]"
+                      >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                    )}
+                    {skill.icon === "tool" && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        class="text-[#6FA4AF]"
+                      >
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                      </svg>
+                    )}
+                    {skill.name}
+                  </span>
                   <div class="flex flex-wrap gap-2">
-                    {items.map((skill) => (
+                    {skill.items.map((item) => (
                       <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-sm">
-                        {skill}
+                        {item}
                       </span>
                     ))}
                   </div>
@@ -285,7 +408,7 @@ const earlyCareer = {
 
         <!-- Experience -->
         <section class="mb-12">
-          <h2 class="text-2xl mb-8 flex items-center gap-3">
+          <h2 class="text-2xl mb-8 pb-6 flex items-center gap-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
