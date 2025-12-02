@@ -6,6 +6,10 @@ import Footer from "../../components/Footer.astro";
 import Header from "../../components/Header.astro";
 import Tag from "../../components/Tag.astro";
 import { SITE_TITLE } from "../../consts";
+import tagsData from "../../data/tags.json";
+
+type TagInfo = { title?: string; description?: string };
+const tagsInfo = tagsData as Record<string, TagInfo>;
 
 const posts = await getCollection("blog");
 const tagCounts = posts
@@ -34,14 +38,24 @@ const tags = Object.entries(tagCounts).sort((a, b) => a[0].localeCompare(b[0]));
       <Container>
         <section>
           <h1>Tags</h1>
-          <div class="flex flex-wrap gap-3 my-8">
+          <div class="space-y-4 my-8">
             {
-              tags.map(([tag, count]) => (
-                <span class="inline-flex items-center gap-2">
-                  <Tag tag={tag} />
-                  <span class="text-gray text-sm">({count})</span>
-                </span>
-              ))
+              tags.map(([tag, count]) => {
+                const info = tagsInfo[tag];
+                return (
+                  <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
+                    <div class="inline-flex items-center gap-2">
+                      <Tag tag={tag} />
+                      <span class="text-gray text-sm">({count})</span>
+                    </div>
+                    {info?.description && (
+                      <span class="text-gray-dark text-sm">
+                        {info.description}
+                      </span>
+                    )}
+                  </div>
+                );
+              })
             }
           </div>
         </section>

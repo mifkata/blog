@@ -1,0 +1,26 @@
+{
+  "ai": {
+    "title": "Artificial Intelligence",
+    "description": "Posts about AI, machine learning, LLMs, and using them for creative purposes."
+  },
+  "productivity": {
+    "title": "Productivity",
+    "description": "Tips and insights on improving workflow and getting things done."
+  },
+  "coding": {
+    "title": "Coding",
+    "description": "General programming topics, best practices, and development techniques."
+  },
+  "astro": {
+    "title": "Astro",
+    "description": "Posts about the Astro web framework and static site generation."
+  },
+  "cloudflare": {
+    "title": "Cloudflare",
+    "description": "Content about Cloudflare services, Pages, Workers, and edge computing."
+  },
+  "terraform": {
+    "title": "Terraform",
+    "description": "Infrastructure as code with Terraform and cloud provisioning."
+  }
+}
