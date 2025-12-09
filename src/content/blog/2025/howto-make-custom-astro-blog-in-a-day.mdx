@@ -1,0 +1,71 @@
+---
+title: "How to make a custom Astro blog in a day"
+description: "A step-by-step guide to vibe-coding a fully custom Astro blog from scratch."
+synopsis: "Learn how I built my blog in a single day using a bunch of AI toos - from reasearch, to code to production"
+pubDate: "Dec 9 2025 14:00:00 GMT+0000 (UTC)"
+heroImage: "../../../assets/blog/2025/1202-blog-in-a-day.png"
+tags: ["astro", "ai", "coding"]
+---
+
+import Highlight from "../../../components/Highlight.astro";
+
+## The idea
+
+I've been working on a few personal projects on the side and one of the things that I'm setting up for them is my marketing environment - the **public web**. Now, I don't know how you've struggled with making a high-performant public website, but I've been (un)fortunate enough to have done it at least a good hundred times, only in this lifetime.
+
+The main requirements for such software is:
+
+- **Extensibility** - easy to manage manually, as it is to plug any kind of data source to it and make it dynamic
+- **Maintainability** - easy to update, upgrade and keep secure
+- **Performance** - fast, light and optimized for SEO, accessibility, anything that gets you that high Lighthouse score
+
+Surely you can pile on that list with cost efficiency, ease of use, and whatnot, but those three are the main ones that I care about at this stage.
+
+## The process, as it used to be
+
+So here a breakdown of how these things fruition to life usually:
+
+1. **Conceptualize** - decide what you want to build and why (this is part of your R&D process)
+2. **Research** - look for existing solutions, frameworks, and tools that can help you
+3. **Design** - create wireframes, mockups, and prototypes of the website
+4. **Develop** - write the code, set up the infrastructure, and integrate any necessary services
+5. **Test** - ensure everything works as expected, fix bugs, and optimize performance
+6. **Deploy** - launch the website and monitor its performance
+7. **Maintain** - update content, fix issues, and improve features over time
+
+Looks pretty cool and very much _enterprise_ - this is how big companies do it. Unfortunately, I'm a single dude (not single, single, just working alone), trying to make it and the main goal is **go to market ASAP**. This means I have to cut down on my decision making and strive for going live, over planning, researching, etc.
+
+## The Status Quo
+
+One of the biggest issues with running personal projects - you might end up not finishing them... ever! So, for now, all I want to do is get my blog out of the door. NOW‼️
+
+So here's what I did in the order of execution:
+
+1. **R&D the content** - went to ChatGPT and asked it to show me a list of famous software engineer's personal websites. Made a list of thins that I want to show on my website. <Highlight>Specal thanks to [Lea Verou](https://lea.verou.me) for inspiring me how to organise my own blog. I stole [giscus](https://giscus.app/bg) from there, to make blog post comments.</Highlight>
+2. **R&D the stack** - I checked some open-source libraries for timelines, checked some stuff about animations and I had big plans to go heavy with some WebGL, canvas, custom timeline component, etc. The I said to myself - "my dude, this is not how you life quick".
+
+... So I went to work
+
+I picked [Astro](https://astro.build/) as my main framework, because:
+
+- It has first-class support for static sites
+- It has a great ecosystem of components and integrations
+- It allows me to use my favorite frontend frameworks (like React, Svelte, etc.)
+- It has great performance out of the box
+
+3. **Getting to business** - I started with the [Astro Starter Kit: blog](https://github.com/withastro/astro/tree/main/examples/blog) and went on to deploying it to Cloudflare Pages. At first I had issues making `wrangler` work, <Highlight>so I decided instead of clicking in the Cloudflare UI to provision the app with [terraform](https://github.com/mifkata/blog/tree/main/terraform).</Highlight> Whoot! Few minutes later, after figuring out the correct token permissions, and I had deployed successfully and could see my placeholder template live. I added a domain record to point to the pages' build and voila! My blog was live!
+
+## Time to vibe-code
+
+ℹ️ Before I started modifying, I decided to mark the milestone and made [my first blog post](https://mifkata.com/blog/2025/init-blog/) and capture a few screenshots of the default template to commemorate the event.
+
+- I used [Color Hunt](https://colorhunt.co/) to pick a nice color palette for my blog.
+- I asked **ChatGPT** to interview me about the [About page](https://mifkata.com/about/) and help me figure out what to put in the footer, besides a boring copyright label.
+- I ran my CV thorugh both **ChatGPT** and **Gemini** to get an extensive breakdown of what I can use for the [services page](https://mifkata.com/services/) as well as for [my resume](https://mifkata.com/resume/).
+- I fed both variants (for services and resume) to **Claude** and instructed it to generate the pages.
+- Used **nano banana** to generate some custom illustrations for the blog posts and the homepage, and of course a custom [404 page](https://mifkata.com/404/).
+- Did some polishing back and forth until I was satisfied and thought that it's not embarassing for me to deploy.
+
+## The result
+
+Here's the final result - [mifkata.com](https://mifkata.com). What do you think? Was the effort worth it? Did I miss something important? Let me know in the comments below!
