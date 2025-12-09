@@ -1,0 +1,16 @@
+---
+interface Props {
+  color?: "yellow" | "green" | "blue" | "pink";
+}
+
+const { color = "yellow" } = Astro.props;
+
+const colorClasses = {
+  yellow: "bg-yellow-200/60 dark:bg-yellow-500/30",
+  green: "bg-green-200/60 dark:bg-green-500/30",
+  blue: "bg-blue-200/60 dark:bg-blue-500/30",
+  pink: "bg-pink-200/60 dark:bg-pink-500/30",
+};
+---
+
+<mark class:list={["px-1 rounded-sm", colorClasses[color]]}><slot /></mark>
