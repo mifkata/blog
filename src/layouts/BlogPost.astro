@@ -111,7 +111,12 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
                         <li>
                           <a
                             href={`#${heading.slug}`}
-                            class="text-md text-gray-dark no-underline hover:text-accent transition-colors"
+                            class:list={[
+                              "block no-underline hover:text-accent transition-colors",
+                              heading.depth === 2
+                                ? "text-gray-dark"
+                                : "text-sm text-gray pl-3",
+                            ]}
                           >
                             {heading.text}
                           </a>
