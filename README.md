@@ -60,6 +60,38 @@ All commands are run from the root of the project, from a terminal:
 | `pnpm format:fix` | Fix formatting                                   |
 | `pnpm astro ...`  | Run CLI commands like `astro add`, `astro check` |
 
+## 🐳 Dev Container
+
+This project includes a dev container configuration for a consistent development environment.
+
+### Prerequisites
+
+- Docker installed and running
+- `socat` and `terminal-notifier` for host notifications (macOS): `brew install socat terminal-notifier`
+
+### What's Included
+
+- Node.js 22
+- pnpm 9.15.0
+- Claude Code CLI (pre-installed with plugins)
+- Git
+- Zsh with Oh My Zsh
+
+### Commands
+
+| Command                           | Action                                        |
+| :-------------------------------- | :-------------------------------------------- |
+| `pnpm devcontainer:build`         | Build the dev container                       |
+| `pnpm devcontainer:rebuild`       | Rebuild the dev container (no cache)          |
+| `pnpm devcontainer:up`            | Start the dev container                       |
+| `pnpm devcontainer:stop`          | Stop the dev container and notifier           |
+| `pnpm devcontainer:shell`         | Open a zsh shell in the container             |
+| `pnpm devcontainer:claude`        | Start container with Claude Code and notifier |
+| `pnpm devcontainer:notifier:up`   | Start the macOS notification listener         |
+| `pnpm devcontainer:notifier:stop` | Stop the macOS notification listener          |
+
+The `devcontainer:claude` command automatically starts the notification listener so you receive macOS notifications when Claude Code needs attention or completes a task.
+
 ## 🚀 Deployment to Cloudflare Pages
 
 ```sh
