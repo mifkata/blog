@@ -1,9 +1,10 @@
 ---
 interface Props {
   color?: "yellow" | "green" | "blue" | "pink";
+  block?: boolean;
 }
 
-const { color = "yellow" } = Astro.props;
+const { color = "yellow", block = false } = Astro.props;
 
 const colorClasses = {
   yellow: "bg-yellow-200/60 dark:bg-yellow-500/30",
@@ -13,4 +14,14 @@ const colorClasses = {
 };
 ---
 
-<mark class:list={["px-1 rounded-sm", colorClasses[color]]}><slot /></mark>
+{
+  block ? (
+    <div class:list={["p-4 rounded-md my-4", colorClasses[color]]}>
+      <slot />
+    </div>
+  ) : (
+    <mark class:list={["px-1 rounded-sm", colorClasses[color]]}>
+      <slot />
+    </mark>
+  )
+}
