@@ -55,7 +55,12 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
             )
           }
 
-          <div class:list={["flex gap-12", { "justify-center": !showToc }]}>
+          <div
+            class:list={[
+              "flex gap-12 items-start",
+              { "justify-center": !showToc },
+            ]}
+          >
             <!-- Main Content -->
             <div
               class:list={[
@@ -96,9 +101,9 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
             <!-- Sidebar (TOC only) -->
             {
               showToc && (
-                <aside class="hidden lg:block shrink-0">
-                  <div class="sticky top-32 max-h-[calc(100vh-10rem)] overflow-y-auto">
-                    <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider w-[250px]">
+                <aside class="hidden lg:block w-[240px] shrink-0 sticky top-28">
+                  <div class="max-h-[calc(100vh-4rem)] overflow-y-auto">
+                    <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider">
                       Table of Contents
                     </h3>
                     <ul class="list-none m-0 p-0 space-y-1">
