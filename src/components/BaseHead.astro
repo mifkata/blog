@@ -18,6 +18,25 @@ const { title, description, image = FallbackImage } = Astro.props;
 ---
 
 <!-- Global Metadata -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SDS8ZJG4SS"
+></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-SDS8ZJG4SS");
+</script>
+<script>
+  declare global {
+    interface Window {
+      dataLayer: any[];
+      gtag: (...args: any[]) => void;
+    }
+  }
+</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

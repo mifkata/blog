@@ -1,0 +1,79 @@
+---
+interface Props {
+  url: string;
+  height?: number;
+}
+
+const { url, height = 400 } = Astro.props;
+
+// Extract post ID from Reddit URL
+// Formats: https://www.reddit.com/r/subreddit/comments/postid/title/
+//          https://reddit.com/r/subreddit/comments/postid/
+const match = url.match(/reddit\.com\/r\/[\w]+\/comments\/([\w]+)/);
+const postId = match ? match[1] : null;
+const embedUrl = postId
+  ? `https://www.redditmedia.com/r/${url.split("/r/")[1]?.split("?")[0]}?ref_source=embed&ref=share&embed=true`
+  : null;
+---
+
+{
+  embedUrl ? (
+    <div class="reddit-embed my-6" data-url={embedUrl} data-height={height}>
+      <div class="border border-gray-light rounded-lg p-4 bg-gray-light/20 text-center">
+        <p class="m-0 mb-2 text-gray">Reddit Post</p>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-accent hover:text-accent-dark"
+        >
+          View on Reddit
+        </a>
+      </div>
+    </div>
+  ) : (
+    <p class="text-red-500">Invalid Reddit URL</p>
+  )
+}
+
+<script>
+  function initRedditEmbeds() {
+    const embeds = document.querySelectorAll<HTMLElement>(".reddit-embed");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const container = entry.target as HTMLElement;
+            const url = container.dataset.url;
+            const height = container.dataset.height || "400";
+
+            if (url && !container.querySelector("iframe")) {
+              const iframe = document.createElement("iframe");
+              iframe.src = url;
+              iframe.width = "100%";
+              iframe.height = height;
+              iframe.style.border = "none";
+              iframe.style.borderRadius = "8px";
+              iframe.sandbox =
+                "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox";
+              iframe.loading = "lazy";
+              iframe.title = "Reddit post";
+
+              container.innerHTML = "";
+              container.appendChild(iframe);
+            }
+
+            observer.unobserve(container);
+          }
+        });
+      },
+      { rootMargin: "100px" },
+    );
+
+    embeds.forEach((embed) => observer.observe(embed));
+  }
+
+  initRedditEmbeds();
+  document.addEventListener("astro:page-load", initRedditEmbeds);
+</script>
