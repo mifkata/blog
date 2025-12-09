@@ -9,8 +9,8 @@
   "runArgs": ["--network=host", "--name=blog-dev-container"],
   "mounts": [
     {
-      "source": "${localWorkspaceFolder}/.devcontainer/claude.settings.json",
-      "target": "/home/vscode/.claude/settings.json",
+      "source": "${localWorkspaceFolder}/.devcontainer/.claude",
+      "target": "/home/vscode/.claude",
       "type": "bind"
     }
   ],
