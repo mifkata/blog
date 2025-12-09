@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf 'notify blog (waiting)\n' | nc host.docker.internal 4545"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf 'notify blog (done)\n' | nc host.docker.internal 4545"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {}
+}
