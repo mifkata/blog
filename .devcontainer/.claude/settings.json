@@ -23,5 +23,7 @@
       }
     ]
   },
-  "enabledPlugins": {}
+  "enabledPlugins": {
+    "claude-mem@thedotmack": true
+  }
 }
