@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# Conventional Commits pattern
+# Format: type(scope)?: description
+# Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+
+commit_msg=$(cat "$1")
+
+# Allow merge commits
+if echo "$commit_msg" | grep -qE "^Merge "; then
+  exit 0
+fi
+
+# Conventional commit regex
+pattern="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?(!)?: .{1,}"
+
+if ! echo "$commit_msg" | grep -qE "$pattern"; then
+  echo "❌ Invalid commit message format."
+  echo ""
+  echo "Commit message must follow Conventional Commits:"
+  echo "  <type>(<scope>)?: <description>"
+  echo ""
+  echo "Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert"
+  echo ""
+  echo "Examples:"
+  echo "  feat: add user authentication"
+  echo "  fix(api): resolve null pointer exception"
+  echo "  docs: update README with installation steps"
+  echo ""
+  exit 1
+fi
