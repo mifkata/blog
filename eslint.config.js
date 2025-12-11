@@ -4,7 +4,13 @@ import tsParser from "@typescript-eslint/parser";
 
 export default [
   {
-    ignores: ["dist/**", ".astro/**", "node_modules/**"],
+    ignores: [
+      "dist/**",
+      ".astro/**",
+      "node_modules/**",
+      ".devcontainer/.claude/**",
+      "!.devcontainer/.claude/settings.json",
+    ],
   },
   ...eslintPluginAstro.configs.recommended,
   {
