@@ -33,6 +33,10 @@ terraform/*.tfvars
 terraform/.terraform.lock.hcl
 
 # Devcontainer
-.devcontainer/.claude/*
-!.devcontainer/.claude/
-!.devcontainer/.claude/settings.json
+# Devcontainer
+.devcontainer/.home/*
+!.devcontainer/.home
+!.devcontainer/.home/.zshrc
+!.devcontainer/.home/.claude
+.devcontainer/.home/.claude/*
+!.devcontainer/.home/.claude/settings.json

@@ -12,14 +12,16 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "prepare": "husky",
-    "devcontainer:build": "devcontainer build --workspace-folder .",
-    "devcontainer:rebuild": "devcontainer build --workspace-folder . --no-cache",
-    "devcontainer:up": "devcontainer up --workspace-folder .",
+    "devcontainer": "docker compose -f .devcontainer/docker-compose.yml",
+    "devcontainer:build": "pnpm devcontainer build",
+    "devcontainer:rebuild": "pnpm devcontainer build --no-cache",
+    "devcontainer:exec": "pnpm devcontainer:up && pnpm devcontainer exec devcontainer",
+    "devcontainer:up": "pnpm devcontainer up -d && pnpm devcontainer:notifier:up",
     "devcontainer:notifier:up": "pgrep -f 'socat TCP-LISTEN:4545' >/dev/null || (nohup socat TCP-LISTEN:4545,reuseaddr,fork EXEC:.devcontainer/notifier.sh >/tmp/hostcmd.log 2>&1 & echo '🔔 Notifier started.')",
     "devcontainer:notifier:stop": "pkill -f 'socat TCP-LISTEN:4545' && echo '🔕 Notifier stopped.'",
-    "devcontainer:shell": "devcontainer exec --workspace-folder . -- zsh",
-    "devcontainer:stop": "npm run devcontainer:notifier:stop; docker kill blog-dev-container && echo 'Dev container stopped.'",
-    "devcontainer:claude": "npm run devcontainer:notifier:up && npm run devcontainer:up && devcontainer exec --workspace-folder . -- sh -lc 'claude -c || claude'"
+    "devcontainer:shell": "pnpm devcontainer:exec zsh",
+    "devcontainer:stop": "pnpm devcontainer:notifier:stop; pnpm devcontainer down",
+    "devcontainer:claude": "pnpm devcontainer:exec sh -lc 'claude -c || claude'"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.12",
