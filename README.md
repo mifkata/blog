@@ -1,19 +1,8 @@
-# Astro Starter Kit: Blog
+# Mifkata.com uses Astro Starter Kit: Blog
 
 ```sh
 npm create astro@latest -- --template blog
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
 
 ## 🚀 Project Structure
 
@@ -79,18 +68,19 @@ This project includes a dev container configuration for a consistent development
 
 ### Commands
 
-| Command                           | Action                                        |
-| :-------------------------------- | :-------------------------------------------- |
-| `pnpm devcontainer:build`         | Build the dev container                       |
-| `pnpm devcontainer:rebuild`       | Rebuild the dev container (no cache)          |
-| `pnpm devcontainer:up`            | Start the dev container                       |
-| `pnpm devcontainer:stop`          | Stop the dev container and notifier           |
-| `pnpm devcontainer:shell`         | Open a zsh shell in the container             |
-| `pnpm devcontainer:claude`        | Start container with Claude Code and notifier |
-| `pnpm devcontainer:notifier:up`   | Start the macOS notification listener         |
-| `pnpm devcontainer:notifier:stop` | Stop the macOS notification listener          |
+| Command                           | Action                                 |
+| :-------------------------------- | :------------------------------------- |
+| `pnpm devcontainer:build`         | Build the dev container                |
+| `pnpm devcontainer:rebuild`       | Rebuild the dev container (no cache)   |
+| `pnpm devcontainer:up`            | Start the dev container and notifier   |
+| `pnpm devcontainer:stop`          | Stop the dev container and notifier    |
+| `pnpm devcontainer:exec <cmd>`    | Execute a command inside the container |
+| `pnpm devcontainer:shell`         | Open a zsh shell in the container      |
+| `pnpm devcontainer:claude`        | Start Claude Code in the container     |
+| `pnpm devcontainer:notifier:up`   | Start the macOS notification listener  |
+| `pnpm devcontainer:notifier:stop` | Stop the macOS notification listener   |
 
-The `devcontainer:claude` command automatically starts the notification listener so you receive macOS notifications when Claude Code needs attention or completes a task.
+The `devcontainer:up` command automatically starts the notification listener so you receive macOS notifications when Claude Code needs attention or completes a task.
 
 ## 🚀 Deployment to Cloudflare Pages
 
