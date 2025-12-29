@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+RUN pnpm --version
 
 # Install Claude CLI
 RUN npm install -g @anthropic-ai/claude-code
@@ -35,17 +36,10 @@ RUN groupadd --gid $USER_GID $USERNAME \
 USER $USERNAME
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-# Install Claude plugins from config file
-COPY --chown=$USER_UID:$USER_GID claude.plugins.json /tmp/claude.plugins.json
-RUN plugin=$(tr -d '[]" \n\t' < /tmp/claude.plugins.json) && \
-    for p in $(echo "$plugin" | tr ',' '\n'); do \
-    if [ -n "$p" ]; then \
-    echo "Installing plugin: $p"; \
-    claude plugin marketplace add "$p" && \
-    name=$(echo "$p" | cut -d'/' -f2) && \
-    claude plugin install "$name"; \
-    fi; \
-    done && rm /tmp/claude.plugins.json
+# Install vimcat
+RUN git clone https://github.com/ofavre/vimcat.git /home/$USERNAME
+WORKDIR /home/$USERNAME/vimcat
+RUN sudo make install && rm -r /home/$USERNAME/vimcat
 
 # Set working directory
 WORKDIR /workspace

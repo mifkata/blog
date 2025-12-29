@@ -1,0 +1,17 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: blog-dev-container:latest
+    container_name: blog-dev-container
+    ports:
+      - "4321:4321"
+    volumes:
+      - ..:/workspace:cached
+      - ./.home:/home/vscode/
+    working_dir: /workspace
+    user: vscode
+    tty: true
+    stdin_open: true
+    command: sleep infinity
