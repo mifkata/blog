@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import FormattedDate from "./FormattedDate.astro";
+import Synopsis from "./Synopsis.astro";
 import Tag from "./Tag.astro";
 
 interface Props {
@@ -36,7 +37,7 @@ const { post, class: className, showTags = true } = Astro.props;
       </h4>
     </a>
     <p class="text-gray m-0 mb-2 line-clamp-2">
-      {post.data.synopsis || post.data.description}
+      <Synopsis text={post.data.synopsis || post.data.description} />
     </p>
     <div class="flex items-center gap-4 text-sm text-gray">
       <FormattedDate date={post.data.pubDate} />
