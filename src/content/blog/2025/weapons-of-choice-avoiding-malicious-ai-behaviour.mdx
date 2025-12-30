@@ -1,0 +1,328 @@
+---
+title: "Weapons of Choice: Avoiding Malicious AI Behaviour"
+description: Explore devcontainers as a mean to protect yourself from losing valuable data, whilst working with Claude Code and similar AI agents
+synopsis:
+  Using tools like **Claude Code** on a daily basis can be quite amazing, however,
+  It happens that you cannot fully trust it to securely do you bidding,
+  without taking any risk, even though Anthropic is supposedly doing their
+  best to prevent it as much as possible.
+
+  Multiple users have experienced sudden loss of data for various reasons,
+  but nonetheless due unexplica ble shell command hallucinations.
+  I'm not waiting! This is how I secure my dev environment before it's too late!
+pubDate: Dec 30 2025 12:30:00 GMT+0000 (UTC)
+heroImage: "@/assets/blog/2025/1230-devcontainers.png"
+tags: ["coding", "ai", "devcontainers", "claude"]
+---
+
+## Casual Blog Drift
+
+I've been using AI for 3 years now, but most recently I've been coding
+almost exclusively with _Claude Code_. [This blog](https://github.com/mifkata/blog)
+is one of the first projects that I completed using it.
+
+I [built my blog in a day](http://localhost:4321/blog/2025/howto-make-custom-astro-blog-in-a-day/)
+using a very raw approach to software development. Basically, I had a conversation
+with the bot and asked him to change various things as I progressed.
+
+That's good and all for experiments and prototyping, but as your projects grow bigger,
+certain patterns begin to emerge and it's hard to describe everything that one
+has to do in order to have a steady, viable development flow with AI agents.
+
+This article is a proposition of means to protect one's `local` environment
+from accidental or intentional destructive actions by AI agents.
+
+## The basic setup
+
+Here're several things that I do nowadays (about a month after I've created the blog and I'm
+more than actively using `Claude Code` to produce production ready applications. At the
+time of writing this, the `blog` itself has _a rather "outdated" codebase_, in terms of
+what one can refer to as "AI derrived technical debt".),
+
+When setting up a new project now, I'd go through the following checklist:
+
+    1. I create a general `.devcontainer` for my application. Since I'm building
+    from scratch, I begin with monolithic approach and I split out code when
+    absolutely necessary for scalability. So my `.devcontainer` has the capacity
+    to run all the applications I'm working with, plus whatever is required for
+    **Claude Code** to run steadily.
+
+        I do this to isolate my PC from `Claude` to achieve security and data integrity.
+    I can restore missing code with version control and I can live with 1 commit being
+    deleted accidentally, but the rest of my system is exposed, since `Claude` is running
+    with the same privileges, as my local user is and it runs `shell commands`. This
+    is not just something to be careful about, it's an active vector for malicious attacks
+    and command injection.
+
+    2. After, my environment is secure and capable of running all my apps in `dev`
+    mode, I would try to setup my primary agent entry - `CLAUDE.md` (`AGENTS.md` is a
+    more general entry that is also viable option, but in since I'm using **Claude code**,
+    I'm sticking to the named file format).
+
+        For a new project, I'd reuse an existing `CLAUDE.md` from a recent similar project. If
+    I have nothing good to reuse, I'll continue to the next step and come back to `CLAUDE.md`
+    a bit later, when I have some context for the app.
+
+    3. I will add common **Claude commands**. These would include commands for the most
+    common actions that I take, when  trying to write better and more consistent code:
+
+        *  **spec commands** - these would be commands used to `create`, `update`, `verify`,
+        `apply`, `refactor with` specification files. I do this to keep reusable context
+        long-term. I keep it in the repo, so it's close to the code and so that I can configure
+        how things are done on the fly, by injecting `prompt` instructions. Specs are usually
+        kept in `specs/**/*.md` inside the project root.
+
+        * **test commands** - working with multiple apps, requires different type of tests
+        and approaches to testing. One can verify that web frontend and a service written
+        in `Elixir` would have different testing concepts. Test commands are context specific
+        and require a specific instruction set to be considered, when generating code for
+        coverage
+
+        * **git assist** - I don't ask my agent to commit for me. I can, it could, but
+        unless you're running a multi-agent `pipeline` of sorts, that goes and produces
+        some kind of code from scaratch end to end and you want to have viable `commit`
+        history, you have no good reason to grant your `AI agent` privileges to your repo.
+
+        It can (and it has happen to people), reset your commit tree and force push
+        changes to your repo (of course, that applies only if you, like me, work alone on
+        projects, on an unlocked `main` branch, or simply don't have `branch protection`
+        for your private project).
+
+
+
+## Why you should use dev containers
+
+The benefits of using `devcontainers` vary from improving onboarding of
+new team members, CI, eliminating "runs on my machine", etc. Nowadays there's
+an [open-source devcontainer toolchain](https://code.visualstudio.com/docs/devcontainers/containers)
+that integrates almost natively with VS Code.
+
+My personal reason to quickly integrate `devcontainers` for my AI assited dev
+environment is quite more simplistic, yet serious.
+
+import RedditEmbed from "@/components/RedditEmbed.astro";
+
+<RedditEmbed url="https://www.reddit.com/r/ClaudeAI/comments/1pgxckk/claude_cli_deleted_my_entire_home_directory_wiped/" />
+
+> In the [above link](https://www.reddit.com/r/ClaudeAI/comments/1pgxckk/claude_cli_deleted_my_entire_home_directory_wiped/)
+> goes missing - it is a post on Reddit, where a dude got his entire home deleted by `Claude Code` (the bot ran
+> `rm -rf tests/ patches/ plan/ ~/`, when it was doing a supposedly controlled code cleanup. Note the last `~/`,
+> that wiped the contents of the user's home directory, which, I don't know about you, but for me would
+> be beyond tragic).
+
+## Setting up a devcontainer
+
+For a `node` app, such as this blog, a basic setup go something like that...
+
+### Dockerfile
+
+This is a cleaned-up version of the `.devcontainer/Dockerfile` that I use for the blog.
+In mine I also install `zsh` with [oh-my-zsh](https://ohmyz.sh/) to match
+my personal shell, as well as installing `pnpm` and adding `sudo` privileges
+to the user (mostly for debug purposes, not sure if it's a good recommendation).
+
+> `.devcontainer/Dockerfile`
+
+```docker
+# Development container for Astro.js blog
+FROM node:22-bookworm
+
+# Avoid prompts from apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    netcat-openbsd \
+    sudo \
+    vim \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Claude CLI
+RUN npm install -g @anthropic-ai/claude-code
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command
+CMD ["sleep", "infinity"]
+```
+
+### docker-compose
+
+I initially started using the [devcontainer CLI](https://github.com/devcontainers/cli) with
+a `devcontainer.json` configuration, however, eventually
+I had more issues with it and just migrated to using plain `docker-compose.yml`
+running my [Dockerfile](#dockerfile) for my apps.
+
+It made my life easier when it came to forwarding ports, using resources within my
+docker network, etc. In addition, I run my dev container from the terminal and not my
+text editor. You still have the choice to have a full integration with it (or JetBrains,
+but outside of that, I'm not sure what's the support and plugin marketplace for other
+text editors and IDEs).
+
+> `.devcontainer/docker-compose.yml`
+
+```yaml
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: blog-dev-container:latest
+    container_name: blog-dev-container
+    ports:
+      - 4321:4321
+    volumes:
+      - ./.home:/home/vscode/
+```
+
+**NOTE**: the `volumes` links `.devcontainer/.home/` to the current user's
+home directory, allowing me to rebuild the image and keep my auth sessions,
+as well as to keep in the repository configuration and dotfiles
+such as `.claude/settings.json` with Claude global hooks, my own `.zshrc` with
+custom `aliases`, `oh-my-zsh` configuration, etc.
+
+> This requires me to add some ugliness to `.gitignore`, but it's manageable
+
+```sh
+# Devcontainer
+.devcontainer/.home/*
+!.devcontainer/.home
+!.devcontainer/.home/.zshrc
+!.devcontainer/.home/.claude
+.devcontainer/.home/.claude/*
+!.devcontainer/.home/.claude/settings.json
+```
+
+### Claude status notifications
+
+Working with an agent would require your attention once in a while, or you'd
+like to know when a job has been completed and you can review the work done or issue
+the next command. Since the `docker` environment doesn't have a native way to
+**propagate notifications downstream** to the host machine (or at least to my knowledge),
+I use a bit more complex setup, which relies on [Claude hooks](https://code.claude.com/docs/en/hooks)
+to run commands for me, which in turn emit notifications on my host machine.
+
+### notifier.sh
+
+1. I create a socket listener on my local machine that pipes output to a
+   shell script called **notifier.sh**, which emits a `terminal-notification` on my Mac.
+
+I use a dedicated script and not a whole shell instance, as I want to prevent
+`Claude` from executing `random` commands on my machine. This way I'm protected
+from command injection on my host machine.
+
+> `.devcontainer/notifier.sh`
+
+```sh
+#!/bin/bash
+read -r CMD ARG
+
+case "$CMD" in
+  notify)
+    terminal-notifier -title "Claude" -message "$ARG" -open "iterm2://session"
+    ;;
+  *)
+    echo "DENIED"
+    ;;
+esac
+```
+
+I use [terminal-notifier](https://github.com/julienXX/terminal-notifier) to send
+clickable notificatinos. In this case they have a title "Claude" and clicking on them
+focuses my `iTerm`. This can be further improved to focus a specific `iTerm` tab,
+however I cannot achieve it, since I use `tmux` and it's terminal session IDs can belong
+to tabs that have been long gone, because of the way `tmux` session service works (e.g.
+they persist through tab closure).
+
+### Propagating notifications
+
+To propagate messages from the `devcontainer` downstream to my machine, I pipe messages to the
+[notifier.sh script](#notifiersh) with [SOcket CAT](https://linux.die.net/man/1/socat) on port `4545`.
+
+> Start the listner
+
+```sh
+pgrep -f 'socat TCP-LISTEN:4545' >/dev/null || \
+    ( \
+        nohup socat TCP-LISTEN:4545,reuseaddr,fork \
+        EXEC:.devcontainer/notifier.sh >/tmp/hostcmd.log 2>&1 & \
+        echo '🔔 Notifier started.'
+    )
+```
+
+> Stop the listener
+
+```sh
+pkill -f 'socat TCP-LISTEN:4545' && \
+    echo '🔕 Notifier stopped.'
+```
+
+**WARNING**: Using socat directly with a `shell` (e.g. `EXEC:/bin/bash`) entirely
+beats the purpose of trying to secure your local environment from arbitrary command
+injection, you'd effectively give the bot the opportunity to run any commands on your
+machine with `nc` messages to `socat`.
+
+### Connecting Claude hooks
+
+Notifications are sent using 2 Claude hooks:
+
+- **Notification/permission_prompt** - triggered when the agent is waiting for my response
+- **Stop/\*** - triggered when a task is completed
+
+To send notifications, we use [netcat](https://linux.die.net/man/1/nc) to send a message
+to the [notifier.sh script](#notifiersh) on port `4545`.
+
+> .devcontainer/.home/.claude/settings.json
+
+```json
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf 'notify blog (waiting)\n' | nc host.docker.internal 4545"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf 'notify blog (done)\n' | nc host.docker.internal 4545"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Tips & tricks
+
+It's worth mentioning, that my containers have different setup from my local Mac
+environment. This causes `pnpm install` ran through the container and locally
+to behave differently.
+
+In an ideal world, you'd run **install** and **build** commands only inside the `devcontainer`.
+
+This is where **Claude** would be running builds and tests, so don't want to rebuild dependencies
+when you run tests on your local machine, simply run them inside the `devcontainer`, same goes
+for starting applications for local `dev` and possibly `CI`.
+
+## In conclusion
+
+Setting up `devcontainers` is easy and almost effortless. It will help you by
+creating consistency when running and testing applications with both the agent,
+CI and other users on your team, and will add an extra layer of security for your
+environment when working with `AI agents` by protecting you from arbitrary
+`command injection` and sporadic malicious agent behaviour.
