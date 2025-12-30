@@ -43,7 +43,7 @@ const { post, class: className, showTags = true } = Astro.props;
       {
         showTags && post.data.tags && (
           <div class="hidden md:flex gap-2">
-            {post.data.tags.slice(0, 2).map((tag) => (
+            {post.data.tags.map((tag) => (
               <Tag tag={tag} class="text-xs" />
             ))}
           </div>

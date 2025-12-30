@@ -67,7 +67,7 @@ const otherPosts = posts.slice(1);
                     <FormattedDate date={featuredPost.data.pubDate} />
                     {featuredPost.data.tags && (
                       <div class="flex gap-2">
-                        {featuredPost.data.tags.slice(0, 2).map((tag) => (
+                        {featuredPost.data.tags.map((tag) => (
                           <Tag tag={tag} class="text-xs" />
                         ))}
                       </div>

@@ -149,7 +149,7 @@ code {
 }
 
 pre {
-  @apply p-6 rounded-lg;
+  @apply p-4 rounded-lg;
 }
 
 pre > code {
