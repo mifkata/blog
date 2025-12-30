@@ -6,6 +6,7 @@ import BaseHead from "@/components/BaseHead.astro";
 import Footer from "@/components/Footer.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 import Header from "@/components/Header.astro";
+import Synopsis from "@/components/Synopsis.astro";
 import Tag from "@/components/Tag.astro";
 import { SITE_TITLE } from "@/consts";
 
@@ -60,8 +61,12 @@ const otherPosts = posts.slice(1);
                     </h2>
                   </a>
                   <p class="text-gray mb-4">
-                    {featuredPost.data.synopsis ||
-                      featuredPost.data.description}
+                    <Synopsis
+                      text={
+                        featuredPost.data.synopsis ||
+                        featuredPost.data.description
+                      }
+                    />
                   </p>
                   <div class="flex items-center gap-4 text-sm text-gray">
                     <FormattedDate date={featuredPost.data.pubDate} />
