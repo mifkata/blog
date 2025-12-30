@@ -8,7 +8,7 @@ title: "<Title from slug or '[Your Title]'>"
 description: "[Brief description]"
 synopsis: "[One-line summary]"
 pubDate: "<current datetime>"
-heroImage: "../../../assets/blog/<year>/<slug>.png"
+heroImage: "@/assets/blog/<year>/<slug>.png"
 tags: []
 ---
 
