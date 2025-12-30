@@ -133,10 +133,13 @@ p {
 
 .prose h1,
 .prose h2,
-.prose h3,
 .prose h4,
 .prose h5,
 .prose h6 {
+  @apply tracking-wide;
+}
+
+.prose h3 {
   @apply uppercase tracking-wide;
 }
 
@@ -149,7 +152,7 @@ code {
 }
 
 pre {
-  @apply p-4 rounded-lg;
+  @apply p-4 rounded-lg mb-4;
 }
 
 pre > code {

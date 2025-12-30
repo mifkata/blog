@@ -1,0 +1,48 @@
+---
+interface Props {
+  text?: string;
+  class?: string;
+}
+
+const { text, class: className } = Astro.props;
+
+function parseInlineMarkdown(input: string): string {
+  return (
+    input
+      // Links: [text](url)
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+      // Bold: **text** or __text__
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/__(.+?)__/g, "<strong>$1</strong>")
+      // Italic: *text* or _text_
+      .replace(/\*(.+?)\*/g, "<em>$1</em>")
+      .replace(/_(.+?)_/g, "<em>$1</em>")
+      // Inline code: `code`
+      .replace(/`([^`]+)`/g, "<code>$1</code>")
+  );
+}
+
+function parseMarkdown(input: string): string {
+  if (!input) return "";
+  const paragraphs = input
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (paragraphs.length <= 1) {
+    return parseInlineMarkdown(input.trim());
+  }
+  return paragraphs.map((p) => `<p>${parseInlineMarkdown(p)}</p>`).join("");
+}
+
+const html = parseMarkdown(text || "");
+const isMultiParagraph = (text || "").includes("\n\n");
+---
+
+{
+  html &&
+    (isMultiParagraph ? (
+      <div class={className} set:html={html} />
+    ) : (
+      <span class={className} set:html={html} />
+    ))
+}
