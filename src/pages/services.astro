@@ -1,8 +1,6 @@
 ---
-import BaseHead from "@/components/BaseHead/BaseHead.astro";
 import Button from "@/components/Button/Button.astro";
-import Footer from "@/components/Footer/Footer.astro";
-import Header from "@/components/Header/Header.astro";
+import PageLayout from "@/layouts/PageLayout.astro";
 import Cloud from "@/components/icons/Cloud.astro";
 import GitBranch from "@/components/icons/GitBranch.astro";
 import Layout from "@/components/icons/Layout.astro";
@@ -88,133 +86,116 @@ const clients = [
 ];
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead
-      title={`Services | ${SITE_TITLE}`}
-      description="Full-stack software engineering consulting: backend, frontend, DevOps, architecture, and technical leadership"
-    />
-  </head>
-  <body>
-    <div class="content-wrapper">
-      <Header />
-      <main class="w-full max-w-[960px] mx-auto px-6 py-12">
-        <!-- Hero Section -->
-        <section class="mb-8">
-          <h1 class="text-4xl md:text-5xl mb-6">Services</h1>
-          <p class="text-xl text-gray mb-4">
-            I design, build, and scale modern digital products — end to end.
-          </p>
-          <p class="text-gray-dark">
-            With 25+ years of professional experience, I work as a full-stack
-            software engineering consultant through my company, <strong
-              class="text-black">Tricky Click</strong
-            >. I specialise in coming into messy environments, finding clarity
-            fast, and delivering results without drama.
-          </p>
-        </section>
+<PageLayout
+  title={`Services | ${SITE_TITLE}`}
+  description="Full-stack software engineering consulting: backend, frontend, DevOps, architecture, and technical leadership"
+  size="wide"
+>
+  <!-- Hero Section -->
+  <section class="mb-8">
+    <h1 class="text-4xl md:text-5xl mb-6">Services</h1>
+    <p class="text-xl text-gray mb-4">
+      I design, build, and scale modern digital products — end to end.
+    </p>
+    <p class="text-gray-dark">
+      With 25+ years of professional experience, I work as a full-stack software
+      engineering consultant through my company, <strong class="text-black"
+        >Tricky Click</strong
+      >. I specialise in coming into messy environments, finding clarity fast,
+      and delivering results without drama.
+    </p>
+  </section>
 
-        <!-- Services -->
-        <section class="mb-16">
-          <h2 class="text-2xl pb-8 flex items-center gap-3">
-            <Tool size={28} class="text-[#6FA4AF]" />
-            What I Do
-          </h2>
-          <div class="grid md:grid-cols-2 gap-6 overflow-hidden">
-            {
-              services.map((service) => (
-                <div class="p-4 sm:p-6 border border-gray-light rounded-xl hover:border-accent transition-colors overflow-hidden min-w-0">
-                  <div class="flex items-start gap-3 sm:gap-4">
-                    <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      {service.icon === "server" && (
-                        <Server size={20} class="text-accent" />
-                      )}
-                      {service.icon === "layout" && (
-                        <Layout size={20} class="text-accent" />
-                      )}
-                      {service.icon === "git-branch" && (
-                        <GitBranch size={20} class="text-accent" />
-                      )}
-                      {service.icon === "cloud" && (
-                        <Cloud size={20} class="text-accent" />
-                      )}
-                      {service.icon === "users" && (
-                        <Users size={20} class="text-accent" />
-                      )}
-                    </div>
-                    <div class="min-w-0">
-                      <h3 class="text-lg m-0 mb-2 !text-[#6FA4AF]">
-                        {service.title}
-                      </h3>
-                      <p class="text-gray-dark text-sm m-0">
-                        {service.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))
-            }
+  <!-- Services -->
+  <section class="mb-16">
+    <h2 class="text-2xl pb-8 flex items-center gap-3">
+      <Tool size={28} class="text-[#6FA4AF]" />
+      What I Do
+    </h2>
+    <div class="grid md:grid-cols-2 gap-6 overflow-hidden">
+      {
+        services.map((service) => (
+          <div class="p-4 sm:p-6 border border-gray-light rounded-xl hover:border-accent transition-colors overflow-hidden min-w-0">
+            <div class="flex items-start gap-3 sm:gap-4">
+              <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                {service.icon === "server" && (
+                  <Server size={20} class="text-accent" />
+                )}
+                {service.icon === "layout" && (
+                  <Layout size={20} class="text-accent" />
+                )}
+                {service.icon === "git-branch" && (
+                  <GitBranch size={20} class="text-accent" />
+                )}
+                {service.icon === "cloud" && (
+                  <Cloud size={20} class="text-accent" />
+                )}
+                {service.icon === "users" && (
+                  <Users size={20} class="text-accent" />
+                )}
+              </div>
+              <div class="min-w-0">
+                <h3 class="text-lg m-0 mb-2 !text-[#6FA4AF]">
+                  {service.title}
+                </h3>
+                <p class="text-gray-dark text-sm m-0">{service.description}</p>
+              </div>
+            </div>
           </div>
-        </section>
-
-        <!-- Why Hire Me -->
-        <section class="mb-16">
-          <h2 class="text-2xl pb-12 flex items-center gap-3">
-            <Star size={28} class="text-[#B8C4A9]" />
-            Why Work With Me
-          </h2>
-          <div class="grid md:grid-cols-2 gap-8">
-            {
-              reasons.map((reason) => (
-                <div>
-                  <h3 class="text-lg m-0 mb-2 !text-[#B8C4A9] underline decoration-2 underline-offset-4 decoration-[#B8C4A9]/30">
-                    {reason.title}
-                  </h3>
-                  <p class="text-gray-dark m-0">{reason.description}</p>
-                </div>
-              ))
-            }
-          </div>
-        </section>
-
-        <!-- Trusted By -->
-        <section class="mb-16">
-          <h2 class="text-2xl mb-6 flex items-center gap-3">
-            <Shield size={28} class="text-accent" />
-            Trusted By
-          </h2>
-          <p class="text-gray-dark mb-6">
-            I've consistently been hired by companies that expect senior,
-            independent, high-calibre work:
-          </p>
-          <div class="flex flex-wrap gap-4">
-            {
-              clients.map((client) => (
-                <span class="px-4 py-2 bg-gray-light rounded-lg text-gray-dark">
-                  {client}
-                </span>
-              ))
-            }
-          </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="text-center py-12 border-t border-gray-light">
-          <p class="text-xl text-gray mb-2">Ready to discuss your project?</p>
-          <p class="text-gray-dark mb-6">
-            I'm available for contract engagements and consulting work.
-          </p>
-          <Button
-            href="mailto:hi@mifkata.com"
-            class="px-6 py-3"
-            variant="inverse"
-          >
-            Get in Touch
-          </Button>
-        </section>
-      </main>
-      <Footer />
+        ))
+      }
     </div>
-  </body>
-</html>
+  </section>
+
+  <!-- Why Hire Me -->
+  <section class="mb-16">
+    <h2 class="text-2xl pb-12 flex items-center gap-3">
+      <Star size={28} class="text-[#B8C4A9]" />
+      Why Work With Me
+    </h2>
+    <div class="grid md:grid-cols-2 gap-8">
+      {
+        reasons.map((reason) => (
+          <div>
+            <h3 class="text-lg m-0 mb-2 !text-[#B8C4A9] underline decoration-2 underline-offset-4 decoration-[#B8C4A9]/30">
+              {reason.title}
+            </h3>
+            <p class="text-gray-dark m-0">{reason.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Trusted By -->
+  <section class="mb-16">
+    <h2 class="text-2xl mb-6 flex items-center gap-3">
+      <Shield size={28} class="text-accent" />
+      Trusted By
+    </h2>
+    <p class="text-gray-dark mb-6">
+      I've consistently been hired by companies that expect senior, independent,
+      high-calibre work:
+    </p>
+    <div class="flex flex-wrap gap-4">
+      {
+        clients.map((client) => (
+          <span class="px-4 py-2 bg-gray-light rounded-lg text-gray-dark">
+            {client}
+          </span>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="text-center py-12 border-t border-gray-light">
+    <p class="text-xl text-gray mb-2">Ready to discuss your project?</p>
+    <p class="text-gray-dark mb-6">
+      I'm available for contract engagements and consulting work.
+    </p>
+    <Button href="mailto:hi@mifkata.com" class="px-6 py-3" variant="inverse">
+      Get in Touch
+    </Button>
+  </section>
+</PageLayout>
