@@ -3,21 +3,29 @@
     "title": "Artificial Intelligence",
     "description": "Posts about AI, machine learning, LLMs, and using them for creative purposes."
   },
-  "productivity": {
-    "title": "Productivity",
-    "description": "Tips and insights on improving workflow and getting things done."
+  "astro": {
+    "title": "Astro",
+    "description": "Posts about the Astro web framework and static site generation."
+  },
+  "claude": {
+    "title": "Claude",
+    "description": "Posts about Anthropic's Claude AI assistant and Claude Code."
+  },
+  "cloudflare": {
+    "title": "Cloudflare",
+    "description": "Content about Cloudflare services, Pages, Workers, and edge computing."
   },
   "coding": {
     "title": "Coding",
     "description": "General programming topics, best practices, and development techniques."
   },
-  "astro": {
-    "title": "Astro",
-    "description": "Posts about the Astro web framework and static site generation."
+  "devcontainers": {
+    "title": "Dev Containers",
+    "description": "Development containers, VS Code remote development, and containerized dev environments."
   },
-  "cloudflare": {
-    "title": "Cloudflare",
-    "description": "Content about Cloudflare services, Pages, Workers, and edge computing."
+  "productivity": {
+    "title": "Productivity",
+    "description": "Tips and insights on improving workflow and getting things done."
   },
   "terraform": {
     "title": "Terraform",
