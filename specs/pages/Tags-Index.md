@@ -4,21 +4,10 @@
 
 URL: `/tags`
 
-## Data
+Layout: PageLayout (size="default")
 
-- `posts`: all blog posts
-- `tagCounts`: tag → count map from posts
-- `tags`: sorted [tag, count] entries
-- `tagsInfo`: from `@/data/tags.json` (title, description per tag)
+Data: `posts`=all, `tagCounts`=tag→count map, `tags`=sorted entries, `tagsInfo`=from tags.json
 
-## Layout
+Content: Title (h1), tag list with counts and optional descriptions
 
-Header → Container → Title → Tag List → Footer
-
-## Content
-
-List of tags with count and optional description from tags.json
-
-## Components
-
-Uses: BaseHead, Header, Footer, Container, Tag
+Uses: PageLayout, Tag

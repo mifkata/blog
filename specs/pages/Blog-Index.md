@@ -4,24 +4,14 @@
 
 URL: `/blog`
 
-## Data
+Layout: PageLayout (size="wide")
 
-- `posts`: all blog posts sorted by date (desc)
-- `featuredPost`: posts[0]
-- `otherPosts`: posts.slice(1)
+Data: `posts`=all sorted desc, `featuredPost`=posts[0], `otherPosts`=posts.slice(1)
 
-## Layout
+Sections:
 
-Header → Page Header → Featured Post → All Posts → Footer
+- Page Header: title, description
+- Featured Post: 2-col grid, hero image, title, synopsis, date, tags
+- All Posts: ArticleCard list
 
-## Sections
-
-**Page Header**: title, description
-
-**Featured Post**: 2-col grid (md+), hero image, title, synopsis, date, tags
-
-**All Posts**: vertical list of ArticleCard components
-
-## Components
-
-Uses: BaseHead, Header, Footer, ArticleCard, FormattedDate, Synopsis, Tag
+Uses: PageLayout, ArticleCard, FormattedDate, Synopsis, Tag

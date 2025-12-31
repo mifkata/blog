@@ -4,28 +4,16 @@
 
 URL: `/services`
 
-## Data
+Layout: PageLayout (size="wide")
 
-- `services`: 5 service offerings with icon/title/description
-- `reasons`: 6 reasons to hire
-- `clients`: notable client names
+Data: `services`=5 offerings, `reasons`=6 why-hire items, `clients`=notable names
 
-## Layout
+Sections:
 
-Header → Hero → Services Grid → Why Work With Me → Trusted By → CTA → Footer
+- Hero: title, tagline, description
+- Services: 2-col grid of service cards with icons
+- Why Work With Me: 2-col grid of reason cards
+- Trusted By: client name tags
+- CTA: "Get in Touch" button
 
-## Sections
-
-**Hero**: title, tagline, description
-
-**Services**: 2-col grid of service cards with icons
-
-**Why Work With Me**: 2-col grid of reason cards
-
-**Trusted By**: client name tags
-
-**CTA**: "Get in Touch" button
-
-## Components
-
-Uses: BaseHead, Header, Footer, Button, icons (Cloud, GitBranch, Layout, Server, Shield, Star, Tool, Users)
+Uses: PageLayout, Button, icons (Cloud, GitBranch, Layout, Server, Shield, Star, Tool, Users)
