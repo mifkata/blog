@@ -4,28 +4,16 @@
 
 URL: `/resume`
 
-## Data
+Layout: PageLayout (size="wide")
 
-- `skills`: categorized tech skills (backend, frontend, databases, cloud, testing, tools)
-- `experience`: job history with roles, highlights, tech stack
-- `earlyCareer`: 2000-2010 summary
+Data: `skills`=categorized tech skills, `experience`=job history with roles, `earlyCareer`=2000-2010 summary
 
-## Layout
+Sections:
 
-Header → Hero → Skills → Experience Timeline → CTA → Footer
+- Hero: title, summary text
+- Skills: 3-col grid of categories with tags
+- Experience: vertical timeline with dots, job cards, nested client roles
+- Early Career: summary card with company tags
+- CTA: "Get in Touch" button
 
-## Sections
-
-**Hero**: title, summary text
-
-**Skills**: 3-col grid of skill categories with tags
-
-**Experience**: vertical timeline with dots, job cards with nested client roles
-
-**Early Career**: summary card with company tags
-
-**CTA**: "Get in Touch" button
-
-## Components
-
-Uses: BaseHead, Header, Footer, Button, icons (Briefcase, Check, Cloud, Code, Database, Layout, Server, Tool)
+Uses: PageLayout, Button, icons (Briefcase, Check, Cloud, Code, Database, Layout, Server, Tool)

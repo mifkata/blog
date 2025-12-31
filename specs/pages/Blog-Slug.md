@@ -4,21 +4,10 @@
 
 URL: `/blog/{slug}` (dynamic, catch-all)
 
-## Data
+Layout: BlogPostLayout
 
-- `post`: current post from collection
-- `allPosts`: all posts (for related posts)
-- `headings`: h2/h3 from content (for TOC)
-- `relatedPosts`: posts with matching tags, sorted by match count, max 3
+Static Paths: generates page for each blog post using post.id as slug
 
-## Static Paths
+Data: `post`=current post, `allPosts`=all posts, `headings`=h2/h3 for TOC, `relatedPosts`=matching tags max 3
 
-Generates page for each blog post using post.id as slug
-
-## Layout
-
-Uses BlogPost layout with Content slot
-
-## Components
-
-Uses: BlogPost (layout)
+Uses: BlogPostLayout

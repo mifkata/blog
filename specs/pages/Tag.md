@@ -4,22 +4,12 @@
 
 URL: `/tags/{tag}` (dynamic)
 
-## Data
+Layout: PageLayout (size="default")
 
-- `tag`: from params
-- `posts`: posts with tag, sorted by date (desc)
-- `tagInfo`: from `@/data/tags.json` (title, description)
-- `pageTitle`: tagInfo.title or tag
-- `pageDescription`: tagInfo.description or default
+Static Paths: generates page for each unique tag from blog posts
 
-## Static Paths
+Data: `tag`=from params, `posts`=with tag sorted desc, `tagInfo`=from tags.json, `pageTitle`=tagInfo.title||tag, `pageDescription`=tagInfo.description||default
 
-Generates page for each unique tag from blog posts
+Content: Title (h1), optional description, ArticleCard list
 
-## Layout
-
-Header → Container → Title + Description → Post List → Footer
-
-## Components
-
-Uses: BaseHead, Header, Footer, Container, ArticleCard
+Uses: PageLayout, ArticleCard
