@@ -322,6 +322,41 @@ to the [notifier.sh script](#notifiersh) on port `4545`.
 
 ## Running devcontainers locally
 
+### Basic docker commands
+
+You would start your `devcontainer` like a standard **docker** container using
+`docker compose`. Here's an excerpt from this blog's `package.json` and the `pnpm`
+commands that I'm using at the time of writing this article.
+
+```json
+{
+  "devcontainer": "docker compose -f .devcontainer/docker-compose.yml",
+  "devcontainer:build": "pnpm devcontainer build",
+  "devcontainer:rebuild": "pnpm devcontainer build --no-cache",
+  "devcontainer:exec": "pnpm devcontainer:up && pnpm devcontainer exec devcontainer",
+  "devcontainer:up": "pnpm devcontainer up -d && pnpm devcontainer:notifier:up",
+  "devcontainer:notifier:up": "pgrep -f 'socat TCP-LISTEN:4545' >/dev/null || (nohup socat TCP-LISTEN:4545,reuseaddr,fork EXEC:.devcontainer/notifier.sh >/tmp/hostcmd.log 2>&1 & echo '🔔 Notifier started.')",
+  "devcontainer:notifier:stop": "pkill -f 'socat TCP-LISTEN:4545' && echo '🔕 Notifier stopped.'",
+  "devcontainer:shell": "pnpm devcontainer:exec zsh",
+  "devcontainer:stop": "pnpm devcontainer:notifier:stop; pnpm devcontainer down",
+  "devcontainer:claude": "pnpm devcontainer:exec sh -lc 'claude -c || claude'"
+}
+```
+
+#### Worth noting
+
+Maybe you'd like this working differently, however I found the following mods quite useful:
+
+- `devcontainer:exec` also lifts the `devcontainer` for ease of use.
+- `devcontainer:shell` command starts `zsh`. From here I run tests/builds/dev or directly
+  start `claude`, if I want to.
+- `devcontainer:claude` continues the current `Claude` session or starts a fresh `claude`,
+  if no previous conversation is found, as the agent exits, if there's no previous conversation.
+- `devcontainer:notifier:*` commands are super lengthy and an excellent script
+  candidate, I keep them like that only in order to copy/paste commands across projects.
+
+### Rule of thumb
+
 It's worth mentioning, that my containers have different setup from my local Mac
 environment. This causes `pnpm install` ran through the container and locally
 to behave differently.
@@ -332,8 +367,6 @@ This is where **Claude** would be running builds and tests, so don't want to reb
 when you run tests on your local machine, simply run them inside the `devcontainer`, same goes
 for starting applications for local `dev` and possibly `CI`.
 
-### Rule of thumb
-
 - Run `Claude Code` from the `devcontainer`
 - Run your applications from the `devcontainer` when possible. Forward relevant
   application ports and serve from `0.0.0.0` inside the **container**, to access it on
@@ -341,7 +374,7 @@ for starting applications for local `dev` and possibly `CI`.
 
   **NOTE**: This is required, especially for people coding on `arm` with containers running
   `x86`. At the same time, by simply using different library versions on host and container
-  (e.g. `npm`, `mix`, etc.). This way both you and the agent can run/build/test the same code.
+  (e.g. `pnpm`, `mix`, etc.). This way both you and the agent can run/build/test the same code.
 
 - Commit code from the host, do not expose `Claude` to your repository. You'll be
   effectively sharing the `ssh` key that you're using for `git` with the agent.
