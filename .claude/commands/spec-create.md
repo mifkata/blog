@@ -6,4 +6,4 @@ Create spec at `specs/$ARGUMENTS.md`
    - components: props; visual behavior (css); business rules
    - pages: layout; data; interactions
 4. Confirm with user
-5. Format spec to with minimal format & token size; AI friendly
+5. /spec-compact
