@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
-import FormattedDate from "./FormattedDate.astro";
-import Synopsis from "./Synopsis.astro";
-import Tag from "./Tag.astro";
+import FormattedDate from "@/components/FormattedDate/FormattedDate.astro";
+import Synopsis from "@/components/Synopsis/Synopsis.astro";
+import Tag from "@/components/Tag/Tag.astro";
 
 interface Props {
   post: CollectionEntry<"blog">;
