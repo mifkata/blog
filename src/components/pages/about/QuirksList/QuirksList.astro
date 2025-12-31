@@ -1,0 +1,22 @@
+---
+import Circle from "@/components/ui/icons/Circle.astro";
+
+interface Props {
+  quirks: string[];
+}
+
+const { quirks } = Astro.props;
+---
+
+<ul class="space-y-3">
+  {
+    quirks.map((quirk) => (
+      <li class="flex items-start gap-3 text-gray-dark">
+        <span class="text-[#D97D55] mt-1.5">
+          <Circle size={12} />
+        </span>
+        {quirk}
+      </li>
+    ))
+  }
+</ul>

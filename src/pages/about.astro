@@ -1,15 +1,16 @@
 ---
-import { Image } from "astro:assets";
 import Button from "@/components/ui/Button/Button.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
-import Circle from "@/components/ui/icons/Circle.astro";
+import AboutHero from "@/components/pages/about/AboutHero/AboutHero.astro";
+import AboutSection from "@/components/pages/about/AboutSection/AboutSection.astro";
+import QuirksList from "@/components/pages/about/QuirksList/QuirksList.astro";
+import ContactCTA from "@/components/pages/common/ContactCTA/ContactCTA.astro";
 import Clock from "@/components/ui/icons/Clock.astro";
 import Heart from "@/components/ui/icons/Heart.astro";
 import Info from "@/components/ui/icons/Info.astro";
 import Star from "@/components/ui/icons/Star.astro";
 import Users from "@/components/ui/icons/Users.astro";
 import { SITE_TITLE } from "@/consts";
-import avatar from "@/assets/avatar.jpeg";
 
 const quirks = [
   "I read multiple books at the same time and finish them unpredictably.",
@@ -23,16 +24,6 @@ const quirks = [
   "I cook by instinct, not recipe.",
   "I count the number 19 with my fingers constantly, for no good reason.",
 ];
-
-const lifeOutsideWork = [
-  { icon: "book", label: "Books" },
-  { icon: "bike", label: "Motorcycles" },
-  { icon: "plane", label: "Travel" },
-  { icon: "cooking", label: "Cooking" },
-  { icon: "music", label: "Music" },
-  { icon: "heart", label: "My daughter" },
-  { icon: "dog", label: "My dog" },
-];
 ---
 
 <PageLayout
@@ -40,49 +31,10 @@ const lifeOutsideWork = [
   description="Born in Varna, Bulgaria. Started working at 17. Still comparing myself to 'real' engineers after 25+ years."
   size="wide"
 >
-  <!-- Hero Section -->
-  <section class="mb-12">
-    <div class="flex flex-col md:flex-row gap-8 md:items-start">
-      <div
-        class="flex-shrink-0 text-center order-2 md:order-1 flex flex-col items-center"
-      >
-        <div
-          class="w-72 h-72 rounded-full overflow-hidden border-4 border-gray-light"
-        >
-          <Image
-            src={avatar}
-            alt="Andriyan Ivanov"
-            width={160}
-            height={160}
-            class="w-full h-full object-cover mt-[-40px]"
-          />
-        </div>
-        <p class="text-xs text-gray mt-2">Rajasthan, India · Nov 2024</p>
-      </div>
-      <div class="order-1 md:order-2">
-        <h1 class="text-4xl md:text-5xl mb-4">About Me</h1>
-        <p class="text-xl text-gray mb-4">
-          Born in Varna, Bulgaria in 1983. Started working when most people were
-          still figuring out what to study.
-        </p>
-        <p class="text-gray-dark">
-          By 19 I'd moved to Sofia alone, broke, and stubborn enough to think
-          that was a good idea. I spent my teenage years ignoring school,
-          obsessed with computers, video games, and the idea of becoming a
-          hacker. When I got my first PC in '98, I thought I'd be a designer,
-          but life shoved me into programming — PHP, websites, anything that
-          paid rent. That's how it started.
-        </p>
-      </div>
-    </div>
-  </section>
+  <AboutHero />
 
-  <!-- Life Outside Work -->
-  <section class="mb-12">
-    <h2 class="text-2xl mb-6 flex items-center gap-3">
-      <Clock size={24} class="text-[#6FA4AF]" />
-      Outside of Work
-    </h2>
+  <AboutSection title="Outside of Work">
+    <Clock size={24} class="text-[#6FA4AF]" slot="icon" />
     <p class="text-gray-dark mb-6">
       My world is made of <strong class="text-black">books</strong>, <strong
         class="text-black">motorcycles</strong
@@ -98,14 +50,10 @@ const lifeOutsideWork = [
       still compare myself to "real" engineers and feel like I'm far behind.
       Coffee in the morning is non-negotiable. Everything else can fall apart.
     </p>
-  </section>
+  </AboutSection>
 
-  <!-- Values -->
-  <section class="mb-12">
-    <h2 class="text-2xl mb-6 flex items-center gap-3">
-      <Heart size={24} class="text-[#B8C4A9]" />
-      Values
-    </h2>
+  <AboutSection title="Values">
+    <Heart size={24} class="text-[#B8C4A9]" slot="icon" />
     <p class="text-gray-dark mb-4">
       I value <strong class="text-black">intelligence</strong> and <strong
         class="text-black">kindness</strong
@@ -115,14 +63,10 @@ const lifeOutsideWork = [
       > and <strong class="text-black">love</strong> matter more than anything, and
       most of my decision-making is a strange equilibrium between passion and thought.
     </p>
-  </section>
+  </AboutSection>
 
-  <!-- How People See Me -->
-  <section class="mb-12">
-    <h2 class="text-2xl mb-6 flex items-center gap-3">
-      <Users size={24} class="text-accent" />
-      How People See Me
-    </h2>
+  <AboutSection title="How People See Me">
+    <Users size={24} class="text-accent" slot="icon" />
     <p class="text-gray-dark mb-4">
       People tend to misread me. I come off as strange to the average person, so
       I gravitate toward creatives and oddballs who find me normal. My humor is
@@ -134,57 +78,29 @@ const lifeOutsideWork = [
       they discover I'm different in a way they actually enjoy. I make friends
       easily, but I keep my circle small on purpose.
     </p>
-  </section>
+  </AboutSection>
 
-  <!-- Quirks -->
-  <section class="mb-12">
-    <h2 class="text-2xl mb-6 flex items-center gap-3">
-      <Star size={24} class="text-[#D97D55]" />
-      Quirks
-    </h2>
+  <AboutSection title="Quirks">
+    <Star size={24} class="text-[#D97D55]" slot="icon" />
     <p class="text-gray mb-4 text-sm uppercase tracking-wider">
       Because everyone has them — mine are just louder
     </p>
-    <ul class="space-y-3">
-      {
-        quirks.map((quirk) => (
-          <li class="flex items-start gap-3 text-gray-dark">
-            <span class="text-[#D97D55] mt-1.5">
-              <Circle size={12} />
-            </span>
-            {quirk}
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+    <QuirksList quirks={quirks} />
+  </AboutSection>
 
-  <!-- Current Focus -->
-  <section class="mb-12">
-    <h2 class="text-2xl mb-6 flex items-center gap-3">
-      <Info size={24} class="text-[#6FA4AF]" />
-      Right Now
-    </h2>
+  <AboutSection title="Right Now">
+    <Info size={24} class="text-[#6FA4AF]" slot="icon" />
     <p class="text-gray-dark">
       I'm learning languages, going to the gym, and pushing myself through
       university because I want to teach someday. Maybe that's my way of giving
       back — or maybe I just like making things harder than they need to be.
     </p>
-  </section>
+  </AboutSection>
 
-  <!-- CTA -->
-  <section class="text-center py-12 border-t border-gray-light">
-    <p class="text-xl text-gray mb-2">Want to work together?</p>
-    <p class="text-gray-dark mb-6">
-      Check out my <a
-        href="/services"
-        class="text-accent hover:text-accent-dark">services</a
-      > or <a href="/resume" class="text-accent hover:text-accent-dark"
-        >resume</a
-      >.
-    </p>
-    <Button href="mailto:hi@mifkata.com" class="px-6 py-3" variant="inverse">
-      Get in Touch
-    </Button>
-  </section>
+  <ContactCTA headline="Want to work together?">
+    Check out my <a href="/services" class="text-accent hover:text-accent-dark"
+      >services</a
+    > or <a href="/resume" class="text-accent hover:text-accent-dark">resume</a
+    >.
+  </ContactCTA>
 </PageLayout>
