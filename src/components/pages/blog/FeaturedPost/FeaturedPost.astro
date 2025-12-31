@@ -12,21 +12,8 @@ interface Props {
 const { post } = Astro.props;
 ---
 
-<section class="mb-16 group">
-  <div class="grid md:grid-cols-2 gap-8 items-center">
-    {
-      post.data.heroImage && (
-        <a href={`/blog/${post.id}/`}>
-          <Image
-            width={720}
-            height={400}
-            src={post.data.heroImage}
-            alt=""
-            class="rounded-xl shadow-lg group-hover:shadow-xl transition-shadow"
-          />
-        </a>
-      )
-    }
+<section class="mb-16 py-8 border-t border-b border-gray-light group">
+  <div class="grid md:grid-cols-2 gap-8 items-start">
     <div>
       <div class="text-sm text-accent uppercase tracking-wider mb-2">
         Latest Post
@@ -38,10 +25,25 @@ const { post } = Astro.props;
           {post.data.title}
         </h2>
       </a>
-      <p class="text-gray mb-4">
-        <Synopsis text={post.data.synopsis || post.data.description} />
-      </p>
-      <div class="flex items-center gap-4 text-sm text-gray">
+      {
+        post.data.heroImage && (
+          <a href={`/blog/${post.id}/`} class="block">
+            <Image
+              width={720}
+              height={400}
+              src={post.data.heroImage}
+              alt=""
+              class="rounded-xl shadow-lg group-hover:shadow-xl group-hover:opacity-80 group-hover:transition-opacity transition-shadow"
+            />
+          </a>
+        )
+      }
+    </div>
+    <div>
+      <div class="text-sm text-gray uppercase tracking-wider mb-2">
+        Published at
+      </div>
+      <div class="flex items-center gap-4 text-sm text-gray mb-4">
         <FormattedDate date={post.data.pubDate} />
         {
           post.data.tags && (
@@ -53,6 +55,15 @@ const { post } = Astro.props;
           )
         }
       </div>
+      <p class="text-gray mb-4">
+        <Synopsis text={post.data.synopsis || post.data.description} />
+      </p>
+      <a
+        href={`/blog/${post.id}/`}
+        class="text-accent hover:text-accent-dark no-underline text-sm"
+      >
+        Read more →
+      </a>
     </div>
   </div>
 </section>
