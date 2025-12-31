@@ -1,0 +1,52 @@
+---
+import Check from "@/components/ui/icons/Check.astro";
+import Cloud from "@/components/ui/icons/Cloud.astro";
+import Database from "@/components/ui/icons/Database.astro";
+import Layout from "@/components/ui/icons/Layout.astro";
+import Server from "@/components/ui/icons/Server.astro";
+import Tool from "@/components/ui/icons/Tool.astro";
+
+interface Skill {
+  name: string;
+  icon: string;
+  items: string[];
+}
+
+interface Props {
+  skills: Skill[];
+}
+
+const { skills } = Astro.props;
+
+const iconMap: Record<string, typeof Server> = {
+  server: Server,
+  layout: Layout,
+  database: Database,
+  cloud: Cloud,
+  check: Check,
+  tool: Tool,
+};
+---
+
+<div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+  {
+    skills.map((skill) => {
+      const Icon = iconMap[skill.icon];
+      return (
+        <div>
+          <span class="text-sm text-gray uppercase tracking-wider mb-3 font-normal flex items-center gap-2">
+            {Icon && <Icon size={16} class="text-[#6FA4AF]" />}
+            {skill.name}
+          </span>
+          <div class="flex flex-wrap gap-2">
+            {skill.items.map((item) => (
+              <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-sm">
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      );
+    })
+  }
+</div>

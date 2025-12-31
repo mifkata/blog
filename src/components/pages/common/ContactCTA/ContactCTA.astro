@@ -1,0 +1,28 @@
+---
+import Button from "@/components/ui/Button/Button.astro";
+
+interface Props {
+  headline?: string;
+  description?: string;
+  buttonText?: string;
+  buttonHref?: string;
+}
+
+const {
+  headline = "Want to work together?",
+  description = "I'm available for contract engagements and consulting work.",
+  buttonText = "Get in Touch",
+  buttonHref = "mailto:hi@mifkata.com",
+} = Astro.props;
+---
+
+<section class="text-center py-12 border-t border-gray-light">
+  <p class="text-xl text-gray mb-2">{headline}</p>
+  <p class="text-gray-dark mb-6">
+    {description}
+    <slot />
+  </p>
+  <Button href={buttonHref} class="px-6 py-3" variant="inverse">
+    {buttonText}
+  </Button>
+</section>

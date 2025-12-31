@@ -1,0 +1,13 @@
+---
+interface Props {
+  title: string;
+  class?: string;
+}
+
+const { title, class: className } = Astro.props;
+---
+
+<h2 class:list={["text-2xl mb-6 flex items-center gap-3", className]}>
+  <slot name="icon" />
+  {title}
+</h2>

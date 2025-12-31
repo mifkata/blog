@@ -1,0 +1,30 @@
+---
+interface Props {
+  period: string;
+  description: string;
+  companies: string[];
+}
+
+const { period, description, companies } = Astro.props;
+---
+
+<div class="relative pl-6 border-l-2 border-gray-light">
+  <div
+    class="absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2 bg-white border-gray-light"
+  >
+  </div>
+  <div class="mb-4">
+    <h3 class="text-xl m-0">Early Career</h3>
+    <p class="text-gray text-sm m-0">{period}</p>
+  </div>
+  <p class="text-gray-dark mb-3">{description}</p>
+  <div class="flex flex-wrap gap-2">
+    {
+      companies.map((company) => (
+        <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-sm">
+          {company}
+        </span>
+      ))
+    }
+  </div>
+</div>

@@ -1,0 +1,86 @@
+---
+interface Role {
+  client: string;
+  period: string;
+  highlights: string[];
+  tech: string;
+}
+
+interface Job {
+  title: string;
+  company: string;
+  location: string;
+  dates: string;
+  current: boolean;
+  description: string;
+  roles?: Role[];
+  highlights?: string[];
+  tech?: string;
+}
+
+interface Props {
+  experience: Job[];
+}
+
+const { experience } = Astro.props;
+---
+
+<div class="space-y-10">
+  {
+    experience.map((job) => (
+      <div class="relative pl-6 border-l-2 border-gray-light">
+        <div
+          class:list={[
+            "absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2",
+            job.current
+              ? "bg-accent border-accent"
+              : "bg-white border-gray-light",
+          ]}
+        />
+        <div class="mb-4">
+          <h3 class="text-xl m-0">{job.title}</h3>
+          <p class="text-accent m-0 font-medium">{job.company}</p>
+          <p class="text-gray text-sm m-0">
+            {job.location} · {job.dates}
+          </p>
+        </div>
+        <p class="text-gray-dark mb-4">{job.description}</p>
+
+        {job.roles && (
+          <div class="space-y-6">
+            {job.roles.map((role) => (
+              <div class="bg-gray-light/30 rounded-lg p-4">
+                <div class="flex flex-wrap items-baseline gap-2 mb-2">
+                  <h4 class="text-base m-0 !text-[#6FA4AF]">{role.client}</h4>
+                  <span class="text-gray text-sm">{role.period}</span>
+                </div>
+                <ul class="list-disc list-outside ml-4 text-gray-dark text-sm space-y-1 mb-3">
+                  {role.highlights.map((h) => (
+                    <li>{h}</li>
+                  ))}
+                </ul>
+                <p class="text-xs text-gray m-0">
+                  <span class="font-medium">Tech:</span> {role.tech}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {job.highlights && (
+          <ul class="list-disc list-outside ml-4 text-gray-dark space-y-1 mb-3">
+            {job.highlights.map((h) => (
+              <li>{h}</li>
+            ))}
+          </ul>
+        )}
+
+        {job.tech && !job.roles && (
+          <p class="text-sm text-gray m-0">
+            <span class="font-medium">Tech:</span> {job.tech}
+          </p>
+        )}
+      </div>
+    ))
+  }
+</div>
