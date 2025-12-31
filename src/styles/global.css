@@ -42,7 +42,6 @@ html {
 body {
   font-family: "Kedebideri", sans-serif;
   @apply text-gray-dark text-lg leading-relaxed break-words;
-  background: linear-gradient(to right, #f4e9d7 25%, #666 50%, #f4e9d7 75%);
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -157,6 +156,7 @@ pre {
 
 pre > code {
   all: unset;
+  @apply text-sm;
 }
 
 blockquote {
