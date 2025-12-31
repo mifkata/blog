@@ -1,165 +1,25 @@
 ---
 import { getCollection } from "astro:content";
-import Button from "@/components/ui/Button/Button.astro";
 import CurrentlyReading from "@/components/pages/home/CurrentlyReading/CurrentlyReading.astro";
-import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import FeaturedShowcase from "@/components/pages/home/FeaturedShowcase/FeaturedShowcase.astro";
+import HomeHero from "@/components/pages/home/HomeHero/HomeHero.astro";
+import HomeTerminal from "@/components/pages/home/HomeTerminal/HomeTerminal.astro";
+import RecentPosts from "@/components/pages/home/RecentPosts/RecentPosts.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
-import heroBackground from "@/assets/home-hero-bg.png";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const latestPost = posts[0];
+const popularPost = posts[1];
 const recentPosts = posts.slice(0, 3);
 ---
 
 <PageLayout title={SITE_TITLE} description={SITE_DESCRIPTION} size="full">
-  <!-- Hero Section -->
-  <section
-    class="relative px-14 py-12 bg-cover bg-center bg-no-repeat"
-    style={`background-image: url(${heroBackground.src});`}
-  >
-    <div class="absolute inset-0 bg-white/30"></div>
-    <div class="relative max-w-[960px] mx-auto">
-      <div class="max-w-[720px]">
-        <p class="text-lg mb-2">Hello, my name is</p>
-        <h1 class="text-5xl md:text-6xl mb-4">Andriyan Ivanov.</h1>
-        <h2 class="text-3xl md:text-4xl text-gray mb-6">I make software.</h2>
-        <p class="text-xl text-gray-dark mb-8 max-w-[560px]">
-          Software Engineer passionate about efficient scalable system design
-          and sharing knowledge. Welcome to my personal website where I write
-          about tech, AI and coding.
-        </p>
-        <div class="flex flex-wrap gap-4">
-          <Button href="/blog" variant="inverse" class="px-6 py-3">
-            Read my thoughts
-          </Button>
-          <Button href="/about" variant="ghost" class="px-6 py-3">
-            Learn more about me
-          </Button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Terminal Section -->
-  <section class="max-w-[960px] mx-auto px-6 pb-12 mt-8">
-    <div class="bg-gray-dark text-gray-light p-4 rounded-lg font-mono text-sm">
-      <span class="text-accent">$</span>
-      <span class="text-white ml-2">cat current_focus.txt</span>
-      <div class="mt-2 text-gray-light opacity-80">
-        {">"} Exploring vibe coding with AI, mastering Elixir and designing distributed
-        systems.
-      </div>
-    </div>
-  </section>
-  <!-- Featured Showcase Section -->
-  <section class="max-w-[960px] mx-auto px-6 pb-12">
-    <div class="flex items-center gap-3 mb-8">
-      <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
-        Featured Showcase
-      </h3>
-      <div class="flex-1 h-px bg-gray-light"></div>
-    </div>
-    <div class="grid md:grid-cols-3 gap-6">
-      <!-- Latest Post Card -->
-      {
-        latestPost && (
-          <a
-            href={`/blog/${latestPost.id}/`}
-            class="group block p-6 bg-white border border-gray-light rounded-lg hover:border-accent hover:shadow-lg transition-all no-underline"
-          >
-            <div class="text-sm text-gray mb-2 uppercase tracking-wider">
-              Latest Post
-            </div>
-            <h4 class="text-xl m-0 mb-2 text-black group-hover:text-accent transition-colors">
-              {latestPost.data.title}
-            </h4>
-            <p class="text-gray m-0 text-sm">
-              <FormattedDate date={latestPost.data.pubDate} />
-            </p>
-          </a>
-        )
-      }
-
-      <!-- Popular Post Card -->
-      {
-        posts[1] && (
-          <a
-            href={`/blog/${posts[1].id}/`}
-            class="group block p-6 bg-white border border-gray-light rounded-lg hover:border-accent hover:shadow-lg transition-all no-underline"
-          >
-            <div class="text-sm text-gray mb-2 uppercase tracking-wider">
-              Popular Post
-            </div>
-            <h4 class="text-xl m-0 mb-2 text-black group-hover:text-accent transition-colors">
-              {posts[1].data.title}
-            </h4>
-            <p class="text-gray m-0 text-sm">
-              <FormattedDate date={posts[1].data.pubDate} />
-            </p>
-          </a>
-        )
-      }
-
-      <!-- About Card -->
-      <a
-        href="/about"
-        class="group block p-6 bg-white border border-gray-light rounded-lg hover:border-accent hover:shadow-lg transition-all no-underline"
-      >
-        <div class="text-sm text-gray mb-2 uppercase tracking-wider">
-          About Me
-        </div>
-        <h4
-          class="text-xl m-0 mb-2 text-black group-hover:text-accent transition-colors"
-        >
-          Learn More
-        </h4>
-        <p class="text-gray m-0 text-sm">
-          Software engineer, father, gamer, motorcycle aficionado and lifelong
-          learner
-        </p>
-      </a>
-    </div>
-  </section>
-
-  <!-- Recent Posts Section -->
-  <section class="max-w-[960px] mx-auto px-6">
-    <div class="flex items-center justify-between mb-8">
-      <div class="flex items-center gap-3">
-        <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
-          Recent Posts
-        </h3>
-        <div class="flex-1 h-px bg-gray-light min-w-[100px]"></div>
-      </div>
-      <a
-        href="/blog"
-        class="text-accent hover:text-accent-dark no-underline text-sm"
-      >
-        View all posts →
-      </a>
-    </div>
-    <ul class="list-none m-0 p-0 space-y-4">
-      {
-        recentPosts.map((post) => (
-          <li class="border-b border-gray-light pb-4 last:border-0">
-            <a
-              href={`/blog/${post.id}/`}
-              class="group flex justify-between items-baseline gap-4 no-underline"
-            >
-              <span class="text-black group-hover:text-accent transition-colors">
-                {post.data.title}
-              </span>
-              <span class="text-gray text-sm shrink-0">
-                <FormattedDate date={post.data.pubDate} />
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
+  <HomeHero />
+  <HomeTerminal />
+  <FeaturedShowcase latestPost={latestPost} popularPost={popularPost} />
+  <RecentPosts posts={recentPosts} />
   <CurrentlyReading />
 </PageLayout>
