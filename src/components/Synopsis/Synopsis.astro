@@ -28,21 +28,10 @@ function parseMarkdown(input: string): string {
     .split(/\n\s*\n/)
     .map((p) => p.trim())
     .filter(Boolean);
-  if (paragraphs.length <= 1) {
-    return parseInlineMarkdown(input.trim());
-  }
   return paragraphs.map((p) => `<p>${parseInlineMarkdown(p)}</p>`).join("");
 }
 
 const html = parseMarkdown(text || "");
-const isMultiParagraph = (text || "").includes("\n\n");
 ---
 
-{
-  html &&
-    (isMultiParagraph ? (
-      <div class={className} set:html={html} />
-    ) : (
-      <span class={className} set:html={html} />
-    ))
-}
+{html && <div class={className} set:html={html} />}
