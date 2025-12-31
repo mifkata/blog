@@ -1,6 +1,6 @@
 # Header
 
-`src/components/Header/Header.astro` - Site header with navigation.
+`src/components/layout/Header/Header.astro` - Site header with navigation.
 
 Props: none
 

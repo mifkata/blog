@@ -1,6 +1,6 @@
 # BaseHead
 
-`src/components/BaseHead/BaseHead.astro` - HTML head with meta tags and assets.
+`src/components/layout/BaseHead/BaseHead.astro` - HTML head with meta tags and assets.
 
 Props: `title: string`, `description: string`, `image?: ImageMetadata` (default: og-default.jpg)
 

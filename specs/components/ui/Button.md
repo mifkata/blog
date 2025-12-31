@@ -1,6 +1,6 @@
 # Button
 
-`src/components/Button/Button.astro` - Clickable action element.
+`src/components/ui/Button/Button.astro` - Clickable action element.
 
 Props: `href?: string` (→`<a>`), `variant?: "normal"|"inverse"|"ghost"` (default: normal), `class?: string`
 

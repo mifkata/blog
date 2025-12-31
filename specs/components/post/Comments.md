@@ -1,6 +1,6 @@
 # Comments
 
-`src/components/Comments/Comments.astro` - Giscus comments integration.
+`src/components/post/Comments/Comments.astro` - Giscus comments integration.
 
 Props: `class?: string`
 

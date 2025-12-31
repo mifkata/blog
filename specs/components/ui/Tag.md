@@ -1,6 +1,6 @@
 # Tag
 
-`src/components/Tag/Tag.astro` - Clickable tag link for categorization.
+`src/components/ui/Tag/Tag.astro` - Clickable tag link for categorization.
 
 Props: `tag: string` (required), `class?: string`, `...HTMLAttributes<"a">`
 

@@ -1,6 +1,6 @@
 # FormattedDate
 
-`src/components/FormattedDate/FormattedDate.astro` - Formatted date display.
+`src/components/ui/FormattedDate/FormattedDate.astro` - Formatted date display.
 
 Props: `date: Date` (required)
 

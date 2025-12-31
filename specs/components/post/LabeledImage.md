@@ -1,6 +1,6 @@
 # LabeledImage
 
-`src/components/LabeledImage/LabeledImage.astro` - Image with caption and lightbox modal.
+`src/components/post/LabeledImage/LabeledImage.astro` - Image with caption and lightbox modal.
 
 Props: `src: ImageMetadata` (required), `alt: string` (required), `width?: number` (default: 1280)
 
