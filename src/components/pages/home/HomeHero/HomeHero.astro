@@ -1,0 +1,31 @@
+---
+import Button from "@/components/ui/Button/Button.astro";
+import heroBackground from "@/assets/home-hero-bg.png";
+---
+
+<section
+  class="relative px-14 py-12 bg-cover bg-center bg-no-repeat"
+  style={`background-image: url(${heroBackground.src});`}
+>
+  <div class="absolute inset-0 bg-white/30"></div>
+  <div class="relative max-w-[960px] mx-auto">
+    <div class="max-w-[720px]">
+      <p class="text-lg mb-2">Hello, my name is</p>
+      <h1 class="text-5xl md:text-6xl mb-4">Andriyan Ivanov.</h1>
+      <h2 class="text-3xl md:text-4xl text-gray mb-6">I make software.</h2>
+      <p class="text-xl text-gray-dark mb-8 max-w-[560px]">
+        Software Engineer passionate about efficient scalable system design and
+        sharing knowledge. Welcome to my personal website where I write about
+        tech, AI and coding.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <Button href="/blog" variant="inverse" class="px-6 py-3">
+          Read my thoughts
+        </Button>
+        <Button href="/about" variant="ghost" class="px-6 py-3">
+          Learn more about me
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
