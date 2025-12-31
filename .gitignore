@@ -39,3 +39,6 @@ terraform/.terraform.lock.hcl
 !.devcontainer/.home/.claude
 .devcontainer/.home/.claude/*
 !.devcontainer/.home/.claude/settings.json
+
+# Storybook
+storybook-static/

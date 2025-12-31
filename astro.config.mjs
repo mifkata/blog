@@ -10,7 +10,9 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: process.env.SITE_URL || "http://localhost:4321",
   integrations: [mdx(), sitemap()],
-
+  server: {
+    host: '0.0.0.0',
+  },
   vite: {
     plugins: [tailwindcss()],
   },
