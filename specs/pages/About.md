@@ -4,31 +4,18 @@
 
 URL: `/about`
 
-## Data
+Layout: PageLayout (size="wide")
 
-- `quirks`: array of personality quirks
-- `lifeOutsideWork`: array of interests with icons
+Data: `quirks`=personality quirks array, `lifeOutsideWork`=interests array
 
-## Layout
+Sections:
 
-Header → Hero (avatar + intro) → Sections → CTA → Footer
+- Hero: circular avatar, name, intro text
+- Outside of Work: interests with icons
+- Values: personal values text
+- How People See Me: self-perception
+- Quirks: bullet list with Circle icons
+- Right Now: current focus
+- CTA: "Get in Touch" mailto button
 
-## Sections
-
-**Hero**: avatar image (circular), name, intro text
-
-**Outside of Work**: interests list with icons
-
-**Values**: personal values text
-
-**How People See Me**: self-perception description
-
-**Quirks**: bullet list of quirks with Circle icons
-
-**Right Now**: current focus text
-
-**CTA**: "Get in Touch" button → mailto
-
-## Components
-
-Uses: BaseHead, Header, Footer, Button, icons (Circle, Clock, Heart, Info, Star, Users)
+Uses: PageLayout, Button, icons (Circle, Clock, Heart, Info, Star, Users)

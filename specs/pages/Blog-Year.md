@@ -4,19 +4,12 @@
 
 URL: `/blog/{year}` (dynamic)
 
-## Data
+Layout: PageLayout (size="default")
 
-- `year`: from params
-- `posts`: posts filtered by year, sorted by date (desc)
+Static Paths: generates page for each unique year from blog posts
 
-## Static Paths
+Data: `year`=from params, `posts`=filtered by year, sorted desc
 
-Generates pages for each unique year from blog posts
+Content: Year title (h1), ArticleCard list
 
-## Layout
-
-Header → Container → Year Title → Post List → Footer
-
-## Components
-
-Uses: BaseHead, Header, Footer, Container, ArticleCard
+Uses: PageLayout, ArticleCard
