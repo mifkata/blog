@@ -1,6 +1,6 @@
 # GoogleAnalytics
 
-`src/components/GoogleAnalytics/GoogleAnalytics.astro` - Google Analytics tracking.
+`src/components/layout/GoogleAnalytics/GoogleAnalytics.astro` - Google Analytics tracking.
 
 Props: none
 

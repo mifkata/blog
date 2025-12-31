@@ -1,6 +1,6 @@
 # Highlight
 
-`src/components/Highlight/Highlight.astro` - Text/block highlighting with color variants.
+`src/components/post/Highlight/Highlight.astro` - Text/block highlighting with color variants.
 
 Props: `color?: "yellow"|"green"|"blue"|"pink"` (default: yellow), `block?: boolean` (default: false)
 

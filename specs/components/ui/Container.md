@@ -1,6 +1,6 @@
 # Container
 
-`src/components/Container/Container.astro` - Centered content wrapper.
+`src/components/ui/Container/Container.astro` - Centered content wrapper.
 
 Props: `size?: "default"|"wide"` (default: "default"), `class?: string`, `...HTMLAttributes<"main">`
 

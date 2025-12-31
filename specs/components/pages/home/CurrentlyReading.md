@@ -1,6 +1,6 @@
 # CurrentlyReading
 
-`src/components/CurrentlyReading/CurrentlyReading.astro` - Reading list section.
+`src/components/pages/home/CurrentlyReading/CurrentlyReading.astro` - Reading list section.
 
 Props: none
 

@@ -1,6 +1,6 @@
 # CodeCopyButton
 
-`src/components/CodeCopyButton/CodeCopyButton.astro` - Adds copy buttons to code blocks.
+`src/components/post/CodeCopyButton/CodeCopyButton.astro` - Adds copy buttons to code blocks.
 
 Props: none (script-only component)
 

@@ -1,6 +1,6 @@
 # HeaderLink
 
-`src/components/HeaderLink/HeaderLink.astro` - Navigation link with active state detection.
+`src/components/layout/HeaderLink/HeaderLink.astro` - Navigation link with active state detection.
 
 Props: `href: string`, `number?: string`, `class?: string`, `...HTMLAttributes<"a">`
 
