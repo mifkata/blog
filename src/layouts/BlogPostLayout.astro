@@ -2,10 +2,10 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import type { MarkdownHeading } from "astro";
-import CodeCopyButton from "@/components/CodeCopyButton/CodeCopyButton.astro";
-import Comments from "@/components/Comments/Comments.astro";
-import FormattedDate from "@/components/FormattedDate/FormattedDate.astro";
-import Tag from "@/components/Tag/Tag.astro";
+import CodeCopyButton from "@/components/post/CodeCopyButton/CodeCopyButton.astro";
+import Comments from "@/components/post/Comments/Comments.astro";
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import Tag from "@/components/ui/Tag/Tag.astro";
 import PageLayout from "./PageLayout.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {

@@ -1,11 +1,11 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import ArticleCard from "@/components/ArticleCard/ArticleCard.astro";
-import FormattedDate from "@/components/FormattedDate/FormattedDate.astro";
+import ArticleCard from "@/components/post/ArticleCard/ArticleCard.astro";
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
-import Synopsis from "@/components/Synopsis/Synopsis.astro";
-import Tag from "@/components/Tag/Tag.astro";
+import Synopsis from "@/components/post/Synopsis/Synopsis.astro";
+import Tag from "@/components/ui/Tag/Tag.astro";
 import { SITE_TITLE } from "@/consts";
 
 const posts = (await getCollection("blog")).sort(

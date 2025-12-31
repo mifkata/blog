@@ -1,6 +1,6 @@
 # Footer
 
-`src/components/Footer/Footer.astro` - Site footer with info and links.
+`src/components/layout/Footer/Footer.astro` - Site footer with info and links.
 
 Props: none
 

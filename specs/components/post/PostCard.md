@@ -1,6 +1,6 @@
 # PostCard
 
-`src/components/PostCard/PostCard.astro` - Compact blog post card (list item).
+`src/components/post/PostCard/PostCard.astro` - Compact blog post card (list item).
 
 Props: `post: CollectionEntry<"blog">` (required), `class?: string`, `showImage?: boolean` (default: true), `featured?: boolean` (default: false)
 

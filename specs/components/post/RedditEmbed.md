@@ -1,6 +1,6 @@
 # RedditEmbed
 
-`src/components/RedditEmbed/RedditEmbed.astro` - Lazy-loaded Reddit post embed.
+`src/components/post/RedditEmbed/RedditEmbed.astro` - Lazy-loaded Reddit post embed.
 
 Props: `url: string` (required), `height?: number` (default: 320)
 

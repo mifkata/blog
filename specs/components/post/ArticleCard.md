@@ -1,6 +1,6 @@
 # ArticleCard
 
-`src/components/ArticleCard/ArticleCard.astro` - Blog post card with image and metadata.
+`src/components/post/ArticleCard/ArticleCard.astro` - Blog post card with image and metadata.
 
 Props: `post: CollectionEntry<"blog">` (required), `class?: string`, `showTags?: boolean` (default: true)
 
