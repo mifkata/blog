@@ -1,0 +1,17 @@
+---
+interface Props {
+  title: string;
+  showLine?: boolean;
+  class?: string;
+}
+
+const { title, showLine = true, class: className } = Astro.props;
+---
+
+<section class:list={[className]}>
+  <div class="flex items-center gap-3 mb-8">
+    <h3 class="text-lg m-0 text-gray uppercase tracking-wider">{title}</h3>
+    {showLine && <div class="flex-1 h-px bg-gray-light" />}
+  </div>
+  <slot />
+</section>

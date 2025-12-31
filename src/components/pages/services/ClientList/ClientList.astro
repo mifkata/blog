@@ -1,0 +1,17 @@
+---
+interface Props {
+  clients: string[];
+}
+
+const { clients } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-4">
+  {
+    clients.map((client) => (
+      <span class="px-4 py-2 bg-gray-light rounded-lg text-gray-dark">
+        {client}
+      </span>
+    ))
+  }
+</div>

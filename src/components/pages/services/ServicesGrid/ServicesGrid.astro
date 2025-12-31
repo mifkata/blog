@@ -1,0 +1,48 @@
+---
+import Cloud from "@/components/ui/icons/Cloud.astro";
+import GitBranch from "@/components/ui/icons/GitBranch.astro";
+import Layout from "@/components/ui/icons/Layout.astro";
+import Server from "@/components/ui/icons/Server.astro";
+import Users from "@/components/ui/icons/Users.astro";
+
+interface Service {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Props {
+  services: Service[];
+}
+
+const { services } = Astro.props;
+
+const iconMap: Record<string, typeof Server> = {
+  server: Server,
+  layout: Layout,
+  "git-branch": GitBranch,
+  cloud: Cloud,
+  users: Users,
+};
+---
+
+<div class="grid md:grid-cols-2 gap-6 overflow-hidden">
+  {
+    services.map((service) => {
+      const Icon = iconMap[service.icon];
+      return (
+        <div class="p-4 sm:p-6 border border-gray-light rounded-xl hover:border-accent transition-colors overflow-hidden min-w-0">
+          <div class="flex items-start gap-3 sm:gap-4">
+            <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              {Icon && <Icon size={20} class="text-accent" />}
+            </div>
+            <div class="min-w-0">
+              <h3 class="text-lg m-0 mb-2 !text-[#6FA4AF]">{service.title}</h3>
+              <p class="text-gray-dark text-sm m-0">{service.description}</p>
+            </div>
+          </div>
+        </div>
+      );
+    })
+  }
+</div>

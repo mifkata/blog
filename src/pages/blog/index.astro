@@ -1,11 +1,9 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import ArticleCard from "@/components/post/ArticleCard/ArticleCard.astro";
-import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
-import Synopsis from "@/components/post/Synopsis/Synopsis.astro";
-import Tag from "@/components/ui/Tag/Tag.astro";
+import PageHeader from "@/components/pages/common/PageHeader/PageHeader.astro";
+import FeaturedPost from "@/components/pages/blog/FeaturedPost/FeaturedPost.astro";
+import PostsList from "@/components/pages/blog/PostsList/PostsList.astro";
 import { SITE_TITLE } from "@/consts";
 
 const posts = (await getCollection("blog")).sort(
@@ -20,72 +18,12 @@ const otherPosts = posts.slice(1);
   description="All blog posts"
   size="wide"
 >
-  <!-- Page Header -->
-  <div class="mb-12">
-    <h1 class="text-4xl md:text-5xl mb-4">Blog</h1>
-    <p class="text-xl text-gray">
-      Thoughts on software engineering, AI-assisted development, and building
-      things for the web.
-    </p>
-  </div>
+  <PageHeader
+    title="Blog"
+    subtitle="Thoughts on software engineering, AI-assisted development, and building things for the web."
+  />
 
-  <!-- Featured Post -->
-  {
-    featuredPost && (
-      <section class="mb-16 group">
-        <div class="grid md:grid-cols-2 gap-8 items-center">
-          {featuredPost.data.heroImage && (
-            <a href={`/blog/${featuredPost.id}/`}>
-              <Image
-                width={720}
-                height={400}
-                src={featuredPost.data.heroImage}
-                alt=""
-                class="rounded-xl shadow-lg group-hover:shadow-xl transition-shadow"
-              />
-            </a>
-          )}
-          <div>
-            <div class="text-sm text-accent uppercase tracking-wider mb-2">
-              Latest Post
-            </div>
-            <a href={`/blog/${featuredPost.id}/`} class="no-underline">
-              <h2 class="text-3xl md:text-4xl m-0 mb-4 text-black group-hover:text-accent transition-colors">
-                {featuredPost.data.title}
-              </h2>
-            </a>
-            <p class="text-gray mb-4">
-              <Synopsis
-                text={
-                  featuredPost.data.synopsis || featuredPost.data.description
-                }
-              />
-            </p>
-            <div class="flex items-center gap-4 text-sm text-gray">
-              <FormattedDate date={featuredPost.data.pubDate} />
-              {featuredPost.data.tags && (
-                <div class="flex gap-2">
-                  {featuredPost.data.tags.map((tag) => (
-                    <Tag tag={tag} class="text-xs" />
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
+  {featuredPost && <FeaturedPost post={featuredPost} />}
 
-  <!-- All Posts -->
-  <section>
-    <div class="flex items-center gap-3 mb-8">
-      <h3 class="text-lg m-0 text-gray uppercase tracking-wider">All Posts</h3>
-      <div class="flex-1 h-px bg-gray-light"></div>
-    </div>
-
-    <div class="space-y-8">
-      {otherPosts.map((post) => <ArticleCard post={post} />)}
-    </div>
-  </section>
+  <PostsList posts={otherPosts} title="All Posts" />
 </PageLayout>

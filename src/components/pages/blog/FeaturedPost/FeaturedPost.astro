@@ -1,0 +1,58 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import Synopsis from "@/components/post/Synopsis/Synopsis.astro";
+import Tag from "@/components/ui/Tag/Tag.astro";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+---
+
+<section class="mb-16 group">
+  <div class="grid md:grid-cols-2 gap-8 items-center">
+    {
+      post.data.heroImage && (
+        <a href={`/blog/${post.id}/`}>
+          <Image
+            width={720}
+            height={400}
+            src={post.data.heroImage}
+            alt=""
+            class="rounded-xl shadow-lg group-hover:shadow-xl transition-shadow"
+          />
+        </a>
+      )
+    }
+    <div>
+      <div class="text-sm text-accent uppercase tracking-wider mb-2">
+        Latest Post
+      </div>
+      <a href={`/blog/${post.id}/`} class="no-underline">
+        <h2
+          class="text-3xl md:text-4xl m-0 mb-4 text-black group-hover:text-accent transition-colors"
+        >
+          {post.data.title}
+        </h2>
+      </a>
+      <p class="text-gray mb-4">
+        <Synopsis text={post.data.synopsis || post.data.description} />
+      </p>
+      <div class="flex items-center gap-4 text-sm text-gray">
+        <FormattedDate date={post.data.pubDate} />
+        {
+          post.data.tags && (
+            <div class="flex gap-2">
+              {post.data.tags.map((tag) => (
+                <Tag tag={tag} class="text-xs" />
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

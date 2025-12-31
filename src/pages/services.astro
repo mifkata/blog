@@ -1,14 +1,14 @@
 ---
-import Button from "@/components/ui/Button/Button.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
-import Cloud from "@/components/ui/icons/Cloud.astro";
-import GitBranch from "@/components/ui/icons/GitBranch.astro";
-import Layout from "@/components/ui/icons/Layout.astro";
-import Server from "@/components/ui/icons/Server.astro";
+import PageHeader from "@/components/pages/common/PageHeader/PageHeader.astro";
+import SectionHeader from "@/components/pages/common/SectionHeader/SectionHeader.astro";
+import ContactCTA from "@/components/pages/common/ContactCTA/ContactCTA.astro";
+import ServicesGrid from "@/components/pages/services/ServicesGrid/ServicesGrid.astro";
+import ReasonsGrid from "@/components/pages/services/ReasonsGrid/ReasonsGrid.astro";
+import ClientList from "@/components/pages/services/ClientList/ClientList.astro";
 import Shield from "@/components/ui/icons/Shield.astro";
 import Star from "@/components/ui/icons/Star.astro";
 import Tool from "@/components/ui/icons/Tool.astro";
-import Users from "@/components/ui/icons/Users.astro";
 import { SITE_TITLE } from "@/consts";
 
 const services = [
@@ -91,111 +91,39 @@ const clients = [
   description="Full-stack software engineering consulting: backend, frontend, DevOps, architecture, and technical leadership"
   size="wide"
 >
-  <!-- Hero Section -->
-  <section class="mb-8">
-    <h1 class="text-4xl md:text-5xl mb-6">Services</h1>
-    <p class="text-xl text-gray mb-4">
-      I design, build, and scale modern digital products — end to end.
-    </p>
-    <p class="text-gray-dark">
-      With 25+ years of professional experience, I work as a full-stack software
-      engineering consultant through my company, <strong class="text-black"
-        >Tricky Click</strong
-      >. I specialise in coming into messy environments, finding clarity fast,
-      and delivering results without drama.
-    </p>
+  <PageHeader
+    title="Services"
+    subtitle="I design, build, and scale modern digital products — end to end."
+    description="With 25+ years of professional experience, I work as a full-stack software engineering consultant through my company, Tricky Click. I specialise in coming into messy environments, finding clarity fast, and delivering results without drama."
+  />
+
+  <section class="mb-16">
+    <SectionHeader title="What I Do" class="pb-8">
+      <Tool size={28} class="text-[#6FA4AF]" slot="icon" />
+    </SectionHeader>
+    <ServicesGrid services={services} />
   </section>
 
-  <!-- Services -->
   <section class="mb-16">
-    <h2 class="text-2xl pb-8 flex items-center gap-3">
-      <Tool size={28} class="text-[#6FA4AF]" />
-      What I Do
-    </h2>
-    <div class="grid md:grid-cols-2 gap-6 overflow-hidden">
-      {
-        services.map((service) => (
-          <div class="p-4 sm:p-6 border border-gray-light rounded-xl hover:border-accent transition-colors overflow-hidden min-w-0">
-            <div class="flex items-start gap-3 sm:gap-4">
-              <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                {service.icon === "server" && (
-                  <Server size={20} class="text-accent" />
-                )}
-                {service.icon === "layout" && (
-                  <Layout size={20} class="text-accent" />
-                )}
-                {service.icon === "git-branch" && (
-                  <GitBranch size={20} class="text-accent" />
-                )}
-                {service.icon === "cloud" && (
-                  <Cloud size={20} class="text-accent" />
-                )}
-                {service.icon === "users" && (
-                  <Users size={20} class="text-accent" />
-                )}
-              </div>
-              <div class="min-w-0">
-                <h3 class="text-lg m-0 mb-2 !text-[#6FA4AF]">
-                  {service.title}
-                </h3>
-                <p class="text-gray-dark text-sm m-0">{service.description}</p>
-              </div>
-            </div>
-          </div>
-        ))
-      }
-    </div>
+    <SectionHeader title="Why Work With Me" class="pb-12">
+      <Star size={28} class="text-[#B8C4A9]" slot="icon" />
+    </SectionHeader>
+    <ReasonsGrid reasons={reasons} />
   </section>
 
-  <!-- Why Hire Me -->
   <section class="mb-16">
-    <h2 class="text-2xl pb-12 flex items-center gap-3">
-      <Star size={28} class="text-[#B8C4A9]" />
-      Why Work With Me
-    </h2>
-    <div class="grid md:grid-cols-2 gap-8">
-      {
-        reasons.map((reason) => (
-          <div>
-            <h3 class="text-lg m-0 mb-2 !text-[#B8C4A9] underline decoration-2 underline-offset-4 decoration-[#B8C4A9]/30">
-              {reason.title}
-            </h3>
-            <p class="text-gray-dark m-0">{reason.description}</p>
-          </div>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- Trusted By -->
-  <section class="mb-16">
-    <h2 class="text-2xl mb-6 flex items-center gap-3">
-      <Shield size={28} class="text-accent" />
-      Trusted By
-    </h2>
+    <SectionHeader title="Trusted By" class="mb-6">
+      <Shield size={28} class="text-accent" slot="icon" />
+    </SectionHeader>
     <p class="text-gray-dark mb-6">
       I've consistently been hired by companies that expect senior, independent,
       high-calibre work:
     </p>
-    <div class="flex flex-wrap gap-4">
-      {
-        clients.map((client) => (
-          <span class="px-4 py-2 bg-gray-light rounded-lg text-gray-dark">
-            {client}
-          </span>
-        ))
-      }
-    </div>
+    <ClientList clients={clients} />
   </section>
 
-  <!-- CTA -->
-  <section class="text-center py-12 border-t border-gray-light">
-    <p class="text-xl text-gray mb-2">Ready to discuss your project?</p>
-    <p class="text-gray-dark mb-6">
-      I'm available for contract engagements and consulting work.
-    </p>
-    <Button href="mailto:hi@mifkata.com" class="px-6 py-3" variant="inverse">
-      Get in Touch
-    </Button>
-  </section>
+  <ContactCTA
+    headline="Ready to discuss your project?"
+    description="I'm available for contract engagements and consulting work."
+  />
 </PageLayout>

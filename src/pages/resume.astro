@@ -1,14 +1,13 @@
 ---
-import Button from "@/components/ui/Button/Button.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
+import PageHeader from "@/components/pages/common/PageHeader/PageHeader.astro";
+import SectionHeader from "@/components/pages/common/SectionHeader/SectionHeader.astro";
+import ContactCTA from "@/components/pages/common/ContactCTA/ContactCTA.astro";
+import SkillsGrid from "@/components/pages/resume/SkillsGrid/SkillsGrid.astro";
+import ExperienceTimeline from "@/components/pages/resume/ExperienceTimeline/ExperienceTimeline.astro";
+import EarlyCareer from "@/components/pages/resume/EarlyCareer/EarlyCareer.astro";
 import Briefcase from "@/components/ui/icons/Briefcase.astro";
-import Check from "@/components/ui/icons/Check.astro";
-import Cloud from "@/components/ui/icons/Cloud.astro";
 import Code from "@/components/ui/icons/Code.astro";
-import Database from "@/components/ui/icons/Database.astro";
-import Layout from "@/components/ui/icons/Layout.astro";
-import Server from "@/components/ui/icons/Server.astro";
-import Tool from "@/components/ui/icons/Tool.astro";
 import { SITE_TITLE } from "@/consts";
 
 const skills = [
@@ -251,165 +250,33 @@ const earlyCareer = {
   description="25+ years of software engineering experience across backend, frontend, DevOps, and architecture"
   size="wide"
 >
-  <!-- Hero Section -->
+  <PageHeader
+    title="Resume"
+    subtitle="25+ years building software — from affiliate sites in 2000 to microservice architectures today."
+    description="Full-stack engineer specialising in Node.js, TypeScript, React, and cloud infrastructure. Currently consulting through Tricky Click for global clients."
+  />
+
   <section class="mb-12">
-    <h1 class="text-4xl md:text-5xl mb-6">Resume</h1>
-    <p class="text-xl text-gray mb-4">
-      25+ years building software — from affiliate sites in 2000 to microservice
-      architectures today.
-    </p>
-    <p class="text-gray-dark">
-      Full-stack engineer specialising in Node.js, TypeScript, React, and cloud
-      infrastructure. Currently consulting through <strong class="text-black"
-        >Tricky Click</strong
-      > for global clients.
-    </p>
+    <SectionHeader title="Technical Skills" class="pb-6">
+      <Code size={24} class="text-[#6FA4AF]" slot="icon" />
+    </SectionHeader>
+    <SkillsGrid skills={skills} />
   </section>
 
-  <!-- Skills -->
   <section class="mb-12">
-    <h2 class="text-2xl mb-6 pb-6 flex items-center gap-3">
-      <Code size={24} class="text-[#6FA4AF]" />
-      Technical Skills
-    </h2>
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-      {
-        skills.map((skill) => (
-          <div>
-            <span class="text-sm text-gray uppercase tracking-wider mb-3 font-normal flex items-center gap-2">
-              {skill.icon === "server" && (
-                <Server size={16} class="text-[#6FA4AF]" />
-              )}
-              {skill.icon === "layout" && (
-                <Layout size={16} class="text-[#6FA4AF]" />
-              )}
-              {skill.icon === "database" && (
-                <Database size={16} class="text-[#6FA4AF]" />
-              )}
-              {skill.icon === "cloud" && (
-                <Cloud size={16} class="text-[#6FA4AF]" />
-              )}
-              {skill.icon === "check" && (
-                <Check size={16} class="text-[#6FA4AF]" />
-              )}
-              {skill.icon === "tool" && (
-                <Tool size={16} class="text-[#6FA4AF]" />
-              )}
-              {skill.name}
-            </span>
-            <div class="flex flex-wrap gap-2">
-              {skill.items.map((item) => (
-                <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-sm">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))
-      }
-    </div>
+    <SectionHeader title="Professional Experience" class="mb-8 pb-6">
+      <Briefcase size={24} class="text-[#B8C4A9]" slot="icon" />
+    </SectionHeader>
+    <ExperienceTimeline experience={experience} />
+    <EarlyCareer
+      period={earlyCareer.period}
+      description={earlyCareer.description}
+      companies={earlyCareer.companies}
+    />
   </section>
 
-  <!-- Experience -->
-  <section class="mb-12">
-    <h2 class="text-2xl mb-8 pb-6 flex items-center gap-3">
-      <Briefcase size={24} class="text-[#B8C4A9]" />
-      Professional Experience
-    </h2>
-
-    <div class="space-y-10">
-      {
-        experience.map((job) => (
-          <div class="relative pl-6 border-l-2 border-gray-light">
-            <div
-              class:list={[
-                "absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2",
-                job.current
-                  ? "bg-accent border-accent"
-                  : "bg-white border-gray-light",
-              ]}
-            />
-            <div class="mb-4">
-              <h3 class="text-xl m-0">{job.title}</h3>
-              <p class="text-accent m-0 font-medium">{job.company}</p>
-              <p class="text-gray text-sm m-0">
-                {job.location} · {job.dates}
-              </p>
-            </div>
-            <p class="text-gray-dark mb-4">{job.description}</p>
-
-            {job.roles && (
-              <div class="space-y-6">
-                {job.roles.map((role) => (
-                  <div class="bg-gray-light/30 rounded-lg p-4">
-                    <div class="flex flex-wrap items-baseline gap-2 mb-2">
-                      <h4 class="text-base m-0 !text-[#6FA4AF]">
-                        {role.client}
-                      </h4>
-                      <span class="text-gray text-sm">{role.period}</span>
-                    </div>
-                    <ul class="list-disc list-outside ml-4 text-gray-dark text-sm space-y-1 mb-3">
-                      {role.highlights.map((h) => (
-                        <li>{h}</li>
-                      ))}
-                    </ul>
-                    <p class="text-xs text-gray m-0">
-                      <span class="font-medium">Tech:</span> {role.tech}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {job.highlights && (
-              <ul class="list-disc list-outside ml-4 text-gray-dark space-y-1 mb-3">
-                {job.highlights.map((h) => (
-                  <li>{h}</li>
-                ))}
-              </ul>
-            )}
-
-            {job.tech && !job.roles && (
-              <p class="text-sm text-gray m-0">
-                <span class="font-medium">Tech:</span> {job.tech}
-              </p>
-            )}
-          </div>
-        ))
-      }
-
-      <!-- Early Career -->
-      <div class="relative pl-6 border-l-2 border-gray-light">
-        <div
-          class="absolute left-[-9px] top-1 w-4 h-4 rounded-full border-2 bg-white border-gray-light"
-        >
-        </div>
-        <div class="mb-4">
-          <h3 class="text-xl m-0">Early Career</h3>
-          <p class="text-gray text-sm m-0">{earlyCareer.period}</p>
-        </div>
-        <p class="text-gray-dark mb-3">{earlyCareer.description}</p>
-        <div class="flex flex-wrap gap-2">
-          {
-            earlyCareer.companies.map((company) => (
-              <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-sm">
-                {company}
-              </span>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="text-center py-12 border-t border-gray-light">
-    <p class="text-xl text-gray mb-2">Interested in working together?</p>
-    <p class="text-gray-dark mb-6">
-      I'm available for contract engagements and consulting work.
-    </p>
-    <Button href="mailto:hi@mifkata.com" class="px-6 py-3" variant="inverse">
-      Get in Touch
-    </Button>
-  </section>
+  <ContactCTA
+    headline="Interested in working together?"
+    description="I'm available for contract engagements and consulting work."
+  />
 </PageLayout>
