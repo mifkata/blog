@@ -1,10 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import ArticleCard from "@/components/ArticleCard/ArticleCard.astro";
-import BaseHead from "@/components/BaseHead/BaseHead.astro";
-import Container from "@/components/Container/Container.astro";
-import Footer from "@/components/Footer/Footer.astro";
-import Header from "@/components/Header/Header.astro";
+import PageLayout from "@/layouts/PageLayout.astro";
 import { SITE_TITLE } from "@/consts";
 import tagsData from "@/data/tags.json";
 
@@ -32,31 +29,20 @@ const pageTitle = tagInfo?.title || tag;
 const pageDescription = tagInfo?.description || `Posts tagged with ${tag}`;
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead
-      title={`${pageTitle} | ${SITE_TITLE}`}
-      description={pageDescription}
-    />
-  </head>
-  <body>
-    <div class="content-wrapper">
-      <Header />
-      <Container>
-        <section>
-          <h1>{pageTitle}</h1>
-          {
-            tagInfo?.description && (
-              <p class="text-gray text-xl mt-2">{tagInfo.description}</p>
-            )
-          }
-          <div class="space-y-8 mt-8">
-            {posts.map((post) => <ArticleCard post={post} />)}
-          </div>
-        </section>
-      </Container>
-      <Footer />
+<PageLayout
+  title={`${pageTitle} | ${SITE_TITLE}`}
+  description={pageDescription}
+  size="default"
+>
+  <section>
+    <h1>{pageTitle}</h1>
+    {
+      tagInfo?.description && (
+        <p class="text-gray text-xl mt-2">{tagInfo.description}</p>
+      )
+    }
+    <div class="space-y-8 mt-8">
+      {posts.map((post) => <ArticleCard post={post} />)}
     </div>
-  </body>
-</html>
+  </section>
+</PageLayout>

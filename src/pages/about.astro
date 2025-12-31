@@ -1,9 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import BaseHead from "@/components/BaseHead/BaseHead.astro";
 import Button from "@/components/Button/Button.astro";
-import Footer from "@/components/Footer/Footer.astro";
-import Header from "@/components/Header/Header.astro";
+import PageLayout from "@/layouts/PageLayout.astro";
 import Circle from "@/components/icons/Circle.astro";
 import Clock from "@/components/icons/Clock.astro";
 import Heart from "@/components/icons/Heart.astro";
@@ -37,174 +35,156 @@ const lifeOutsideWork = [
 ];
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead
-      title={`About | ${SITE_TITLE}`}
-      description="Born in Varna, Bulgaria. Started working at 17. Still comparing myself to 'real' engineers after 25+ years."
-    />
-  </head>
-  <body>
-    <div class="content-wrapper">
-      <Header />
-      <main class="w-full max-w-[960px] mx-auto px-6 py-12">
-        <!-- Hero Section -->
-        <section class="mb-12">
-          <div class="flex flex-col md:flex-row gap-8 md:items-start">
-            <div
-              class="flex-shrink-0 text-center order-2 md:order-1 flex flex-col items-center"
-            >
-              <div
-                class="w-72 h-72 rounded-full overflow-hidden border-4 border-gray-light"
-              >
-                <Image
-                  src={avatar}
-                  alt="Andriyan Ivanov"
-                  width={160}
-                  height={160}
-                  class="w-full h-full object-cover mt-[-40px]"
-                />
-              </div>
-              <p class="text-xs text-gray mt-2">Rajasthan, India · Nov 2024</p>
-            </div>
-            <div class="order-1 md:order-2">
-              <h1 class="text-4xl md:text-5xl mb-4">About Me</h1>
-              <p class="text-xl text-gray mb-4">
-                Born in Varna, Bulgaria in 1983. Started working when most
-                people were still figuring out what to study.
-              </p>
-              <p class="text-gray-dark">
-                By 19 I'd moved to Sofia alone, broke, and stubborn enough to
-                think that was a good idea. I spent my teenage years ignoring
-                school, obsessed with computers, video games, and the idea of
-                becoming a hacker. When I got my first PC in '98, I thought I'd
-                be a designer, but life shoved me into programming — PHP,
-                websites, anything that paid rent. That's how it started.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Life Outside Work -->
-        <section class="mb-12">
-          <h2 class="text-2xl mb-6 flex items-center gap-3">
-            <Clock size={24} class="text-[#6FA4AF]" />
-            Outside of Work
-          </h2>
-          <p class="text-gray-dark mb-6">
-            My world is made of <strong class="text-black">books</strong>, <strong
-              class="text-black">motorcycles</strong
-            >, <strong class="text-black">travel</strong>, <strong
-              class="text-black">cooking</strong
-            >, <strong class="text-black">music</strong>, <strong
-              class="text-black">my daughter</strong
-            >, and <strong class="text-black">my dog</strong> — the two creatures
-            I'd gladly die for.
-          </p>
-          <p class="text-gray-dark">
-            I get obsessive about learning; even after 25+ years of programming,
-            I still compare myself to "real" engineers and feel like I'm far
-            behind. Coffee in the morning is non-negotiable. Everything else can
-            fall apart.
-          </p>
-        </section>
-
-        <!-- Values -->
-        <section class="mb-12">
-          <h2 class="text-2xl mb-6 flex items-center gap-3">
-            <Heart size={24} class="text-[#B8C4A9]" />
-            Values
-          </h2>
-          <p class="text-gray-dark mb-4">
-            I value <strong class="text-black">intelligence</strong> and <strong
-              class="text-black">kindness</strong
-            >, even if I don't always model them. I can be stupidly impulsive
-            and meet unkindness with unkindness. I believe <strong
-              class="text-black">freedom</strong
-            > and <strong class="text-black">love</strong> matter more than anything,
-            and most of my decision-making is a strange equilibrium between passion
-            and thought.
-          </p>
-        </section>
-
-        <!-- How People See Me -->
-        <section class="mb-12">
-          <h2 class="text-2xl mb-6 flex items-center gap-3">
-            <Users size={24} class="text-accent" />
-            How People See Me
-          </h2>
-          <p class="text-gray-dark mb-4">
-            People tend to misread me. I come off as strange to the average
-            person, so I gravitate toward creatives and oddballs who find me
-            normal. My humor is dark, sarcastic, and occasionally snobbish. I
-            talk a lot. I can sound arrogant.
-          </p>
-          <p class="text-gray-dark">
-            Some think I'm mean when they first meet me, but if they stay long
-            enough, they discover I'm different in a way they actually enjoy. I
-            make friends easily, but I keep my circle small on purpose.
-          </p>
-        </section>
-
-        <!-- Quirks -->
-        <section class="mb-12">
-          <h2 class="text-2xl mb-6 flex items-center gap-3">
-            <Star size={24} class="text-[#D97D55]" />
-            Quirks
-          </h2>
-          <p class="text-gray mb-4 text-sm uppercase tracking-wider">
-            Because everyone has them — mine are just louder
-          </p>
-          <ul class="space-y-3">
-            {
-              quirks.map((quirk) => (
-                <li class="flex items-start gap-3 text-gray-dark">
-                  <span class="text-[#D97D55] mt-1.5">
-                    <Circle size={12} />
-                  </span>
-                  {quirk}
-                </li>
-              ))
-            }
-          </ul>
-        </section>
-
-        <!-- Current Focus -->
-        <section class="mb-12">
-          <h2 class="text-2xl mb-6 flex items-center gap-3">
-            <Info size={24} class="text-[#6FA4AF]" />
-            Right Now
-          </h2>
-          <p class="text-gray-dark">
-            I'm learning languages, going to the gym, and pushing myself through
-            university because I want to teach someday. Maybe that's my way of
-            giving back — or maybe I just like making things harder than they
-            need to be.
-          </p>
-        </section>
-
-        <!-- CTA -->
-        <section class="text-center py-12 border-t border-gray-light">
-          <p class="text-xl text-gray mb-2">Want to work together?</p>
-          <p class="text-gray-dark mb-6">
-            Check out my <a
-              href="/services"
-              class="text-accent hover:text-accent-dark">services</a
-            > or <a href="/resume" class="text-accent hover:text-accent-dark"
-              >resume</a
-            >.
-          </p>
-          <Button
-            href="mailto:hi@mifkata.com"
-            class="px-6 py-3"
-            variant="inverse"
-          >
-            Get in Touch
-          </Button>
-        </section>
-      </main>
-      <Footer />
+<PageLayout
+  title={`About | ${SITE_TITLE}`}
+  description="Born in Varna, Bulgaria. Started working at 17. Still comparing myself to 'real' engineers after 25+ years."
+  size="wide"
+>
+  <!-- Hero Section -->
+  <section class="mb-12">
+    <div class="flex flex-col md:flex-row gap-8 md:items-start">
+      <div
+        class="flex-shrink-0 text-center order-2 md:order-1 flex flex-col items-center"
+      >
+        <div
+          class="w-72 h-72 rounded-full overflow-hidden border-4 border-gray-light"
+        >
+          <Image
+            src={avatar}
+            alt="Andriyan Ivanov"
+            width={160}
+            height={160}
+            class="w-full h-full object-cover mt-[-40px]"
+          />
+        </div>
+        <p class="text-xs text-gray mt-2">Rajasthan, India · Nov 2024</p>
+      </div>
+      <div class="order-1 md:order-2">
+        <h1 class="text-4xl md:text-5xl mb-4">About Me</h1>
+        <p class="text-xl text-gray mb-4">
+          Born in Varna, Bulgaria in 1983. Started working when most people were
+          still figuring out what to study.
+        </p>
+        <p class="text-gray-dark">
+          By 19 I'd moved to Sofia alone, broke, and stubborn enough to think
+          that was a good idea. I spent my teenage years ignoring school,
+          obsessed with computers, video games, and the idea of becoming a
+          hacker. When I got my first PC in '98, I thought I'd be a designer,
+          but life shoved me into programming — PHP, websites, anything that
+          paid rent. That's how it started.
+        </p>
+      </div>
     </div>
-  </body>
-</html>
+  </section>
+
+  <!-- Life Outside Work -->
+  <section class="mb-12">
+    <h2 class="text-2xl mb-6 flex items-center gap-3">
+      <Clock size={24} class="text-[#6FA4AF]" />
+      Outside of Work
+    </h2>
+    <p class="text-gray-dark mb-6">
+      My world is made of <strong class="text-black">books</strong>, <strong
+        class="text-black">motorcycles</strong
+      >, <strong class="text-black">travel</strong>, <strong class="text-black"
+        >cooking</strong
+      >, <strong class="text-black">music</strong>, <strong class="text-black"
+        >my daughter</strong
+      >, and <strong class="text-black">my dog</strong> — the two creatures I'd gladly
+      die for.
+    </p>
+    <p class="text-gray-dark">
+      I get obsessive about learning; even after 25+ years of programming, I
+      still compare myself to "real" engineers and feel like I'm far behind.
+      Coffee in the morning is non-negotiable. Everything else can fall apart.
+    </p>
+  </section>
+
+  <!-- Values -->
+  <section class="mb-12">
+    <h2 class="text-2xl mb-6 flex items-center gap-3">
+      <Heart size={24} class="text-[#B8C4A9]" />
+      Values
+    </h2>
+    <p class="text-gray-dark mb-4">
+      I value <strong class="text-black">intelligence</strong> and <strong
+        class="text-black">kindness</strong
+      >, even if I don't always model them. I can be stupidly impulsive and meet
+      unkindness with unkindness. I believe <strong class="text-black"
+        >freedom</strong
+      > and <strong class="text-black">love</strong> matter more than anything, and
+      most of my decision-making is a strange equilibrium between passion and thought.
+    </p>
+  </section>
+
+  <!-- How People See Me -->
+  <section class="mb-12">
+    <h2 class="text-2xl mb-6 flex items-center gap-3">
+      <Users size={24} class="text-accent" />
+      How People See Me
+    </h2>
+    <p class="text-gray-dark mb-4">
+      People tend to misread me. I come off as strange to the average person, so
+      I gravitate toward creatives and oddballs who find me normal. My humor is
+      dark, sarcastic, and occasionally snobbish. I talk a lot. I can sound
+      arrogant.
+    </p>
+    <p class="text-gray-dark">
+      Some think I'm mean when they first meet me, but if they stay long enough,
+      they discover I'm different in a way they actually enjoy. I make friends
+      easily, but I keep my circle small on purpose.
+    </p>
+  </section>
+
+  <!-- Quirks -->
+  <section class="mb-12">
+    <h2 class="text-2xl mb-6 flex items-center gap-3">
+      <Star size={24} class="text-[#D97D55]" />
+      Quirks
+    </h2>
+    <p class="text-gray mb-4 text-sm uppercase tracking-wider">
+      Because everyone has them — mine are just louder
+    </p>
+    <ul class="space-y-3">
+      {
+        quirks.map((quirk) => (
+          <li class="flex items-start gap-3 text-gray-dark">
+            <span class="text-[#D97D55] mt-1.5">
+              <Circle size={12} />
+            </span>
+            {quirk}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Current Focus -->
+  <section class="mb-12">
+    <h2 class="text-2xl mb-6 flex items-center gap-3">
+      <Info size={24} class="text-[#6FA4AF]" />
+      Right Now
+    </h2>
+    <p class="text-gray-dark">
+      I'm learning languages, going to the gym, and pushing myself through
+      university because I want to teach someday. Maybe that's my way of giving
+      back — or maybe I just like making things harder than they need to be.
+    </p>
+  </section>
+
+  <!-- CTA -->
+  <section class="text-center py-12 border-t border-gray-light">
+    <p class="text-xl text-gray mb-2">Want to work together?</p>
+    <p class="text-gray-dark mb-6">
+      Check out my <a
+        href="/services"
+        class="text-accent hover:text-accent-dark">services</a
+      > or <a href="/resume" class="text-accent hover:text-accent-dark"
+        >resume</a
+      >.
+    </p>
+    <Button href="mailto:hi@mifkata.com" class="px-6 py-3" variant="inverse">
+      Get in Touch
+    </Button>
+  </section>
+</PageLayout>
