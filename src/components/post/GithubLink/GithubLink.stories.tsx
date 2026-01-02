@@ -1,9 +1,17 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/html";
+import { createElement } from "react";
+import { createRoot } from "react-dom/client";
 import GithubLink from "./GithubLinkReact";
 
-const meta: Meta<typeof GithubLink> = {
+interface GithubLinkArgs {
+  url: string;
+  expanded?: boolean;
+  maxHeight?: number;
+  children?: string;
+}
+
+const meta: Meta<GithubLinkArgs> = {
   title: "Post/GithubLink",
-  component: GithubLink,
   tags: ["autodocs"],
   argTypes: {
     url: {
@@ -18,11 +26,21 @@ const meta: Meta<typeof GithubLink> = {
       control: "number",
       description: "Maximum height for iframe in pixels",
     },
+    children: {
+      control: "text",
+      description: "Description text",
+    },
+  },
+  render: (args) => {
+    const container = document.createElement("div");
+    const root = createRoot(container);
+    root.render(createElement(GithubLink, args));
+    return container;
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof GithubLink>;
+type Story = StoryObj<GithubLinkArgs>;
 
 export const Repository: Story = {
   args: {
