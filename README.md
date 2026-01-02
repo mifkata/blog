@@ -1,39 +1,30 @@
-# Mifkata.com uses Astro Starter Kit: Blog
+# Mifkata.com
+
+## Generated with Astro Starter Kit: Blog
 
 ```sh
 npm create astro@latest -- --template blog
 ```
 
-## 🚀 Project Structure
+## ⚙️ Setup & Run
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
+Configure `.env` from example:
 
 ```sh
 cp .env.example .env
 ```
+
+Install dependencies and start `dev` server:
+
+```sh
+pnpm install
+pnpm dev
+```
+
+The app doesn't require any additional local runtime, you should
+be able to access it at `http://localhost:4321`.
+
+## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
 
@@ -104,6 +95,45 @@ After applying, authorize GitHub in Cloudflare: **Workers & Pages** → project 
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
 
-## Credit
+## 🤖 Claude Commands
 
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Claude Code commands for this project. Run with `/command-name` in Claude Code.
+
+### Specs
+
+| Command                 | Description                            |
+| :---------------------- | :------------------------------------- |
+| `/spec-create [path]`   | Create new spec at `specs/[path].md`   |
+| `/spec-update [path]`   | Update existing spec with user changes |
+| `/spec-refine [path]`   | Analyze and improve spec quality       |
+| `/spec-apply [path]`    | Implement spec requirements            |
+| `/spec-verify [path]`   | Verify implementation matches spec     |
+| `/spec-compact [path]`  | Minimize spec token size               |
+| `/spec-refactor [path]` | Refactor codebase to use spec          |
+
+### Blog
+
+| Command               | Description                                 |
+| :-------------------- | :------------------------------------------ |
+| `/post-create [slug]` | Create new blog post at `src/content/blog/` |
+| `/tags-update`        | Sync `src/data/tags.json` with blog posts   |
+
+### Testing
+
+| Command               | Description           |
+| :-------------------- | :-------------------- |
+| `/test-create [path]` | Create tests for spec |
+
+### Git
+
+| Command           | Description                                  |
+| :---------------- | :------------------------------------------- |
+| `/commit-message` | Suggest commit message for staged changes    |
+| `/commit-staged`  | Commit staged changes with generated message |
+
+> **Note:** `/commit-staged` requires git config in the container:
+>
+> ```sh
+> git config user.email "you@example.com"
+> git config user.name "Your Name"
+> ```
