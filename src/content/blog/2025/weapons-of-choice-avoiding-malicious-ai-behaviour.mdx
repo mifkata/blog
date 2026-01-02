@@ -12,17 +12,18 @@ synopsis:
   but nonetheless due unexplica ble shell command hallucinations.
   I'm not waiting! This is how I secure my dev environment before it's too late!
 pubDate: Dec 30 2025 12:30:00 GMT+0000 (UTC)
-updatedDate: Dec 31 2025 09:30:00 GMT+0000 (UTC)
+updatedDate: Jan 02 2026 09:30:00 GMT+0000 (UTC)
 heroImage: "@/assets/blog/2025/1230-devcontainers.png"
 tags: ["coding", "ai", "devcontainers", "claude", "devex", "howto"]
 ---
 
 import RedditEmbed from "@/components/post/RedditEmbed/RedditEmbed.astro";
+import Highlight from "@/components/post/Highlight/Highlight.astro";
 
 ## About writing this article
 
 I've been using AI for 3 years now, but most recently I've been coding
-almost exclusively with `Claude Code`. [This blog](https://github.com/mifkata/blog)
+almost exclusively with **Claude Code**. [This blog](https://github.com/mifkata/blog)
 is one of the first projects that I completed using it.
 
 I [built my blog in a day](/blog/2025/howto-make-custom-astro-blog-in-a-day/)
@@ -33,14 +34,14 @@ That's good and all for experiments and prototyping, but as your projects grow b
 certain **patterns begin to emerge** and it's hard to describe everything that one
 has to do in order to have a steady, viable development flow with AI agents.
 
-This article is about setting up `devcontainers` in order to have a
-**secure dev environment** while working with AI agents like `Claude Code`.
+This article is about setting up **devcontainers** in order to have a
+**secure dev environment** while working with AI agents like **Claude Code**.
 
 ## Basic environment setup for AI assisted development
 
 Here're several things that I do nowadays (about a month after I've created the blog and I'm
-more than actively using `Claude Code` to produce production ready applications. At the
-time of writing this, the `blog` itself has _a rather "outdated" codebase_, in terms of
+more than actively using **Claude Code** to produce production ready applications. At the
+time of writing this, the **blog** itself has _a rather "outdated" codebase_, in terms of
 what one can refer to as "AI derrived technical debt".),
 
 When setting up a new project now, I'd go through the following checklist:
@@ -51,15 +52,15 @@ When setting up a new project now, I'd go through the following checklist:
     to run all the applications I'm working with, plus whatever is required for
     **Claude Code** to run steadily.
 
-        I do this to isolate my PC from `Claude` to achieve security and data integrity.
+        I do this to isolate my PC from **Claude** to achieve security and data integrity.
     I can restore missing code with version control and I can live with 1 commit being
-    deleted accidentally, but the rest of my system is exposed, since `Claude` is running
+    deleted accidentally, but the rest of my system is exposed, since **Claude** is running
     with the same privileges, as my local user is and it runs `shell commands`. This
     is not just something to be careful about, it's an active vector for malicious attacks
     and command injection.
 
-    2. After, my environment is secure and capable of running all my apps in `dev`
-    mode, I would try to setup my primary agent entry - `CLAUDE.md` (`AGENTS.md` is a
+    2. After, my environment is secure and capable of running all my apps in **dev
+    mode**, I would try to setup my primary agent entry - `CLAUDE.md` (`AGENTS.md` is a
     more general entry that is also viable option, but in since I'm using **Claude code**,
     I'm sticking to the named file format).
 
@@ -70,31 +71,44 @@ When setting up a new project now, I'd go through the following checklist:
     3. I will add common **Claude commands**. These would include commands for the most
     common actions that I take, when  trying to write better and more consistent code:
 
-        *  **spec commands** - these would be commands used to `create`, `update`, `verify`,
-        `apply`, `refactor with` specification files. I do this to keep reusable context
-        long-term. I keep it in the repo, so it's close to the code and so that I can configure
-        how things are done on the fly, by injecting `prompt` instructions. Specs are usually
-        kept in `specs/**/*.md` inside the project root.
+        *  **spec commands** - used to manage spec files: **create**, **update**, **verify**,
+        **apply**, **refactor with**. The idea is to able to **persist reusable context long-term**.
+        That's why specs are keept it in the repo, to be close to the code and to be able to do
+        **ad-hoc** changes on the fly with **predefined prompts**. Specs are usually
+        kept in the repo as `specs/**/*.md`.
 
         * **test commands** - working with multiple apps, requires different type of tests
         and approaches to testing. One can verify that web frontend and a service written
-        in `Elixir` would have different testing concepts. Test commands are context specific
+        in **Elixir** would have different testing concepts. Test commands are context specific
         and require a specific instruction set to be considered, when generating code for
         coverage
 
-        * **git assist** - I don't ask my agent to commit for me. I can, it could, but
-        unless you're running a multi-agent `pipeline` of sorts, that goes and produces
-        some kind of code from scaratch end to end and you want to have viable `commit`
-        history, you have no good reason to grant your `AI agent` privileges to your repo.
+        * **git assist** - I don't ask my agent to push code for me, but I do ask it
+        to commit staged code for me. It would generate a smart message and run the husky
+        pre-commit hook and fix issues, if any.
 
-        It can (and it has happen to people), reset your commit tree and force push
-        changes to your repo (of course, that applies only if you, like me, work alone on
-        projects, on an unlocked `main` branch, or simply don't have `branch protection`
-        for your private project).
+        <Highlight block>
+        > One might need to grant their agents `read/write` permissions
+        when running a **multi-agent pipeline** of sorts, which goes and produces
+        some kind of code end-to-end, where pushing changes to the commit tree
+        trigger actions for other other agents. Still, if you work with an
+        **AI agent** on a machine that uses your personal git access tokens,
+        in my humble opinion, `push` and `pull` should be reserved
+        **only to the host machine**.
+        </Highlight>
+
+        <Highlight block color="pink">
+        > **Given unrestricted access to your repository**, the agent could
+        modify your commit tree and force push changes, potentially erasing commit
+        history. In addition, in the case of GitHub for example, if a token by any
+        chance provides further credentials, it could potentially modify the repository
+        settings, to grant itself capabilities previously unavailable (like disabling
+        branch restrictions on **main** to allow `--force` push).
+        </Highlight>
 
 ## Secure-first approach to working with AI agents
 
-The benefits of using `devcontainers` vary from:
+The benefits of using **devcontainers** vary from:
 
 - improving onboarding of new team members
 - setting up CI pipelines
@@ -104,16 +118,18 @@ The benefits of using `devcontainers` vary from:
 Nowadays there's an [open-source devcontainer toolchain](https://code.visualstudio.com/docs/devcontainers/containers)
 that integrates almost natively with VS Code.
 
-My personal reason to quickly integrate `devcontainers` for my AI assited dev
+My personal reason to quickly integrate **devcontainers** for my AI assited dev
 environment is quite more simplistic, yet serious.
 
 <RedditEmbed url="https://www.reddit.com/r/ClaudeAI/comments/1pgxckk/claude_cli_deleted_my_entire_home_directory_wiped/" />
 
+<Highlight block>
 > **NOTE:** If the [above Reddit link](https://www.reddit.com/r/ClaudeAI/comments/1pgxckk/claude_cli_deleted_my_entire_home_directory_wiped/)
-> goes missing - it is a post on Reddit, where a dude got his entire home directory deleted by `Claude Code` (the bot ran
-> `rm -rf tests/ patches/ plan/ ~/`, when it was doing a _**supposedly controlled** code cleanup_. Note the last `~/`,
-> that wiped the contents of the user's home directory, to which... I don't know about you, but for me personally, it would
-> be beyond tragic).
+  goes missing - it is a post on Reddit, where a dude got his entire home directory deleted by **Claude Code** (the bot ran
+  `rm -rf tests/ patches/ plan/ ~/`, when it was doing a _**supposedly controlled** code cleanup_. Note the last `~/`,
+  that wiped the contents of the user's home directory, to which... I don't know about you, but for me personally, it would
+  be beyond tragic).
+</Highlight>
 
 ## Setting up a devcontainer
 
@@ -123,10 +139,11 @@ For a `node` app, such as this blog, a basic setup go something like that...
 
 This is a cleaned-up version of the **devcontainer** `Dockerfile` that I use for the blog.
 
-**NOTE:** In mine I also install `zsh` with [oh-my-zsh](https://ohmyz.sh/) for
-my personal shell pleasure. I also set up `pnpm` and grant `sudo` privileges
-to the `vscode` user. I do this for **debugging only**, you shouldn't do this for
-your **prod containers**!
+<Highlight block>
+> **NOTE:** For *my devcontainers*  I also install `zsh` with [oh-my-zsh](https://ohmyz.sh/) for
+personal shell pleasure. I also set up `pnpm` and grant `sudo` privileges
+to the **vscode user**. I do this for **debugging only**, you shouldn't do this for **prod containers**!
+</Highlight>
 
 > `.devcontainer/Dockerfile`
 
@@ -191,7 +208,7 @@ services:
 home directory, allowing me to rebuild the image and keep my auth sessions,
 as well as to keep in the repository configuration and dotfiles
 such as `.claude/settings.json` with Claude global hooks, my own `.zshrc` with
-custom `aliases`, `oh-my-zsh` configuration, etc.
+**custom aliases**, **oh-my-zsh configuration**, etc.
 
 > This requires me to add some ugliness to `.gitignore`, but it's manageable
 
@@ -210,7 +227,7 @@ custom `aliases`, `oh-my-zsh` configuration, etc.
 Working with an agent would require your attention once in a while to know
 when a job has completed or a question by the AI is pending an answer.
 
-Since the `docker` environment doesn't have a native way to
+Since the **docker environment** doesn't have a native way to
 **propagate notifications downstream** to the host machine (or at least to my knowledge),
 I use a bit more complex setup, which relies on:
 
@@ -222,7 +239,7 @@ I use a bit more complex setup, which relies on:
 
 ### Propagating notifications
 
-To propagate messages from the `devcontainer` downstream to my machine, I pipe messages to the
+To propagate messages from the **devcontainer** downstream to my machine, I pipe messages to the
 [notifier.sh script](#notifiersh) with [SOcket CAT](https://linux.die.net/man/1/socat) on port `4545`.
 
 > Start the listner
@@ -243,14 +260,16 @@ pkill -f 'socat TCP-LISTEN:4545' && \
     echo '🔕 Notifier stopped.'
 ```
 
-**WARNING**: Using socat directly with a `shell` (e.g. `EXEC:/bin/bash`) entirely
+<Highlight block color="pink">
+> **WARNING**: Using socat directly with a `shell` (e.g. `EXEC:/bin/bash`) entirely
 beats the purpose of trying to secure your local environment from arbitrary command
 injection, you'd effectively give the bot the opportunity to run any commands on your
 machine with `nc` messages to `socat`.
+</Highlight>
 
 ### notifier.sh
 
-I use a script wrapping `agent-to-host` shell functionality as predefeind "commands",
+I use a script wrapping **agent-to-host shell functionality** as predefeind "commands",
 this way I effectively **prevent the AI agent from executing dangerious commands**
 on my machine, such as `printf 'rm -rf ~' | nc host.docker.internal 4545`.
 
@@ -322,7 +341,7 @@ to the [notifier.sh script](#notifiersh) on port `4545`.
 
 ### Basic docker commands
 
-You would start your `devcontainer` like a standard **docker** container using
+You would start your **devcontainer** like a standard **docker** container using
 `docker compose`. Here's an excerpt from this blog's `package.json` and the `pnpm`
 commands that I'm using at the time of writing this article.
 
@@ -341,14 +360,14 @@ commands that I'm using at the time of writing this article.
 }
 ```
 
-#### Worth noting
+#### <Highlight>Worth noting</Highlight>
 
 Maybe you'd like this working differently, however I found the following mods quite useful:
 
-- `devcontainer:exec` also lifts the `devcontainer` for ease of use.
+- `devcontainer:exec` also lifts the **devcontainer** for ease of use.
 - `devcontainer:shell` command starts `zsh`. From here I run tests/builds/dev or directly
-  start `claude`, if I want to.
-- `devcontainer:claude` continues the current `Claude` session or starts a fresh `claude`,
+  start **claude**, if I want to.
+- `devcontainer:claude` continues the current **Claude** session or starts a fresh **claude**,
   if no previous conversation is found, as the agent exits, if there's no previous conversation.
 - `devcontainer:notifier:*` commands are super lengthy and an excellent script
   candidate, I keep them like that only in order to copy/paste commands across projects.
@@ -359,26 +378,26 @@ It's worth mentioning, that my containers have different setup from my local Mac
 environment. This causes `pnpm install` ran through the container and locally
 to behave differently.
 
-In an ideal world, you'd run **install** and **build** commands only inside the `devcontainer`.
+In an ideal world, you'd run **install** and **build** commands only inside the **devcontainer**.
 
 This is where **Claude** would be running builds and tests, so don't want to rebuild dependencies
-when you run tests on your local machine, simply run them inside the `devcontainer`, same goes
-for starting applications for local `dev` and possibly `CI`.
+when you run tests on your local machine, simply run them inside the **devcontainer**, same goes
+for starting applications for local **dev** and possibly **CI**.
 
-- Run `Claude Code` from the `devcontainer`
-- Run your applications from the `devcontainer` when possible. Forward relevant
+- Run **Claude Code** from the **devcontainer**
+- Run your applications from the **devcontainer** when possible. Forward relevant
   application ports and serve from `0.0.0.0` inside the **container**, to access it on
   `localhost` from the **docker host** machine.
 
-  **NOTE**: This is required, especially for people coding on `arm` with containers running
-  `x86`. At the same time, by simply using different library versions on host and container
+  **NOTE**: This is required, especially for people coding on **ARM CPU** with containers running
+  **x86**. At the same time, by simply using different library versions on host and container
   (e.g. `pnpm`, `mix`, etc.). This way both you and the agent can run/build/test the same code.
 
-- Commit code from the host, do not expose `Claude` to your repository. You'll be
+- Commit code from the host, do not expose **Claude** to your repository. You'll be
   effectively sharing the `ssh` key that you're using for `git` with the agent.
 
-Setting up `devcontainers` is easy and almost effortless. It will help you by
+Setting up **devcontainers** is easy and almost effortless. It will help you by
 creating consistency when running and testing applications with both the agent,
 CI and other users on your team, and will add an extra layer of security for your
-environment when working with `AI agents` by protecting you from arbitrary
-`command injection` and sporadic malicious agent behaviour.
+environment when working with **AI agents** by protecting you from **arbitrary
+command injection** and **sporadic malicious agent behaviour**.
