@@ -37,6 +37,7 @@
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
+    "@storybook/addon-docs": "^10.1.11",
     "@storybook/html": "^10.1.11",
     "@storybook/html-vite": "^10.1.11",
     "@typescript-eslint/eslint-plugin": "^8.48.0",
@@ -50,6 +51,7 @@
     "prettier": "^3.7.3",
     "prettier-plugin-astro": "^0.14.1",
     "storybook": "^10.1.11",
+    "storybook-astro": "^0.1.0",
     "vitest": "^4.0.16"
   },
   "lint-staged": {

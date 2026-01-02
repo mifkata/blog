@@ -3,7 +3,8 @@ Astro.build app
 # Sepcs
 
 - `specs/**/*.md`
-- when working with specs, consider `/spec-create` `/spec-refine` `/spec-apply` `/spec-verify` `/spec-compact` commands
+- spec cmds (each accepts `[arg]` that searches in `./specs`): `/spec-create` `/spec-refine` `/spec-apply` `/spec-verify` `/spec-compact`
+- when cmd is called without arg, assume last used spec
 
 # Tests
 

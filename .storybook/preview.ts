@@ -1,9 +1,5 @@
 import type { Preview } from "@storybook/html";
-import "../src/styles/global.css";
-import { initToggle } from "../src/components/post/GithubLink/toggle";
-
-// Initialize Astro component scripts (not executed by storybook-astro)
-initToggle();
+import "@/styles/global.css";
 
 const preview: Preview = {
   parameters: {

@@ -1,85 +1,59 @@
-import type { Meta, StoryObj } from "@storybook/html";
+import type { Meta, StoryObj } from "storybook-astro";
+import LabeledImage from "./LabeledImage.astro";
+import { setupImageModals } from "./imageModal";
 
-interface LabeledImageProps {
-  src: string;
-  alt: string;
-  caption: string;
-  width: number;
-}
+// Mock ImageMetadata - the mock Image component handles this
+const createMockImage = (url: string, width: number, height: number) => ({
+  src: url,
+  width,
+  height,
+  format: "png" as const,
+});
 
-const createLabeledImage = (args: LabeledImageProps): string => {
-  return `
-    <figure style="margin: 1.5rem 0; padding: 0;">
-      <img
-        src="${args.src}"
-        alt="${args.alt}"
-        width="${args.width}"
-        style="display: block; margin: 0 auto; border-radius: 0.5rem; cursor: zoom-in;"
-      />
-      <figcaption style="text-align: center; font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem; font-style: italic;">
-        ${args.caption}
-      </figcaption>
-    </figure>
-  `;
-};
-
-const meta: Meta<LabeledImageProps> = {
-  title: "Components/LabeledImage",
-  render: (args) => createLabeledImage(args),
+const meta: Meta<typeof LabeledImage> = {
+  title: "Post/LabeledImage",
+  component: LabeledImage,
+  tags: ["autodocs"],
   argTypes: {
-    src: { control: "text" },
     alt: { control: "text" },
-    caption: { control: "text" },
     width: { control: "number" },
   },
+  decorators: [
+    (storyFn) => {
+      const result = storyFn();
+      setTimeout(setupImageModals, 0);
+      return result;
+    },
+  ],
 };
 
 export default meta;
-type Story = StoryObj<LabeledImageProps>;
+type Story = StoryObj<typeof LabeledImage>;
 
 export const Default: Story = {
   args: {
-    src: "https://picsum.photos/800/400",
+    src: createMockImage("https://picsum.photos/800/400", 800, 400),
     alt: "A sample image",
-    caption: "Figure 1: A beautiful landscape photograph",
-    width: 800,
+    slots: { default: "Figure 1: A beautiful landscape photograph" },
   },
 };
 
 export const WithLink: Story = {
   args: {
-    src: "https://picsum.photos/801/400",
+    src: createMockImage("https://picsum.photos/801/400", 801, 400),
     alt: "Screenshot of a website",
-    caption:
-      'Screenshot from <a href="https://astro.build" style="color: #f97316;">Astro.build</a>',
-    width: 800,
+    slots: {
+      default:
+        'Screenshot from <a href="https://astro.build" class="text-accent">Astro.build</a>',
+    },
   },
 };
 
 export const NarrowWidth: Story = {
   args: {
-    src: "https://picsum.photos/400/300",
+    src: createMockImage("https://picsum.photos/400/300", 400, 300),
     alt: "A smaller image",
-    caption: "A smaller, centered image",
     width: 400,
+    slots: { default: "A smaller, centered image" },
   },
-};
-
-export const MultipleImages: Story = {
-  render: () => `
-    <div>
-      ${createLabeledImage({
-        src: "https://picsum.photos/802/400",
-        alt: "First image",
-        caption: "Figure 1: Before the change",
-        width: 600,
-      })}
-      ${createLabeledImage({
-        src: "https://picsum.photos/803/400",
-        alt: "Second image",
-        caption: "Figure 2: After the change",
-        width: 600,
-      })}
-    </div>
-  `,
 };
