@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from "storybook-astro";
-import GithubLink from "./GithubLink.astro";
-import { initToggle } from "./toggle";
+import type { Meta, StoryObj } from "@storybook/react";
+import GithubLink from "./GithubLinkReact";
 
 const meta: Meta<typeof GithubLink> = {
   title: "Post/GithubLink",
@@ -15,14 +14,11 @@ const meta: Meta<typeof GithubLink> = {
       control: "boolean",
       description: "Show preview expanded by default (files only)",
     },
-  },
-  decorators: [
-    (storyFn) => {
-      const result = storyFn();
-      setTimeout(initToggle, 0);
-      return result;
+    maxHeight: {
+      control: "number",
+      description: "Maximum height for iframe in pixels",
     },
-  ],
+  },
 };
 
 export default meta;
@@ -31,21 +27,21 @@ type Story = StoryObj<typeof GithubLink>;
 export const Repository: Story = {
   args: {
     url: "https://github.com/mifkata/blog",
-    slots: { default: "Personal blog built with Astro" },
+    children: "Personal blog built with Astro",
   },
 };
 
 export const Directory: Story = {
   args: {
     url: "https://github.com/mifkata/blog/tree/main/src",
-    slots: { default: "Source code directory" },
+    children: "Source code directory",
   },
 };
 
 export const CodeFile: Story = {
   args: {
     url: "https://github.com/mifkata/blog/blob/main/src/content.config.ts",
-    slots: { default: "Code file" },
+    children: "Code file",
   },
 };
 
@@ -53,6 +49,14 @@ export const CodeFileExpanded: Story = {
   args: {
     url: "https://github.com/mifkata/blog/blob/main/src/content.config.ts",
     expanded: true,
+  },
+};
+
+export const CodeFileWithMaxHeight: Story = {
+  args: {
+    url: "https://github.com/mifkata/blog/blob/main/src/content.config.ts",
+    expanded: true,
+    maxHeight: 200,
   },
 };
 
