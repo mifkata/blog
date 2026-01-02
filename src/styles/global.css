@@ -139,7 +139,7 @@ p {
 }
 
 .prose h3 {
-  @apply uppercase tracking-wide;
+  @apply text-[1.6rem] py-2 text-accent tracking-wide;
 }
 
 img {
