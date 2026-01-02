@@ -1,0 +1,25 @@
+---
+interface Props {
+  src: any;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: "lazy" | "eager";
+  [key: string]: any;
+}
+
+const { src, alt, width, height, class: className, ...rest } = Astro.props;
+
+// Handle ImageMetadata (has .src property) or string URLs
+const imgSrc = typeof src === "object" && src?.src ? src.src : src;
+---
+
+<img
+  src={imgSrc}
+  alt={alt}
+  width={width}
+  height={height}
+  class={className}
+  {...rest}
+/>

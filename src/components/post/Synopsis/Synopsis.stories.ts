@@ -1,43 +1,17 @@
-import type { Meta, StoryObj } from "@storybook/html";
+import type { Meta, StoryObj } from "storybook-astro";
+import Synopsis from "./Synopsis.astro";
 
-interface SynopsisProps {
-  text: string;
-}
-
-function parseInlineMarkdown(input: string): string {
-  return input
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/__(.+?)__/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/_(.+?)_/g, "<em>$1</em>")
-    .replace(/`([^`]+)`/g, "<code>$1</code>");
-}
-
-function parseMarkdown(input: string): string {
-  if (!input) return "";
-  const paragraphs = input
-    .split(/\n\s*\n/)
-    .map((p) => p.trim())
-    .filter(Boolean);
-  return paragraphs.map((p) => `<p>${parseInlineMarkdown(p)}</p>`).join("");
-}
-
-const createSynopsis = (args: SynopsisProps): string => {
-  const html = parseMarkdown(args.text);
-  return `<div>${html}</div>`;
-};
-
-const meta: Meta<SynopsisProps> = {
-  title: "Components/Synopsis",
-  render: (args) => createSynopsis(args),
+const meta: Meta<typeof Synopsis> = {
+  title: "Post/Synopsis",
+  component: Synopsis,
+  tags: ["autodocs"],
   argTypes: {
     text: { control: "text" },
   },
 };
 
 export default meta;
-type Story = StoryObj<SynopsisProps>;
+type Story = StoryObj<typeof Synopsis>;
 
 export const PlainText: Story = {
   args: {

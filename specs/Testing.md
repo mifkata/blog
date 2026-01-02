@@ -28,7 +28,9 @@ Co-locate: `<Component>.test.tsx`. Test: props, clicks, conditionals, callbacks.
 
 ## Storybook
 
-`<Component>.stories.tsx`. Document: all props, states, themes, edge cases.
+`<Component>.stories.tsx`. Document: all props, states, themes, edge cases. Compact
+similar stories into one with controls. Add `tags: ["autodocs"]`. Inject runtime JS
+using story `decorators`.
 
 ## Commands
 

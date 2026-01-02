@@ -23,6 +23,14 @@
     "title": "Dev Containers",
     "description": "Development containers, VS Code remote development, and containerized dev environments."
   },
+  "devex": {
+    "title": "Developer Experience",
+    "description": "Posts about improving developer experience, tooling, and workflows."
+  },
+  "howto": {
+    "title": "How-To",
+    "description": "Step-by-step guides and tutorials."
+  },
   "productivity": {
     "title": "Productivity",
     "description": "Tips and insights on improving workflow and getting things done."

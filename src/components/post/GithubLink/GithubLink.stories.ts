@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "storybook-astro";
 import GithubLink from "./GithubLink.astro";
+import { initToggle } from "./toggle";
 
 const meta: Meta<typeof GithubLink> = {
   title: "Post/GithubLink",
   component: GithubLink,
+  tags: ["autodocs"],
   argTypes: {
     url: {
       control: "text",
@@ -14,6 +16,13 @@ const meta: Meta<typeof GithubLink> = {
       description: "Show preview expanded by default (files only)",
     },
   },
+  decorators: [
+    (storyFn) => {
+      const result = storyFn();
+      setTimeout(initToggle, 0);
+      return result;
+    },
+  ],
 };
 
 export default meta;
