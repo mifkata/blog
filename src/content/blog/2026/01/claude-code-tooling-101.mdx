@@ -1,0 +1,330 @@
+---
+title: Claude Code Tooling 101
+description: Best practices for organising Claude Code commands and CLAUDE.md
+synopsis:
+  Starting a new codebase with Claude Code or another AI coding agent, requires a lot
+  of fine tuning to make long-term, production ready code development consistent.
+
+
+  The main entry points for day-to-day interactions with an agent within a project
+  are `CLAUDE.md` and custom bot commands. In combination with specs, these
+  become the bread and butter of your daily coding activities.
+pubDate: "2026-01-01T17:15:00Z"
+heroImage: "@/assets/blog/2026/0101-ai-agent-tooling-101.png"
+tags: ["ai", "coding", "claude", "devex", "howto"]
+---
+
+import Highlight from "@/components/post/Highlight/Highlight.astro";
+import GithubLink from "@/components/post/GithubLink/GithubLink.astro";
+
+## Intro
+
+After setting up your [devcontainer](/blog/2025/weapons-of-choice-avoiding-malicious-ai-behaviour/)
+the next obvious step is to configure **the reusable prompts** for your steady, production-ready
+software development cycle using Claude Code. These reusable prompts, are the core of your
+**Claude toolkit**, so maintain them well:
+
+- **CLAUDE.md** - this is the primary instruction set that a **Claude agent instance**
+  would load when started and after `/compact` completes. This is where you want to put as much nifty
+  instructions that the bot works with your codebase. Having it and
+  configured might seriously benefit _**token usage**_ and reduce agent _**planning time**_.
+  Maitaining an efficient `CLUDE.md` can be considered an art form of its own.
+- **Slash-commands** - a collection of reusable prompts that will help you trigger
+  repetitive actions, whilst working on a project. Whilst there's a case to be made
+  about the benefits of global **Claude** commands, we're talking about these that you put
+  in your repository's `.claude/commands` directory.
+
+<Highlight block>
+    > **Plug-ins:** there are many available open-source and as of recently
+    [official Anthropic](https://github.com/anthropics/claude-code/tree/main/plugins)
+    Claude Code marketplace. Ultimately the goal is to achieve the perfect **devex**
+    for you. So feel free to explore. Marketplaces and plugins in **Claude CLI** are managed with
+    the `/plugins` command.
+</Highlight>
+
+In accordance to [Anthropic's official best practices guide](https://www.anthropic.com/engineering/claude-code-best-practices)
+the most common things to put in a `CLAUDE.md` file would include:
+
+- Common bash commands
+- Core files and utility functions
+- Code style guidelines
+- Testing instructions
+- Repository etiquette (e.g., branch naming, merge vs. rebase, etc.)
+- Developer environment setup (e.g., pyenv use, which compilers work)
+- Any unexpected behaviors or warnings particular to the project
+- Other information you want Claude to remember
+
+## Configuring CLAUDE.md
+
+Setting up `CLAUDE.md` is almost certainly very project specific, this means,
+unless you're reusing an existing boilerplate, you could in practice reuse
+an existing `CLAUDE.md` that is to your liking (and maybe clean it up a little
+bit to match this particular project with no overhead).
+
+<GithubLink url="https://github.com/mifkata/blog/blob/main/CLAUDE.md">
+  Check out the **mifkata.com**'s `CLAUDE.md` on GitHub
+</GithubLink>
+
+However, when **starting a new Claude Code project** would assume that you
+have to build your codebase first, before you actually specify it.
+
+Optionally, nowadays, a lot of generators that are built around specific frameworks
+would provide an `AGENTS.md` that can be borrowed as a starting point. For example,
+the **Phoenix Elixir framework**'s generator `mix phx.new` provides such a file
+with instructions on coding specific features.
+
+<Highlight block color="green">
+    > Even though it's suggested that `CLAUDE.md` is **human-readable**, ultimately, it's
+    going to be read by the agent, so most of all, it should be **agent-readable**.
+    In practice, asking your agent to compact an AI friendly version of `CLAUDE.md` 
+    with minimal amount of tokens, might produce significantly smaller instruction.
+    In addition, I compact both commands and specs, and in fact anything else which
+    I consider AI agent instructions.
+</Highlight>
+
+## Claude Code slash-commands
+
+<GithubLink url="https://github.com/mifkata/blog/tree/main/.claude/commands">
+  This blog's **slash-commands**.
+</GithubLink>
+
+### Managing your workflow
+
+The slash-commands are my bread and butter when working with **Claude Code** on a
+daily basis. Even though a lot of the time I work on distrinctful parts of a
+software suite, the things that I do are very repetitive. Here's an example workflow:
+
+1. Create a spec
+2. Implement a spec
+3. Cover spec with tests, stories, etc
+4. (Often) Refactor the codebase to make use of the new spec
+5. Commit changes
+
+As you can see, a lot of my work is related to **specs**, this is because I keep
+the requirements, as specs in the code.
+
+<GithubLink url="https://github.com/mifkata/blog/blob/main/specs/components/post/GithubLink.md">
+    Here's an example of a **compact, AI-friendly tech spec** for the `<GithubLink >` component,
+    that it rendering this section 😜 The spec itself is also generated with **Claude**.
+</GithubLink>
+
+### Creating new slash commands
+
+Following the rule of thumb, that **code/prompts designated for agents,
+should be written by agents**. Here's an example conversation with Claude Code
+about creating a new `/commit-message` slash command:
+
+```
+Create a new command /commit-message that goes and checks all
+staged diffs and generates a commit message using Conventional
+Commits. Keep the messages tight, omit references to
+author/generator, compact the command to be AI-friendly with
+minimal token usage
+```
+
+<Highlight block>
+    > **NOTE:** You could have command generation instructions in `CLAUDE.md` or
+    a command called `/command-create` that optimises the instructions when
+    creating new commands. I'm trying to make a note, that explicit requirements,
+    would yield better prompts. Ultimately, that's what a **slash-command is:
+    a chat prompt**.
+</Highlight>
+
+The agent would produce some code, I'd review it and modify it and when happy,
+I'd restart my **Claude Code** to load the new `/commit-message`. Here's the actual
+command from the blog's repository:
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/commit-message.md"
+/>
+
+<Highlight block>
+    > **NOTE:** Updating/adding a command requires a restart. Commands
+    like specs and CLAUDE.md are ever evolving.
+</Highlight>
+
+## Commands: Specs
+
+These are the most important commands for day-to-day development.
+There are various toolits out there for managing specs, I use my
+own commands to stay more flexible, plus in multiple cases, these
+vary slightly from project to project.
+
+### /spec-create
+
+I would init new specs with this command.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/spec-create.md"
+/>
+
+### /spec-update
+
+I use this to keep the spec language compact and optimal, but sometimes I'd go
+and update the spec manually, then call `/spec-apply` or `/spec-verify`.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/spec-update.md"
+/>
+
+### /spec-refine
+
+Not a silver bullet by long shot, but if you keep finding common points of optimisation
+that can apply to any and every spec, you can declare it in here. For example, we could
+suggest looking for ways to improve security, performance, decoupling, modularity, etc.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/spec-refine.md"
+/>
+
+### /spec-apply
+
+I call this after a spec is ready to implement. Sometimes when I have modified both
+**specs** and **code**, I'd run `/spec-verify` instead.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/spec-apply.md"
+/>
+
+### /spec-verify
+
+This command goes and reads both specs and related code and creates a
+diff table with the option to sync spec to code or code to spec.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/spec-verify.md"
+/>
+
+### /spec-refactor
+
+This command goes and reads a spec and finds places in the code, which
+can be refactored to implement the spec. For example, you just created
+a `<Label />` component, and you want it to be used instead of `<label>`
+to keep the styles in the codebase consistent with a single source of truth.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/spec-refactor.md"
+/>
+
+### /spec-compact
+
+This command is used by others such as `/spec-create`, but also is very nifty,
+when the **agent forgets instructions** in the process of **compacting its context**.
+In many cases I get more expressive specs and these need to be compacted. Not
+just for sake of token compaction, but also template modeling, the bot might generate
+the next one, as explicitly as this one.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/spec-compact.md"
+/>
+
+<Highlight block color="green">
+    > **Not just for specs:** In many cases I would call `/spec-compact [filname]`
+    to compact `CLAUDE.md` or a **slash-command** and even tho the command is scoped
+    to the files in `spec/**/*.md`, **Claude Code** would handle my instruction seamlessly.
+</Highlight>
+
+## Commands: Testing
+
+### /test-create
+
+Testing each application is different, so I have an evolving **testing spec** for each
+different tech stack, being it a **web-based frontend application**, an **Elixir backend**,
+**a service written in Rust**. We can safely assume that different tech stacks/apps, have
+different testing instructions, as they would have different implementation specs.
+
+In the case of my blog, there's a single application that requires a certain form of
+code coverage, which is described in `specs/Testing.md`.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/test-create.md"
+/>
+
+> `specs/Testing.md`
+
+<GithubLink url="https://github.com/mifkata/blog/blob/main/specs/Testing.md" />
+
+### /test-[app]
+
+When your project grows, it helps to create a custom `/test-[app]` command, that works like
+`/test-create`, but is scoped to tests about a specific application. I find it quite useful
+to be able to reduce the diff size, when working on a **larger feature spec**, which affects
+multiple applications (both backend and frontend). In this case, I have coverage implemented
+on an app basis, so I can keep an eye on what's going on.
+
+## Commands: Git
+
+### /commit-message
+
+Analyses the current staged diff and generates a **Conventional commit message** with
+meta information covering all staged changes.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/commit-message.md"
+/>
+
+### /commit-staged
+
+Uses `/commit-message` to generate the message, asks for confirmation and commits. Requires
+that `git config --global user.name [name]` and `git config --global user.email [name]` are
+configured at least once in the container.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/commit-staged.md"
+/>
+
+## Commands: Generators
+
+I don't recommend using AI to **scaffold code** for you, from my point of view, that's
+a waste of tokens and computation time. However, there're cases where you want the agent
+to generate code for you (and sometimes, we're just being lazy anyway).
+
+### /post-create
+
+An obvious example of a **super lazy code generator**. I intend to replace this with a
+proper scaffolding command, but will keep it for historical purposes.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/post-create.md"
+/>
+
+### /tags-update
+
+The landing pages for tags, such as the [ai tags page](https://mifkata.com/tags/ai/)
+have custom title and description and I save them in [src/data/tags.json](https://github.com/mifkata/blog/blob/main/src/data/tags.json)
+inside my repository. Because I'll add new tags and I'm either too lazy or forget to
+update the list, I simply run `/tags-update` and **Claude** does the job for me.
+
+You can imagine that with hundreds of entries this can be a very slow and token consuming
+task, so consider this when creating and running pure content generators like this.
+
+<GithubLink
+  expanded
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/tags-update.md"
+/>
+
+## Final thoughts
+
+The more I work with **Claude Code**, the more projects I start. Keeping **chaos to
+the minimum** is very key in long-term development, as agents are capable of producing
+ridiculous amounts of code and the same time **technocal debt** and keeping your
+workflow tidy and in order is the most important part of the job.
+
+Organise your `CLAUDE.md` and **slash-commands** and improve them as you go. Thus
+far, I'm yet to see a framework that is an ultimate solution, a silver-bullet for
+maging your homegrown dev environment.
+
+However, if you do find a replacement toolkit, please let me know in the comments.
+Happy coding!
