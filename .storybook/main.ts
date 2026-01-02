@@ -26,6 +26,10 @@ const config: StorybookConfig = {
           "@": resolve(__dirname, "../src"),
           cssesc: resolve(__dirname, "patches/cssesc.mjs"),
           "astro:assets": resolve(__dirname, "mocks/astro-assets.ts"),
+          "astro:scripts/before-hydration.js": resolve(
+            __dirname,
+            "mocks/astro-scripts.ts",
+          ),
         },
       },
     };
