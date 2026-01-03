@@ -1,0 +1,34 @@
+---
+import { getSeriesWithPosts } from "@/helpers/series";
+
+interface Props {
+  slug: string;
+  current?: string;
+  open?: boolean;
+}
+
+const { slug, current, open = false } = Astro.props;
+const { items, title, description } = await getSeriesWithPosts(slug);
+---
+
+{
+  items.length && (
+    <details class="my-4" open={open}>
+      <summary class="cursor-pointer font-semibold text-accent hover:text-accent-dark">
+        {title}
+      </summary>
+      {description}
+      <ol class="mt-2 ml-6 list-decimal">
+        {items.map(({ id, url, title }) =>
+          current === url || current == id ? (
+            <li class="font-bold">{title}</li>
+          ) : (
+            <li>
+              <a href={url}>{title}</a>
+            </li>
+          ),
+        )}
+      </ol>
+    </details>
+  )
+}
