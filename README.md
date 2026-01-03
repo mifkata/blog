@@ -126,10 +126,9 @@ Claude Code commands for this project. Run with `/command-name` in Claude Code.
 
 ### Git
 
-| Command           | Description                                  |
-| :---------------- | :------------------------------------------- |
-| `/commit-message` | Suggest commit message for staged changes    |
-| `/commit-staged`  | Commit staged changes with generated message |
+| Command          | Description                                  |
+| :--------------- | :------------------------------------------- |
+| `/commit-staged` | Commit staged changes with generated message |
 
 > **Note:** `/commit-staged` requires git config in the container:
 >

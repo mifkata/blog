@@ -16,7 +16,7 @@ type Story = StoryObj<typeof ClaudeCommand>;
 
 export const Internal: Story = {
   args: {
-    name: "commit-message",
+    name: "commit-staged",
   },
 };
 

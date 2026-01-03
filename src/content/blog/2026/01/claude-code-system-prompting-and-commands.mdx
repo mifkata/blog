@@ -20,7 +20,7 @@ import ClaudeCommand from "@/components/post/ClaudeCommand/ClaudeCommand.astro";
 
 ## Intro
 
-After setting up your [devcontainer](/blog/2025/weapons-of-choice-avoiding-malicious-ai-behaviour/)
+After setting up your [devcontainer](/blog/2025/claude-code-devcontainers/)
 the next obvious step is to configure **the reusable prompts** for your steady, production-ready
 software development cycle using Claude Code. These reusable prompts, are the core of your
 **Claude toolkit**, so maintain them well:
@@ -113,7 +113,7 @@ the requirements, as specs in the code.
 
 Following the rule of thumb, that **code/prompts designated for agents,
 should be written by agents**. Here's an example conversation with Claude Code
-about creating a new <ClaudeCommand name="commit-message" /> slash command:
+about creating a new `/commit-message` slash command:
 
 ```
 Create a new command /commit-message that goes and checks all
@@ -129,15 +129,19 @@ minimal token usage
     creating new commands. I'm trying to make a note, that explicit requirements,
     would yield better prompts. Ultimately, that's what a **slash-command is:
     a chat prompt**.
+
+    > **EDIT:** Since recently, `/commit-message` was renamed to
+    `/commit-staged` with additional to **no-author footer** instruction
+    defined for commit messages in `CLAUDE.md`.
 </Highlight>
 
 The agent would produce some code, I'd review it and modify it and when happy,
-I'd restart my **Claude Code** to load the new <ClaudeCommand name="commit-message" />. Here's the actual
+I'd restart my **Claude Code** to load the new <ClaudeCommand name="commit-staged" />. Here's the actual
 command from the blog's repository:
 
 <GithubLink
   expanded
-  url="https://github.com/mifkata/blog/blob/main/.claude/commands/commit-message.md"
+  url="https://github.com/mifkata/blog/blob/main/.claude/commands/commit-staged.md"
 />
 
 <Highlight block>
@@ -264,21 +268,11 @@ on an app basis, so I can keep an eye on what's going on.
 
 ## Commands: Git
 
-### /commit-message
-
-Analyses the current staged diff and generates a **Conventional commit message** with
-meta information covering all staged changes.
-
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/.claude/commands/commit-message.md"
-/>
-
 ### /commit-staged
 
-Uses <ClaudeCommand name="commit-message" /> to generate the message, asks for confirmation and commits. Requires
+Uses <ClaudeCommand name="commit-staged" /> to generate the message, asks for confirmation and commits. Requires
 that `git config --global user.name [name]` and `git config --global user.email [name]` are
-configured at least once in the container.
+configured in the [devcontainer](/blog/2025/claude-code-devcontainers/).
 
 <GithubLink
   expanded
