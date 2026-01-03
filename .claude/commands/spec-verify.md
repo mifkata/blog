@@ -1,5 +1,5 @@
 - Verify `specs/$ARG.md` against implementation
-- $ARG == "all" → verify all specs
+- $ARG == "all" → verify all specs; never assume "all", unless explicit
 
 Report: ✅ correct | ⚠️ differs | ❌ missing
 

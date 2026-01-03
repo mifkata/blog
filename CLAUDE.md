@@ -6,9 +6,9 @@ Astro.build app
 
 # Commands
 
-`/spec-create`, `/spec-update`, `/spec-refine`, `/spec-apply`, `/spec-verify`, `/spec-compact`, `/spec-refactor` — specs at `specs/[arg].md`
+`/spec-create`, `/spec-update`, `/spec-refine`, `/spec-apply`, `/spec-verify`, `/spec-compact`, `/spec-refactor` — specs at `specs/[arg].md`; if `[arg]` empty: use last spec
 `/post-create [slug]`, `/tags-update` — blog
-`/test-create [path]` — tests per `specs/Testing.md`
+`/test-create [path]` — tests per `specs/Testing.md`; if `[path]` empty: use last spec
 `/commit-staged`: do not add generator/co-author signature to messages
 
 - if `[arg]` empty: use last spec
