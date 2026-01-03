@@ -1,0 +1,196 @@
+---
+import { getSeriesWithPosts } from "@/helpers/series";
+import { Image } from "astro:assets";
+import Synopsis from "@/components/post/Synopsis/Synopsis.astro";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const series = await getSeriesWithPosts(slug);
+const gridCols = Math.min(series.items.length, 4);
+---
+
+<section class="max-w-[960px] mx-auto px-6 pb-12">
+  <div class="flex flex-col mb-4">
+    <h3 class="text-lg text-gray tracking-wider uppercase text-nowrap">
+      Featured Series:
+    </h3>
+    <h4 class="text-lg m-0 text-gray tracking-wider">
+      {series.title}
+    </h4>
+    <div class="flex-1 h-px bg-gray-light"></div>
+  </div>
+
+  <!-- Grid -->
+  <div
+    class:list={[
+      "flex flex-col md:grid gap-4 overflow-visible relative",
+      gridCols === 1 && "grid-cols-1",
+      gridCols === 2 && "grid-cols-2",
+      gridCols === 3 && "grid-cols-3",
+      gridCols >= 4 && "grid-cols-4",
+    ]}
+    id="series-grid"
+  >
+    {
+      series.items.map((item, index) => (
+        <button
+          type="button"
+          class="series-item w-full h-auto md:h-42 p-0 bg-white border border-gray-light rounded-lg hover:border-accent hover:shadow-lg transition-all text-left cursor-pointer"
+          data-index={index}
+          data-url={item.url}
+          data-title={item.title}
+          data-synopsis={item.data?.synopsis || ""}
+          data-date={
+            item.data?.updatedDate?.toISOString() ||
+            item.data?.pubDate?.toISOString() ||
+            ""
+          }
+        >
+          {item.data?.heroImage && (
+            <Image
+              src={item.data.heroImage}
+              alt={item.title}
+              class="series-image hidden md:block w-full min-h-32 rounded-t-lg transition-all duration-500"
+            />
+          )}
+          <div class="p-4 bg-white rounded-b-lg w-full">
+            <a href={item.url}>
+              <h4 class="m-0 text-[red]">{item.title}</h4>
+            </a>
+          </div>
+        </button>
+      ))
+    }
+  </div>
+
+  <!-- Active article details -->
+  <div
+    id="series-details"
+    class="mt-6 p-6 bg-white border border-gray-light rounded-lg"
+  >
+    {
+      series.items.map((item, index) => (
+        <div
+          class="series-synopsis hidden mb-3 leading-relaxed md:columns-2 gap-6"
+          data-index={index}
+        >
+          <Synopsis text={item.data?.synopsis} />
+        </div>
+      ))
+    }
+    <div class="flex items-center justify-between">
+      <p id="series-date" class="text-gray m-0 text-sm"></p>
+      <a
+        id="series-read-more"
+        href="#"
+        class="text-accent hover:text-accent-dark font-medium no-underline"
+      >
+        Read more →
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .series-item {
+    transition:
+      transform 0.5s ease,
+      border-color 0.3s,
+      box-shadow 0.3s;
+    transform-origin: top center;
+    overflow: hidden;
+    align-self: center;
+    transition: ease-in 0.3s;
+  }
+  .series-item.active {
+    border-color: var(--accent);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    transform: scale(1.15);
+    z-index: 10;
+    position: relative;
+    height: auto;
+  }
+  .series-image {
+    object-fit: cover;
+    transform: scale(3);
+  }
+  .series-item.active .series-image {
+    object-fit: cover;
+    transform: scale(1);
+  }
+</style>
+
+<script>
+  const ROTATE_INTERVAL = 5000;
+
+  function initGrid() {
+    const grid = document.getElementById("series-grid");
+    const items = grid?.querySelectorAll(
+      ".series-item",
+    ) as NodeListOf<HTMLElement>;
+    const synopsisEls = document.querySelectorAll(
+      ".series-synopsis",
+    ) as NodeListOf<HTMLElement>;
+    const dateEl = document.getElementById("series-date");
+    const readMoreEl = document.getElementById(
+      "series-read-more",
+    ) as HTMLAnchorElement;
+
+    if (!grid || !items.length || !synopsisEls.length || !dateEl || !readMoreEl)
+      return;
+
+    let currentIndex = 0;
+    let intervalId: number;
+
+    function selectItem(index: number) {
+      items.forEach((item, i) => {
+        item.classList.toggle("active", i === index);
+      });
+
+      synopsisEls.forEach((el) => {
+        el.classList.toggle("hidden", el.dataset.index !== String(index));
+      });
+
+      const item = items[index];
+      const url = item.dataset.url || "#";
+      readMoreEl!.href = url;
+
+      const dateStr = item.dataset.date;
+      if (dateStr) {
+        const date = new Date(dateStr);
+        dateEl!.textContent = `Last updated: ${date.toLocaleDateString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          },
+        )}`;
+      }
+
+      currentIndex = index;
+    }
+
+    function nextItem() {
+      const next = (currentIndex + 1) % items.length;
+      selectItem(next);
+    }
+
+    items.forEach((item, index) => {
+      item.addEventListener("click", () => {
+        clearInterval(intervalId);
+        selectItem(index);
+      });
+    });
+
+    // Initial selection (random) + start auto-rotate
+    selectItem(currentIndex);
+    intervalId = window.setInterval(nextItem, ROTATE_INTERVAL);
+  }
+
+  document.addEventListener("DOMContentLoaded", initGrid);
+  document.addEventListener("astro:page-load", initGrid);
+</script>

@@ -8,14 +8,14 @@ interface Props {
 }
 
 const { slug, current, open = false } = Astro.props;
-const { items, title, description } = await getSeriesWithPosts(slug);
+const { items, title, caption, description } = await getSeriesWithPosts(slug);
 ---
 
 {
   items.length && (
     <details class="my-4" open={open}>
       <summary class="cursor-pointer font-semibold text-accent hover:text-accent-dark">
-        {title}
+        {caption || title}
       </summary>
       {description}
       <ol class="mt-2 ml-6 list-decimal">
