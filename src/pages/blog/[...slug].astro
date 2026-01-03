@@ -31,7 +31,6 @@ const relatedPosts = allPosts
   })
   .filter((p) => p.matchCount > 0)
   .sort((a, b) => b.matchCount - a.matchCount)
-  .slice(0, 3)
   .map((p) => p.post);
 ---
 
