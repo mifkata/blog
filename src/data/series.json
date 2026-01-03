@@ -1,7 +1,8 @@
 [
   {
     "slug": "claude-code-setup-series",
-    "title": "This post is from the \"Claude Code Setup\" series",
+    "title": "Claude Code Setup",
+    "caption": "This post is from the \"Claude Code Setup\" series",
     "description": "A collection of articles focused on setting up dev environment, configuring commands and CLAUDE.md for a spec-driven development workflow.",
     "heroImage": "",
     "trim": "Claude Code: ",

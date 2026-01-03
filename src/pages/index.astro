@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import CurrentlyReading from "@/components/pages/home/CurrentlyReading/CurrentlyReading.astro";
-import FeaturedShowcase from "@/components/pages/home/FeaturedShowcase/FeaturedShowcase.astro";
+import FeaturedSeries from "@/components/pages/home/FeaturedSeries/FeaturedSeries.astro";
 import HomeHero from "@/components/pages/home/HomeHero/HomeHero.astro";
 import HomeTerminal from "@/components/pages/home/HomeTerminal/HomeTerminal.astro";
 import RecentPosts from "@/components/pages/home/RecentPosts/RecentPosts.astro";
@@ -11,15 +11,13 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-const latestPost = posts[0];
-const popularPost = posts[1];
 const recentPosts = posts.slice(0, 3);
 ---
 
 <PageLayout title={SITE_TITLE} description={SITE_DESCRIPTION} size="full">
   <HomeHero />
   <HomeTerminal />
-  <FeaturedShowcase latestPost={latestPost} popularPost={popularPost} />
+  <FeaturedSeries slug="claude-code-setup-series" />
   <RecentPosts posts={recentPosts} />
   <CurrentlyReading />
 </PageLayout>
