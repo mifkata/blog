@@ -16,6 +16,7 @@ tags: ["ai", "coding", "claude", "devex", "howto"]
 
 import Highlight from "@/components/post/Highlight/Highlight.astro";
 import GithubLink from "@/components/post/GithubLink/GithubLink.astro";
+import ClaudeCommand from "@/components/post/ClaudeCommand/ClaudeCommand.astro";
 
 ## Intro
 
@@ -25,7 +26,7 @@ software development cycle using Claude Code. These reusable prompts, are the co
 **Claude toolkit**, so maintain them well:
 
 - **CLAUDE.md** - this is the primary instruction set that a **Claude agent instance**
-  would load when started and after `/compact` completes. This is where you want to put as much nifty
+  would load when started and after <ClaudeCommand name="compact" external /> completes. This is where you want to put as much nifty
   instructions that the bot works with your codebase. Having it and
   configured might seriously benefit _**token usage**_ and reduce agent _**planning time**_.
   Maitaining an efficient `CLUDE.md` can be considered an art form of its own.
@@ -39,7 +40,7 @@ software development cycle using Claude Code. These reusable prompts, are the co
     [official Anthropic](https://github.com/anthropics/claude-code/tree/main/plugins)
     Claude Code marketplace. Ultimately the goal is to achieve the perfect **devex**
     for you. So feel free to explore. Marketplaces and plugins in **Claude CLI** are managed with
-    the `/plugins` command.
+    the <ClaudeCommand name="plugins" external /> command.
 </Highlight>
 
 In accordance to [Anthropic's official best practices guide](https://www.anthropic.com/engineering/claude-code-best-practices)
@@ -112,7 +113,7 @@ the requirements, as specs in the code.
 
 Following the rule of thumb, that **code/prompts designated for agents,
 should be written by agents**. Here's an example conversation with Claude Code
-about creating a new `/commit-message` slash command:
+about creating a new <ClaudeCommand name="commit-message" /> slash command:
 
 ```
 Create a new command /commit-message that goes and checks all
@@ -131,7 +132,7 @@ minimal token usage
 </Highlight>
 
 The agent would produce some code, I'd review it and modify it and when happy,
-I'd restart my **Claude Code** to load the new `/commit-message`. Here's the actual
+I'd restart my **Claude Code** to load the new <ClaudeCommand name="commit-message" />. Here's the actual
 command from the blog's repository:
 
 <GithubLink
@@ -163,7 +164,7 @@ I would init new specs with this command.
 ### /spec-update
 
 I use this to keep the spec language compact and optimal, but sometimes I'd go
-and update the spec manually, then call `/spec-apply` or `/spec-verify`.
+and update the spec manually, then call <ClaudeCommand name="spec-apply" /> or <ClaudeCommand name="spec-verify" />.
 
 <GithubLink
   expanded
@@ -184,7 +185,7 @@ suggest looking for ways to improve security, performance, decoupling, modularit
 ### /spec-apply
 
 I call this after a spec is ready to implement. Sometimes when I have modified both
-**specs** and **code**, I'd run `/spec-verify` instead.
+**specs** and **code**, I'd run <ClaudeCommand name="spec-verify" /> instead.
 
 <GithubLink
   expanded
@@ -215,7 +216,7 @@ to keep the styles in the codebase consistent with a single source of truth.
 
 ### /spec-compact
 
-This command is used by others such as `/spec-create`, but also is very nifty,
+This command is used by others such as <ClaudeCommand name="spec-create" />, but also is very nifty,
 when the **agent forgets instructions** in the process of **compacting its context**.
 In many cases I get more expressive specs and these need to be compacted. Not
 just for sake of token compaction, but also template modeling, the bot might generate
@@ -275,7 +276,7 @@ meta information covering all staged changes.
 
 ### /commit-staged
 
-Uses `/commit-message` to generate the message, asks for confirmation and commits. Requires
+Uses <ClaudeCommand name="commit-message" /> to generate the message, asks for confirmation and commits. Requires
 that `git config --global user.name [name]` and `git config --global user.email [name]` are
 configured at least once in the container.
 
@@ -305,7 +306,7 @@ proper scaffolding command, but will keep it for historical purposes.
 The landing pages for tags, such as the [ai tags page](https://mifkata.com/tags/ai/)
 have custom title and description and I save them in [src/data/tags.json](https://github.com/mifkata/blog/blob/main/src/data/tags.json)
 inside my repository. Because I'll add new tags and I'm either too lazy or forget to
-update the list, I simply run `/tags-update` and **Claude** does the job for me.
+update the list, I simply run <ClaudeCommand name="tags-update" /> and **Claude** does the job for me.
 
 You can imagine that with hundreds of entries this can be a very slow and token consuming
 task, so consider this when creating and running pure content generators like this.
