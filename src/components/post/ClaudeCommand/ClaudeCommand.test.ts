@@ -16,9 +16,9 @@ function getCommandTitle(name: string, external: boolean): string {
 describe("ClaudeCommand URL generation", () => {
   describe("internal commands", () => {
     it("generates GitHub URL for internal command", () => {
-      const url = getCommandUrl("commit-message", false);
+      const url = getCommandUrl("commit-staged", false);
       expect(url).toBe(
-        "https://github.com/mifkata/blog/blob/main/.claude/commands/commit-message.md",
+        "https://github.com/mifkata/blog/blob/main/.claude/commands/commit-staged.md",
       );
     });
 
@@ -30,9 +30,9 @@ describe("ClaudeCommand URL generation", () => {
     });
 
     it("generates title for internal command", () => {
-      const title = getCommandTitle("commit-message", false);
+      const title = getCommandTitle("commit-staged", false);
       expect(title).toBe(
-        "View the source for the /commit-message command on GitHub",
+        "View the source for the /commit-staged command on GitHub",
       );
     });
   });
