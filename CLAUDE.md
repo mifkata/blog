@@ -9,7 +9,7 @@ Astro.build app
 `/spec-create`, `/spec-update`, `/spec-refine`, `/spec-apply`, `/spec-verify`, `/spec-compact`, `/spec-refactor` — specs at `specs/[arg].md`
 `/post-create [slug]`, `/tags-update` — blog
 `/test-create [path]` — tests per `specs/Testing.md`
-`/commit-message`, `/commit-staged`: do not add generator/co-author signature to commit messages
+`/commit-staged`: do not add generator/co-author signature to messages
 
 - if `[arg]` empty: use last spec
 - when cmds modified: update `CLAUDE.md` + `README.md`
