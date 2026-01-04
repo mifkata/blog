@@ -1,7 +1,7 @@
 ---
 import { getSeriesWithPosts } from "@/helpers/series";
 import { Image } from "astro:assets";
-import Synopsis from "@/components/post/Synopsis/Synopsis.astro";
+import { Markdown } from "@/components/post/Markdown/Markdown";
 
 interface Props {
   slug: string;
@@ -27,10 +27,13 @@ const gridCols = Math.min(series.items.length, 4);
   <div
     class:list={[
       "flex flex-col md:grid gap-4 overflow-visible relative",
-      gridCols === 1 ? "md:grid-cols-1 min-h-128" : 
-      gridCols === 2 ? "md:grid-cols-2" : 
-      gridCols === 3 ? "md:grid-cols-3" :
-      "md:grid-cols-4",
+      gridCols === 1
+        ? "md:grid-cols-1 min-h-128"
+        : gridCols === 2
+          ? "md:grid-cols-2"
+          : gridCols === 3
+            ? "md:grid-cols-3"
+            : "md:grid-cols-4",
     ]}
     id="series-grid"
   >
@@ -106,7 +109,7 @@ const gridCols = Math.min(series.items.length, 4);
               class="block md:hidden w-full rounded-t-lg mb-4"
             />
           )}
-          <Synopsis text={item.data?.synopsis} />
+          <Markdown text={item.data?.synopsis} />
         </div>
       ))
     }
@@ -142,6 +145,15 @@ const gridCols = Math.min(series.items.length, 4);
     position: relative;
     height: auto;
   }
+
+  .series-item:first-child.active {
+    margin-left: 0.7rem;
+  }
+
+  .series-item:last-child.active {
+    margin-left: -0.7rem;
+  }
+
   .series-image {
     object-fit: cover;
     transform: scale(3);

@@ -21,6 +21,8 @@ Astro.build app
 # Components
 
 - `src/components/<name>/<name>.(astro|tsx)` + `story` + `test`
+- don't wrap `react` components in `astro`, unless necessary
+- don't use default exports in `tsx` components
 
 # Quality
 

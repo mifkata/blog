@@ -10,4 +10,4 @@ Content: hero image (200x120), title (h4), synopsis/description (line-clamp-2), 
 
 Visual: group hover→image shadow + title accent color
 
-Uses: FormattedDate, Synopsis, Tag
+Uses: FormattedDate, synopsis -> Markdown, Tag
