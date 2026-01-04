@@ -17,18 +17,22 @@ const { items, title, caption, description } = await getSeriesWithPosts(slug);
       <summary class="cursor-pointer font-semibold text-accent hover:text-accent-dark">
         {caption || title}
       </summary>
-      {description}
-      <ol class="mt-2 ml-6 list-decimal">
-        {items.map(({ id, url, title }) =>
-          current === url || current == id ? (
-            <li class="font-bold">{title}</li>
-          ) : (
-            <li>
-              <a href={url}>{title}</a>
-            </li>
-          ),
-        )}
-      </ol>
+      <div class="p-0 rounded-lg border border-gray-light mt-4">
+        <div class="bg-gray-light/20 p-4">
+          {description}
+        </div>
+        <ol class="mt-2 ml-6 list-decimal">
+          {items.map(({ id, url, title }) =>
+            current === url || current == id ? (
+              <li class="font-bold">{title}</li>
+            ) : (
+              <li>
+                <a href={url}>{title}</a>
+              </li>
+            ),
+          )}
+        </ol>
+      </div>
     </details>
   )
 }

@@ -122,7 +122,7 @@ export default function GithubLink({
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-mono text-sm text-gray-dark hover:text-accent no-underline flex items-center gap-1"
+          className="font-mono text-sm text-gray-dark hover:text-accent no-underline flex items-center gap-1 break-all"
         >
           {parsed.displayName}
           <svg
