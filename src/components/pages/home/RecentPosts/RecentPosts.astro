@@ -9,17 +9,17 @@ interface Props {
 const { posts } = Astro.props;
 ---
 
-<section class="max-w-[960px] mx-auto px-6">
+<section class="max-w-[960px] mx-auto">
   <div class="flex items-center justify-between mb-8">
     <div class="flex items-center gap-3">
       <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
-        Recent Posts
+        Most Recent
       </h3>
       <div class="flex-1 h-px bg-gray-light min-w-[100px]"></div>
     </div>
     <a
       href="/blog"
-      class="text-accent hover:text-accent-dark no-underline text-sm"
+      class="text-accent hover:text-accent-dark no-underline text-sm text-nowrap"
     >
       View all posts →
     </a>
