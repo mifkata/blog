@@ -14,4 +14,4 @@ Sections:
 - Featured Post: 2-col grid, hero image, title, synopsis, date, tags
 - All Posts: ArticleCard list
 
-Uses: PageLayout, ArticleCard, FormattedDate, Synopsis, Tag
+Uses: PageLayout, ArticleCard, FormattedDate, synopsis -> Markdown, Tag

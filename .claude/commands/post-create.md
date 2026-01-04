@@ -5,10 +5,11 @@ Template:
 ```mdx
 ---
 title: "<Title from slug or '[Your Title]'>"
-description: "[Brief description]"
-synopsis: "[One-line summary]"
+description: "<meta description />"
+synopsis: "[Multi-line Markdown]"
 pubDate: "<current datetime>"
-heroImage: "@/assets/blog/<year>/<slug>.png"
+updatedDate: "<current datetime>"
+heroImage: "@/assets/blog/<year>/MMDD-<slug>.png"
 tags: []
 ---
 
