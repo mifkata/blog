@@ -14,7 +14,7 @@ synopsis: Working on multiple things with Claude Code can quickly become hectic,
   The more granular you're, the easier is would be for the AI agent to load
   specs and effectively load context and requirements when running tasks for you.
 
-pubDate: "2026-01-03T13:45:00Z"
+pubDate: "2026-01-04T16:45:00Z"
 heroImage: "@/assets/blog/2026/0102-spec-driven-development.png"
 tags: ["ai", "coding", "claude", "devex", "howto"]
 ---
@@ -31,37 +31,25 @@ import ArticleSeries from "@/components/post/ArticleSeries/ArticleSeries.astro";
 
 ## Intro
 
-Much like the protagonist pictured above, when starting to work with
-agents like **Claude Code**, one can quickly clutter their mental space.
-The code scales so quickly, that **losing the thread becomes the status quo**
-almost immediately, when a project becomes slightly more complex and
-you've started to feel technical debt crawling in.
+Much like the protagonist pictured above, when starting to work with agents like **Claude Code**, one can quickly clutter their mental space. The code scales so quickly, that **losing the thread becomes the status quo** almost immediately. As soon as a project becomes slightly more complex you start to feel tech-debt settling in.
 
-Suddenly, you're 30k lines of heavily unoptimised code ahead and you have to start
-refactoring or lose the thread forever. Well, not really forever, but lets
-not focus on the dramatism of the sharks in the hero image.
-
-I started this blog without specs, nor commands
-of any sorts, I just had a chat with **Claude Code** and [I designed the
-website with it](/blog/2025/howto-make-custom-astro-blog-in-a-day/).
-
-After a while, I kept working on the blog, but I noticed all the technical
-debt I have created for myself thus far - shitty components, complete lack
-of code coverage, no storybook. In fact, few weeks in, getting back to
-writing a new article, I had no rememberence of what kind of code I was
-actually running.
-
-First thing first: I had to step back and start cleaning up this mess that I have
-created in mare 24 hours. I added a [devcontainer](/blog/2025/claude-code-devcontainers/),
-I copied over some [slash-commands](/blog/2026/01/claude-code-system-prompting-and-commands/)
-from another project and modified the `CLAUDE.md`.
+Suddenly, you're ahead with 30k lines of heavily unoptimised code and you have to start refactoring it or **lose the mental thread forever**. Well, not really _forever-forever_, but lets not focus on the dramatism of the sharks in the image.
 
 <Highlight block>
-  > **Having migrated Claude Code tooling:** I generated couple of
-  specs for existing components using <ClaudeCommand name="spec-create" />.
-  After having them to my liking, I effectively created a pattern for future specs.
-  Naturally, I asked **Claude Code** to generate missing specs for components, pages
-  and layout following the pattern.
+  > I'm hopeful, that I have totally confused you by now, it's been very much on purpose.
+
+This is how I feel after **ending up with a big pile of bad code** and I have no clue where to start fixing it from. This happens a lot in early stages when working with AI agents. Don't worry about it. **We've almost started fixing that**.
+
+</Highlight>
+
+I started this blog without specs, nor any slash-commands. I just had a chat with **Claude Code** and [designed mifkata.com with it](/blog/2025/howto-make-custom-astro-blog-in-a-day/).
+
+After a while, I kept working on the blog, but I noticed all the technical debt I have created for myself thus far - shitty components, complete lack of code coverage, no storybook. In fact, few weeks in, getting back to writing a new article, I had no recollection of what kind of code I was actually running.
+
+First thing first: I had to step back and start cleaning up this mess that I have created in mare 24 hours. I added a [devcontainer](/blog/2025/claude-code-devcontainers/), I copied over some [slash-commands](/blog/2026/01/claude-code-system-prompting-and-commands/) from another project and modified the `CLAUDE.md`.
+
+<Highlight block>
+  > **Having migrated Claude Code tooling:** I generated couple of specs for existing components using <ClaudeCommand name="spec-create" />. After having them to my liking, I effectively created a pattern for future specs. Naturally, I asked **Claude Code** to generate missing specs for components, pages and layout following the pattern.
 </Highlight>
 
 <GithubLink url="https://github.com/mifkata/blog/tree/main/specs">
@@ -73,32 +61,19 @@ from another project and modified the `CLAUDE.md`.
 
 ## Necessity for Spec-Driven Development (SDD)
 
-Creating your **first spec is one of the hardest**. The two projects on which I've done
-heavy speccing on so far, I didn't start with specs. Through the process of creating
-piles of code (piles of shitty code, tech-debt heavy, complex to add complexity, virtually
-unmaintained), specs naturally appeared as a solution to my biggest problem: losing
-context.
+Creating your **first spec is one of the hardest**. The two projects on which I've done heavy speccing on so far, I didn't start with specs. Through the process of creating piles of code (piles of shitty code, tech-debt heavy, complex to add complexity, virtually unmaintained), specs naturally appeared as a solution to my biggest problem: losing context.
 
-While working with an agent, after a certain token limit is reached, it is going to
-automatically compact the context (conversation) that they're working with.
-In **Claude Code** this can be manually triggered with the <ClaudeCommand name="compact" external /> command.
+While working with an agent, after a certain token limit is reached, it is going to automatically compact the context (conversation) that they're working with. In **Claude Code** this can be manually triggered with the <ClaudeCommand name="compact" external /> command.
 
-The context is the equivalent of the current knowledge and instructions that the AI
-agent is working with. After it (out)grows the agent's capabilities, it is compressed,
-in order to free more space (memory) for context added by future and ongoing conversations.
+The context is the equivalent of the current knowledge and instructions that the AI agent is working with. After it (out)grows the agent's capabilities, it is compressed, in order to free more space (memory) for context added by future and ongoing conversations.
 
-Created **specs are effectively logging reusable context** for the AI agent. You can
-ask for it to be loaded on-demand and to request work to be done on top of it
-(update, implement, verify, optimise, etc.).
+Created **specs are effectively logging reusable context** for the AI agent. You can ask for it to be loaded on-demand and to request work to be done on top of it (update, implement, verify, optimise, etc.).
 
 ## My SSD Workflow
 
 ### Creating new specs and implementing them
 
-In the document, I make a lot of references to **Claude slash-commands**, some of them
-custom, others are built-in. Lets create a component called `<ClaudeCommand />`, that
-links to either my **custom command in the blog's repository** or the official
-[**Claude Code** slash-commands documentation](https://code.claude.com/docs/en/slash-commands).
+In the document, I make a lot of references to **Claude slash-commands**, some of them custom, others are built-in. Lets create a component called `<ClaudeCommand />`, that links to either my **custom command in the blog's repository** or the official [**Claude Code** slash-commands documentation](https://code.claude.com/docs/en/slash-commands).
 
 I'm going to start, like always, with <ClaudeCommand name="spec-create" />
 
