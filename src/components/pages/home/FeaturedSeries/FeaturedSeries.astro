@@ -12,7 +12,7 @@ const series = await getSeriesWithPosts(slug);
 const gridCols = Math.min(series.items.length, 4);
 ---
 
-<section class="max-w-[960px] mx-auto px-6 pb-12">
+<section class="max-w-[960px] mx-auto pb-12">
   <div class="flex flex-col mb-4">
     <h3 class="text-lg text-gray tracking-wider uppercase text-nowrap">
       Featured Series:
@@ -27,10 +27,10 @@ const gridCols = Math.min(series.items.length, 4);
   <div
     class:list={[
       "flex flex-col md:grid gap-4 overflow-visible relative",
-      gridCols === 1 && "grid-cols-1",
-      gridCols === 2 && "grid-cols-2",
-      gridCols === 3 && "grid-cols-3",
-      gridCols >= 4 && "grid-cols-4",
+      gridCols === 1 ? "md:grid-cols-1 min-h-128" : 
+      gridCols === 2 ? "md:grid-cols-2" : 
+      gridCols === 3 ? "md:grid-cols-3" :
+      "md:grid-cols-4",
     ]}
     id="series-grid"
   >
@@ -38,7 +38,13 @@ const gridCols = Math.min(series.items.length, 4);
       series.items.map((item, index) => (
         <button
           type="button"
-          class="series-item w-full h-auto md:h-42 p-0 bg-white border border-gray-light rounded-lg hover:border-accent hover:shadow-lg transition-all text-left cursor-pointer"
+          class={`
+            series-item w-full h-auto md:h-42 p-0
+            bg-white border border-gray-light rounded-lg
+            hover:border-accent hover:shadow-lg
+            transition-all text-left cursor-pointer
+            group
+          `}
           data-index={index}
           data-url={item.url}
           data-title={item.title}
@@ -53,13 +59,29 @@ const gridCols = Math.min(series.items.length, 4);
             <Image
               src={item.data.heroImage}
               alt={item.title}
-              class="series-image hidden md:block w-full min-h-32 rounded-t-lg transition-all duration-500"
+              class="series-image z-[100] hidden md:block w-full min-h-32 rounded-t-lg transition ease-out duration-220"
             />
           )}
-          <div class="p-4 bg-white rounded-b-lg w-full">
-            <a href={item.url}>
-              <h4 class="m-0 text-[red]">{item.title}</h4>
-            </a>
+          <a
+            href={item.url}
+            class="rounded-b-lg w-full p-4 pb-2 hover:underline hidden group-[.active]:md:block"
+            title="Go to artic-2"
+          >
+            <h4 class="m-0 z-[10] line-clamp-2">{item.title}</h4>
+          </a>
+
+          <div class="relative p-4 rounded-b-lg w-full block md:hidden">
+            <div
+              class={`
+                  absolute top-0 bottom-0 left-0 w-[0]
+                  right-0 group-[.active]:w-[100%]
+                  transition-w delay-0 duration-180 ease-out
+                  mix-blend-exclusion
+                  bg-[teal]/30
+                  z-[5]
+                `}
+            />
+            <h4 class="m-0 z-[10]">{item.title}</h4>
           </div>
         </button>
       ))
@@ -77,16 +99,23 @@ const gridCols = Math.min(series.items.length, 4);
           class="series-synopsis hidden mb-3 leading-relaxed md:columns-2 gap-6"
           data-index={index}
         >
+          {item.data?.heroImage && (
+            <Image
+              src={item.data.heroImage}
+              alt={item.title}
+              class="block md:hidden w-full rounded-t-lg mb-4"
+            />
+          )}
           <Synopsis text={item.data?.synopsis} />
         </div>
       ))
     }
-    <div class="flex items-center justify-between">
+    <div class="md:flex items-center justify-between">
       <p id="series-date" class="text-gray m-0 text-sm"></p>
       <a
         id="series-read-more"
         href="#"
-        class="text-accent hover:text-accent-dark font-medium no-underline"
+        class="text-accent hover:text-accent-dark font-medium no-underline text-nowrap"
       >
         Read more →
       </a>
@@ -124,7 +153,7 @@ const gridCols = Math.min(series.items.length, 4);
 </style>
 
 <script>
-  const ROTATE_INTERVAL = 5000;
+  const ROTATE_INTERVAL = 3000;
 
   function initGrid() {
     const grid = document.getElementById("series-grid");
