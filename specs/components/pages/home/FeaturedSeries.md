@@ -6,8 +6,10 @@ Props: `slug: string`
 
 Data: `getSeriesWithPosts(slug)` → items with title, synopsis, updatedDate, heroImage
 
-Behavior: article defaultIndex?: 0 selected on mount; auto-rotate every 5s; click to select
+Behavior: defaultIndex 0; auto-rotate 5s sequential; click stops rotation
 
-Layout: header (series title + divider), grid of cards (columns = min(items.length, 4)), active article details below (title, Synopsis component, date)
+Layout: header ("Featured Series:" + title + divider), grid `flex-col md:grid-cols-{n}`, details (Synopsis, date, "Read more →")
 
-Visual: grid `grid-cols-{n}` where n = min(items, 4); card: heroImage on top, title below; active `border-accent`
+Desktop: card heroImage scale(3→1), title link; active `border-accent scale(1.15) z-10`
+
+Mobile: stacked cards (no image), teal highlight bar (`mix-blend-exclusion`); details show heroImage
