@@ -51,7 +51,7 @@ body {
   box-shadow:
     -20px 0 40px rgba(0, 0, 0, 0.08),
     20px 0 40px rgba(0, 0, 0, 0.08);
-  max-width: 1024px;
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
   min-height: 100vh;
@@ -95,7 +95,7 @@ h6 {
 }
 
 h1 {
-  @apply text-5xl;
+  @apply text-3xl md:text-5xl;
 }
 
 h2 {
@@ -148,6 +148,11 @@ img {
 
 code {
   @apply px-1.5 py-0.5 bg-gray-light rounded;
+}
+
+.wrap-text pre {
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 pre {
