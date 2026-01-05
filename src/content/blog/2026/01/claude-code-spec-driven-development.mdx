@@ -77,6 +77,7 @@ In the document, I make a lot of references to **Claude slash-commands**, some o
 
 I'm going to start, like always, with <ClaudeCommand name="spec-create" />
 
+<div class="wrap-text">
 ```sh
 > /spec-create components/post/ClaudeCommand
 
@@ -86,12 +87,9 @@ I'm going to start, like always, with <ClaudeCommand name="spec-create" />
   - Visual appearance
   - Any special behavior
 
-> I want to link slash-commands in my articles to either
-  https://github.com/mifkata/blog/blob/main/.claude/commands/<command-name>.md
-  for internal commands and to https://code.claude.com/docs/en/slash-commands
-  for external; there should be either a Github or Claude
-  icon next to the link; link should be inline;
+> I want to link slash-commands in my articles to either https://github.com/mifkata/blog/blob/main/.claude/commands/<command-name>.md for internal commands and to https://code.claude.com/docs/en/slash-commands for external; there should be either a Github or Claude icon next to the link; link should be inline;
 ```
+</div>
 
 The agent generated a long, explicit, human-readable spec, the opposite of
 my instructions to generate short, AI friendly specs. It's very weird to me
@@ -111,6 +109,7 @@ and I have to manually run <ClaudeCommand name="spec-compact" /> to minify it.
 
 The result:
 
+<div class="wrap-text">
 ```md
 # ClaudeCommand
 
@@ -125,6 +124,7 @@ URLs:
 
 Visual: `inline-flex items-center gap-1`, icon `w-4 h-4` (GitHub/Claude), `font-mono text-sm text-accent`, `/{name}`
 ```
+</div>
 
 Still quite understandable, yet not very **human-friendly**. We continue with the
 implementation using <ClaudeCommand name="spec-apply" />.
@@ -251,6 +251,7 @@ One can fiddle with every and any component, but for now I'm done with
 Normally I'd go and search and manually implement the change, but come on, we have the right tooling to the get the job done. This time I'm using the <ClaudeCommand name="spec-refactor" /> command and hopefully after this change, this command
 annotation will be come a link.
 
+<div class="wrap-text">
 ```sh
 > /spec-refactor
 ● I found the blog post that mentions slash commands extensively.
@@ -282,6 +283,7 @@ annotation will be come a link.
   External commands (globe icon): compact, plugins
   Build passes ✓
 ```
+</div>
 
 **Et voilà**, all instances of `/slash-command` of sorts across two blog
 posts were effortlessly refactored in a few minutes.

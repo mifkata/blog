@@ -33,14 +33,14 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
   title={title}
   description={description}
   image={heroImage}
-  size="wide"
+  size="full"
 >
   <article>
     <!-- Hero Image -->
     {
       heroImage && (
-        <div class="-mt-12 -mx-6 md:-mx-14 mb-8">
-          <Image src={heroImage} alt="" class="w-full shadow-lg" />
+        <div class="mb-6 -mt-12 -mx-6 sm:mx-auto sm:mb-6 sm:-mt-6 xl:-mt-12 xl:-mx-25.5 xl:mb-12">
+          <Image src={heroImage} alt={title} class="w-auto shadow-lg" />
         </div>
       )
     }
@@ -50,11 +50,11 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
     >
       <!-- Main Content -->
       <div
-        class:list={["min-w-0 max-w-[720px]", showToc ? "flex-1" : "w-full"]}
+        class:list={["min-w-0 max-w-[920px]", showToc ? "flex-1" : "w-full"]}
       >
         <!-- Article Header -->
         <header class="mb-8 pb-8 border-b border-gray-light">
-          <h1 class="text-4xl md:text-5xl m-0 mb-4">{title}</h1>
+          <h1 class="text-md md:text-5xl m-0 mb-4">{title}</h1>
           <div class="flex items-center gap-4 text-sm text-gray mb-4">
             <FormattedDate date={pubDate} />
             {
@@ -77,7 +77,7 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
         </header>
 
         <!-- Article Content -->
-        <div class="prose prose-lg">
+        <div class="prose">
           <slot />
         </div>
       </div>
