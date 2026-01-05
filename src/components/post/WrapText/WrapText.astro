@@ -1,0 +1,39 @@
+---
+interface Props {
+  media?: "all" | "sm" | "md" | "lg" | "xl";
+}
+
+const { media = "all" } = Astro.props;
+---
+
+<div class="wrap-text" data-media={media}><slot /></div>
+
+<style>
+  .wrap-text[data-media="all"] :global(pre) {
+    @apply text-wrap;
+  }
+
+  @screen sm {
+    .wrap-text[data-media="sm"] :global(pre) {
+      @apply text-wrap;
+    }
+  }
+
+  @screen md {
+    .wrap-text[data-media="md"] :global(pre) {
+      @apply text-wrap;
+    }
+  }
+
+  @screen lg {
+    .wrap-text[data-media="lg"] :global(pre) {
+      @apply text-wrap;
+    }
+  }
+
+  @screen xl {
+    .wrap-text[data-media="xl"] :global(pre) {
+      @apply text-wrap;
+    }
+  }
+</style>

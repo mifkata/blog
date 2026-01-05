@@ -13,6 +13,7 @@ Astro.build app
 
 - if `[arg]` empty: use last spec
 - when cmds modified: update `CLAUDE.md` + `README.md`
+- always prefer `tailwind` over pure CSS
 
 # Specs
 

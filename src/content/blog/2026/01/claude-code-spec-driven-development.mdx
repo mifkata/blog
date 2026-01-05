@@ -19,10 +19,13 @@ heroImage: "@/assets/blog/2026/0102-spec-driven-development.png"
 tags: ["ai", "coding", "claude", "devex", "howto"]
 ---
 
-import Highlight from "@/components/post/Highlight/Highlight.astro";
-import GithubLink from "@/components/post/GithubLink/GithubLink.astro";
-import ClaudeCommand from "@/components/post/ClaudeCommand/ClaudeCommand.astro";
-import ArticleSeries from "@/components/post/ArticleSeries/ArticleSeries.astro";
+import {
+  ArticleSeries,
+  ClaudeCommand,
+  GithubLink,
+  Highlight,
+  WrapText,
+} from "@/components/post";
 
 <ArticleSeries
   slug="claude-code-setup-series"
@@ -77,19 +80,21 @@ In the document, I make a lot of references to **Claude slash-commands**, some o
 
 I'm going to start, like always, with <ClaudeCommand name="spec-create" />
 
-<div class="wrap-text">
+<WrapText>
 ```sh
 > /spec-create components/post/ClaudeCommand
 
 ● What should the ClaudeCommand component cover? Please describe:
-  - Purpose/use case
-  - Props needed
-  - Visual appearance
-  - Any special behavior
+
+- Purpose/use case
+- Props needed
+- Visual appearance
+- Any special behavior
 
 > I want to link slash-commands in my articles to either https://github.com/mifkata/blog/blob/main/.claude/commands/<command-name>.md for internal commands and to https://code.claude.com/docs/en/slash-commands for external; there should be either a Github or Claude icon next to the link; link should be inline;
-```
-</div>
+
+````
+</WrapText>
 
 The agent generated a long, explicit, human-readable spec, the opposite of
 my instructions to generate short, AI friendly specs. It's very weird to me
@@ -98,6 +103,7 @@ especially with a fresh context, or when I've simply didn't work on the app
 for more than 8-10 hours, it generates more explicit and human-readable content
 and I have to manually run <ClaudeCommand name="spec-compact" /> to minify it.
 
+<WrapText>
 ```sh
 > /spec-compact
   ...
@@ -105,11 +111,13 @@ and I have to manually run <ClaudeCommand name="spec-compact" /> to minify it.
   ⎿  Read 22 lines
 
 ● Compacted from 22 lines to 11 lines (50% reduction).
-```
+````
+
+</WrapText>
 
 The result:
 
-<div class="wrap-text">
+<WrapText>
 ```md
 # ClaudeCommand
 
@@ -123,8 +131,9 @@ URLs:
 - external: `code.claude.com/docs/en/slash-commands`
 
 Visual: `inline-flex items-center gap-1`, icon `w-4 h-4` (GitHub/Claude), `font-mono text-sm text-accent`, `/{name}`
-```
-</div>
+
+````
+</WrapText>
 
 Still quite understandable, yet not very **human-friendly**. We continue with the
 implementation using <ClaudeCommand name="spec-apply" />.
@@ -146,30 +155,35 @@ implementation using <ClaudeCommand name="spec-apply" />.
 
   <ClaudeCommand name="commit-message" />           <!-- GitHub icon → repo link -->
   <ClaudeCommand name="help" external />            <!-- Claude icon → docs link -->
-```
+````
 
 The new `<ClaudeCommand />` is created, with **storybook** nonetheless. It was smart
 enough to make the link open in a new tab/window with `target="_blank" rel="noopener noreferrer"`,
 even though that wasn't part of the spec. I run <ClaudeCommand name="spec-verify" /> to see how the
 agent perceives such differences.
 
+<WrapText>
 ```sh
 > /spec-verify
   ...
   Summary: ✅ 10 correct | ⚠️ 1 differs
 
-  Difference: External icon uses a globe SVG, not official Claude icon.
+Difference: External icon uses a globe SVG, not official Claude icon.
 
-  Options:
-  1. Verify only (keep as-is)
-  2. Implement (update icon to Claude logo)
-  3. Sync spec (update spec to say "globe icon")
-```
+Options:
+
+1. Verify only (keep as-is)
+2. Implement (update icon to Claude logo)
+3. Sync spec (update spec to say "globe icon")
+
+````
+</WrapText>
 
 It found something, but it wasn't what I was looking for. I inspect the **storybook
 story for the component** and decide to keep the spec as it is for now and `push`
 the changes to the repo. I `git add` the spec, component and stories and run <ClaudeCommand name="commit-staged" />.
 
+<WrapText>
 ```sh
 > /commit-staged
 
@@ -184,7 +198,9 @@ the changes to the repo. I `git add` the spec, component and stories and run <Cl
 > commit
 
 ● Committed: 20f1240
-```
+````
+
+</WrapText>
 
 It is a 2 step process, because I've asked for the agent to confirm the message with me
 before commiting. My feature is live, even though it hasn't been used anywhere.
@@ -220,28 +236,34 @@ and I want the spec to reflect it using <ClaudeCommand name="spec-verify" />. I 
 without `[spec]` argument, the bot assumed `all` and went to verify all specs,
 so I had to cancel and rerun the command again.
 
+<WrapText>
 ```sh
 > /spec-verify components/blog/ClaudeCommand
 
-●  Summary: ✅ 10 correct | ⚠️ 1 differs | ➕ 1 extra feature
+● Summary: ✅ 10 correct | ⚠️ 1 differs | ➕ 1 extra feature
 
-  Differences:
-  - External icon uses globe SVG instead of Claude logo
-  - Implementation adds title tooltip (not in spec)
+Differences:
 
-  Options:
-  1. Verify only (keep as-is)
-  2. Implement (update icon to Claude logo)
-  3. Sync spec (update spec to match implementation)
+- External icon uses globe SVG instead of Claude logo
+- Implementation adds title tooltip (not in spec)
+
+Options:
+
+1. Verify only (keep as-is)
+2. Implement (update icon to Claude logo)
+3. Sync spec (update spec to match implementation)
 
 > 3
 
 ● Spec synced. Updated:
-  - Claude → globe icon for external
-  - Added title tooltip
 
-  All items now ✅ correct
-```
+- Claude → globe icon for external
+- Added title tooltip
+
+All items now ✅ correct
+
+````
+</WrapText>
 
 ### Refactoring using specs
 
@@ -251,7 +273,7 @@ One can fiddle with every and any component, but for now I'm done with
 Normally I'd go and search and manually implement the change, but come on, we have the right tooling to the get the job done. This time I'm using the <ClaudeCommand name="spec-refactor" /> command and hopefully after this change, this command
 annotation will be come a link.
 
-<div class="wrap-text">
+<WrapText>
 ```sh
 > /spec-refactor
 ● I found the blog post that mentions slash commands extensively.
@@ -282,8 +304,9 @@ annotation will be come a link.
   Internal commands (GitHub icon): spec-create, spec-update, spec-apply, spec-verify, spec-compact, spec-refactor, commit-message, commit-staged, tags-update
   External commands (globe icon): compact, plugins
   Build passes ✓
-```
-</div>
+````
+
+</WrapText>
 
 **Et voilà**, all instances of `/slash-command` of sorts across two blog
 posts were effortlessly refactored in a few minutes.
