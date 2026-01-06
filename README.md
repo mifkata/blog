@@ -21,24 +21,28 @@ pnpm install
 pnpm dev
 ```
 
-The app doesn't require any additional local runtime, you should
-be able to access it at `http://localhost:4321`.
+This starts both Astro (`localhost:4321`) and Storybook (`localhost:6006`) in parallel via nx.
 
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
 
-| Command           | Action                                           |
-| :---------------- | :----------------------------------------------- |
-| `pnpm install`    | Installs dependencies                            |
-| `pnpm dev`        | Starts local dev server at `localhost:4321`      |
-| `pnpm build`      | Build your production site to `./dist/`          |
-| `pnpm preview`    | Preview your build locally, before deploying     |
-| `pnpm lint`       | Check for linting errors                         |
-| `pnpm lint:fix`   | Fix linting errors                               |
-| `pnpm format`     | Check formatting                                 |
-| `pnpm format:fix` | Fix formatting                                   |
-| `pnpm astro ...`  | Run CLI commands like `astro add`, `astro check` |
+| Command                | Action                                           |
+| :--------------------- | :----------------------------------------------- |
+| `pnpm install`         | Installs dependencies                            |
+| `pnpm dev`             | Starts Astro + Storybook in parallel (nx)        |
+| `pnpm dev:astro`       | Starts Astro only at `localhost:4321`            |
+| `pnpm storybook`       | Starts Storybook only at `localhost:6006`        |
+| `pnpm storybook:build` | Build Storybook static site                      |
+| `pnpm build`           | Build production site to `./dist/`               |
+| `pnpm preview`         | Preview build locally before deploying           |
+| `pnpm test`            | Run tests in watch mode                          |
+| `pnpm test:run`        | Run tests once                                   |
+| `pnpm lint`            | Check for linting errors                         |
+| `pnpm lint:fix`        | Fix linting errors                               |
+| `pnpm format`          | Check formatting                                 |
+| `pnpm format:fix`      | Fix formatting                                   |
+| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
 
 ## 🐳 Dev Container
 
