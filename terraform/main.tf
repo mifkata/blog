@@ -72,3 +72,11 @@ resource "cloudflare_record" "root" {
   type    = "CNAME"
   proxied = true
 }
+
+resource "cloudflare_record" "www" {
+  zone_id = var.cloudflare_zone_id
+  name    = "www"
+  content = "@"
+  type    = "CNAME"
+  proxied = true
+}
