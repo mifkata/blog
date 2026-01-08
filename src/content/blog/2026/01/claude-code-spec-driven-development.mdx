@@ -14,7 +14,7 @@ synopsis: Working on multiple things with Claude Code can quickly become hectic,
   The more granular you're, the easier is would be for the AI agent to load
   specs and effectively load context and requirements when running tasks for you.
 
-pubDate: "2026-01-04T16:45:00Z"
+pubDate: "2026-01-08T17:45:00Z"
 heroImage: "@/assets/blog/2026/0102-spec-driven-development.png"
 tags: ["ai", "coding", "claude", "devex", "howto"]
 ---
@@ -31,6 +31,14 @@ import {
   slug="claude-code-setup-series"
   current="/blog/2026/01/claude-code-spec-driven-development/"
 />
+
+## Overview
+
+Software development with **code agents** like **Claude Code** can quickly become cumbersome. Agents are very good to providing quantiy when it comes to code generation, quality on the other hand is a matter of good and consistent engineering.
+
+Due to the continuous loss of context when working with **generative AI**, it has to be persisted in a way to be loaded on demand. In software engineering, this is best accomplished by managing a neat collection of technical specifications.
+
+This article explores **spec-driven development** as a model for continuous engineering of high-quality, production ready, scalable software.
 
 ## Intro
 
@@ -53,6 +61,7 @@ First thing first: I had to step back and start cleaning up this mess that I hav
 
 <Highlight block>
   > **Having migrated Claude Code tooling:** I generated couple of specs for existing components using <ClaudeCommand name="spec-create" />. After having them to my liking, I effectively created a pattern for future specs. Naturally, I asked **Claude Code** to generate missing specs for components, pages and layout following the pattern.
+
 </Highlight>
 
 <GithubLink url="https://github.com/mifkata/blog/tree/main/specs">
@@ -93,15 +102,10 @@ I'm going to start, like always, with <ClaudeCommand name="spec-create" />
 
 > I want to link slash-commands in my articles to either https://github.com/mifkata/blog/blob/main/.claude/commands/<command-name>.md for internal commands and to https://code.claude.com/docs/en/slash-commands for external; there should be either a Github or Claude icon next to the link; link should be inline;
 
-````
+```
 </WrapText>
 
-The agent generated a long, explicit, human-readable spec, the opposite of
-my instructions to generate short, AI friendly specs. It's very weird to me
-that I keep compacting my specs, the agent keeps reading them, yet for some reason,
-especially with a fresh context, or when I've simply didn't work on the app
-for more than 8-10 hours, it generates more explicit and human-readable content
-and I have to manually run <ClaudeCommand name="spec-compact" /> to minify it.
+The agent generated a long, explicit, human-readable spec, the opposite of my instructions to generate short, AI friendly specs. It's very weird to me that I keep compacting my specs, the agent keeps reading them, yet for some reason, especially with a fresh context, or when I've simply didn't work on the app for more than 8-10 hours, it generates more explicit and human-readable content and I have to manually run <ClaudeCommand name="spec-compact" /> to minify it.
 
 <WrapText>
 ```sh
@@ -111,14 +115,13 @@ and I have to manually run <ClaudeCommand name="spec-compact" /> to minify it.
   ⎿  Read 22 lines
 
 ● Compacted from 22 lines to 11 lines (50% reduction).
-````
-
+```
 </WrapText>
 
 The result:
 
 <WrapText>
-```md
+```sh
 # ClaudeCommand
 
 `src/components/post/ClaudeCommand/ClaudeCommand.astro` - Inline slash-command link.
@@ -131,8 +134,7 @@ URLs:
 - external: `code.claude.com/docs/en/slash-commands`
 
 Visual: `inline-flex items-center gap-1`, icon `w-4 h-4` (GitHub/Claude), `font-mono text-sm text-accent`, `/{name}`
-
-````
+```
 </WrapText>
 
 Still quite understandable, yet not very **human-friendly**. We continue with the
@@ -155,7 +157,7 @@ implementation using <ClaudeCommand name="spec-apply" />.
 
   <ClaudeCommand name="commit-message" />           <!-- GitHub icon → repo link -->
   <ClaudeCommand name="help" external />            <!-- Claude icon → docs link -->
-````
+```
 
 The new `<ClaudeCommand />` is created, with **storybook** nonetheless. It was smart
 enough to make the link open in a new tab/window with `target="_blank" rel="noopener noreferrer"`,
@@ -176,7 +178,7 @@ Options:
 2. Implement (update icon to Claude logo)
 3. Sync spec (update spec to say "globe icon")
 
-````
+```
 </WrapText>
 
 It found something, but it wasn't what I was looking for. I inspect the **storybook
@@ -198,22 +200,17 @@ the changes to the repo. I `git add` the spec, component and stories and run <Cl
 > commit
 
 ● Committed: 20f1240
-````
+```
 
 </WrapText>
 
-It is a 2 step process, because I've asked for the agent to confirm the message with me
-before commiting. My feature is live, even though it hasn't been used anywhere.
+It is a 2 step process, because I've asked for the agent to confirm the message with me before commiting. My feature is live, even though it hasn't been used anywhere.
 
 ### Working with existing specs
 
-There're various aspects of working with specs. Obviously you have to create them
-and make use of them, thus it's a valid assumption that they should always be up to date.
+There're various aspects of working with specs. Obviously you have to create them and make use of them, thus it's a valid assumption that they should always be up to date.
 
-In practice, that's not entirely true and it doesn't need to be. A spec is not valuable
-just by its existence. It's likely that in 90% of the time in which the agent works
-with a spec, it would, pretty much automatically, read it and in the process verify
-it's validity.
+In practice, that's not entirely true and it doesn't need to be. A spec is not valuable just by its existence. It's likely that in 90% of the time in which the agent works with a spec, it would, pretty much automatically, read it and in the process verify it's validity.
 
 This means, that:
 
@@ -225,16 +222,10 @@ This means, that:
   > 3. Ask for changes to be implemented
 
 <Highlight block>
-  > **NOTE:** this approach wouldn't be so valid for very large specs, which are affected
-    by multiple smaller specs (components). Updating heavily updated larger specs can
-    and should go through a process of heavier audit and verification. <ClaudeCommand name="spec-verify" /> is
-    the command I rely on in such cases.
+  > **NOTE:** this approach wouldn't be so valid for very large specs, which are affected by multiple smaller specs (components). Updating heavily updated larger specs can and should go through a process of heavier audit and verification. <ClaudeCommand name="spec-verify" /> is the command I rely on in such cases.
 </Highlight>
 
-I have manually added a **title** property in the code of `<ClaudeCommand />`
-and I want the spec to reflect it using <ClaudeCommand name="spec-verify" />. I ran the command
-without `[spec]` argument, the bot assumed `all` and went to verify all specs,
-so I had to cancel and rerun the command again.
+I have manually added a **title** property in the code of `<ClaudeCommand />` and I want the spec to reflect it using <ClaudeCommand name="spec-verify" />. I ran the command without `[spec]` argument, the bot assumed `all` and went to verify all specs, so I had to cancel and rerun the command again.
 
 <WrapText>
 ```sh
@@ -262,7 +253,7 @@ Options:
 
 All items now ✅ correct
 
-````
+```
 </WrapText>
 
 ### Refactoring using specs
@@ -270,8 +261,7 @@ All items now ✅ correct
 One can fiddle with every and any component, but for now I'm done with
 `<ClaudeCommand />` and I want to implement it across my codebase.
 
-Normally I'd go and search and manually implement the change, but come on, we have the right tooling to the get the job done. This time I'm using the <ClaudeCommand name="spec-refactor" /> command and hopefully after this change, this command
-annotation will be come a link.
+Normally I'd go and search and manually implement the change, but come on, we have the right tooling to the get the job done. This time I'm using the <ClaudeCommand name="spec-refactor" /> command and hopefully after this change, this command annotation will become a link.
 
 <WrapText>
 ```sh
@@ -304,7 +294,7 @@ annotation will be come a link.
   Internal commands (GitHub icon): spec-create, spec-update, spec-apply, spec-verify, spec-compact, spec-refactor, commit-message, commit-staged, tags-update
   External commands (globe icon): compact, plugins
   Build passes ✓
-````
+```
 
 </WrapText>
 
