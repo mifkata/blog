@@ -19,6 +19,7 @@ import {
   ClaudeCommand,
   GithubLink,
   Highlight,
+  WrapText,
 } from "@/components/post";
 
 <ArticleSeries
@@ -26,22 +27,20 @@ import {
   current="/blog/2026/01/claude-code-system-prompting-and-commands/"
 />
 
+## Overview
+
+Communicating with **generative AI** goes through prompting. Using it for daily tasks leads to prompt engineering with the goal being "say it best, so that the agent knows exactly what I want".
+
+Day-to-day software development with **AI agents** is very similar: we find ways to organise repetitive instructions, so that we can expect predictable, high-quality results.
+
+This article explores organising a project' **system instructions** and **slash-commands** for improved development experience. The implementation for **Claude Code** is applicable to other agents as well.
+
 ## Intro
 
-After setting up your [devcontainer](/blog/2025/claude-code-devcontainers/)
-the next obvious step is to configure **the reusable prompts** for your steady, production-ready
-software development cycle using Claude Code. These reusable prompts, are the core of your
-**Claude toolkit**, so maintain them well:
+After setting up your [devcontainer](/blog/2025/claude-code-devcontainers/) the next obvious step is to configure **the reusable prompts** for your steady, production-ready software development cycle using Claude Code. These reusable prompts, are the core of your **Claude toolkit**, so maintain them well:
 
-- **CLAUDE.md** - this is the primary instruction set that a **Claude agent instance**
-  would load when started and after <ClaudeCommand name="compact" external /> completes. This is where you want to put as much nifty
-  instructions that the bot works with your codebase. Having it and
-  configured might seriously benefit _**token usage**_ and reduce agent _**planning time**_.
-  Maitaining an efficient `CLUDE.md` can be considered an art form of its own.
-- **Slash-commands** - a collection of reusable prompts that will help you trigger
-  repetitive actions, whilst working on a project. Whilst there's a case to be made
-  about the benefits of global **Claude** commands, we're talking about these that you put
-  in your repository's `.claude/commands` directory.
+- **CLAUDE.md** - this is the primary instruction set that a **Claude agent instance** would load when started and after <ClaudeCommand name="compact" external /> completes. This is where you want to put as much nifty instructions that the bot works with your codebase. Having it and configured might seriously benefit _**token usage**_ and reduce agent _**planning time**_. Maitaining an efficient `CLUDE.md` can be considered an art form of its own.
+- **Slash-commands** - a collection of reusable prompts that will help you trigger repetitive actions, whilst working on a project. Whilst there's a case to be made about the benefits of global **Claude** commands, we're talking about these that you put in your repository's `.claude/commands` directory.
 
 <Highlight block>
     > **Plug-ins:** there are many available open-source and as of recently
@@ -123,13 +122,11 @@ Following the rule of thumb, that **code/prompts designated for agents,
 should be written by agents**. Here's an example conversation with Claude Code
 about creating a new `/commit-message` slash command:
 
+<WrapText>
+```sh
+Create a new command /commit-message that goes and checks all staged diffs and generates a commit message using Conventional Commits. Keep the messages tight, omit references to author/generator, compact the command to be AI-friendly with minimal token usage
 ```
-Create a new command /commit-message that goes and checks all
-staged diffs and generates a commit message using Conventional
-Commits. Keep the messages tight, omit references to
-author/generator, compact the command to be AI-friendly with
-minimal token usage
-```
+</WrapText>
 
 <Highlight block>
     > **NOTE:** You could have command generation instructions in `CLAUDE.md` or
@@ -250,13 +247,9 @@ the next one, as explicitly as this one.
 
 ### /test-create
 
-Testing each application is different, so I have an evolving **testing spec** for each
-different tech stack, being it a **web-based frontend application**, an **Elixir backend**,
-**a service written in Rust**. We can safely assume that different tech stacks/apps, have
-different testing instructions, as they would have different implementation specs.
+Testing each application is different, so I have an evolving **testing spec** for each different tech stack, being it a **web-based frontend application**, an **Elixir backend**, **a service written in Rust**. We can safely assume that different tech stacks/apps, have different testing instructions, as they would have different implementation specs.
 
-In the case of my blog, there's a single application that requires a certain form of
-code coverage, which is described in `specs/Testing.md`.
+In the case of my blog, there's a single application that requires a certain form of code coverage, which is described in `specs/Testing.md`.
 
 <GithubLink
   expanded
@@ -269,11 +262,7 @@ code coverage, which is described in `specs/Testing.md`.
 
 ### /test-[app]
 
-When your project grows, it helps to create a custom `/test-[app]` command, that works like
-`/test-create`, but is scoped to tests about a specific application. I find it quite useful
-to be able to reduce the diff size, when working on a **larger feature spec**, which affects
-multiple applications (both backend and frontend). In this case, I have coverage implemented
-on an app basis, so I can keep an eye on what's going on.
+When your project grows, it helps to create a custom `/test-[app]` command, that works like `/test-create`, but is scoped to tests about a specific application. I find it quite useful to be able to reduce the diff size, when working on a **larger feature spec**, which affects multiple applications (both backend and frontend). In this case, I have coverage implemented on an app basis, so I can keep an eye on what's going on.
 
 ## Commands: Git
 
@@ -290,14 +279,11 @@ configured in the [devcontainer](/blog/2025/claude-code-devcontainers/).
 
 ## Commands: Generators
 
-I don't recommend using AI to **scaffold code** for you, from my point of view, that's
-a waste of tokens and computation time. However, there're cases where you want the agent
-to generate code for you (and sometimes, we're just being lazy anyway).
+I don't recommend using AI to **scaffold code** for you, from my point of view, that's a waste of tokens and computation time. However, there're cases where you want the agent to generate code for you (and sometimes, we're just being lazy anyway).
 
 ### /post-create
 
-An obvious example of a **super lazy code generator**. I intend to replace this with a
-proper scaffolding command, but will keep it for historical purposes.
+An obvious example of a **super lazy code generator**. I intend to replace this with a proper scaffolding command, but will keep it for historical purposes.
 
 <GithubLink
   expanded
@@ -306,13 +292,9 @@ proper scaffolding command, but will keep it for historical purposes.
 
 ### /tags-update
 
-The landing pages for tags, such as the [ai tags page](https://mifkata.com/tags/ai/)
-have custom title and description and I save them in [src/data/tags.json](https://github.com/mifkata/blog/blob/main/src/data/tags.json)
-inside my repository. Because I'll add new tags and I'm either too lazy or forget to
-update the list, I simply run <ClaudeCommand name="tags-update" /> and **Claude** does the job for me.
+The landing pages for tags, such as the [ai tags page](https://mifkata.com/tags/ai/) have custom title and description and I save them in [src/data/tags.json](https://github.com/mifkata/blog/blob/main/src/data/tags.json) inside my repository. Because I'll add new tags and I'm either too lazy or forget to update the list, I simply run <ClaudeCommand name="tags-update" /> and **Claude** does the job for me.
 
-You can imagine that with hundreds of entries this can be a very slow and token consuming
-task, so consider this when creating and running pure content generators like this.
+You can imagine that with hundreds of entries this can be a very slow and token consuming task, so consider this when creating and running pure content generators like this.
 
 <GithubLink
   expanded
@@ -321,14 +303,8 @@ task, so consider this when creating and running pure content generators like th
 
 ## Final thoughts
 
-The more I work with **Claude Code**, the more projects I start. Keeping **chaos to
-the minimum** is very key in long-term development, as agents are capable of producing
-ridiculous amounts of code and the same time **technocal debt** and keeping your
-workflow tidy and in order is the most important part of the job.
+The more I work with **Claude Code**, the more projects I start. Keeping **chaos to the minimum** is very key in long-term development, as agents are capable of producing ridiculous amounts of code and the same time **technocal debt** and keeping your workflow tidy and in order is the most important part of the job.
 
-Organise your `CLAUDE.md` and **slash-commands** and improve them as you go. Thus
-far, I'm yet to see a framework that is an ultimate solution, a silver-bullet for
-maging your homegrown dev environment.
+Organise your `CLAUDE.md` and **slash-commands** and improve them as you go. Thus far, I'm yet to see a framework that is an ultimate solution, a silver-bullet for maging your homegrown dev environment.
 
-However, if you do find a replacement toolkit, please let me know in the comments.
-Happy coding!
+However, if you do find a replacement toolkit, please let me know in the comments.Happy coding!
