@@ -28,7 +28,7 @@ import {
 } from "@/components/post";
 
 <ArticleSeries
-  slug="claude-code-setup-series"
+  slug="claude-code-basics-series"
   current="/blog/2026/01/claude-code-spec-driven-development/"
 />
 
@@ -102,7 +102,7 @@ I'm going to start, like always, with <ClaudeCommand name="spec-create" />
 
 > I want to link slash-commands in my articles to either https://github.com/mifkata/blog/blob/main/.claude/commands/<command-name>.md for internal commands and to https://code.claude.com/docs/en/slash-commands for external; there should be either a Github or Claude icon next to the link; link should be inline;
 
-```
+````
 </WrapText>
 
 The agent generated a long, explicit, human-readable spec, the opposite of my instructions to generate short, AI friendly specs. It's very weird to me that I keep compacting my specs, the agent keeps reading them, yet for some reason, especially with a fresh context, or when I've simply didn't work on the app for more than 8-10 hours, it generates more explicit and human-readable content and I have to manually run <ClaudeCommand name="spec-compact" /> to minify it.
@@ -115,7 +115,8 @@ The agent generated a long, explicit, human-readable spec, the opposite of my in
   ⎿  Read 22 lines
 
 ● Compacted from 22 lines to 11 lines (50% reduction).
-```
+````
+
 </WrapText>
 
 The result:
@@ -134,7 +135,8 @@ URLs:
 - external: `code.claude.com/docs/en/slash-commands`
 
 Visual: `inline-flex items-center gap-1`, icon `w-4 h-4` (GitHub/Claude), `font-mono text-sm text-accent`, `/{name}`
-```
+
+````
 </WrapText>
 
 Still quite understandable, yet not very **human-friendly**. We continue with the
@@ -157,7 +159,7 @@ implementation using <ClaudeCommand name="spec-apply" />.
 
   <ClaudeCommand name="commit-message" />           <!-- GitHub icon → repo link -->
   <ClaudeCommand name="help" external />            <!-- Claude icon → docs link -->
-```
+````
 
 The new `<ClaudeCommand />` is created, with **storybook** nonetheless. It was smart
 enough to make the link open in a new tab/window with `target="_blank" rel="noopener noreferrer"`,
@@ -178,7 +180,7 @@ Options:
 2. Implement (update icon to Claude logo)
 3. Sync spec (update spec to say "globe icon")
 
-```
+````
 </WrapText>
 
 It found something, but it wasn't what I was looking for. I inspect the **storybook
@@ -200,7 +202,7 @@ the changes to the repo. I `git add` the spec, component and stories and run <Cl
 > commit
 
 ● Committed: 20f1240
-```
+````
 
 </WrapText>
 
@@ -253,7 +255,7 @@ Options:
 
 All items now ✅ correct
 
-```
+````
 </WrapText>
 
 ### Refactoring using specs
@@ -294,7 +296,7 @@ Normally I'd go and search and manually implement the change, but come on, we ha
   Internal commands (GitHub icon): spec-create, spec-update, spec-apply, spec-verify, spec-compact, spec-refactor, commit-message, commit-staged, tags-update
   External commands (globe icon): compact, plugins
   Build passes ✓
-```
+````
 
 </WrapText>
 
