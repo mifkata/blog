@@ -6,7 +6,7 @@
 
 ```tsx
 interface Props {
-  src: string;
+  src: string | ImageMetadata; // supports Astro image imports
   alt: string;
   width?: number;
   height?: number;
@@ -34,5 +34,5 @@ interface Props {
 ## Accessibility
 
 - Image: `role="button"`, `tabindex={0}`, `aria-label="{alt} - Click to enlarge"`
-- Modal: `aria-hidden` when closed, focus trap when open
+- Modal: `aria-hidden` when closed
 - Keyboard: Enter/Space to open, Escape to close

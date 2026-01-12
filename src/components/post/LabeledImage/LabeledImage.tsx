@@ -7,8 +7,15 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 
-interface Props {
+interface ImageMetadata {
   src: string;
+  width: number;
+  height: number;
+  format: string;
+}
+
+interface Props {
+  src: string | ImageMetadata;
   alt: string;
   width?: number;
   height?: number;
@@ -16,6 +23,8 @@ interface Props {
 }
 
 export function LabeledImage({ src, alt, width, height, children }: Props) {
+  // Handle ImageMetadata (has .src property) or string URLs
+  const imgSrc = typeof src === "object" && src?.src ? src.src : src;
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = useCallback(() => {
@@ -59,7 +68,7 @@ export function LabeledImage({ src, alt, width, height, children }: Props) {
     <>
       <figure className="labeled-image my-6 p-0">
         <img
-          src={src}
+          src={imgSrc}
           alt={alt}
           width={width}
           height={height}
@@ -82,18 +91,16 @@ export function LabeledImage({ src, alt, width, height, children }: Props) {
           <div
             className={`fixed inset-0 z-[1000] ${isOpen ? "flex items-center justify-center" : "hidden"}`}
             aria-hidden={!isOpen}
-            onClick={closeModal}
           >
-            <div className="absolute inset-0 bg-black/90" />
             <div
-              className="relative p-[3%] w-full h-full flex items-center justify-center box-border"
-              onClick={(e) => e.target === e.currentTarget && closeModal()}
-            >
+              className="absolute inset-0 bg-black/90"
+              onClick={closeModal}
+            />
+            <div className="relative p-[3%] w-full h-full flex items-center justify-center box-border pointer-events-none">
               <img
-                src={src}
+                src={imgSrc}
                 alt={alt}
-                className="max-w-full max-h-full object-contain rounded-lg"
-                onClick={(e) => e.stopPropagation()}
+                className="max-w-full max-h-full object-contain rounded-lg pointer-events-auto"
               />
             </div>
           </div>,
