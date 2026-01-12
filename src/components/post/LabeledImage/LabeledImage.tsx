@@ -92,11 +92,11 @@ export function LabeledImage({
         )}
       </figure>
 
-      {typeof document !== "undefined" &&
+      {isOpen &&
         createPortal(
           <div
-            className={`fixed inset-0 z-[1000] ${isOpen ? "flex items-center justify-center" : "hidden"}`}
-            aria-hidden={!isOpen}
+            className="fixed inset-0 z-[1000] flex items-center justify-center"
+            aria-hidden={false}
           >
             <div
               className="absolute inset-0 bg-black/90"
