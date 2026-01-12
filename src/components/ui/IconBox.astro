@@ -1,0 +1,31 @@
+---
+interface Props {
+  size?: "sm" | "md" | "lg";
+  variant?: "accent" | "muted";
+  class?: string;
+}
+
+const { size = "md", variant = "accent", class: className } = Astro.props;
+
+const sizeClasses = {
+  sm: "w-8 h-8",
+  md: "w-10 h-10",
+  lg: "w-12 h-12",
+};
+
+const variantClasses = {
+  accent: "bg-accent/10",
+  muted: "bg-gray-light",
+};
+---
+
+<div
+  class:list={[
+    "rounded-lg flex items-center justify-center flex-shrink-0",
+    sizeClasses[size],
+    variantClasses[variant],
+    className,
+  ]}
+>
+  <slot />
+</div>

@@ -1,4 +1,6 @@
 ---
+import Badge from "@/components/ui/Badge.astro";
+
 interface Props {
   period: string;
   description: string;
@@ -19,12 +21,6 @@ const { period, description, companies } = Astro.props;
   </div>
   <p class="text-gray-dark mb-3">{description}</p>
   <div class="flex flex-wrap gap-2">
-    {
-      companies.map((company) => (
-        <span class="px-2 py-1 bg-gray-light rounded text-gray-dark text-sm">
-          {company}
-        </span>
-      ))
-    }
+    {companies.map((company) => <Badge>{company}</Badge>)}
   </div>
 </div>
