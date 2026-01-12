@@ -5,6 +5,6 @@ export { default as CodeCopyButton } from "./CodeCopyButton/CodeCopyButton.astro
 export { default as Comments } from "./Comments/Comments.astro";
 export { default as GithubLink } from "./GithubLink/GithubLink.astro";
 export { default as Highlight } from "./Highlight/Highlight.astro";
-export { default as LabeledImage } from "./LabeledImage/LabeledImage.astro";
+export { LabeledImage } from "./LabeledImage/LabeledImage";
 export { default as RedditEmbed } from "./RedditEmbed/RedditEmbed.astro";
 export { default as WrapText } from "./WrapText/WrapText.astro";
