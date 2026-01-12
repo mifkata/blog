@@ -1,5 +1,5 @@
 services:
-  devcontainer:
+  dc_blog:
     build:
       context: .
       dockerfile: Dockerfile
@@ -7,7 +7,7 @@ services:
     container_name: blog-dev-container
     ports:
       - 4321:4321
-      - 6006:6006
+      - 6321:6006
     volumes:
       - ..:/workspace:cached
       - ./.home:/home/vscode/
