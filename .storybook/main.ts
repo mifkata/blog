@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
   stories: ["../src/components/**/*.stories.@(js|jsx|ts|tsx)"],
-  addons: ["@storybook/addon-docs"],
+  addons: ["@storybook/addon-docs", "@storybook/addon-a11y"],
   framework: {
     name: "storybook-astro",
     options: {},
