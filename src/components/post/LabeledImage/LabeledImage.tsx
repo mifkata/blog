@@ -96,7 +96,7 @@ export function LabeledImage({
         createPortal(
           <div
             className="fixed inset-0 z-[1000] flex items-center justify-center"
-            aria-hidden={false}
+            aria-hidden="false"
           >
             <div
               className="absolute inset-0 bg-black/90"
