@@ -20,7 +20,7 @@
     "devcontainer": "docker compose -f .devcontainer/docker-compose.yml",
     "devcontainer:build": "pnpm devcontainer build",
     "devcontainer:rebuild": "pnpm devcontainer build --no-cache",
-    "devcontainer:exec": "pnpm devcontainer:up && pnpm devcontainer exec devcontainer",
+    "devcontainer:exec": "pnpm devcontainer:up && pnpm devcontainer exec dc_blog",
     "devcontainer:up": "pnpm devcontainer up -d && pnpm devcontainer:notifier:up",
     "devcontainer:notifier:up": "pgrep -f 'socat TCP-LISTEN:4545' >/dev/null || (nohup socat TCP-LISTEN:4545,reuseaddr,fork EXEC:.devcontainer/notifier.sh >/tmp/hostcmd.log 2>&1 & echo '🔔 Notifier started.')",
     "devcontainer:notifier:stop": "pkill -f 'socat TCP-LISTEN:4545' && echo '🔕 Notifier stopped.'",

@@ -28,7 +28,7 @@ Astro.build app
 ## Git
 
 - Do not add author/co-author/generator footers to commit messages
-- Use Conventional Commits for messages
+- Use Conventional Commits format
 - Body: imperative, lowercase, <72 chars, explain what/why
 - Footer: reference issues, breaking changes
 
