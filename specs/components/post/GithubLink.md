@@ -1,6 +1,6 @@
 # GithubLink
 
-`src/components/post/GithubLink/GithubLink.tsx` - React/TS GitHub link with lazy preview.
+`src/components/post/GithubLink/GithubLinkReact.tsx` - React/TS GitHub link with lazy preview.
 
 ## Props
 
@@ -32,6 +32,13 @@
 - Header: `font-mono text-sm`, icon `w-5 h-5`
 - Toggle: `text-accent`, `▶ Show` / `▼ Hide`
 - Invalid URL: warning message
+
+## Accessibility
+
+- SVG icons have `aria-hidden="true"`
+- External link has `sr-only` text "(opens in new tab)"
+- Toggle button has `aria-expanded`, `aria-controls="github-link-preview"`
+- Preview container has `id="github-link-preview"`
 
 ## Implementation
 

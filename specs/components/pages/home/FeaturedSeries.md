@@ -16,6 +16,8 @@ interface SeriesItem {
 
 Behavior: defaultIndex 0; auto-rotate 3s sequential; click stops rotation
 
+Accessibility: buttons have `aria-label="View details for {title}"`, `aria-pressed={isActive}`
+
 Layout: header ("Featured Series:" + title + divider), grid `flex-col md:grid-cols-{n}`, details (Markdown synopsis, date, "Read more →")
 
 Desktop: card heroImage scale(3→1), title link; active `scale-115 z-10`
