@@ -22,9 +22,15 @@ interface Props {
   children?: ReactNode;
 }
 
-export function LabeledImage({ src, alt, width, height, children }: Props) {
+export function LabeledImage({
+  src,
+  alt,
+  width = 1280,
+  height,
+  children,
+}: Props) {
   // Handle ImageMetadata (has .src property) or string URLs
-  const imgSrc = typeof src === "object" && src?.src ? src.src : src;
+  const imgSrc = typeof src === "object" ? src.src : src;
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = useCallback(() => {
@@ -96,11 +102,15 @@ export function LabeledImage({ src, alt, width, height, children }: Props) {
               className="absolute inset-0 bg-black/90"
               onClick={closeModal}
             />
-            <div className="relative p-[3%] w-full h-full flex items-center justify-center box-border pointer-events-none">
+            <div
+              className="relative p-[3%] w-full h-full flex items-center justify-center box-border"
+              onClick={closeModal}
+            >
               <img
                 src={imgSrc}
                 alt={alt}
-                className="max-w-full max-h-full object-contain rounded-lg pointer-events-auto"
+                className="max-w-full max-h-full object-contain rounded-lg"
+                onClick={(e) => e.stopPropagation()}
               />
             </div>
           </div>,

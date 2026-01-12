@@ -8,7 +8,7 @@
 interface Props {
   src: string | ImageMetadata; // supports Astro image imports
   alt: string;
-  width?: number;
+  width?: number; // default: 1280
   height?: number;
   children?: ReactNode; // caption content
 }

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/html";
 import { createElement } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, type Root } from "react-dom/client";
 import { LabeledImage } from "./LabeledImage";
 
 interface LabeledImageArgs {
@@ -10,6 +10,9 @@ interface LabeledImageArgs {
   height?: number;
   children?: string;
 }
+
+// Track roots for cleanup to prevent memory leaks
+const rootMap = new WeakMap<HTMLElement, Root>();
 
 const meta: Meta<LabeledImageArgs> = {
   title: "Post/LabeledImage",
@@ -36,9 +39,18 @@ const meta: Meta<LabeledImageArgs> = {
       description: "Caption content (supports HTML)",
     },
   },
-  render: (args) => {
+  render: (args, { canvasElement }) => {
+    // Clean up previous root if re-rendering
+    const existingRoot = rootMap.get(canvasElement);
+    if (existingRoot) {
+      existingRoot.unmount();
+      rootMap.delete(canvasElement);
+    }
+
     const container = document.createElement("div");
     const root = createRoot(container);
+    rootMap.set(canvasElement, root);
+
     const { children, ...props } = args;
     root.render(
       createElement(
