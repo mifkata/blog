@@ -1,4 +1,4 @@
-import React, { useState, useEffect, type ReactNode } from "react";
+import React, { useState, useEffect, useId, type ReactNode } from "react";
 
 interface Props {
   url: string;
@@ -78,6 +78,7 @@ export default function GithubLink({
   const [iframeHeight, setIframeHeight] = useState(300);
   const [isLoading, setIsLoading] = useState(false);
   const parsed = parseGithubUrl(url);
+  const previewId = useId();
 
   // Fetch file to count lines and calculate height
   useEffect(() => {
@@ -158,13 +159,13 @@ export default function GithubLink({
             className="text-sm text-accent hover:text-accent-dark cursor-pointer bg-transparent border-0 p-0"
             onClick={() => setIsExpanded(!isExpanded)}
             aria-expanded={isExpanded}
-            aria-controls="github-link-preview"
+            aria-controls={previewId}
           >
             {isExpanded ? "▼ Hide preview" : "▶ Show preview"}
           </button>
 
           {isExpanded && (
-            <div id="github-link-preview" className="mt-3">
+            <div id={previewId} className="mt-3">
               {/* Image preview */}
               {parsed.isImage && parsed.rawUrl && (
                 <img
