@@ -37,8 +37,8 @@
 
 - SVG icons have `aria-hidden="true"`
 - External link has `sr-only` text "(opens in new tab)"
-- Toggle button has `aria-expanded`, `aria-controls="github-link-preview"`
-- Preview container has `id="github-link-preview"`
+- Toggle button has `aria-expanded`, `aria-controls={previewId}`
+- Preview container has `id={previewId}` (unique per instance via `useId`)
 
 ## Implementation
 
