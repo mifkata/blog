@@ -1,4 +1,5 @@
 ---
+import IconBox from "@/components/ui/IconBox.astro";
 import Cloud from "@/components/ui/icons/Cloud.astro";
 import GitBranch from "@/components/ui/icons/GitBranch.astro";
 import Layout from "@/components/ui/icons/Layout.astro";
@@ -33,9 +34,7 @@ const iconMap: Record<string, typeof Server> = {
       return (
         <div class="p-4 sm:p-6 border border-gray-light rounded-xl hover:border-accent transition-colors overflow-hidden min-w-0">
           <div class="flex items-start gap-3 sm:gap-4">
-            <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
-              {Icon && <Icon size={20} class="text-accent" />}
-            </div>
+            <IconBox>{Icon && <Icon size={20} class="text-accent" />}</IconBox>
             <div class="min-w-0">
               <h3 class="text-lg m-0 mb-2 !text-[#6FA4AF]">{service.title}</h3>
               <p class="text-gray-dark text-sm m-0">{service.description}</p>
