@@ -37,7 +37,7 @@ USER $USERNAME
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # Install vimcat
-RUN git clone https://github.com/ofavre/vimcat.git /home/$USERNAME
+RUN git clone https://github.com/ofavre/vimcat.git /home/$USERNAME/vimcat
 WORKDIR /home/$USERNAME/vimcat
 RUN sudo make install && rm -r /home/$USERNAME/vimcat
 
