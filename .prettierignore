@@ -4,3 +4,4 @@ node_modules
 pnpm-lock.yaml
 .devcontainer/.claude
 !.devcontainer/.claude/settings.json
+*.mdx
