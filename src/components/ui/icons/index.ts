@@ -6,8 +6,10 @@ export { default as Cloud } from "./Cloud.astro";
 export { default as Code } from "./Code.astro";
 export { default as Database } from "./Database.astro";
 export { default as Document } from "./Document.astro";
+export { default as ExternalLink } from "./ExternalLink.astro";
 export { default as GitBranch } from "./GitBranch.astro";
 export { default as GitHub } from "./GitHub.astro";
+export { default as Globe } from "./Globe.astro";
 export { default as Heart } from "./Heart.astro";
 export { default as Info } from "./Info.astro";
 export { default as Layout } from "./Layout.astro";
@@ -18,3 +20,7 @@ export { default as Shield } from "./Shield.astro";
 export { default as Star } from "./Star.astro";
 export { default as Tool } from "./Tool.astro";
 export { default as Users } from "./Users.astro";
+
+// React icons
+export { ExternalLinkIcon } from "./ExternalLinkIcon";
+export { GitHubIcon } from "./GitHubIcon";
