@@ -147,6 +147,8 @@ export function FeaturedSeries({ title, items }: Props) {
               type="button"
               onClick={() => selectItem(index)}
               className={itemStyles.card()}
+              aria-label={`View details for ${item.title}`}
+              aria-pressed={isActive}
             >
               {item.heroImage && (
                 <img
