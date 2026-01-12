@@ -13,25 +13,25 @@ const { media = "all" } = Astro.props;
     @apply text-wrap;
   }
 
-  @screen sm {
+  @media (min-width: 640px) {
     .wrap-text[data-media="sm"] :global(pre) {
       @apply text-wrap;
     }
   }
 
-  @screen md {
+  @media (min-width: 768px) {
     .wrap-text[data-media="md"] :global(pre) {
       @apply text-wrap;
     }
   }
 
-  @screen lg {
+  @media (min-width: 1024px) {
     .wrap-text[data-media="lg"] :global(pre) {
       @apply text-wrap;
     }
   }
 
-  @screen xl {
+  @media (min-width: 1280px) {
     .wrap-text[data-media="xl"] :global(pre) {
       @apply text-wrap;
     }
