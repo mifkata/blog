@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y \
     vim \
     wget \
     zsh \
+    gh \
+    jq \
     && rm -rf /var/lib/apt/lists/*
 
 # Install pnpm
