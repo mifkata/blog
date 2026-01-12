@@ -25,6 +25,17 @@ Astro.build app
 - don't wrap `react` components in `astro`, unless necessary
 - don't use default exports in `tsx` components
 
+## Git
+
+- Do not add author/co-author/generator footers to commit messages
+- Use Conventional Commits for messages
+- Body: imperative, lowercase, <72 chars, explain what/why
+- Footer: reference issues, breaking changes
+
+# SVG
+
+- extract `svg` as icons
+
 # Quality
 
 - `pnpm lint:fix` `pnpm format:fix`
