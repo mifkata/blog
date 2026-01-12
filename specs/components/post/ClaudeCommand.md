@@ -10,3 +10,5 @@ URLs:
 - external: `code.claude.com/docs/en/slash-commands`
 
 Visual: `inline-flex items-center gap-1`, icon `w-4 h-4` (GitHub/globe), `font-mono text-sm text-accent`, `/{name}`, `title` tooltip
+
+Accessibility: SVG icons have `aria-hidden="true"`, `sr-only` text "(opens in new tab)" for external link indication

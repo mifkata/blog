@@ -18,9 +18,7 @@ const { items, title, caption, description } = await getSeriesWithPosts(slug);
         {caption || title}
       </summary>
       <div class="p-0 rounded-lg border border-gray-light mt-4">
-        <div class="bg-gray-light/20 p-4">
-          {description}
-        </div>
+        <div class="bg-gray-light/20 p-4">{description}</div>
         <ol class="mt-2 ml-6 list-decimal">
           {items.map(({ id, url, title }) =>
             current === url || current == id ? (
