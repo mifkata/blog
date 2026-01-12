@@ -7,11 +7,20 @@ export function setupImageModals() {
     const backdrop = modal.querySelector<HTMLElement>(".modal-backdrop");
     const modalContent = modal.querySelector<HTMLElement>(".modal-content");
 
-    img.addEventListener("click", () => {
+    const openModal = () => {
       modal.classList.remove("hidden");
       modal.classList.add("flex", "items-center", "justify-center");
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
+    };
+
+    img.addEventListener("click", openModal);
+
+    img.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openModal();
+      }
     });
 
     const closeModal = () => {

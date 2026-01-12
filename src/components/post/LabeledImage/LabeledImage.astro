@@ -16,6 +16,9 @@ const { src, alt, width = 1280 } = Astro.props;
     {alt}
     {width}
     class="clickable block mx-auto rounded-lg cursor-zoom-in"
+    role="button"
+    tabindex="0"
+    aria-label={`${alt} - Click to enlarge`}
   />
   <figcaption
     class="text-center text-sm text-gray mt-2 italic [&_a]:text-accent"
