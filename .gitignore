@@ -1,11 +1,15 @@
 # build output
 dist/
+
 # generated types
 .astro/
 
 # dependencies
 node_modules/
 .pnpm-store/
+
+# worktrees
+worktrees/
 
 # logs
 npm-debug.log*
