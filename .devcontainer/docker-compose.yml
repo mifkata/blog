@@ -1,5 +1,6 @@
 services:
   dc_blog:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
