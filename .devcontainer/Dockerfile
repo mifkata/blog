@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y \
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 RUN pnpm --version
 
-# Install Claude CLI
-RUN npm install -g @anthropic-ai/claude-code
+# AI agent tools
+RUN curl -fsSL https://claude.ai/install.sh | bash
 
 # Create non-root user
 ARG USERNAME=vscode
