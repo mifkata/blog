@@ -42,21 +42,22 @@ const optimizedHero = heroImage ? await getImage({ src: heroImage, width: 1920 }
         class="mb-8 -mt-12 -mx-6 sm:-mx-6 xl:-mt-12 xl:-mx-25.5 min-h-[50vh] bg-cover bg-center relative"
         style={`background-image: url(${optimizedHero.src});`}
       >
-        <header class="absolute bottom-0 left-0 right-0 backdrop-blur-md bg-black/40 p-6 xl:p-8">
-          <h1 class="text-md md:text-5xl m-0 mb-4 text-white">{title}</h1>
-          <div class="flex items-center gap-4 text-sm text-gray-300 mb-4">
+        <header class="absolute bottom-0 left-0 backdrop-blur-sm bg-black/25 p-6 xl:p-8 max-w-[400px] rounded-tr-lg">
+          <h1 class="md:text-3xl m-0 mb-2 text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)]">{title}</h1>
+          <div class="flex items-center gap-3 text-sm text-gray-300 flex-wrap">
             <FormattedDate date={pubDate} />
             {updatedDate && (
               <span class="italic">
                 Updated <FormattedDate date={updatedDate} />
               </span>
             )}
+            {tags && tags.length > 0 && (
+              <>
+                <span class="text-gray-400">|</span>
+                {tags.map((t) => <Tag tag={t} variant="dark" />)}
+              </>
+            )}
           </div>
-          {tags && tags.length > 0 && (
-            <div class="flex gap-2 flex-wrap">
-              {tags.map((t) => <Tag tag={t} />)}
-            </div>
-          )}
         </header>
       </div>
     ) : (
