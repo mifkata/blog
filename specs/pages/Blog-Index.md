@@ -2,16 +2,26 @@
 
 `src/pages/blog/index.astro` - Blog listing page.
 
-URL: `/blog`
+## URL
 
-Layout: PageLayout (size="wide")
+- `/blog`
 
-Data: `posts`=all sorted desc, `featuredPost`=posts[0], `otherPosts`=posts.slice(1)
+## Layout
 
-Sections:
+- PageLayout (size="wide")
+
+## Data
+
+- `posts` = all sorted desc
+- `featuredPost` = posts[0]
+- `otherPosts` = posts.slice(1)
+
+## Sections
 
 - Page Header: title, description
 - Featured Post: 2-col grid, hero image, title, synopsis, date, tags
 - All Posts: ArticleCard list
 
-Uses: PageLayout, ArticleCard, FormattedDate, synopsis -> Markdown, Tag
+## Dependencies
+
+- PageLayout, ArticleCard, FormattedDate, synopsis -> Markdown, Tag

@@ -2,12 +2,25 @@
 
 `src/components/post/RedditEmbed/RedditEmbed.astro` - Lazy-loaded Reddit post embed.
 
-Props: `url: string` (required), `height?: number` (default: 320)
+## Props
 
-Behavior: shows placeholder→lazy loads iframe when visible (IntersectionObserver)
+- `url: string` (required)
+- `height?: number` (default: 320)
 
-URL parsing: extracts post ID from reddit.com/r/{sub}/comments/{id}/ format
+## Behavior
 
-Fallback: invalid URL→error message, placeholder→"View on Reddit" link
+- Shows placeholder -> lazy loads iframe when visible (IntersectionObserver)
 
-Visual: `border rounded-lg`, iframe: sandboxed with allow-scripts/same-origin/popups
+## URL Parsing
+
+- Extracts post ID from `reddit.com/r/{sub}/comments/{id}/` format
+
+## Fallback
+
+- Invalid URL -> error message
+- Placeholder -> "View on Reddit" link
+
+## Visual
+
+- `border rounded-lg`
+- Iframe: sandboxed with allow-scripts/same-origin/popups

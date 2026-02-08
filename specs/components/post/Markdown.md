@@ -2,10 +2,20 @@
 
 `src/components/post/Markdown/Markdown.tsx` - Renders markdown to HTML using `marked`.
 
-Props: `text?: string`, `className?: string`
+## Props
 
-Parsing: `marked.parse(text, { async: false })`
+- `text?: string`
+- `className?: string`
 
-Output: `<div dangerouslySetInnerHTML />`, empty text → null
+## Parsing
 
-SSR: Server-rendered only; `marked` not bundled to client
+- `marked.parse(text, { async: false })`
+
+## Output
+
+- `<div dangerouslySetInnerHTML />`
+- Empty text -> null
+
+## SSR
+
+- Server-rendered only; `marked` not bundled to client

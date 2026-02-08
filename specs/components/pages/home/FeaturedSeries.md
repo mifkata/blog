@@ -2,7 +2,10 @@
 
 `src/components/pages/home/FeaturedSeries/FeaturedSeries.tsx` - Series carousel for home page.
 
-Props: `title: string`, `items: SeriesItem[]`
+## Props
+
+- `title: string`
+- `items: SeriesItem[]`
 
 ```ts
 interface SeriesItem {
@@ -14,16 +17,36 @@ interface SeriesItem {
 }
 ```
 
-Behavior: defaultIndex 0; auto-rotate 3s sequential; click stops rotation
+## Behavior
 
-Accessibility: buttons have `aria-label="View details for {title}"`, `aria-pressed={isActive}`
+- defaultIndex 0
+- Auto-rotate 3s sequential
+- Click stops rotation
 
-Layout: header ("Featured Series:" + title + divider), grid `flex-col md:grid-cols-{n}`, details (Markdown synopsis, date, "Read more →")
+## Accessibility
 
-Desktop: card heroImage scale(3→1), title link; active `scale-115 z-10`
+- Buttons have `aria-label="View details for {title}"`, `aria-pressed={isActive}`
 
-Mobile: stacked cards (no image), teal highlight bar (`mix-blend-exclusion`); details show heroImage
+## Layout
 
-Styling: `tailwind-variants` with slots and variants for `active`, `position`, `columns`
+- Header: "Featured Series:" + title + divider
+- Grid: `flex-col md:grid-cols-{n}`
+- Details: Markdown synopsis, date, "Read more ->"
 
-Wrapper: `FeaturedSeries.astro` fetches via `getSeriesWithPosts(slug)` and passes to React with `client:load`
+## Desktop
+
+- Card heroImage scale(3->1), title link
+- Active: `scale-115 z-10`
+
+## Mobile
+
+- Stacked cards (no image), teal highlight bar (`mix-blend-exclusion`)
+- Details show heroImage
+
+## Styling
+
+- `tailwind-variants` with slots and variants for `active`, `position`, `columns`
+
+## Wrapper
+
+- `FeaturedSeries.astro` fetches via `getSeriesWithPosts(slug)` and passes to React with `client:load`

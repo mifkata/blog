@@ -2,12 +2,25 @@
 
 `src/pages/blog/[...slug].astro` - Individual blog post page.
 
-URL: `/blog/{slug}` (dynamic, catch-all)
+## URL
 
-Layout: BlogPostLayout
+- `/blog/{slug}` (dynamic, catch-all)
 
-Static Paths: generates page for each blog post using post.id as slug
+## Layout
 
-Data: `post`=current post, `allPosts`=all posts, `headings`=h2/h3 for TOC, `relatedPosts`=matching tags max 3
+- BlogPostLayout
 
-Uses: BlogPostLayout
+## Static Paths
+
+- Generates page for each blog post using post.id as slug
+
+## Data
+
+- `post` = current post
+- `allPosts` = all posts
+- `headings` = h2/h3 for TOC
+- `relatedPosts` = matching tags max 3
+
+## Dependencies
+
+- BlogPostLayout

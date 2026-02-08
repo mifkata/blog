@@ -2,10 +2,21 @@
 
 `src/components/post/Highlight/Highlight.astro` - Text/block highlighting with color variants.
 
-Props: `color?: "yellow"|"green"|"blue"|"pink"` (default: yellow), `block?: boolean` (default: false)
+## Props
 
-Output: inline→`<mark>`, block→`<div class="p-4 rounded-md my-4">`
+- `color?: "yellow"|"green"|"blue"|"pink"` (default: yellow)
+- `block?: boolean` (default: false)
 
-Colors: `bg-{color}-200/60`, dark mode: `bg-{color}-500/30`
+## Output
 
-Slot: content to highlight
+- Inline -> `<mark>`
+- Block -> `<div class="p-4 rounded-md my-4">`
+
+## Colors
+
+- `bg-{color}-200/60`
+- Dark mode: `bg-{color}-500/30`
+
+## Slots
+
+- Default: content to highlight

@@ -2,12 +2,21 @@
 
 `src/components/post/CodeCopyButton/CodeCopyButton.astro` - Adds copy buttons to code blocks.
 
-Props: none (script-only component)
+## Props
 
-Behavior: wraps each `<pre>` in `<div class="relative group">`, adds copy button
+- None (script-only component)
 
-Button: `absolute top-2 right-2`, hidden until hover, copies code to clipboard
+## Behavior
 
-Feedback: "Copy"→"Copied!" for 2s
+- Wraps each `<pre>` in `<div class="relative group">`
+- Adds copy button
+- Button: `absolute top-2 right-2`, hidden until hover
+- Copies code to clipboard
 
-Init: runs on load + `astro:page-load` event
+## Feedback
+
+- "Copy" -> "Copied!" for 2s
+
+## Init
+
+- Runs on load + `astro:page-load` event

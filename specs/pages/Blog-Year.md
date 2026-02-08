@@ -2,14 +2,28 @@
 
 `src/pages/blog/[year].astro` - Posts by year archive.
 
-URL: `/blog/{year}` (dynamic)
+## URL
 
-Layout: PageLayout (size="default")
+- `/blog/{year}` (dynamic)
 
-Static Paths: generates page for each unique year from blog posts
+## Layout
 
-Data: `year`=from params, `posts`=filtered by year, sorted desc
+- PageLayout (size="default")
 
-Content: Year title (h1), ArticleCard list
+## Static Paths
 
-Uses: PageLayout, ArticleCard
+- Generates page for each unique year from blog posts
+
+## Data
+
+- `year` = from params
+- `posts` = filtered by year, sorted desc
+
+## Content
+
+- Year title (h1)
+- ArticleCard list
+
+## Dependencies
+
+- PageLayout, ArticleCard

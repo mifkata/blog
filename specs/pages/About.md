@@ -2,13 +2,20 @@
 
 `src/pages/about.astro` - Personal bio page.
 
-URL: `/about`
+## URL
 
-Layout: PageLayout (size="wide")
+- `/about`
 
-Data: `quirks`=personality quirks array, `lifeOutsideWork`=interests array
+## Layout
 
-Sections:
+- PageLayout (size="wide")
+
+## Data
+
+- `quirks` = personality quirks array
+- `lifeOutsideWork` = interests array
+
+## Sections
 
 - Hero: circular avatar, name, intro text
 - Outside of Work: interests with icons
@@ -18,4 +25,6 @@ Sections:
 - Right Now: current focus
 - CTA: "Get in Touch" mailto button
 
-Uses: PageLayout, Button, icons (Circle, Clock, Heart, Info, Star, Users)
+## Dependencies
+
+- PageLayout, Button, icons (Circle, Clock, Heart, Info, Star, Users)

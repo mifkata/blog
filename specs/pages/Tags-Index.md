@@ -2,12 +2,26 @@
 
 `src/pages/tags/index.astro` - All tags listing.
 
-URL: `/tags`
+## URL
 
-Layout: PageLayout (size="default")
+- `/tags`
 
-Data: `posts`=all, `tagCounts`=tag→count map, `tags`=sorted entries, `tagsInfo`=from tags.json
+## Layout
 
-Content: Title (h1), tag list with counts and optional descriptions
+- PageLayout (size="default")
 
-Uses: PageLayout, Tag
+## Data
+
+- `posts` = all
+- `tagCounts` = tag -> count map
+- `tags` = sorted entries
+- `tagsInfo` = from tags.json
+
+## Content
+
+- Title (h1)
+- Tag list with counts and optional descriptions
+
+## Dependencies
+
+- PageLayout, Tag
