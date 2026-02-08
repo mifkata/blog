@@ -14,7 +14,7 @@
 ## Output
 
 - `<div dangerouslySetInnerHTML />`
-- Empty text -> null
+- Empty text → null
 
 ## SSR
 

@@ -8,7 +8,7 @@
 
 ## Output
 
-- `<ul class="space-y-3">` -> list items with Circle icon (orange #D97D55) + text
+- `<ul class="space-y-3">` → list items with Circle icon (orange #D97D55) + text
 
 ## Dependencies
 

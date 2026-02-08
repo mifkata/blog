@@ -19,7 +19,7 @@
 - `post` = current post
 - `allPosts` = all posts
 - `headings` = h2/h3 for TOC
-- `relatedPosts` = matching tags max 3
+- `relatedPosts` = matching tags, sorted by match count
 
 ## Dependencies
 

@@ -14,17 +14,17 @@
 
 - Default: `max-w-[720px]`
 - Wide: `max-w-[960px]`
-- Full: none
+- Full: `max-w-[1120px]`
 
 ## Output
 
-- `<html lang="en">` -> BaseHead + Header + `<main class="w-full mx-auto px-6 py-12 {sizeClass}">` slot + Footer
+- `<html lang="en">` → BaseHead + Header + `<main class="w-full mx-auto px-6 py-12 {sizeClass}">` slot + Footer
 
 ## Page Sizes
 
 - Home: full
-- About/Resume/Services/Blog-Index/Blog-Year/Tags-Index/Tag: wide
-- 404: default
+- About/Resume/Services/Blog-Index: wide
+- Blog-Year/Tags-Index/Tag/404: default
 
 ## Dependencies
 

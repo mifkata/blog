@@ -11,7 +11,7 @@
 
 ## Icons
 
-- server, layout, database, cloud, check, tool -> mapped to icon components
+- server, layout, database, cloud, check, tool → mapped to icon components
 
 ## Output
 

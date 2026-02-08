@@ -12,7 +12,7 @@
 - Background: `home-hero-bg.png`, white overlay (30%)
 - Content: `max-w-[960px]`, text `max-w-[720px]`
 - Intro/name/subtitle/description
-- Two Buttons: inverse->/blog, ghost->/about
+- Two Buttons: inverse→/blog, ghost→/about
 
 ## Visual
 

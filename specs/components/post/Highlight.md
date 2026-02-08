@@ -9,8 +9,8 @@
 
 ## Output
 
-- Inline -> `<mark>`
-- Block -> `<div class="p-4 rounded-md my-4">`
+- Inline → `<mark>`
+- Block → `<div class="p-4 rounded-md my-4">`
 
 ## Colors
 

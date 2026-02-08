@@ -11,7 +11,7 @@
 
 ## Icons
 
-- server, layout, git-branch, cloud, users -> mapped to icon components
+- server, layout, git-branch, cloud, users → mapped to icon components
 
 ## Output
 

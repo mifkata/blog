@@ -20,8 +20,8 @@ interface Props {
 
 ## Behavior
 
-- Click/Enter/Space on image -> fullscreen modal
-- Click backdrop/Escape -> close modal
+- Click/Enter/Space on image → fullscreen modal
+- Click backdrop/Escape → close modal
 - Body scroll locked when modal open
 - Uses React state for modal visibility (no external script)
 

@@ -8,7 +8,7 @@
 
 ## Output
 
-- `<section class="mb-12">` -> flex row (md)
+- `<section class="mb-12">` → flex row (md)
 - Avatar image (w-72 h-72 rounded-full) with caption
 - Intro text (h1 + subtitle + description)
 

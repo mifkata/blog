@@ -1,6 +1,6 @@
 # Frontend Testing
 
-`Unit + Integration + E2E + Storybook.`
+Unit + Integration + E2E + Storybook.
 
 ## Stack
 

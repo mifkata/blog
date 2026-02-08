@@ -15,4 +15,4 @@
 
 ## Dependencies
 
-- Image, FormattedDate, synopsis -> Markdown, Tag
+- Image, FormattedDate, synopsis → Markdown, Tag

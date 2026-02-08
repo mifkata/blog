@@ -10,7 +10,7 @@
 
 ## Output
 
-- `<section>` -> optional header (h3 uppercase + hr line) + ArticleCard list
+- `<section>` → optional header (h3 uppercase + hr line) + ArticleCard list
 
 ## Dependencies
 

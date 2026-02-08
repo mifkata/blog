@@ -13,4 +13,4 @@
 
 ## Output
 
-- `<h2 class="text-2xl mb-6 flex items-center gap-3">` -> icon slot + title
+- `<h2 class="text-2xl mb-6 flex items-center gap-3">` → icon slot + title

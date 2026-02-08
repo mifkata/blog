@@ -15,7 +15,7 @@
 
 ## Feedback
 
-- "Copy" -> "Copied!" for 2s
+- "Copy" → "Copied!" for 2s
 
 ## Init
 

@@ -22,8 +22,8 @@
 
 ## Visual
 
-- Group hover -> image shadow + title accent color
+- Group hover → image shadow + title accent color
 
 ## Dependencies
 
-- FormattedDate, synopsis -> Markdown, Tag
+- FormattedDate, synopsis → Markdown, Tag

@@ -11,7 +11,7 @@
 
 ## Behavior
 
-- Active: matches current pathname or first path segment -> `text-accent font-medium`
+- Active: matches current pathname or first path segment → `text-accent font-medium`
 
 ## Visual
 

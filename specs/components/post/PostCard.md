@@ -20,7 +20,7 @@
 ## Visual
 
 - `w-full md:w-[calc(50%-1rem)]`
-- Hover -> shadow + accent color
+- Hover → shadow + accent color
 
 ## Dependencies
 

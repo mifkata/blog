@@ -19,8 +19,8 @@
 
 ## Mobile
 
-- Hamburger toggle -> dropdown menu + overlay backdrop
-- Click overlay -> close
+- Hamburger toggle → dropdown menu + overlay backdrop
+- Click overlay → close
 
 ## Visual
 

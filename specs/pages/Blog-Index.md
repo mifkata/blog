@@ -24,4 +24,4 @@
 
 ## Dependencies
 
-- PageLayout, ArticleCard, FormattedDate, synopsis -> Markdown, Tag
+- PageLayout, ArticleCard, FormattedDate, synopsis → Markdown, Tag

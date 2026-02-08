@@ -9,14 +9,14 @@
 ## Output
 
 - `<section class="max-w-[960px] mx-auto px-6">`
-- Header with title + hr + "View all posts ->" link
+- Header with title + hr + "View all posts →" link
 - `<ul>` of posts (title + date), border-b separator (except last)
 - Hover: accent color
 
 ## Links
 
-- Posts -> `/blog/{id}/`
-- All -> `/blog`
+- Posts → `/blog/{id}/`
+- All → `/blog`
 
 ## Dependencies
 

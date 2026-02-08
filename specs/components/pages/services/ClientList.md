@@ -8,4 +8,4 @@
 
 ## Output
 
-- `<div class="flex flex-wrap gap-4">` -> client name pills (bg-gray-light rounded-lg)
+- `<div class="flex flex-wrap gap-4">` → client name pills (bg-gray-light rounded-lg)

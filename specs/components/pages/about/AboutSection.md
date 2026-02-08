@@ -14,4 +14,4 @@
 
 ## Output
 
-- `<section class="mb-12">` -> `<h2>` with icon slot + title, then default slot content
+- `<section class="mb-12">` → `<h2>` with icon slot + title, then default slot content

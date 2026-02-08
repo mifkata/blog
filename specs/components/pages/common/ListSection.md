@@ -10,4 +10,4 @@
 
 ## Output
 
-- `<section>` -> header (`<h3>` uppercase tracking-wider + optional hr line) + slot
+- `<section>` → header (`<h3>` uppercase tracking-wider + optional hr line) + slot

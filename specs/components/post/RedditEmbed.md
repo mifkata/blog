@@ -9,7 +9,7 @@
 
 ## Behavior
 
-- Shows placeholder -> lazy loads iframe when visible (IntersectionObserver)
+- Shows placeholder → lazy loads iframe when visible (IntersectionObserver)
 
 ## URL Parsing
 
@@ -17,8 +17,8 @@
 
 ## Fallback
 
-- Invalid URL -> error message
-- Placeholder -> "View on Reddit" link
+- Invalid URL → error message
+- Placeholder → "View on Reddit" link
 
 ## Visual
 

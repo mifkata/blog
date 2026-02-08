@@ -31,11 +31,11 @@ interface SeriesItem {
 
 - Header: "Featured Series:" + title + divider
 - Grid: `flex-col md:grid-cols-{n}`
-- Details: Markdown synopsis, date, "Read more ->"
+- Details: Markdown synopsis, date, "Read more →"
 
 ## Desktop
 
-- Card heroImage scale(3->1), title link
+- Card heroImage scale(3→1), title link
 - Active: `scale-115 z-10`
 
 ## Mobile

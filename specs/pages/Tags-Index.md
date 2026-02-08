@@ -13,7 +13,7 @@
 ## Data
 
 - `posts` = all
-- `tagCounts` = tag -> count map
+- `tagCounts` = tag → count map
 - `tags` = sorted entries
 - `tagsInfo` = from tags.json
 
