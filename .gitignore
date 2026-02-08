@@ -10,6 +10,7 @@ node_modules/
 
 # worktrees
 worktrees/
+.worktrees
 
 # logs
 npm-debug.log*
@@ -48,3 +49,9 @@ terraform/.terraform.lock.hcl
 
 # Storybook
 storybook-static/
+
+# Beads task tracking (ephemeral)
+.mcp.json
+
+# VS Code
+*.code-workspace
