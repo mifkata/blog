@@ -29,8 +29,10 @@
 
 ## Sections
 
-- Hero: full-width (`mb-6 -mt-12 -mx-6 sm:mx-auto sm:mb-6 sm:-mt-6 xl:-mt-12 xl:-mx-25.5 xl:mb-12`), w-auto shadow-lg (no rounded), negates PageLayout padding
-- Header: title (h1), dates, tags
+- Hero: full-width, min-h-[50vh], negates PageLayout padding, hero image as CSS background (bg-cover bg-center), position relative
+  - Header (overlay): absolute bottom-0 left-0 right-0, frosted glass (backdrop-blur-md bg-black/40), p-6 xl:p-8, text-white
+    - Title (h1 text-white), dates (text-gray-300), tags
+  - Fallback (no heroImage): Header renders as standalone block with border-b border-gray-light
 - Content: prose max-w-[920px], flex-1 when TOC shown
 - TOC (lg+, >= 2 headings): sticky w-[240px] top-28, h2=normal, h3=indented
 - Related: 4-col grid, max 4 posts
