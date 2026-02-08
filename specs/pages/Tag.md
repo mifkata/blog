@@ -2,14 +2,32 @@
 
 `src/pages/tags/[tag].astro` - Posts by tag page.
 
-URL: `/tags/{tag}` (dynamic)
+## URL
 
-Layout: PageLayout (size="default")
+- `/tags/{tag}` (dynamic)
 
-Static Paths: generates page for each unique tag from blog posts
+## Layout
 
-Data: `tag`=from params, `posts`=with tag sorted desc, `tagInfo`=from tags.json, `pageTitle`=tagInfo.title||tag, `pageDescription`=tagInfo.description||default
+- PageLayout (size="default")
 
-Content: Title (h1), optional description, ArticleCard list
+## Static Paths
 
-Uses: PageLayout, ArticleCard
+- Generates page for each unique tag from blog posts
+
+## Data
+
+- `tag` = from params
+- `posts` = with tag sorted desc
+- `tagInfo` = from tags.json
+- `pageTitle` = tagInfo.title || tag
+- `pageDescription` = tagInfo.description || default
+
+## Content
+
+- Title (h1)
+- Optional description
+- ArticleCard list
+
+## Dependencies
+
+- PageLayout, ArticleCard
