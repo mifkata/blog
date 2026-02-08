@@ -26,7 +26,7 @@
 
 ## Structure
 
-- PageLayout -> Article (Hero + Content/TOC flex) -> Related Posts -> Comments + CodeCopyButton
+- PageLayout → Article (Hero + Content/TOC flex) → Related Posts → Comments + CodeCopyButton
 
 ## Sections
 
