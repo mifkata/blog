@@ -1,5 +1,6 @@
 services:
   dc_blog:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,10 +10,10 @@ services:
       - 4321-4400:4321-4400
       - 6006-6100:6006-6100
     volumes:
-      - ..:/workspace:cached
-      - ./.home:/home/vscode/
-    working_dir: /workspace
-    user: vscode
+      - ..:/app:cached
+      - ./.home:/home/dev/
+    working_dir: /app
+    user: dev
     tty: true
     stdin_open: true
     command: sleep infinity
