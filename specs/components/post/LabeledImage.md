@@ -16,7 +16,7 @@ interface Props {
 
 ## Output
 
-`<figure>` with `<img>` + `<figcaption>` + modal overlay (React portal)
+- `<figure>` with `<img>` + `<figcaption>` + modal overlay (React portal)
 
 ## Behavior
 

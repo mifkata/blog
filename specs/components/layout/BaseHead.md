@@ -2,10 +2,27 @@
 
 `src/components/layout/BaseHead/BaseHead.astro` - HTML head with meta tags and assets.
 
-Props: `title: string`, `description: string`, `image?: ImageMetadata` (default: og-default.jpg)
+## Props
 
-Includes: global.css, GoogleAnalytics, fonts (preload), favicon, sitemap, RSS
+- `title: string` (required)
+- `description: string` (required)
+- `image?: ImageMetadata` (default: og-default.jpg)
 
-Meta: charset, viewport, generator, canonical URL
+## Includes
 
-SEO: title, description, Open Graph (og:_), Twitter Card (twitter:_)
+- global.css
+- GoogleAnalytics
+- Fonts (preload)
+- Favicon
+- Sitemap
+- RSS
+
+## Meta
+
+- charset, viewport, generator, canonical URL
+
+## SEO
+
+- title, description
+- Open Graph (og:*)
+- Twitter Card (twitter:*)
