@@ -2,13 +2,25 @@
 
 `src/components/post/ClaudeCommand/ClaudeCommand.astro` - Inline slash-command link.
 
-Props: `name: string`, `external?: boolean` (default: false)
+## Props
 
-URLs:
+- `name: string` (required)
+- `external?: boolean` (default: false)
 
-- internal: `github.com/mifkata/blog/blob/main/.claude/commands/{name}.md`
-- external: `code.claude.com/docs/en/slash-commands`
+## URLs
 
-Visual: `inline-flex items-center gap-1`, icon `w-4 h-4` (GitHub/globe), `font-mono text-sm text-accent`, `/{name}`, `title` tooltip
+- Internal: `github.com/mifkata/blog/blob/main/.claude/commands/{name}.md`
+- External: `code.claude.com/docs/en/slash-commands`
 
-Accessibility: SVG icons have `aria-hidden="true"`, `sr-only` text "(opens in new tab)" for external link indication
+## Visual
+
+- `inline-flex items-center gap-1`
+- Icon `w-4 h-4` (GitHub/globe)
+- `font-mono text-sm text-accent`
+- `/{name}`
+- `title` tooltip
+
+## Accessibility
+
+- SVG icons have `aria-hidden="true"`
+- `sr-only` text "(opens in new tab)" for external link indication
