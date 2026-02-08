@@ -68,7 +68,7 @@ This project includes a dev container configuration for a consistent development
 | `pnpm devcontainer:build`         | Build the dev container                |
 | `pnpm devcontainer:rebuild`       | Rebuild the dev container (no cache)   |
 | `pnpm devcontainer:up`            | Start the dev container and notifier   |
-| `pnpm devcontainer:stop`          | Stop the dev container and notifier    |
+| `pnpm devcontainer:down`          | Stop the dev container and notifier    |
 | `pnpm devcontainer:exec <cmd>`    | Execute a command inside the container |
 | `pnpm devcontainer:shell`         | Open a zsh shell in the container      |
 | `pnpm devcontainer:claude`        | Start Claude Code in the container     |

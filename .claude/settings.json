@@ -8,7 +8,8 @@
       "Bash(pip:*)",
       "Bash(gh pr:*)",
       "Bash(gh repo view:*)",
-      "Bash(gh api repos/* -X PATCH -f body=:*)"
+      "Bash(gh api repos/* -X PATCH -f body=:*)",
+      "Bash(bd:*)"
     ],
     "deny": ["Bash(npm:*)"],
     "ask": [
@@ -23,6 +24,122 @@
       "Bash(gh pr close:*)",
       "Bash(gh pr lock:*)",
       "Bash(gh pr unlock:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/block-orchestrator-tools.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/enforce-bead-for-supervisor.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/enforce-sequential-dispatch.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/remind-inprogress.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/inject-discipline-reminder.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/enforce-branch-before-edit.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/enforce-branch-before-edit.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/validate-epic-close.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/enforce-concise-response.sh"
+          },
+          {
+            "type": "command",
+            "command": ".claude/hooks/log-dispatch-prompt.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/memory-capture.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/validate-completion.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/clarify-vague-request.sh"
+          }
+        ]
+      }
     ]
   }
 }
