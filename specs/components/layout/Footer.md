@@ -2,14 +2,29 @@
 
 `src/components/layout/Footer/Footer.astro` - Site footer with info and links.
 
-Props: none
+## Props
 
-Layout: 3-column grid (md+): copyright/contact, info/links, ASCII cat
+- None
 
-Content: copyright year, role, quote, email, GitHub/LinkedIn icons
+## Layout
 
-Links: Tags, Sitemap, RSS, Source repo
+- 3-column grid (md+): copyright/contact, info/links, ASCII cat
 
-Meta: last updated date, "Built with Astro", commit SHA (from CF_PAGES_COMMIT_SHA)
+## Content
 
-Visual: `py-6 border-t bg-gradient-to-t from-gray-dark/10`
+- Copyright year, role, quote, email
+- GitHub/LinkedIn icons
+
+## Links
+
+- Tags, Sitemap, RSS, Source repo
+
+## Meta
+
+- Last updated date
+- "Built with Astro"
+- Commit SHA (from CF_PAGES_COMMIT_SHA)
+
+## Visual
+
+- `py-6 border-t bg-gradient-to-t from-gray-dark/10`

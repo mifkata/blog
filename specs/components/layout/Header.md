@@ -2,14 +2,31 @@
 
 `src/components/layout/Header/Header.astro` - Site header with navigation.
 
-Props: none
+## Props
 
-Structure: logo + desktop nav (HeaderLinks + Resume button) + mobile menu toggle
+- None
 
-Links: Blog (01), About (02), Services (03), Resume (inverse button)
+## Structure
 
-Mobile: hamburger toggle→dropdown menu + overlay backdrop, click overlay→close
+- Logo + desktop nav (HeaderLinks + Resume button) + mobile menu toggle
 
-Visual: `sticky top-0 z-50 bg-white shadow-sm`, max-width 960px centered
+## Links
 
-Uses: Button, HeaderLink, Document icon, Menu icon
+- Blog (01)
+- About (02)
+- Services (03)
+- Resume (inverse button)
+
+## Mobile
+
+- Hamburger toggle → dropdown menu + overlay backdrop
+- Click overlay → close
+
+## Visual
+
+- `sticky top-0 z-50 bg-white shadow-sm`
+- Max-width 960px centered
+
+## Dependencies
+
+- Button, HeaderLink, Document icon, Menu icon

@@ -2,14 +2,34 @@
 
 `src/layouts/PageLayout.astro` - Base page layout wrapper.
 
-Props: `title` (string, required), `description` (string, required), `image?` (ImageMetadata), `size?: "default"|"wide"|"full"` (default: "default"), `class?` (string)
+## Props
 
-Sizes: default=`max-w-[720px]`, wide=`max-w-[960px]`, full=none
+- `title: string` (required)
+- `description: string` (required)
+- `image?: ImageMetadata`
+- `size?: "default"|"wide"|"full"` (default: "default")
+- `class?: string`
 
-Output: `<html lang="en">` → BaseHead + Header + `<main class="w-full mx-auto px-6 py-12 {sizeClass}">` slot + Footer
+## Sizes
 
-Uses: BaseHead, Header, Footer
+- Default: `max-w-[720px]`
+- Wide: `max-w-[960px]`
+- Full: `max-w-[1120px]`
 
-Page sizes: Home=full, About/Resume/Services/Blog-Index/Blog-Year/Tags-Index/Tag=wide, 404=default
+## Output
 
-Note: BlogPost layout separate (has TOC, related posts, comments)
+- `<html lang="en">` → BaseHead + Header + `<main class="w-full mx-auto px-6 py-12 {sizeClass}">` slot + Footer
+
+## Page Sizes
+
+- Home: full
+- About/Resume/Services/Blog-Index: wide
+- Blog-Year/Tags-Index/Tag/404: default
+
+## Dependencies
+
+- BaseHead, Header, Footer
+
+## Notes
+
+- BlogPost layout is separate (has TOC, related posts, comments)

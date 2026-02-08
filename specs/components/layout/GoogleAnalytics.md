@@ -2,8 +2,15 @@
 
 `src/components/layout/GoogleAnalytics/GoogleAnalytics.astro` - Google Analytics tracking.
 
-Props: none
+## Props
 
-Behavior: loads GA script only in production (`import.meta.env.PROD`)
+- None
 
-Config: GA_ID=`G-SDS8ZJG4SS`, gtag.js async load + inline config script
+## Behavior
+
+- Loads GA script only in production (`import.meta.env.PROD`)
+
+## Config
+
+- GA_ID: `G-SDS8ZJG4SS`
+- gtag.js async load + inline config script
