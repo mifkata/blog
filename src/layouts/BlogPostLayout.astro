@@ -27,7 +27,9 @@ const {
 } = Astro.props;
 const showToc = headings.length >= 2;
 const displayedRelatedPosts = relatedPosts.slice(0, 4);
-const optimizedHero = heroImage ? await getImage({ src: heroImage, width: 1920 }) : null;
+const optimizedHero = heroImage
+  ? await getImage({ src: heroImage, width: 1920 })
+  : null;
 ---
 
 <PageLayout
@@ -37,47 +39,60 @@ const optimizedHero = heroImage ? await getImage({ src: heroImage, width: 1920 }
   size="full"
 >
   <article>
-    {heroImage && optimizedHero ? (
-      <div
-        class="mb-8 -mt-12 -mx-6 sm:-mx-6 xl:-mt-12 xl:-mx-25.5 min-h-[50vh] bg-cover bg-center relative"
-        style={`background-image: url(${optimizedHero.src});`}
-      >
-        <header class="absolute bottom-6 left-6 backdrop-blur-sm bg-black/25 p-6 xl:p-8 max-w-[400px] rounded-tr-lg">
-          <h1 class="md:text-3xl m-0 mb-2 text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)]">{title}</h1>
-          <div class="flex items-center gap-3 text-sm text-gray-300 flex-wrap">
+    {
+      heroImage && optimizedHero ? (
+        <div
+          class="mb-8 -mt-12 -mx-6 sm:-mx-6 xl:-mt-12 xl:-mx-25.5 min-h-[50vh] bg-cover bg-center relative"
+          style={`background-image: url(${optimizedHero.src});`}
+        >
+          <header class="absolute bottom-6 left-6 lg:bottom-12 lg:left-24 backdrop-blur-[6px] bg-black/25 p-6 max-w-lg rounded-lg">
+            <h1 class="md:!text-3xl m-0 mb-2 !text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)] inline">
+              {title}
+            </h1>
+            <div class="flex flex-row items-center gap-3 text-sm text-gray-300 mt-2">
+              <div class="self-start py-2">
+                <div class="md:min-w-[90px]">
+                  <FormattedDate date={pubDate} class="bg-[#000000]/50 px-1" />
+                  {updatedDate && (
+                    <span class="text-nowrap bg-[#000000]/50 px-1">
+                      Updated:{" "}
+                      <FormattedDate date={updatedDate} class="italic" />
+                    </span>
+                  )}
+                </div>
+              </div>
+              {tags && tags.length > 0 && (
+                <div class="flex gap-2 flex-wrap w-full">
+                  {/* <span class="text-gray-400">|</span> */}
+                  {tags.map((t) => (
+                    <Tag tag={t} variant="dark" />
+                  ))}
+                </div>
+              )}
+            </div>
+          </header>
+        </div>
+      ) : (
+        <header class="mb-8 pb-8 border-b border-gray-light">
+          <h1 class="text-md md:text-5xl m-0 mb-4">{title}</h1>
+          <div class="flex items-center gap-4 text-sm text-gray mb-4">
             <FormattedDate date={pubDate} />
             {updatedDate && (
               <span class="italic">
                 Updated <FormattedDate date={updatedDate} />
               </span>
             )}
-            {tags && tags.length > 0 && (
-              <>
-                <span class="text-gray-400">|</span>
-                {tags.map((t) => <Tag tag={t} variant="dark" />)}
-              </>
-            )}
           </div>
-        </header>
-      </div>
-    ) : (
-      <header class="mb-8 pb-8 border-b border-gray-light">
-        <h1 class="text-md md:text-5xl m-0 mb-4">{title}</h1>
-        <div class="flex items-center gap-4 text-sm text-gray mb-4">
-          <FormattedDate date={pubDate} />
-          {updatedDate && (
-            <span class="italic">
-              Updated <FormattedDate date={updatedDate} />
-            </span>
+          {tags && tags.length > 0 && (
+            <div class="flex gap-2 flex-wrap">
+              {tags.map((t) => (
+                <Tag tag={t} />
+              ))}
+            </div>
           )}
-        </div>
-        {tags && tags.length > 0 && (
-          <div class="flex gap-2 flex-wrap">
-            {tags.map((t) => <Tag tag={t} />)}
-          </div>
-        )}
-      </header>
-    )}
+        </header>
+      )
+    }
 
     <div
       class:list={["flex gap-12 items-start", { "justify-center": !showToc }]}
@@ -86,7 +101,6 @@ const optimizedHero = heroImage ? await getImage({ src: heroImage, width: 1920 }
       <div
         class:list={["min-w-0 max-w-[920px]", showToc ? "flex-1" : "w-full"]}
       >
-
         <!-- Article Content -->
         <div class="prose">
           <slot />

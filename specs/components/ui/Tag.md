@@ -15,7 +15,6 @@
 
 ## Visual
 
-- Default: `py-1 px-2 bg-gray-light rounded text-gray-dark text-sm`
-  - Hover: `bg-accent text-white`
-- Dark: `py-1 px-2 bg-white/20 rounded text-white text-sm`
-  - Hover: `bg-white/30`
+- Base: `py-1 px-2 rounded text-sm no-underline`
+- Default: `bg-gray-light text-gray-dark`, hover `bg-accent text-white`
+- Dark: `bg-white/20 !text-white`, hover `bg-white/30`

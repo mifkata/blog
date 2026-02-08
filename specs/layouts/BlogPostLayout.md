@@ -22,18 +22,21 @@
 
 - `showToc` = headings.length >= 2
 - `displayedRelatedPosts` = relatedPosts.slice(0, 4)
+- `optimizedHero` = getImage({ src: heroImage, width: 1920 }) when heroImage exists
 
 ## Structure
 
-- PageLayout → Article (Hero + Content/TOC flex) → Related Posts → Comments + CodeCopyButton
+- PageLayout -> Article (Hero + Content/TOC flex) -> Related Posts -> Comments + CodeCopyButton
 
 ## Sections
 
-- Hero: full-width, min-h-[50vh], negates PageLayout padding, hero image as CSS background (bg-cover bg-center), position relative
-  - Header (overlay): absolute bottom-0 left-0, max-w-[400px], frosted glass (backdrop-blur-sm bg-black/25), rounded-tr-lg, p-6 xl:p-8
-    - Title (h1 md:text-3xl text-white, text-shadow for readability)
-    - Date + tags on single line (text-gray-300, Tag variant="dark")
-  - Fallback (no heroImage): Header renders as standalone block with border-b border-gray-light
+- Hero: full-width, negates PageLayout padding, min-h-[50vh], hero image as CSS background (bg-cover bg-center), position relative
+  - Header (overlay): absolute bottom-6 left-6 lg:bottom-12 lg:left-24, backdrop-blur-[6px] bg-black/25, p-6, max-w-lg, rounded-lg
+    - Title (h1): md:!text-3xl, inline, !text-white, text-shadow 0 2px 8px rgba(0,0,0,0.8)
+    - Date + tags row: flex, gap-3, text-sm text-gray-300
+      - Dates: self-start, bg-[#000000]/50 px-1 background per date element
+      - Tags: flex wrap, Tag dark variant
+  - Fallback (no heroImage): Header as standalone block with border-b, standard text colors
 - Content: prose max-w-[920px], flex-1 when TOC shown
 - TOC (lg+, >= 2 headings): sticky w-[240px] top-28, h2=normal, h3=indented
 - Related: 4-col grid, max 4 posts
