@@ -1,13 +1,14 @@
 ---
 interface Props {
   date: Date | string | number;
+  class?: string;
 }
 
-const { date: dateProp } = Astro.props;
+const { date: dateProp, class: className } = Astro.props;
 const date = dateProp instanceof Date ? dateProp : new Date(dateProp);
 ---
 
-<time datetime={date.toISOString()}>
+<time datetime={date.toISOString()} class={`text-nowrap ${className}`}>
   {
     date.toLocaleDateString("en-us", {
       year: "numeric",

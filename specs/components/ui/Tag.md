@@ -5,6 +5,7 @@
 ## Props
 
 - `tag: string` (required)
+- `variant?: "default" | "dark"` (default: "default")
 - `class?: string`
 - `...HTMLAttributes<"a">`
 
@@ -14,5 +15,6 @@
 
 ## Visual
 
-- `py-1 px-2 bg-gray-light rounded text-gray-dark text-sm`
-- Hover: `bg-accent text-white`
+- Base: `py-1 px-2 rounded text-sm no-underline`
+- Default: `bg-gray-light text-gray-dark`, hover `bg-accent text-white`
+- Dark: `bg-white/20 !text-white`, hover `bg-white/30`
