@@ -4,11 +4,12 @@
 
 ## Props
 
-- `date: Date` (required)
+- `date: Date | string | number` (required)
+- `class?: string`
 
 ## Output
 
-- `<time datetime="{ISO}">{formatted}</time>`
+- `<time datetime="{ISO}" class="text-nowrap {class}">{formatted}</time>`
 
 ## Format
 
