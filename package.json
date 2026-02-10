@@ -19,7 +19,7 @@
     "prepare": "husky",
     "dc:compose": "docker compose -f .devcontainer/docker-compose.yml",
     "dc:notify": "pgrep -f 'socat TCP-LISTEN:4545' >/dev/null || (nohup socat TCP-LISTEN:4545,reuseaddr,fork EXEC:.devcontainer/notifier.sh >/tmp/hostcmd.log 2>&1 & echo '🔔 Notifier started.')",
-    "devcontainer": "pnpm dc:compose exec dc_blog zsh",
+    "devcontainer": "pnpm dc:compose exec -e ITERM_SESSION_ID=$ITERM_SESSION_ID dc_blog zsh",
     "devcontainer:build": "pnpm dc:compose build",
     "devcontainer:rebuild": "pnpm dc:compose build --no-cache",
     "devcontainer:start": "pnpm dc:compose up -d && pnpm dc:notify",
