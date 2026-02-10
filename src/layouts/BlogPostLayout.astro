@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import type { MarkdownHeading } from "astro";
 import CodeCopyButton from "@/components/post/CodeCopyButton/CodeCopyButton.astro";
@@ -27,6 +27,9 @@ const {
 } = Astro.props;
 const showToc = headings.length >= 2;
 const displayedRelatedPosts = relatedPosts.slice(0, 4);
+const optimizedHero = heroImage
+  ? await getImage({ src: heroImage, width: 1920 })
+  : null;
 ---
 
 <PageLayout
@@ -36,12 +39,60 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
   size="full"
 >
   <article>
-    <!-- Hero Image -->
     {
-      heroImage && (
-        <div class="mb-6 -mt-12 -mx-6 sm:mx-auto sm:mb-6 sm:-mt-6 xl:-mt-12 xl:-mx-25.5 xl:mb-12">
-          <Image src={heroImage} alt={title} class="w-auto shadow-lg" />
+      heroImage && optimizedHero ? (
+        <div
+          class="mb-8 -mt-12 -mx-6 sm:-mx-6 xl:-mt-12 xl:-mx-25.5 min-h-[50vh] bg-cover bg-center relative"
+          style={`background-image: url(${optimizedHero.src});`}
+          role="img"
+          aria-label={title}
+        >
+          <header class="absolute bottom-6 left-6 lg:bottom-12 lg:left-24 backdrop-blur-[6px] bg-black/25 p-6 max-w-lg rounded-lg">
+            <h1 class="md:!text-3xl m-0 mb-2 !text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)] inline">
+              {title}
+            </h1>
+            <div class="flex flex-row items-center gap-3 text-sm text-gray-300 mt-2">
+              <div class="self-start py-2">
+                <div class="md:min-w-[90px]">
+                  <FormattedDate date={pubDate} class="bg-[#000000]/50 px-1" />
+                  {updatedDate && (
+                    <span class="text-nowrap bg-[#000000]/50 px-1">
+                      Updated:{" "}
+                      <FormattedDate date={updatedDate} class="italic" />
+                    </span>
+                  )}
+                </div>
+              </div>
+              {tags && tags.length > 0 && (
+                <div class="flex gap-2 flex-wrap w-full">
+                  {/* <span class="text-gray-400">|</span> */}
+                  {tags.map((t) => (
+                    <Tag tag={t} variant="dark" />
+                  ))}
+                </div>
+              )}
+            </div>
+          </header>
         </div>
+      ) : (
+        <header class="mb-8 pb-8 border-b border-gray-light">
+          <h1 class="text-md md:text-5xl m-0 mb-4">{title}</h1>
+          <div class="flex items-center gap-4 text-sm text-gray mb-4">
+            <FormattedDate date={pubDate} />
+            {updatedDate && (
+              <span class="italic">
+                Updated <FormattedDate date={updatedDate} />
+              </span>
+            )}
+          </div>
+          {tags && tags.length > 0 && (
+            <div class="flex gap-2 flex-wrap">
+              {tags.map((t) => (
+                <Tag tag={t} />
+              ))}
+            </div>
+          )}
+        </header>
       )
     }
 
@@ -52,30 +103,6 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
       <div
         class:list={["min-w-0 max-w-[920px]", showToc ? "flex-1" : "w-full"]}
       >
-        <!-- Article Header -->
-        <header class="mb-8 pb-8 border-b border-gray-light">
-          <h1 class="text-md md:text-5xl m-0 mb-4">{title}</h1>
-          <div class="flex items-center gap-4 text-sm text-gray mb-4">
-            <FormattedDate date={pubDate} />
-            {
-              updatedDate && (
-                <span class="italic">
-                  Updated <FormattedDate date={updatedDate} />
-                </span>
-              )
-            }
-          </div>
-          {
-            tags && tags.length > 0 && (
-              <div class="flex gap-2 flex-wrap">
-                {tags.map((t) => (
-                  <Tag tag={t} />
-                ))}
-              </div>
-            )
-          }
-        </header>
-
         <!-- Article Content -->
         <div class="prose">
           <slot />
