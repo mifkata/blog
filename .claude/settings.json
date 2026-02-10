@@ -11,7 +11,9 @@
       "Bash(gh api repos/* -X PATCH -f body=:*)",
       "Bash(bd:*)"
     ],
-    "deny": ["Bash(npm:*)"],
+    "deny": [
+      "Bash(npm:*)"
+    ],
     "ask": [
       "Bash(rm:*)",
       "Bash(git reset:*)",
@@ -140,6 +142,31 @@
           }
         ]
       }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/dispatch-notification.sh \"Waiting for user...\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/dispatch-notification.sh \"Ready!\""
+          }
+        ]
+      }
     ]
+  },
+  "enabledPlugins": {
+    "beads@beads-marketplace": true
   }
 }
