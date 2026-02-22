@@ -61,7 +61,7 @@ After a while, I kept working on the blog, but I noticed all the technical debt 
 First thing first: I had to step back and start cleaning up this mess that I have created in mare 24 hours. I added a [devcontainer](/blog/2025/claude-code-devcontainers/), I copied over some [slash-commands](/blog/2026/01/claude-code-system-prompting-and-commands/) from another project and modified the `CLAUDE.md`.
 
 <Highlight block>
-  > **Having migrated Claude Code tooling:** I generated couple of specs for existing components using <ClaudeCommand name="spec-create" />. After having them to my liking, I effectively created a pattern for future specs. Naturally, I asked **Claude Code** to generate missing specs for components, pages and layout following the pattern.
+  > **Having migrated Claude Code tooling:** I generated couple of specs for existing components using <ClaudeCommand archived name="spec-create" />. After having them to my liking, I effectively created a pattern for future specs. Naturally, I asked **Claude Code** to generate missing specs for components, pages and layout following the pattern.
 
 </Highlight>
 
@@ -78,7 +78,7 @@ First thing first: I had to step back and start cleaning up this mess that I hav
 
 Creating your **first spec is one of the hardest**. The two projects on which I've done heavy speccing on so far, I didn't start with specs. Through the process of creating piles of code (piles of shitty code, tech-debt heavy, complex to add complexity, virtually unmaintained), specs naturally appeared as a solution to my biggest problem: losing context.
 
-While working with an agent, after a certain token limit is reached, it is going to automatically compact the context (conversation) that they're working with. In **Claude Code** this can be manually triggered with the <ClaudeCommand name="compact" external /> command.
+While working with an agent, after a certain token limit is reached, it is going to automatically compact the context (conversation) that they're working with. In **Claude Code** this can be manually triggered with the <ClaudeCommand archived name="compact" external /> command.
 
 The context is the equivalent of the current knowledge and instructions that the AI agent is working with. After it (out)grows the agent's capabilities, it is compressed, in order to free more space (memory) for context added by future and ongoing conversations.
 
@@ -90,7 +90,7 @@ Created **specs are effectively logging reusable context** for the AI agent. You
 
 In the document, I make a lot of references to **Claude slash-commands**, some of them custom, others are built-in. Lets create a component called `<ClaudeCommand />`, that links to either my **custom command in the blog's repository** or the official [**Claude Code** slash-commands documentation](https://code.claude.com/docs/en/slash-commands).
 
-I'm going to start, like always, with <ClaudeCommand name="spec-create" />
+I'm going to start, like always, with <ClaudeCommand archived name="spec-create" />
 
 <WrapText>
 ```sh
@@ -108,7 +108,7 @@ I'm going to start, like always, with <ClaudeCommand name="spec-create" />
 ````
 </WrapText>
 
-The agent generated a long, explicit, human-readable spec, the opposite of my instructions to generate short, AI friendly specs. It's very weird to me that I keep compacting my specs, the agent keeps reading them, yet for some reason, especially with a fresh context, or when I've simply didn't work on the app for more than 8-10 hours, it generates more explicit and human-readable content and I have to manually run <ClaudeCommand name="spec-compact" /> to minify it.
+The agent generated a long, explicit, human-readable spec, the opposite of my instructions to generate short, AI friendly specs. It's very weird to me that I keep compacting my specs, the agent keeps reading them, yet for some reason, especially with a fresh context, or when I've simply didn't work on the app for more than 8-10 hours, it generates more explicit and human-readable content and I have to manually run <ClaudeCommand archived name="spec-compact" /> to minify it.
 
 <WrapText>
 ```sh
@@ -143,7 +143,7 @@ Visual: `inline-flex items-center gap-1`, icon `w-4 h-4` (GitHub/Claude), `font-
 </WrapText>
 
 Still quite understandable, yet not very **human-friendly**. We continue with the
-implementation using <ClaudeCommand name="spec-apply" />.
+implementation using <ClaudeCommand archived name="spec-apply" />.
 
 ```sh
 > /spec-apply
@@ -160,13 +160,13 @@ implementation using <ClaudeCommand name="spec-apply" />.
   Usage:
   import ClaudeCommand from "@/components/post/ClaudeCommand/ClaudeCommand.astro";
 
-  <ClaudeCommand name="commit-message" />           <!-- GitHub icon → repo link -->
-  <ClaudeCommand name="help" external />            <!-- Claude icon → docs link -->
+  <ClaudeCommand archived name="commit-message" />           <!-- GitHub icon → repo link -->
+  <ClaudeCommand archived name="help" external />            <!-- Claude icon → docs link -->
 ````
 
 The new `<ClaudeCommand />` is created, with **storybook** nonetheless. It was smart
 enough to make the link open in a new tab/window with `target="_blank" rel="noopener noreferrer"`,
-even though that wasn't part of the spec. I run <ClaudeCommand name="spec-verify" /> to see how the
+even though that wasn't part of the spec. I run <ClaudeCommand archived name="spec-verify" /> to see how the
 agent perceives such differences.
 
 <WrapText>
@@ -188,7 +188,7 @@ Options:
 
 It found something, but it wasn't what I was looking for. I inspect the **storybook
 story for the component** and decide to keep the spec as it is for now and `push`
-the changes to the repo. I `git add` the spec, component and stories and run <ClaudeCommand name="commit-staged" />.
+the changes to the repo. I `git add` the spec, component and stories and run <ClaudeCommand archived name="commit-staged" />.
 
 <WrapText>
 ```sh
@@ -223,14 +223,14 @@ This means, that:
 - even if outdated, we can continue to work on top of it, by:
 
   > 1. Asking the agent to bring the spec up-to-date with the code
-  > 2. Modify it manually, using <ClaudeCommand name="spec-update" /> or <ClaudeCommand name="spec-verify" />, or by having a conversation with the agent
+  > 2. Modify it manually, using <ClaudeCommand archived name="spec-update" /> or <ClaudeCommand archived name="spec-verify" />, or by having a conversation with the agent
   > 3. Ask for changes to be implemented
 
 <Highlight block>
-  > **NOTE:** this approach wouldn't be so valid for very large specs, which are affected by multiple smaller specs (components). Updating heavily updated larger specs can and should go through a process of heavier audit and verification. <ClaudeCommand name="spec-verify" /> is the command I rely on in such cases.
+  > **NOTE:** this approach wouldn't be so valid for very large specs, which are affected by multiple smaller specs (components). Updating heavily updated larger specs can and should go through a process of heavier audit and verification. <ClaudeCommand archived name="spec-verify" /> is the command I rely on in such cases.
 </Highlight>
 
-I have manually added a **title** property in the code of `<ClaudeCommand />` and I want the spec to reflect it using <ClaudeCommand name="spec-verify" />. I ran the command without `[spec]` argument, the bot assumed `all` and went to verify all specs, so I had to cancel and rerun the command again.
+I have manually added a **title** property in the code of `<ClaudeCommand />` and I want the spec to reflect it using <ClaudeCommand archived name="spec-verify" />. I ran the command without `[spec]` argument, the bot assumed `all` and went to verify all specs, so I had to cancel and rerun the command again.
 
 <WrapText>
 ```sh
@@ -266,7 +266,7 @@ All items now ✅ correct
 One can fiddle with every and any component, but for now I'm done with
 `<ClaudeCommand />` and I want to implement it across my codebase.
 
-Normally I'd go and search and manually implement the change, but come on, we have the right tooling to the get the job done. This time I'm using the <ClaudeCommand name="spec-refactor" /> command and hopefully after this change, this command annotation will become a link.
+Normally I'd go and search and manually implement the change, but come on, we have the right tooling to the get the job done. This time I'm using the <ClaudeCommand archived name="spec-refactor" /> command and hopefully after this change, this command annotation will become a link.
 
 <WrapText>
 ```sh
@@ -281,8 +281,8 @@ Normally I'd go and search and manually implement the change, but come on, we ha
   Proposed refactoring:
 
   Replace inline code like `/commit-staged` with:
-  - <ClaudeCommand name="commit-staged" /> (internal - links to repo)
-  - <ClaudeCommand name="compact" external /> (external - links to Claude docs)
+  - <ClaudeCommand archived name="commit-staged" /> (internal - links to repo)
+  - <ClaudeCommand archived name="compact" external /> (external - links to Claude docs)
 
   Internal commands (this repo): commit-message, commit-staged, spec-create, spec-update, spec-apply, spec-verify, spec-compact, spec-refactor, test-create, tags-update, post-create
   External commands (Claude built-in): compact, plugins, help, clear
@@ -308,7 +308,7 @@ posts were effortlessly refactored in a few minutes.
 
 ### Creating test cases
 
-To create test cases I use the <ClaudeCommand name="test-create" /> command, which
+To create test cases I use the <ClaudeCommand archived name="test-create" /> command, which
 relies on `Testing.md` spec to be read before.
 
 <GithubLink url="https://github.com/mifkata/blog/blob/main/public/archive/specs/Testing.md">
