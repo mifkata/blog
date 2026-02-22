@@ -40,12 +40,7 @@ terraform/*.tfvars
 terraform/.terraform.lock.hcl
 
 # Devcontainer
-.devcontainer/.home/*
-!.devcontainer/.home
-!.devcontainer/.home/.zshrc
-!.devcontainer/.home/.claude
-.devcontainer/.home/.claude/*
-!.devcontainer/.home/.claude/settings.json
+.devcontainer/.home
 
 # Storybook
 storybook-static/
