@@ -1,351 +1,230 @@
-# blog
+# PromptLab
 
-## Your Identity
+## Overview
 
-**You are an orchestrator, delegator, and constructive skeptic architect co-pilot.**
+[placeholder]
 
-- **Never write code** — use Glob, Grep, Read to investigate, Plan mode to design, then delegate to supervisors via Task()
-- **Constructive skeptic** — present alternatives and trade-offs, flag risks, but don't block progress. "Here's another way to approach this" > "This won't work"
-- **Co-pilot** — discuss before acting. Summarize your proposed plan. Wait for user confirmation before dispatching
+## Stack
 
-## Workflow
+[placehoder]
 
-Every task goes through beads. No exceptions.
+## Rules
 
-### Standalone (bead + worktree + PR)
+- When unsure about a request, ALWAYS ask clarifying questions before proceeding. Do not guess at parameters like copyright holders, next steps, or which file to modify. Ask first, act second.
+- Update `.env.example` when adding ENV vars to code
 
-Flow:
+---
 
-1. **Investigate** — Use Grep, Read, Glob to understand the issue
-2. **Discuss with user** — Present findings, propose plan, highlight trade-offs
-3. **User confirms** approach
-4. **Create bead** — `bd create "Task" -d "Details"`
-5. **Dispatch** — Supervisor gets full context in the dispatch prompt
+## Git
+* Never commit or push without being explicitly asked
+* When asked to commit, push automatically unless told not to
+* Do not commit author/co-author information
+* Use conventional commit messages (e.g., `feat: add random forest training script`)
 
-### Plan Mode (complex features)
+# Pull Requests
+* Pushing a branch for the first time, should open a Draft PR automatically. Use `gh` CLI tool for GitHub operations.
+* Automatically assign the current `git` user to newly created PRs.
+* PR description should include only: Change requirements (goal of the PR), summary of applied changes.
+* PR description summary of applied changes should be dynamically updated.
+* Do not add any generation/co-authoring references in PR description.
+* Do not add test plans to PR descriptions.
 
-Use when ANY of these are true:
+---
 
-- New feature requiring architectural decisions
-- Multiple valid implementation approaches
-- Multi-file changes across the codebase
-- Unclear requirements that need exploration first
+## Specs
 
-Flow:
+- Location: `openspec/specs/<capability>/spec.md`
+- Filename: Capitalised-Kebab-Case.md
+- Include: paths to relevant files/scripts and other related specs.
+- Exclude: code implementation; usage examples.
+- Format: Human-friendly; easy-to-read; prefer visual.descriptions over code snippets or class names; keep compact; avoid tables; prefer lists; use emojis for accent; do not overuse emojis;
+- Never use emojis as sole identifiers — always include a text label (e.g., `📍 Route: /path` not `📍 /path`)
+- Automatically update specs related to any code changes.
+- Warn when managing code that has no spec; suggest creating specs from existing code.
+- Spec commands (`/spec-*`) accept a parameter. If not preset, assume last spec used. If comma-separated, assume multiple specs.
+- Todo commands (`/todo-*`) manage `specs/TODO.md`:
+  - Priority 1-10 (1=highest, 10=lowest)
+  - Format: `## [P{n}] Title` with description, related specs, impacted code
+  - Completing a todo removes it from the file
 
-1. Enter Plan mode (EnterPlanMode)
-2. Explore codebase with Glob, Grep, Read
-3. Design implementation approach in the plan file
-4. Ask user questions via AskUserQuestion
-5. Get approval via ExitPlanMode
-6. Create bead(s) from the approved plan
-7. Dispatch supervisors with plan context
+---
 
-Plan mode is the **thinking step** before beads. The approved plan becomes the
-source of truth for bead creation and supervisor dispatch prompts.
+## Testing
 
-#### Plan → Bead Mapping
+- Testing instructions are in `openspec/specs/testing/spec.md`.
 
-After plan approval:
+---
 
-- **Single-domain plan** → standalone bead, dispatch one supervisor
-- **Cross-domain plan** → epic + children with dependencies
-- Include PLAN_SUMMARY in the dispatch prompt so supervisors know the full picture
+# Memory Management with Beads & OpenSpec
 
-## Dispatch Auto-Logging
+## Core Principle
 
-A PostToolUse hook automatically captures every supervisor dispatch prompt as a bead comment. No manual INVESTIGATION logging needed — the dispatch prompt IS the investigation record.
+Every unit of work must be tracked. Beads (`bd`) track individual tasks; OpenSpec tracks the broader system design. Together they form a persistent memory of what was done, why, and what the system looks like now.
 
-Format logged automatically:
+---
 
-```
-DISPATCH_PROMPT [typescript-supervisor]:
+## Beads: Task-Level Memory
 
-BEAD_ID: BD-001
-...full dispatch prompt...
-```
+### Always Create a Bead
 
-This ensures:
-
-- Supervisors read full context from the bead
-- No re-investigation if session ends
-- Audit trail if fix was wrong
-
-### Delegation Format
-
-```
-Task(
-  subagent_type="{tech}-supervisor",
-  prompt="BEAD_ID: {id}
-
-Fix: [brief summary - supervisor will read details from bead comments]"
-)
-```
-
-Supervisors read the bead comments for full investigation context, then execute confidently.
-
-### Knowledge Base
-
-LEARNED: comments are voluntarily captured into `.beads/memory/knowledge.jsonl` by an async hook. This builds an evolving knowledge base of project conventions, gotchas, and patterns.
-
-**Search when investigating unfamiliar code:**
+Before starting any work — including spec creation/updates — create a bead:
 
 ```bash
-.beads/memory/recall.sh "keyword"                  # Search by keyword
-.beads/memory/recall.sh "keyword" --type learned   # Filter to learnings only
-.beads/memory/recall.sh --recent 10                # Show latest entries
-.beads/memory/recall.sh --stats                    # Knowledge base stats
+bd create -t "Brief description of the task"
+# or for quick capture:
+bd q "Brief description"
 ```
 
-Searching is optional — use it when it might save re-investigation, skip it when the task is straightforward.
+This is non-negotiable. Every unit of work gets a bead. If you're unsure whether something warrants a bead, it does.
 
-### Exploration Mode
+### Bead Lifecycle
 
-Before designing a complex feature, you may want to survey the codebase. Use read-only agents for exploration:
+| Stage | Action | Command |
+|-------|--------|---------|
+| **Start** | Create the bead | `bd create -t "..."` |
+| **Begin work** | Mark as in-progress | `bd set-state <id> in_progress` |
+| **Track context** | Add comments with decisions/notes | `bd comments <id> add "..."` |
+| **Dependencies** | Link related beads | `bd dep add <id> <dep-id>` |
+| **Complete** | Close when merged to main | `bd close <id>` |
 
-```
-mcp__provider_delegator__invoke_agent(agent="scout|detective|architect", task_prompt="...")
-```
+### Maintaining Context
 
-Rules:
+- **Comments are memory**: Use `bd comments <id> add "..."` to record decisions, blockers, and context that would otherwise be lost between sessions.
+- **Check current state**: `bd list` / `bd ready` to see what's open and unblocked.
+- **Review activity**: `bd activity` for real-time state feed.
+- **Find prior work**: `bd search "query"` to locate relevant past beads.
+- **Avoid duplicates**: `bd find-duplicates` before creating beads for work that may already exist.
 
-- Explain rationale: "Before we design this, I want to survey X because Y"
-- User must confirm before dispatch
-- Only read-only agents for exploration (never supervisors)
-- Share findings with user before proceeding to implementation
+### Structuring Larger Work
 
-## Delegation
-
-**Read-only agents:** `mcp__provider_delegator__invoke_agent(agent="scout|detective|architect|scribe", task_prompt="...")`
-
-**Implementation:** `Task(subagent_type="<name>-supervisor", prompt="BEAD_ID: {id}\n\n{task}")`
-
-## Beads Commands
+For epics or multi-step efforts:
 
 ```bash
-bd create "Title" -d "Description"                    # Create task
-bd create "Title" -d "..." --type epic                # Create epic
-bd create "Title" -d "..." --parent {EPIC_ID}         # Create child task
-bd create "Title" -d "..." --parent {ID} --deps {ID}  # Child with dependency
-bd list                                               # List beads
-bd show ID                                            # Details
-bd show ID --json                                     # JSON output
-bd ready                                              # Tasks with no blockers
-bd update ID --status done                            # Mark child done
-bd update ID --status inreview                        # Mark standalone done
-bd update ID --design ".designs/{ID}.md"              # Set design doc path
-bd close ID                                           # Close
-bd epic status ID                                     # Epic completion status
+bd epic ...             # Group related beads
+bd children <parent>    # See sub-tasks
+bd graph                # Visualize dependencies
+bd swarm ...            # Structured epic management
 ```
 
-## When to Use Standalone or Epic
+---
 
-| Signals                                                   | Workflow       |
-| --------------------------------------------------------- | -------------- |
-| Single tech domain (just frontend, just DB, just backend) | **Standalone** |
-| Multiple supervisors needed                               | **Epic**       |
-| "First X, then Y" in your thinking                        | **Epic**       |
-| Any infrastructure + code change                          | **Epic**       |
-| Any DB + API + frontend change                            | **Epic**       |
+## OpenSpec: System-Level Memory
 
-**Anti-pattern to avoid:**
+### When to Create or Update Specs
 
-```
-"This is cross-domain but simple, so I'll just dispatch sequentially"
-```
+- **Before** any significant coding task
+- **After** completing a change that alters system behavior or architecture
+- Specs are the persistent record of *what the system is and should be*
 
-→ WRONG. Cross-domain = Epic. No exceptions.
-
-## Bug Fixes & Follow-Up Work
-
-**Closed beads stay closed.** Never reopen or redispatch a closed/done bead.
-
-If a bug is found after a bead was completed, or follow-up work is needed:
+### Spec Workflow
 
 ```bash
-# 1. Create a new bead
-bd create "Fix: [description]" -d "Follow-up to {OLD_ID}: [details]"
-# Returns: {NEW_ID}
+# List existing specs
+openspec list --specs
 
-# 2. Relate it to the original (no dependency, just traceability)
-bd dep relate {NEW_ID} {OLD_ID}
+# View interactive dashboard
+openspec view
 
-# 3. Investigate and dispatch as normal
+# Create a new spec
+openspec spec           # (use subcommands)
+
+# Propose a change
+openspec change         # Manage change proposals
+
+# After completion: archive the change and update specs
+openspec archive <change-name>
 ```
 
-The `relates_to` link provides full traceability without reopening anything. A PreToolUse hook enforces this — dispatching to a closed/done bead will be blocked.
-
-## Worktree Workflow
-
-Supervisors work in isolated worktrees (`.worktrees/bd-{BEAD_ID}/`), not branches on main.
-
-### Standalone Workflow (Single Supervisor)
-
-For simple tasks handled by one supervisor:
-
-1. Investigate the issue (Grep, Read)
-2. Create bead: `bd create "Task" -d "Details"`
-3. Dispatch with fix: `Task(subagent_type="<tech>-supervisor", prompt="BEAD_ID: {id}\n\n{problem + fix}")`
-4. Supervisor creates worktree, implements, pushes, marks `inreview` when done
-5. **User merges via UI** (Create PR → wait for CI → Merge PR → Clean Up)
-6. Close: `bd close {ID}` (or auto-close on cleanup)
-
-### Epic Workflow (Cross-Domain Features)
-
-For features requiring multiple supervisors (e.g., DB + API + Frontend):
-
-**Note:** Epics are organizational only - no git branch/worktree for epics. Each child gets its own worktree.
-
-#### 1. Create Epic
+### Validate Before Closing
 
 ```bash
-bd create "Feature name" -d "Description" --type epic
-# Returns: {EPIC_ID}
+openspec validate <item-name>
+openspec status         # Check artifact completion
 ```
 
-#### 2. Create Design Doc (if needed)
+---
 
-If the epic involves cross-domain work, dispatch architect FIRST:
+## Integrated Workflow
 
 ```
-Task(
-  subagent_type="architect",
-  prompt="Create design doc for EPIC_ID: {EPIC_ID}
-         Feature: [description]
-         Output: .designs/{EPIC_ID}.md
+1. Identify work needed
+   ├── Is there a relevant spec? → openspec list --specs / openspec show
+   │   ├── No  → Create or update the spec FIRST (create a bead for this too)
+   │   └── Yes → Proceed
+   │
+2. Create a bead for the task
+   └── bd create -t "..." OR bd q "..."
+   
+3. If unsure which spec applies → ASK, don't assume
 
-         Include:
-         - Schema definitions (exact column names, types)
-         - API contracts (endpoints, request/response shapes)
-         - Shared constants/enums
-         - Data flow between layers"
-)
+4. Begin work
+   └── bd set-state <id> in_progress
+
+5. During work
+   ├── Record decisions and context as comments
+   ├── Link dependencies between beads
+   └── If the spec needs updating → create a bead for that, update the spec
+
+6. Complete work
+   ├── Code merged to main → bd close <id>
+   ├── Update specs to reflect the new state → openspec archive <change>
+   └── Validate → openspec validate
 ```
 
-Then link it to the epic:
+---
+
+## Key Rules
+
+1. **Always work in the context of a spec.** If you don't know which spec applies, ask — never assume.
+2. **Bead creation is automatic and persistent.** Every task, no matter how small, gets a bead.
+3. **Beads close on merge, not on completion of coding.** The bead stays open until code reaches `main`.
+4. **Specs are updated after changes are complete.** Archive the change and let specs reflect the current system state.
+5. **Comments are cheap, lost context is expensive.** When in doubt, add a comment to the bead.
+
+---
+
+# Agent Instructions
+
+This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
+
+## Quick Reference
 
 ```bash
-bd update {EPIC_ID} --design ".designs/{EPIC_ID}.md"
+bd ready              # Find available work
+bd show <id>          # View issue details
+bd update <id> --status in_progress  # Claim work
+bd close <id>         # Complete work
+bd sync               # Sync with git
 ```
 
-#### 3. Create Children with Dependencies
+## Landing the Plane (Session Completion)
 
-```bash
-# First task (no dependencies)
-bd create "Create DB schema" -d "..." --parent {EPIC_ID}
-# Returns: {EPIC_ID}.1
+**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
 
-# Second task (depends on first)
-bd create "Create API endpoints" -d "..." --parent {EPIC_ID} --deps "{EPIC_ID}.1"
-# Returns: {EPIC_ID}.2
+**MANDATORY WORKFLOW:**
 
-# Third task (depends on second)
-bd create "Create frontend" -d "..." --parent {EPIC_ID} --deps "{EPIC_ID}.2"
-# Returns: {EPIC_ID}.3
-```
+1. **File issues for remaining work** - Create issues for anything that needs follow-up
+2. **Run quality gates** (if code changed) - Tests, linters, builds
+3. **Update issue status** - Close finished work, update in-progress items
+4. **PUSH TO REMOTE** - This is MANDATORY:
+   ```bash
+   git pull --rebase
+   bd sync
+   git push
+   git status  # MUST show "up to date with origin"
+   ```
+5. **Clean up** - Clear stashes, prune remote branches
+6. **Verify** - All changes committed AND pushed
+7. **Hand off** - Provide context for next session
 
-#### 4. Dispatch in Parallel
+**CRITICAL RULES:**
+- Work is NOT complete until `git push` succeeds
+- NEVER stop before pushing - that leaves work stranded locally
+- NEVER say "ready to push when you are" - YOU must push
+- If push fails, resolve and retry until it succeeds
 
-Use `bd ready` to find all unblocked tasks and dispatch them simultaneously:
 
-```bash
-bd ready --json | jq -r '.[] | select(.id | startswith("{EPIC_ID}.")) | .id'
-```
 
-**Dispatch ALL ready children in a single message with multiple Task() calls:**
+---
 
-```
-Task(subagent_type="{tech}-supervisor", prompt="BEAD_ID: {EPIC_ID}.1\nEPIC_ID: {EPIC_ID}\n\n{task}")
-Task(subagent_type="{tech}-supervisor", prompt="BEAD_ID: {EPIC_ID}.2\nEPIC_ID: {EPIC_ID}\n\n{task}")
-```
-
-When any child completes, run `bd ready` again to dispatch newly unblocked children. Repeat until all children are done.
-
-Each child works in its own isolated worktree (`.worktrees/bd-{CHILD_ID}/`). The dependency graph ensures children only become ready when their blockers are resolved. The PreToolUse hook enforces this — dispatching a blocked child will be denied.
-
-#### 5. Close Epic
-
-After all children are merged:
-
-```bash
-bd close {EPIC_ID}  # Closes epic and all children
-```
-
-## Supervisor Phase 0 (Worktree Setup)
-
-Supervisors start by creating a worktree:
-
-```bash
-# Idempotent - returns existing worktree if it exists
-curl -X POST http://localhost:3008/api/git/worktree \
-  -H "Content-Type: application/json" \
-  -d '{"repo_path": "'$(git rev-parse --show-toplevel)'", "bead_id": "{BEAD_ID}"}'
-
-# Change to worktree
-cd $(git rev-parse --show-toplevel)/.worktrees/bd-{BEAD_ID}
-
-# Mark in progress
-bd update {BEAD_ID} --status in_progress
-```
-
-## Supervisor Completion Format
-
-```
-BEAD {BEAD_ID} COMPLETE
-Worktree: .worktrees/bd-{BEAD_ID}
-Files: [names only]
-Tests: pass
-Summary: [1 sentence]
-```
-
-Then:
-
-```bash
-git add -A && git commit -m "..."
-git push origin bd-{BEAD_ID}
-bd update {BEAD_ID} --status inreview
-```
-
-## Design Doc Guidelines
-
-When the architect creates a design doc, it should include:
-
-````markdown
-# Feature: {name}
-
-## Schema
-
-```sql
--- Exact column names and types
-ALTER TABLE x ADD COLUMN y TYPE;
-```
-````
-
-## API Contract
-
-```
-POST /api/endpoint
-Request: { field: type }
-Response: { field: type }
-```
-
-## Shared Constants
-
-```
-STATUS_ACTIVE = 1
-STATUS_INACTIVE = 0
-```
-
-## Data Flow
-
-1. Frontend calls POST /api/...
-2. Backend validates and stores in DB
-3. Backend returns response
-
-```
-
-## Supervisors
-
-- merge-supervisor
-- react-supervisor
-```
+Sanity: say "CLAUDE.md LOADED"
