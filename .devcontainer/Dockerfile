@@ -48,7 +48,7 @@ RUN curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/i
 RUN npm install -g @fission-ai/openspec
 
 # Sanity check
-RUN pnpm --version && dolt version && bd --version && openspec --version
+RUN pnpm --version && dolt version && bd setup claude && openspec --version
 
 # Set working directory
 USER $USERNAME
