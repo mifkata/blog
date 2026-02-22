@@ -40,7 +40,7 @@ This article explores organising a project' **system instructions** and **slash-
 
 After setting up your [devcontainer](/blog/2025/claude-code-devcontainers/) the next obvious step is to configure **the reusable prompts** for your steady, production-ready software development cycle using Claude Code. These reusable prompts, are the core of your **Claude toolkit**, so maintain them well:
 
-- **CLAUDE.md** - this is the primary instruction set that a **Claude agent instance** would load when started and after <ClaudeCommand name="compact" external /> completes. This is where you want to put as much nifty instructions that the bot works with your codebase. Having it and configured might seriously benefit _**token usage**_ and reduce agent _**planning time**_. Maitaining an efficient `CLUDE.md` can be considered an art form of its own.
+- **CLAUDE.md** - this is the primary instruction set that a **Claude agent instance** would load when started and after <ClaudeCommand archived name="compact" external /> completes. This is where you want to put as much nifty instructions that the bot works with your codebase. Having it and configured might seriously benefit _**token usage**_ and reduce agent _**planning time**_. Maitaining an efficient `CLUDE.md` can be considered an art form of its own.
 - **Slash-commands** - a collection of reusable prompts that will help you trigger repetitive actions, whilst working on a project. Whilst there's a case to be made about the benefits of global **Claude** commands, we're talking about these that you put in your repository's `.claude/commands` directory.
 
 <Highlight block>
@@ -48,7 +48,7 @@ After setting up your [devcontainer](/blog/2025/claude-code-devcontainers/) the 
     [official Anthropic](https://github.com/anthropics/claude-code/tree/main/plugins)
     Claude Code marketplace. Ultimately the goal is to achieve the perfect **devex**
     for you. So feel free to explore. Marketplaces and plugins in **Claude CLI** are managed with
-    the <ClaudeCommand name="plugins" external /> command.
+    the <ClaudeCommand archived name="plugins" external /> command.
 </Highlight>
 
 In accordance to [Anthropic's official best practices guide](https://www.anthropic.com/engineering/claude-code-best-practices)
@@ -143,7 +143,7 @@ about creating a new `/commit-message` slash command:
 </Highlight>
 
 The agent would produce some code, I'd review it and modify it and when happy,
-I'd restart my **Claude Code** to load the new <ClaudeCommand name="commit-staged" />. Here's the actual
+I'd restart my **Claude Code** to load the new <ClaudeCommand archived name="commit-staged" />. Here's the actual
 command from the blog's repository:
 
 <GithubLink
@@ -175,7 +175,7 @@ I would init new specs with this command.
 ### /spec-update
 
 I use this to keep the spec language compact and optimal, but sometimes I'd go
-and update the spec manually, then call <ClaudeCommand name="spec-apply" /> or <ClaudeCommand name="spec-verify" />.
+and update the spec manually, then call <ClaudeCommand archived name="spec-apply" /> or <ClaudeCommand archived name="spec-verify" />.
 
 <GithubLink
   expanded
@@ -196,7 +196,7 @@ suggest looking for ways to improve security, performance, decoupling, modularit
 ### /spec-apply
 
 I call this after a spec is ready to implement. Sometimes when I have modified both
-**specs** and **code**, I'd run <ClaudeCommand name="spec-verify" /> instead.
+**specs** and **code**, I'd run <ClaudeCommand archived name="spec-verify" /> instead.
 
 <GithubLink
   expanded
@@ -227,7 +227,7 @@ to keep the styles in the codebase consistent with a single source of truth.
 
 ### /spec-compact
 
-This command is used by others such as <ClaudeCommand name="spec-create" />, but also is very nifty,
+This command is used by others such as <ClaudeCommand archived name="spec-create" />, but also is very nifty,
 when the **agent forgets instructions** in the process of **compacting its context**.
 In many cases I get more expressive specs and these need to be compacted. Not
 just for sake of token compaction, but also template modeling, the bot might generate
@@ -269,7 +269,7 @@ When your project grows, it helps to create a custom `/test-[app]` command, that
 
 ### /commit-staged
 
-Uses <ClaudeCommand name="commit-staged" /> to generate the message, asks for confirmation and commits. Requires
+Uses <ClaudeCommand archived name="commit-staged" /> to generate the message, asks for confirmation and commits. Requires
 that `git config --global user.name [name]` and `git config --global user.email [name]` are
 configured in the [devcontainer](/blog/2025/claude-code-devcontainers/).
 
@@ -293,7 +293,7 @@ An obvious example of a **super lazy code generator**. I intend to replace this 
 
 ### /tags-update
 
-The landing pages for tags, such as the [ai tags page](https://mifkata.com/tags/ai/) have custom title and description and I save them in [src/data/tags.json](https://github.com/mifkata/blog/blob/main/src/data/tags.json) inside my repository. Because I'll add new tags and I'm either too lazy or forget to update the list, I simply run <ClaudeCommand name="tags-update" /> and **Claude** does the job for me.
+The landing pages for tags, such as the [ai tags page](https://mifkata.com/tags/ai/) have custom title and description and I save them in [src/data/tags.json](https://github.com/mifkata/blog/blob/main/src/data/tags.json) inside my repository. Because I'll add new tags and I'm either too lazy or forget to update the list, I simply run <ClaudeCommand archived name="tags-update" /> and **Claude** does the job for me.
 
 You can imagine that with hundreds of entries this can be a very slow and token consuming task, so consider this when creating and running pure content generators like this.
 
