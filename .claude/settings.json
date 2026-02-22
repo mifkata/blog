@@ -30,7 +30,7 @@
       "Bash(openspec:*)",
       "Bash(bd:*)",
       "Bash(gw:*)",
-      "Bash(*.claude/bin/*:*)"
+      "Bash(.claude/bin/*:*)"
     ],
     "deny": [
       "Bash(npm:*)",
