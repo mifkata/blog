@@ -103,7 +103,7 @@ I'm going to start, like always, with <ClaudeCommand name="spec-create" />
 - Visual appearance
 - Any special behavior
 
-> I want to link slash-commands in my articles to either https://github.com/mifkata/blog/blob/main/.claude/commands/<command-name>.md for internal commands and to https://code.claude.com/docs/en/slash-commands for external; there should be either a Github or Claude icon next to the link; link should be inline;
+> I want to link slash-commands in my articles to either https://github.com/mifkata/blog/blob/main/public/archive/commands/<command-name>.md for internal commands and to https://code.claude.com/docs/en/slash-commands for external; there should be either a Github or Claude icon next to the link; link should be inline;
 
 ````
 </WrapText>
@@ -134,7 +134,7 @@ Props: `name: string`, `external?: boolean` (default: false)
 
 URLs:
 
-- internal: `github.com/mifkata/blog/blob/main/.claude/commands/{name}.md`
+- internal: `github.com/mifkata/blog/blob/main/public/archive/commands/{name}.md`
 - external: `code.claude.com/docs/en/slash-commands`
 
 Visual: `inline-flex items-center gap-1`, icon `w-4 h-4` (GitHub/Claude), `font-mono text-sm text-accent`, `/{name}`
