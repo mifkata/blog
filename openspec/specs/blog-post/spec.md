@@ -180,9 +180,11 @@ Inline slash-command reference link.
 ### Props
 - `name` — command name (required)
 - `external?` — external link (default: false)
+- `archived?` — link to archived command (default: false)
 
 ### Behavior
-- Internal: links to GitHub repo command file, GitHub icon
+- Internal: links to GitHub repo command file (`/.claude/commands/{name}.md`), GitHub icon
+- Archived: links to archived command file (`/.claude/public/archive/commands/{name}.md`), GitHub icon
 - External: links to Claude Code docs, globe icon
 - Displays as monospace `/{name}` in accent color
 

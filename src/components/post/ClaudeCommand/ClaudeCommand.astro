@@ -5,13 +5,16 @@ import Globe from "@/components/ui/icons/Globe.astro";
 interface Props {
   name: string;
   external?: boolean;
+  archived?: boolean;
 }
 
-const { name, external = false } = Astro.props;
+const { name, external = false, archived = false } = Astro.props;
 
 const url = external
   ? "https://code.claude.com/docs/en/slash-commands"
-  : `https://github.com/mifkata/blog/blob/main/.claude/commands/${name}.md`;
+  : archived ? 
+  `https://github.com/mifkata/blog/blob/main/public/archive/commands/${name}.md` :
+  `https://github.com/mifkata/blog/blob/main/.claude/commands/${name}.md`;
 
 const title = external
   ? `View the official documentation for the /${name} command on Claude's website`
