@@ -39,8 +39,9 @@ Individual blog post layout extending PageLayout (`common-sections`) with full s
 ### Sections
 
 **Hero (with image)**
-- Full-width, minimum 50% viewport height, hero image as CSS background
-- Frosted-glass header overlay at bottom-left: title, dates (semi-transparent backgrounds), tags (dark variant)
+- Full-width, minimum 50% viewport height, hero image as CSS background (optimised at 1120px width)
+- Frosted-glass header overlay: full-width flush on mobile, inset with max-width on large screens
+- Title, dates (semi-transparent backgrounds), tags (dark variant)
 
 **Hero (without image)**
 - Standard block with bottom border, standard text colors
@@ -76,9 +77,10 @@ Blog post card with image and metadata, used in listing pages.
 - `class?` — additional CSS classes
 - `showTags?` — display tags (default: true)
 
-### Layout (2-column grid on desktop)
-- Left: hero image thumbnail (200x120)
-- Right: title as `<h4>`, synopsis (clamped to 2 lines), date, tags
+### Layout
+- Mobile: full-width hero image (640x384), then title, synopsis, date, tags
+- Desktop: 2-column grid — left: hero image thumbnail (200x120), right: title as `<h4>`, synopsis (clamped to 2 lines), date, tags
+- Images lazy-loaded
 
 ### Behavior
 - Hover: image gains shadow, title changes to accent color

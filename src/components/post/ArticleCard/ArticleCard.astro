@@ -17,8 +17,19 @@ const { post, class: className, showTags = true } = Astro.props;
 <article class:list={["group grid md:grid-cols-[200px_1fr] gap-6", className]}>
   {
     post.data.heroImage && (
-      <a href={`/blog/${post.id}/`}>
+      <a href={`/blog/${post.id}/`} class="md:hidden">
         <Image
+          loading="lazy"
+          width={640}
+          height={384}
+          src={post.data.heroImage}
+          alt=""
+          class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
+        />
+      </a>
+      <a href={`/blog/${post.id}/`} class="md:block hidden">
+        <Image
+          loading="lazy"
           width={200}
           height={120}
           src={post.data.heroImage}
