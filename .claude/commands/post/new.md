@@ -22,7 +22,7 @@ synopsis: <Generated-sypnosis-placeholder />
     Populate paragraphs correctly
 
 pubDate: <UTC-Date-now like="Feb 22 2026 21:30:00 GMT+0000 (UTC)" />
-updatedDate: <Same as=pubDate>
+# updatedDate: <Same as=pubDate>
 heroImage: <String like='"@/assets/blog/2026/[MM][DD]-[slug].png"' />
 tags: <Array like='["sample-tag", "sample-tag2"]' />s
 ---
