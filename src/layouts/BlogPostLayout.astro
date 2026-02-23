@@ -28,7 +28,7 @@ const {
 const showToc = headings.length >= 2;
 const displayedRelatedPosts = relatedPosts.slice(0, 4);
 const optimizedHero = heroImage
-  ? await getImage({ src: heroImage, width: 1920 })
+  ? await getImage({ src: heroImage, width: 1120 })
   : null;
 ---
 
@@ -47,11 +47,11 @@ const optimizedHero = heroImage
           role="img"
           aria-label={title}
         >
-          <header class="absolute bottom-6 left-6 lg:bottom-12 lg:left-24 backdrop-blur-[6px] bg-black/25 p-6 max-w-lg rounded-lg">
-            <h1 class="md:!text-3xl m-0 mb-2 !text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)] inline">
+          <header class="absolute right-0 lg:right-auto bottom-0 lg:bottom-4 left-0 lg:left-4 backdrop-blur-[6px] bg-black/25 p-4 lg:max-w-xl rounded-lg">
+            <h1 class="md:!text-3xl m-0 !text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)] block">
               {title}
             </h1>
-            <div class="flex flex-row items-center gap-3 text-sm text-gray-300 mt-2">
+            <div class="items-center gap-3 text-sm text-gray-300 mt-2">
               <div class="self-start py-2">
                 <div class="md:min-w-[90px]">
                   <FormattedDate date={pubDate} class="bg-[#000000]/50 px-1" />

@@ -40,14 +40,14 @@ const { post } = Astro.props;
       }
     </div>
     <div>
-      <div class="text-sm text-gray uppercase tracking-wider mb-2">
-        Published at
-      </div>
-      <div class="flex items-center gap-4 text-sm text-gray mb-4">
+      <div class="text-sm text-gray tracking-wider mb-2">
+        <strong>Published:</strong>
         <FormattedDate date={post.data.pubDate} />
+      </div>
+      <div class="flex items-center gap-4 text-sm text-gray mb-4 xl:flex-wrap">
         {
           post.data.tags && (
-            <div class="flex gap-2">
+            <div class="flex gap-2 flex-wrap">
               {post.data.tags.map((tag) => (
                 <Tag tag={tag} class="text-xs" />
               ))}
