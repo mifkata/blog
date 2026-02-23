@@ -89,7 +89,8 @@ Large featured blog post card for the blog index.
 
 ### Layout (2-column grid)
 - Left: "Latest post" label + linked title + hero image
-- Right: "Published at" label + date + tags + synopsis + "Read more" link
+- Right: "Published:" label with inline date + wrapping tags + synopsis + "Read more" link
+- Tags and metadata wrap on narrow viewports
 - Hover: hero image gains shadow and adjusts opacity
 
 ### Dependencies
