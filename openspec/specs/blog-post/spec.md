@@ -39,7 +39,7 @@ Individual blog post layout extending PageLayout (`common-sections`) with full s
 ### Sections
 
 **Hero (with image)**
-- Full-width, minimum 50% viewport height, hero image as CSS background (optimised at 1120px width)
+- Full-width hero image as CSS background (optimised at 1120px width), minimum 75vh on mobile / 50vh on larger screens
 - Frosted-glass header overlay: full-width flush on mobile, inset with max-width on large screens
 - Title, dates (semi-transparent backgrounds), tags (dark variant)
 
