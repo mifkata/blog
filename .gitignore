@@ -47,6 +47,7 @@ storybook-static/
 
 # Beads task tracking (ephemeral)
 .mcp.json
+dolt-config.log
 
 # VS Code
 *.code-workspace
