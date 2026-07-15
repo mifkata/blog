@@ -28,6 +28,14 @@ ephemeral.sqlite3-journal
 ephemeral.sqlite3-wal
 ephemeral.sqlite3-shm
 
+# Local backup/runtime artifacts (machine-specific, not shared across clones)
+backup/
+export-state.json
+dolt-server.lock
+dolt-server.log
+dolt-server.pid
+dolt-server.port
+
 # Legacy files (from pre-Dolt versions)
 *.db
 *.db?*
