@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "storybook-astro";
+import type { Meta, StoryObj } from "@storybook-astro/framework";
 import ArticleSeries from "./ArticleSeries.astro";
 
 const meta: Meta<typeof ArticleSeries> = {

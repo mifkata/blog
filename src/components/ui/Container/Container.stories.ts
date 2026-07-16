@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "storybook-astro";
+import type { Meta, StoryObj } from "@storybook-astro/framework";
 import Container from "./Container.astro";
 
 const meta: Meta<typeof Container> = {
