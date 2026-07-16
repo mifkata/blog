@@ -5,9 +5,15 @@ import Document from "@/components/ui/icons/Document.astro";
 import Menu from "@/components/ui/icons/Menu.astro";
 ---
 
-<header class="px-6 py-2 bg-white sticky top-0 z-50 shadow-sm w-full">
+<header
+  id="site-header"
+  class="px-6 py-2 bg-white sticky top-0 z-50 shadow-sm w-full transition-[padding] duration-300 motion-reduce:transition-none"
+>
   <nav class="max-w-[1080px] mx-auto flex items-center justify-between">
-    <h1 class="text-2xl mt-2 whitespace-nowrap">
+    <h1
+      id="site-header-logo"
+      class="text-2xl mt-2 whitespace-nowrap transition-[font-size] duration-300 motion-reduce:transition-none"
+    >
       <a href="/" class="text-black no-underline hover:text-accent">
         {"<MIFKATA />"}
       </a>
@@ -91,4 +97,33 @@ import Menu from "@/components/ui/icons/Menu.astro";
   }
   setupMobileMenu();
   document.addEventListener("astro:page-load", setupMobileMenu);
+
+  function setupHeaderScroll() {
+    const header = document.getElementById("site-header");
+    const logo = document.getElementById("site-header-logo");
+    if (!header) return;
+
+    const SCROLL_THRESHOLD = 24;
+    let ticking = false;
+
+    function update() {
+      const scrolled = window.scrollY > SCROLL_THRESHOLD;
+      header!.style.paddingTop = scrolled ? "0.25rem" : "";
+      header!.style.paddingBottom = scrolled ? "0.25rem" : "";
+      logo?.style.setProperty("font-size", scrolled ? "1.125rem" : "");
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+  setupHeaderScroll();
+  document.addEventListener("astro:page-load", setupHeaderScroll);
 </script>
