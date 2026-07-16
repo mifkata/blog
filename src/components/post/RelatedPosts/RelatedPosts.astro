@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"blog">[];
+}
+
+const { posts } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class="mt-12 pt-8 border-t border-gray-light">
+      <h2 class="text-2xl text-center lg:text-left">Related Posts</h2>
+      <div class="grid mt-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {posts.map((post) => (
+          <a href={`/blog/${post.id}/`} class="group block no-underline">
+            {post.data.heroImage && (
+              <Image
+                width={300}
+                height={170}
+                src={post.data.heroImage}
+                alt=""
+                class="rounded-lg mb-3 mx-auto group-hover:shadow-md transition-shadow aspect-video object-cover"
+              />
+            )}
+            <div class="text-base max-w-[300px] mx-auto text-center px-4 lg:px-0 lg:text-left text-gray-dark group-hover:text-accent transition-colors line-clamp-2">
+              {post.data.title}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
