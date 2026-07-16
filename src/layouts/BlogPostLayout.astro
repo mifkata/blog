@@ -44,6 +44,7 @@ const optimizedHero = heroImage
         <div
           class="mb-8 -mt-12 -mx-6 sm:-mx-6 xl:-mt-12 xl:-mx-25.5 min-h-[75vh] sm:min-h-[50vh] bg-cover bg-center relative"
           style={`background-image: url(${optimizedHero.src});`}
+          data-hero-parallax
           role="img"
           aria-label={title}
         >
@@ -172,3 +173,32 @@ const optimizedHero = heroImage
 
   <CodeCopyButton />
 </PageLayout>
+
+<script>
+  function setupHeroParallax() {
+    const hero = document.querySelector<HTMLElement>("[data-hero-parallax]");
+    if (!hero) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const SPEED = 0.35;
+    let ticking = false;
+
+    function update() {
+      const offset = window.scrollY * SPEED;
+      hero!.style.backgroundPositionY = `calc(50% + ${offset}px)`;
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+  setupHeroParallax();
+  document.addEventListener("astro:page-load", setupHeroParallax);
+</script>
