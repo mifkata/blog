@@ -1,0 +1,62 @@
+---
+import Briefcase from "./Briefcase.astro";
+import Check from "./Check.astro";
+import Circle from "./Circle.astro";
+import Clock from "./Clock.astro";
+import Cloud from "./Cloud.astro";
+import Code from "./Code.astro";
+import Database from "./Database.astro";
+import Document from "./Document.astro";
+import ExternalLink from "./ExternalLink.astro";
+import GitBranch from "./GitBranch.astro";
+import GitHub from "./GitHub.astro";
+import Globe from "./Globe.astro";
+import Heart from "./Heart.astro";
+import Info from "./Info.astro";
+import Layout from "./Layout.astro";
+import LinkedIn from "./LinkedIn.astro";
+import Menu from "./Menu.astro";
+import Server from "./Server.astro";
+import Shield from "./Shield.astro";
+import Star from "./Star.astro";
+import Tool from "./Tool.astro";
+import Users from "./Users.astro";
+
+const icons = [
+  { name: "Briefcase", Icon: Briefcase },
+  { name: "Check", Icon: Check },
+  { name: "Circle", Icon: Circle },
+  { name: "Clock", Icon: Clock },
+  { name: "Cloud", Icon: Cloud },
+  { name: "Code", Icon: Code },
+  { name: "Database", Icon: Database },
+  { name: "Document", Icon: Document },
+  { name: "ExternalLink", Icon: ExternalLink },
+  { name: "GitBranch", Icon: GitBranch },
+  { name: "GitHub", Icon: GitHub },
+  { name: "Globe", Icon: Globe },
+  { name: "Heart", Icon: Heart },
+  { name: "Info", Icon: Info },
+  { name: "Layout", Icon: Layout },
+  { name: "LinkedIn", Icon: LinkedIn },
+  { name: "Menu", Icon: Menu },
+  { name: "Server", Icon: Server },
+  { name: "Shield", Icon: Shield },
+  { name: "Star", Icon: Star },
+  { name: "Tool", Icon: Tool },
+  { name: "Users", Icon: Users },
+];
+---
+
+<div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6 p-4">
+  {
+    icons.map(({ name, Icon }) => (
+      <div class="flex flex-col items-center gap-2 text-center">
+        <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-light">
+          <Icon size={20} />
+        </div>
+        <span class="text-xs text-gray">{name}</span>
+      </div>
+    ))
+  }
+</div>
