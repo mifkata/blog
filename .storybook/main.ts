@@ -1,4 +1,4 @@
-import type { StorybookConfig } from "storybook-astro";
+import type { StorybookConfig } from "@storybook-astro/framework";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import tailwindcss from "@tailwindcss/vite";
@@ -9,15 +9,16 @@ const config: StorybookConfig = {
   stories: ["../src/components/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y"],
   framework: {
-    name: "storybook-astro",
+    name: "@storybook-astro/framework",
     options: {},
   },
   core: {
     builder: "@storybook/builder-vite",
   },
-  async viteFinal(config) {
+  async viteFinal(config, options) {
     return {
       ...config,
+      base: options.configType === "PRODUCTION" ? "/storybook/" : config.base,
       plugins: [...(config.plugins || []), tailwindcss()],
       resolve: {
         ...config.resolve,
