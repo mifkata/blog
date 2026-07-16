@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "storybook-astro";
+import type { Meta, StoryObj } from "@storybook-astro/framework";
 import ArticleCard from "./ArticleCard.astro";
 
 // Mock ImageMetadata for heroImage
