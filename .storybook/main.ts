@@ -1,4 +1,5 @@
 import type { StorybookConfig } from "@storybook-astro/framework";
+import { react } from "@storybook-astro/framework/integrations";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import tailwindcss from "@tailwindcss/vite";
@@ -10,7 +11,9 @@ const config: StorybookConfig = {
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y"],
   framework: {
     name: "@storybook-astro/framework",
-    options: {},
+    options: {
+      integrations: [react()],
+    },
   },
   core: {
     builder: "@storybook/builder-vite",
