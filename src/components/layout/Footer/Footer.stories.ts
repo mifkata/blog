@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "storybook-astro";
+import type { Meta, StoryObj } from "@storybook-astro/framework";
 import Footer from "./Footer.astro";
 
 const meta: Meta<typeof Footer> = {

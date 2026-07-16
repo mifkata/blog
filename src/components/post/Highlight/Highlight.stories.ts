@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "storybook-astro";
+import type { Meta, StoryObj } from "@storybook-astro/framework";
 import Highlight from "./Highlight.astro";
 
 const meta: Meta<typeof Highlight> = {
