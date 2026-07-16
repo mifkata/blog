@@ -1,0 +1,36 @@
+---
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+---
+
+<aside class="hidden lg:block w-[240px] shrink-0 sticky top-28">
+  <div class="max-h-[calc(100vh-4rem)] overflow-y-auto">
+    <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider">
+      Table of Contents
+    </h3>
+    <ul class="list-none m-0 p-0 space-y-1">
+      {
+        headings.map((heading) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              class:list={[
+                "block no-underline hover:text-accent transition-colors",
+                heading.depth === 2
+                  ? "text-gray-dark"
+                  : "text-sm text-gray pl-3",
+              ]}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</aside>
