@@ -2,7 +2,6 @@ import type { StorybookConfig } from "@storybook-astro/framework";
 import { react } from "@storybook-astro/framework/integrations";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-import tailwindcss from "@tailwindcss/vite";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -22,7 +21,6 @@ const config: StorybookConfig = {
     return {
       ...config,
       base: options.configType === "PRODUCTION" ? "/storybook/" : config.base,
-      plugins: [...(config.plugins || []), tailwindcss()],
       resolve: {
         ...config.resolve,
         alias: {
