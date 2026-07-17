@@ -15,22 +15,84 @@ const { headings } = Astro.props;
     </h3>
     <ul class="list-none m-0 p-0 space-y-1">
       {
-        headings.map((heading) => (
-          <li>
-            <a
-              href={`#${heading.slug}`}
-              class:list={[
-                "block no-underline hover:text-accent transition-colors",
-                heading.depth === 2
-                  ? "text-gray-dark"
-                  : "text-sm text-gray pl-3",
-              ]}
-            >
-              {heading.text}
-            </a>
-          </li>
-        ))
+        headings.map((heading) => {
+          const inactiveClass =
+            heading.depth === 2 ? "text-gray-dark" : "text-sm text-gray pl-3";
+          return (
+            <li>
+              <a
+                href={`#${heading.slug}`}
+                data-toc-link={heading.slug}
+                data-inactive-class={inactiveClass}
+                class:list={[
+                  "block no-underline hover:text-accent transition-colors",
+                  inactiveClass,
+                ]}
+              >
+                {heading.text}
+              </a>
+            </li>
+          );
+        })
       }
     </ul>
   </div>
 </aside>
+
+<script>
+  function setupTocScrollSpy() {
+    const links = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"),
+    );
+    if (links.length === 0) return;
+
+    const linkMap = new Map(links.map((link) => [link.dataset.tocLink!, link]));
+    const headingEls = links
+      .map((link) => document.getElementById(link.dataset.tocLink!))
+      .filter((el): el is HTMLElement => el !== null);
+    if (headingEls.length === 0) return;
+
+    let activeId: string | null = null;
+
+    function toggleActive(link: HTMLAnchorElement, active: boolean) {
+      const inactiveClasses = link.dataset.inactiveClass?.split(" ") ?? [];
+      if (active) {
+        link.classList.remove(...inactiveClasses);
+        link.classList.add("text-accent", "font-medium");
+      } else {
+        link.classList.remove("text-accent", "font-medium");
+        link.classList.add(...inactiveClasses);
+      }
+    }
+
+    function setActive(id: string) {
+      if (activeId === id) return;
+      if (activeId) {
+        const prev = linkMap.get(activeId);
+        if (prev) toggleActive(prev, false);
+      }
+      activeId = id;
+      const next = linkMap.get(id);
+      if (next) toggleActive(next, true);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
+          }
+        }
+      },
+      {
+        rootMargin: "-96px 0px -66% 0px",
+        threshold: 0,
+      },
+    );
+
+    headingEls.forEach((el) => observer.observe(el));
+  }
+
+  setupTocScrollSpy();
+  document.addEventListener("astro:page-load", setupTocScrollSpy);
+</script>
