@@ -36,7 +36,7 @@
 
 ## Testing
 
-- Testing instructions are in `public/archive/openspec-specs/testing/spec.md`.
+- Testing instructions are in bead `blog-0v1` (`bd show blog-0v1`).
 
 ---
 
