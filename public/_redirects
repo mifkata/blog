@@ -1,0 +1,6 @@
+# Cloudflare Pages redirects (https://developers.cloudflare.com/pages/configuration/redirects/)
+# Resume and Services were retired in Sep 2026; send them home permanently to keep their SEO value.
+/resume      /  301
+/resume/     /  301
+/services    /  301
+/services/   /  301

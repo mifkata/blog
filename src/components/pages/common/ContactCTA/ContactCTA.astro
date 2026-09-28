@@ -1,18 +1,25 @@
 ---
 import Button from "@/components/ui/Button/Button.astro";
+import LinkedIn from "@/components/ui/icons/LinkedIn.astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
+import { LINKEDIN_URL } from "@/consts";
 
 interface Props {
   headline?: string;
   description?: string;
   buttonText?: string;
   buttonHref?: string;
+  linkedinText?: string;
+  linkedinHref?: string;
 }
 
 const {
-  headline = "Want to work together?",
-  description = "I'm available for contract engagements and consulting work.",
+  headline = "Let's talk",
+  description = "Have a question, an idea, or a good book to recommend? I'd like to hear it.",
   buttonText = "Get in Touch",
   buttonHref = "mailto:hi@mifkata.com",
+  linkedinText = "LinkedIn Profile",
+  linkedinHref = LINKEDIN_URL,
 } = Astro.props;
 ---
 
@@ -20,9 +27,33 @@ const {
   <p class="text-xl text-gray mb-2">{headline}</p>
   <p class="text-gray-dark mb-6">
     {description}
+    {Astro.slots.has("default") && " "}
     <slot />
   </p>
-  <Button href={buttonHref} class="px-6 py-3" variant="inverse">
-    {buttonText}
-  </Button>
+  <!-- Equal-width buttons: widest one sets the width, stacked on mobile -->
+  <div class="inline-grid gap-4 sm:grid-flow-col sm:auto-cols-fr">
+    <Button
+      href={buttonHref}
+      class="px-6 py-3 justify-center border border-transparent bg-origin-border"
+      variant="inverse"
+    >
+      <LucideIcon icon="mail" size={18} />
+      {buttonText}
+    </Button>
+    {
+      linkedinHref && (
+        <Button
+          href={linkedinHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-6 py-3 justify-center"
+          variant="ghost"
+        >
+          <LinkedIn size={18} />
+          {linkedinText}
+          <span class="sr-only">(opens in new tab)</span>
+        </Button>
+      )
+    }
+  </div>
 </section>

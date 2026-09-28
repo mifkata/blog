@@ -14,9 +14,10 @@ export const Default: Story = {};
 
 export const CustomCopy: Story = {
   args: {
-    headline: "Have a project in mind?",
-    description: "I take on a limited number of consulting engagements.",
+    headline: "Say hello",
+    description: "Questions about a post? Write to me.",
     buttonText: "Say Hello",
     buttonHref: "mailto:hi@mifkata.com",
+    linkedinText: "Connect on LinkedIn",
   },
 };

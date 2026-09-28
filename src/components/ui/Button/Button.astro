@@ -3,9 +3,11 @@ interface Props {
   href?: string;
   variant?: "normal" | "inverse" | "ghost";
   class?: string;
+  target?: string;
+  rel?: string;
 }
 
-const { href, variant = "normal", class: className } = Astro.props;
+const { href, variant = "normal", class: className, target, rel } = Astro.props;
 
 const baseStyles =
   "inline-flex items-center gap-2 px-4 py-2 rounded no-underline transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md";
@@ -22,6 +24,6 @@ const classes = [baseStyles, variantStyles[variant], className];
 const Element = href ? "a" : "button";
 ---
 
-<Element href={href} class:list={classes}>
+<Element href={href} target={target} rel={rel} class:list={classes}>
   <slot />
 </Element>
