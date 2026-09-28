@@ -18,7 +18,7 @@ const featuredPost = posts[0] || null;
 const recentPosts = posts.slice(1, 11);
 ---
 
-<PageLayout title={SITE_TITLE} description={SITE_DESCRIPTION} size="full">
+<PageLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <HomeHero />
   <HomeTerminal />
   {featuredPost && <FeaturedPost post={featuredPost} />}

@@ -22,11 +22,7 @@ const tagCounts = posts
 const tags = Object.entries(tagCounts).sort((a, b) => a[0].localeCompare(b[0]));
 ---
 
-<PageLayout
-  title={`Tags | ${SITE_TITLE}`}
-  description="Browse posts by tag"
-  size="default"
->
+<PageLayout title={`Tags | ${SITE_TITLE}`} description="Browse posts by tag">
   <section>
     <h1>Tags</h1>
     <div class="space-y-4 my-8">
