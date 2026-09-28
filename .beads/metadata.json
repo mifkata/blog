@@ -1,10 +1,10 @@
 {
   "database": "dolt",
-  "jsonl_export": "issues.jsonl",
   "backend": "dolt",
   "dolt_mode": "server",
   "dolt_server_host": "host.docker.internal",
   "dolt_server_port": 3307,
   "dolt_server_user": "root",
-  "dolt_database": "beads_blog"
+  "dolt_database": "beads_blog",
+  "project_id": "a1081a47-7a8a-493e-8d04-220fa490e8b9"
 }
