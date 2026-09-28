@@ -1,12 +1,13 @@
 ---
 import { getCollection } from "astro:content";
+import { isPublished } from "@/helpers/posts";
 import PageLayout from "@/layouts/PageLayout.astro";
 import PageHeader from "@/components/pages/common/PageHeader/PageHeader.astro";
 import FeaturedPost from "@/components/pages/blog/FeaturedPost/FeaturedPost.astro";
 import PostsList from "@/components/pages/blog/PostsList/PostsList.astro";
 import { SITE_TITLE } from "@/consts";
 
-const posts = (await getCollection("blog")).sort(
+const posts = (await getCollection("blog", isPublished)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const featuredPost = posts[0];
