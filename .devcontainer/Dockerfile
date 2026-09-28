@@ -36,19 +36,18 @@ RUN ln -s /usr/lib/x86_64-linux-gnu/libicui18n.so.76 \
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 # Install pnpm
-RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+RUN corepack enable && corepack prepare pnpm@10.34.5 --activate
 RUN SHELL=zsh pnpm setup
 
 # AI agent tools
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
-# Claude memory and specs
+# Beads task tracking (Dolt-backed)
 RUN curl -L https://github.com/dolthub/dolt/releases/latest/download/install.sh | bash
-RUN curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
-RUN npm install -g @fission-ai/openspec
+RUN curl -fsSL https://raw.githubusercontent.com/gastownhall/beads/main/scripts/install.sh | bash
 
 # Sanity check
-RUN pnpm --version && dolt version && bd setup claude && openspec --version
+RUN pnpm --version && dolt version && bd setup claude
 
 # Set working directory
 USER $USERNAME
