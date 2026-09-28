@@ -6,7 +6,12 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<div class:list={["mt-16 pt-8 border-t border-gray-light mx-auto", className]}>
+<div
+  class:list={[
+    "sm:mt-16 mt-8 pt-8 border-t border-gray-light mx-auto",
+    className,
+  ]}
+>
   <h3 class="text-lg m-0 mb-6 text-gray uppercase tracking-wider text-center">
     Comments
   </h3>

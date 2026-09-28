@@ -6,8 +6,9 @@ import ContactCTA from "@/components/pages/common/ContactCTA/ContactCTA.astro";
 import SkillsGrid from "@/components/pages/resume/SkillsGrid/SkillsGrid.astro";
 import ExperienceTimeline from "@/components/pages/resume/ExperienceTimeline/ExperienceTimeline.astro";
 import EarlyCareer from "@/components/pages/resume/EarlyCareer/EarlyCareer.astro";
-import Briefcase from "@/components/ui/icons/Briefcase.astro";
-import Code from "@/components/ui/icons/Code.astro";
+import LucideIcon, {
+  type IconName,
+} from "@/components/ui/icons/LucideIcon.astro";
 import { SITE_TITLE } from "@/consts";
 
 const skills = [
@@ -48,7 +49,7 @@ const skills = [
     icon: "tool",
     items: ["Git", "CI/CD", "Jenkins", "CircleCI", "GitHub Actions"],
   },
-];
+] satisfies { icon: IconName }[];
 
 const experience = [
   {
@@ -258,14 +259,14 @@ const earlyCareer = {
 
   <section class="mb-12">
     <SectionHeader title="Technical Skills" class="pb-6">
-      <Code size={24} class="text-[#6FA4AF]" slot="icon" />
+      <LucideIcon icon="code" size={24} color="#6FA4AF" slot="icon" />
     </SectionHeader>
     <SkillsGrid skills={skills} />
   </section>
 
   <section class="mb-12">
     <SectionHeader title="Professional Experience" class="mb-8 pb-6">
-      <Briefcase size={24} class="text-[#B8C4A9]" slot="icon" />
+      <LucideIcon icon="briefcase" size={24} color="#B8C4A9" slot="icon" />
     </SectionHeader>
     <ExperienceTimeline experience={experience} />
     <EarlyCareer

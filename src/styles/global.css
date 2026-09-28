@@ -115,7 +115,13 @@ h5 {
 }
 
 p {
-  @apply mb-4;
+  @apply mb-4 leading-7;
+}
+
+p:last-child,
+.prose ol:last-child,
+.prose ul:last-child {
+  @apply mb-0;
 }
 
 .prose ul {
@@ -127,7 +133,12 @@ p {
 }
 
 .prose li {
-  @apply mb-2;
+  @apply leading-7;
+}
+
+.prose li > code,
+.prose p > code {
+  @apply text-sm;
 }
 
 .prose h1,
@@ -139,7 +150,7 @@ p {
 }
 
 .prose h3 {
-  @apply text-[1.6rem] py-2 text-accent tracking-wide;
+  @apply text-accent py-2 tracking-wide;
 }
 
 img {
@@ -151,7 +162,7 @@ code {
 }
 
 pre {
-  @apply p-4 rounded-lg mb-4;
+  @apply p-4 rounded-lg mb-4 leading-none;
 }
 
 pre > code {
@@ -160,7 +171,11 @@ pre > code {
 }
 
 blockquote {
-  @apply border-l-4 border-accent pl-5 m-0 text-xl;
+  @apply border-l-4 border-accent pl-2 m-0 text-base;
+}
+
+bolckquote > p > code {
+  @apply bg-[red]!;
 }
 
 hr {

@@ -21,34 +21,32 @@ const optimizedHero = heroImage
 {
   heroImage && optimizedHero ? (
     <div
-      class="mb-8 -mt-12 -mx-6 sm:-mx-6 xl:-mt-12 xl:-mx-25.5 min-h-[75vh] sm:min-h-[50vh] bg-cover bg-center relative"
+      class="mb-8 -mt-12 -mx-6 sm:-mx-6 lg:-mt-12 lg:-mx-25.5 min-h-[75vh] sm:min-h-[50vh] bg-cover bg-center relative"
       style={`background-image: url(${optimizedHero.src});`}
       data-hero-parallax
       role="img"
       aria-label={title}
     >
-      <header class="absolute right-0 lg:right-auto bottom-0 lg:bottom-4 left-0 lg:left-4 backdrop-blur-[6px] bg-black/25 p-4 lg:max-w-xl rounded-lg">
+      <header class="absolute right-0 lg:right-24 bottom-0 lg:bottom-4 left-0 lg:left-24 backdrop-blur-[6px] bg-black/25 p-4 rounded-lg">
         <h1 class="md:!text-3xl m-0 !text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)] block">
           {title}
         </h1>
-        <div class="items-center gap-3 text-sm text-gray-300 mt-2">
-          <div class="self-start py-2">
-            <div class="md:min-w-[90px]">
-              <FormattedDate date={pubDate} class="bg-[#000000]/50 px-1" />
-              {updatedDate && (
-                <span class="text-nowrap bg-[#000000]/50 px-1">
-                  Updated: <FormattedDate date={updatedDate} class="italic" />
-                </span>
-              )}
-            </div>
-          </div>
+        <div class="items-center gap-3 text-sm text-gray-300 mt-2 sm:flex">
           {tags && tags.length > 0 && (
-            <div class="flex gap-2 flex-wrap w-full">
+            <div class="flex gap-2 flex-wrap">
               {tags.map((t) => (
                 <Tag tag={t} variant="dark" />
               ))}
             </div>
           )}
+          <div class="self-end py-2">
+            <FormattedDate date={pubDate} class="bg-[#000000]/50 px-1" />
+            {updatedDate && (
+              <span class="text-nowrap bg-[#000000]/50 px-1">
+                Updated: <FormattedDate date={updatedDate} class="italic" />
+              </span>
+            )}
+          </div>
         </div>
       </header>
     </div>
