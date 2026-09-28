@@ -5,11 +5,7 @@ import AboutHero from "@/components/pages/about/AboutHero/AboutHero.astro";
 import AboutSection from "@/components/pages/about/AboutSection/AboutSection.astro";
 import QuirksList from "@/components/pages/about/QuirksList/QuirksList.astro";
 import ContactCTA from "@/components/pages/common/ContactCTA/ContactCTA.astro";
-import Clock from "@/components/ui/icons/Clock.astro";
-import Heart from "@/components/ui/icons/Heart.astro";
-import Info from "@/components/ui/icons/Info.astro";
-import Star from "@/components/ui/icons/Star.astro";
-import Users from "@/components/ui/icons/Users.astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 import { SITE_TITLE } from "@/consts";
 
 const quirks = [
@@ -34,7 +30,7 @@ const quirks = [
   <AboutHero />
 
   <AboutSection title="Outside of Work">
-    <Clock size={24} class="text-[#6FA4AF]" slot="icon" />
+    <LucideIcon icon="clock" size={24} color="#6FA4AF" slot="icon" />
     <p class="text-gray-dark mb-6">
       My world is made of <strong class="text-black">books</strong>, <strong
         class="text-black">motorcycles</strong
@@ -53,7 +49,7 @@ const quirks = [
   </AboutSection>
 
   <AboutSection title="Values">
-    <Heart size={24} class="text-[#B8C4A9]" slot="icon" />
+    <LucideIcon icon="heart" size={24} color="#B8C4A9" slot="icon" />
     <p class="text-gray-dark mb-4">
       I value <strong class="text-black">intelligence</strong> and <strong
         class="text-black">kindness</strong
@@ -66,7 +62,12 @@ const quirks = [
   </AboutSection>
 
   <AboutSection title="How People See Me">
-    <Users size={24} class="text-accent" slot="icon" />
+    <LucideIcon
+      icon="users"
+      size={24}
+      color="var(--color-accent)"
+      slot="icon"
+    />
     <p class="text-gray-dark mb-4">
       People tend to misread me. I come off as strange to the average person, so
       I gravitate toward creatives and oddballs who find me normal. My humor is
@@ -81,7 +82,7 @@ const quirks = [
   </AboutSection>
 
   <AboutSection title="Quirks">
-    <Star size={24} class="text-[#D97D55]" slot="icon" />
+    <LucideIcon icon="star" size={24} color="#D97D55" slot="icon" />
     <p class="text-gray mb-4 text-sm uppercase tracking-wider">
       Because everyone has them — mine are just louder
     </p>
@@ -89,7 +90,7 @@ const quirks = [
   </AboutSection>
 
   <AboutSection title="Right Now">
-    <Info size={24} class="text-[#6FA4AF]" slot="icon" />
+    <LucideIcon icon="info" size={24} color="#6FA4AF" slot="icon" />
     <p class="text-gray-dark">
       I'm learning languages, going to the gym, and pushing myself through
       university because I want to teach someday. Maybe that's my way of giving

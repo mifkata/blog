@@ -1,0 +1,68 @@
+---
+import { icons, type IconName } from "./lucide";
+
+export type { IconName };
+type Variant = "normal" | "inverted" | "circle" | "circle-inverted";
+
+interface Props {
+  icon: IconName;
+  size?: number;
+  color?: string;
+  class?: string;
+  variant?: Variant;
+  circleColor?: string;
+  circleStyle?: "border" | "shadow";
+}
+
+const {
+  icon,
+  size = 24,
+  color = "currentColor",
+  class: className,
+  variant = "normal",
+  circleColor,
+  circleStyle = "border",
+} = Astro.props;
+
+const Icon = icons[icon];
+const hasCircle = variant === "circle" || variant === "circle-inverted";
+const inverted = variant === "inverted" || variant === "circle-inverted";
+const badgeColor = circleColor || color;
+const invertedIconColor = "#fff";
+const padding = Math.round(size * 0.5);
+const circleDiameter = size + padding * 2;
+---
+
+{
+  hasCircle ? (
+    <span
+      class:list={[
+        "inline-flex items-center justify-center rounded-full",
+        className,
+      ]}
+      style={{
+        width: `${circleDiameter}px`,
+        height: `${circleDiameter}px`,
+        backgroundColor: inverted ? badgeColor : "transparent",
+        border:
+          circleStyle === "border" ? `2px solid ${badgeColor}` : undefined,
+        boxShadow:
+          circleStyle === "shadow" ? `0 2px 8px 0 ${badgeColor}66` : undefined,
+      }}
+    >
+      <Icon size={size} color={inverted ? invertedIconColor : color} />
+    </span>
+  ) : inverted ? (
+    <span
+      class:list={[
+        "inline-flex items-center justify-center rounded-lg",
+        className,
+      ]}
+      style={{ backgroundColor: badgeColor, padding: `${padding}px` }}
+    >
+      <Icon size={size} color={invertedIconColor} />
+    </span>
+  ) : (
+    <Icon size={size} color={color} class={className} />
+  )
+}

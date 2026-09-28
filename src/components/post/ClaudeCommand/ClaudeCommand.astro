@@ -1,6 +1,6 @@
 ---
 import GitHub from "@/components/ui/icons/GitHub.astro";
-import Globe from "@/components/ui/icons/Globe.astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 
 interface Props {
   name: string;
@@ -12,9 +12,9 @@ const { name, external = false, archived = false } = Astro.props;
 
 const url = external
   ? "https://code.claude.com/docs/en/slash-commands"
-  : archived ? 
-  `https://github.com/mifkata/blog/blob/main/public/archive/commands/${name}.md` :
-  `https://github.com/mifkata/blog/blob/main/.claude/commands/${name}.md`;
+  : archived
+    ? `https://github.com/mifkata/blog/blob/main/public/archive/commands/${name}.md`
+    : `https://github.com/mifkata/blog/blob/main/.claude/commands/${name}.md`;
 
 const title = external
   ? `View the official documentation for the /${name} command on Claude's website`
@@ -28,7 +28,7 @@ const title = external
   title={title}
   class="inline-flex items-center gap-1 font-mono text-sm text-accent hover:text-accent-dark no-underline relative top-[3px]"
 >
-  {external ? <Globe size={16} /> : <GitHub size={16} />}
+  {external ? <LucideIcon icon="globe" size={16} /> : <GitHub size={16} />}
   /{name}
   <span class="sr-only">(opens in new tab)</span>
 </a>
