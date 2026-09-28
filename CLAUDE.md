@@ -17,7 +17,7 @@
 
 ## Git
 
-- Commit and push after executing a task
+- Never commit or push unless the user explicitly asks; leave changes uncommitted so they can be reviewed
 - If untracked changes exist that are unrelated to current task, ignore them
 - Do not include author/co-author information in commit messages
 - Use conventional commit messages (e.g., `feat: add random forest training script`)
@@ -138,30 +138,17 @@ bd sync               # Sync with git
 
 ## Landing the Plane (Session Completion)
 
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
-
-**MANDATORY WORKFLOW:**
+**When ending a work session**, complete the steps below.
 
 1. **File issues for remaining work** - Create issues for anything that needs follow-up
 2. **Run quality gates** (if code changed) - Tests, linters, builds
 3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
-   ```bash
-   git pull --rebase
-   bd sync
-   git push
-   git status  # MUST show "up to date with origin"
-   ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
+4. **Hand off** - Leave changes uncommitted, summarize what changed for review, and provide context for the next session
 
 **CRITICAL RULES:**
 
-- Work is NOT complete until `git push` succeeds
-- NEVER stop before pushing - that leaves work stranded locally
-- NEVER say "ready to push when you are" - YOU must push
-- If push fails, resolve and retry until it succeeds
+- Commit or push only when the user explicitly asks
+- When asked to push: `git pull --rebase`, `git push`, then confirm `git status` is up to date with origin
 
 ---
 
