@@ -1,4 +1,5 @@
 import { getCollection } from "astro:content";
+import { isPublished } from "./posts";
 import seriesData from "@/data/series.json";
 
 export async function getSeriesWithPosts(slug: string) {
@@ -7,7 +8,7 @@ export async function getSeriesWithPosts(slug: string) {
     throw new Error(`Series "${slug}" not found`);
   }
 
-  const blogPosts = await getCollection("blog");
+  const blogPosts = await getCollection("blog", isPublished);
 
   const items = blogPosts
     .reduce((acc, p) => {
