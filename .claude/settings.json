@@ -1,28 +1,4 @@
 {
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/dispatch-notification.sh \"Waiting for user...\""
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/dispatch-notification.sh \"Ready!\""
-          }
-        ]
-      }
-    ]
-  },
   "enabledPlugins": {
     "beads@beads-marketplace": true
   }
