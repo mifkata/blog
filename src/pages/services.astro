@@ -6,9 +6,9 @@ import ContactCTA from "@/components/pages/common/ContactCTA/ContactCTA.astro";
 import ServicesGrid from "@/components/pages/services/ServicesGrid/ServicesGrid.astro";
 import ReasonsGrid from "@/components/pages/services/ReasonsGrid/ReasonsGrid.astro";
 import ClientList from "@/components/pages/services/ClientList/ClientList.astro";
-import Shield from "@/components/ui/icons/Shield.astro";
-import Star from "@/components/ui/icons/Star.astro";
-import Tool from "@/components/ui/icons/Tool.astro";
+import LucideIcon, {
+  type IconName,
+} from "@/components/ui/icons/LucideIcon.astro";
 import { SITE_TITLE } from "@/consts";
 
 const services = [
@@ -42,7 +42,7 @@ const services = [
       "Interim principal engineer roles, coaching teams, establishing testing culture, improving delivery workflows, and unblocking systems.",
     icon: "users",
   },
-];
+] satisfies { icon: IconName }[];
 
 const reasons = [
   {
@@ -99,21 +99,26 @@ const clients = [
 
   <section class="mb-16">
     <SectionHeader title="What I Do" class="pb-8">
-      <Tool size={28} class="text-[#6FA4AF]" slot="icon" />
+      <LucideIcon icon="tool" size={28} color="#6FA4AF" slot="icon" />
     </SectionHeader>
     <ServicesGrid services={services} />
   </section>
 
   <section class="mb-16">
     <SectionHeader title="Why Work With Me" class="pb-12">
-      <Star size={28} class="text-[#B8C4A9]" slot="icon" />
+      <LucideIcon icon="star" size={28} color="#B8C4A9" slot="icon" />
     </SectionHeader>
     <ReasonsGrid reasons={reasons} />
   </section>
 
   <section class="mb-16">
     <SectionHeader title="Trusted By" class="mb-6">
-      <Shield size={28} class="text-accent" slot="icon" />
+      <LucideIcon
+        icon="shield"
+        size={28}
+        color="var(--color-accent)"
+        slot="icon"
+      />
     </SectionHeader>
     <p class="text-gray-dark mb-6">
       I've consistently been hired by companies that expect senior, independent,

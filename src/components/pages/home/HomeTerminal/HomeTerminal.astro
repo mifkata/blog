@@ -5,8 +5,8 @@ interface Props {
 }
 
 const {
-  command = "cat current_focus.txt",
-  output = "Exploring vibe coding with AI, mastering Elixir and designing distributed systems.",
+  command = "cat life_as_we_know_it.note",
+  output = "Improving vibe coding with agentic workflows and riding motorcycles.",
 } = Astro.props;
 ---
 
@@ -15,8 +15,7 @@ const {
     <span class="text-accent">$</span>
     <span class="text-white ml-2">{command}</span>
     <div class="mt-2 text-gray-light opacity-80">
-      {">"}
-      {output}
+      {`> ${output}`}
     </div>
   </div>
 </section>
