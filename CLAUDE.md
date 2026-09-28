@@ -21,6 +21,7 @@
 - If untracked changes exist that are unrelated to current task, ignore them
 - Do not include author/co-author information in commit messages
 - Use conventional commit messages (e.g., `feat: add random forest training script`)
+- Commit messages should be terse, do not explicit details, just focus on the change
 
 # Pull Requests
 
