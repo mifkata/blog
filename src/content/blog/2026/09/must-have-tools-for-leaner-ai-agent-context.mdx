@@ -1,0 +1,154 @@
+---
+title: "3 must-have tools for a leaner AI agent context"
+description: Three tools that cut token spend and keep your coding agent focused - output compression, context compression and long-lasting memory
+synopsis:
+  Organising your AI workflow is no longer just about putting the chaos in order,
+  it directly impacts your AI costs. Every command your agent runs and every file it
+  reads ends up in the context window, and the bigger that window grows, the more
+  you pay and the less focused the agent becomes.
+
+
+  This article looks at three tools I run in my local dev setup to fight that -
+  one for trimming shell output, one for compressing context and one for giving
+  the agent a memory that outlives the session. It also covers where context
+  compression falls short, when running **Claude Code** on a subscription.
+pubDate: "2026-09-21T08:45:00Z"
+heroImage: "@/assets/blog/2026/0921-must-have-tools-for-leaner-ai-agent-context.png"
+tags: ["ai", "agents", "claude", "tools", "tokens", "workflow"]
+draft: true
+---
+
+import { GithubLink, Highlight, WrapText } from "@/components/post";
+
+## Every session starts from zero
+
+Every new session starts with an empty context. Whatever the agent needs to know about your project, it has to go and find out - read files, run commands, grep through the codebase. Each of these errands costs **input and output tokens** and each of them stays in the context for the rest of the conversation.
+
+Newer models get smarter, but they also get pricier. Running them on autopilot, without any consideration for what goes in the context window, can become expensive very quickly.
+
+This article explores three tools that I consider a **must-have for local dev** with AI agents like **Claude Code** - [rtk](https://github.com/rtk-ai/rtk), [headroom](https://github.com/headroomlabs-ai/headroom) and [mempalace](https://github.com/mempalace/mempalace).
+
+## Spending tokens where they matter
+
+In the last several months I've been working on personal and professional projects and studying (even created a [micro-website to compile learning materials](https://textbooks.mifkata.com/)), which caused my blogging to lag behind. I started a few articles that never saw the light of day, and trying to finish them kept me from writing anything new.
+
+After a couple of months off, I'm getting back to writing, and the topic that has been on my mind the most is token efficiency.
+
+<Highlight block>
+  > Nowadays, when the agent underperforms, **I assume the problem is on my side** - either ***I polluted my context window*** with irrelevant information, or ***my prompts were ambiguous***, requiring the agent to do more research and reasoning before acting, which in turn ***pollutes its context even further***.
+</Highlight>
+
+There are three layers where the noise piles up in my day-to-day work:
+
+- **Shell output** - `git status`, `ls`, test runners and linters dump hundreds of lines, of which the agent needs a handful
+- **Context** - tool results, file reads and large payloads get sent to the model over and over again
+- **Memory** - every new session re-discovers what the previous one already knew, including the reasons behind decisions
+
+Each of the tools below addresses one of these layers.
+
+## When the shell says too much
+
+Terminal output is written for people skimming a screen, not for a model that pays for every token. **rtk** (Rust Token Killer) bridges that gap.
+
+<GithubLink url="https://github.com/rtk-ai/rtk">
+  **A CLI proxy** that filters and compresses the output of everyday dev
+  commands before it reaches your agent's context. Single Rust binary, over 100
+  supported commands and it claims **60-90% token savings** on common dev operations.
+</GithubLink>
+
+The idea is simple. When **Claude Code** runs `git status`, it doesn't need the full output with hints on how to unstage files, it needs to know what's changed. **rtk** gets it there by grouping, truncating and deduplicating the output.
+
+Installing it takes a minute:
+
+<WrapText>
+  ```sh
+  brew install rtk
+  rtk init -g
+  ```
+</WrapText>
+
+The `init` command installs a **Claude Code hook** that transparently rewrites commands, so `git status` becomes `rtk git status` without the agent being aware of it. Integrations for Gemini CLI, Codex, Cursor and others are available as well.
+
+<Highlight block>
+  > **NOTE:** There's another project called "rtk" (Rust Type Kit) on crates.io. If `rtk gain` doesn't work, you've installed the wrong one.
+</Highlight>
+
+My favourite part is `rtk gain` - it shows how many tokens you've actually saved. Here are my numbers at the time of writing:
+
+<WrapText>
+  ```sh
+  Total commands:    1052
+  Tokens saved:      446.7K (55.7%)
+  ```
+</WrapText>
+
+Not quite the advertised 60-90%, but still more than half of my shell output never made it to the model. There's also `rtk discover`, which goes through your **Claude Code** history and finds commands that could have been optimised, but weren't.
+
+<Highlight block color="pink">
+  > **Caveat:** The filtering can be a bit too aggressive at times. I've seen it collapse diffs and mangle `find` output, which can mislead the agent. For those cases, `rtk proxy <cmd>` runs the raw command without filtering.
+</Highlight>
+
+## Making room in the context window
+
+Once the shell is quiet, the next source of bloat is the traffic itself - this is where **headroom** comes in.
+
+<GithubLink url="https://github.com/headroomlabs-ai/headroom">
+  **The Context Optimization Layer** for LLM applications. It compresses what
+  gets sent to the model, either as a **proxy** sitting in front of your LLM
+  provider, or as an **MCP server** your agent calls on demand.
+</GithubLink>
+
+In proxy mode, you run it locally and point your client to it, instead of the provider:
+
+<WrapText>
+  ```sh
+  headroom proxy
+  OPENAI_BASE_URL=http://localhost:8787/v1 your-app
+  ```
+</WrapText>
+
+This works well with pretty much anything that talks to an **OpenAI-compatible API** - your own agents, scripts and self-hosted AI setups. It also comes with a dashboard, savings statistics and commands to inspect what has been compressed and how.
+
+<Highlight block color="pink">
+  > #### Claude Code on a subscription
+  >
+  > **headroom** suggests running **Claude Code** through the proxy with `ANTHROPIC_BASE_URL=http://localhost:8787 claude`. On a subscription, routing traffic through the gateway led to **session corruption** and the conversation **could not be continued**.
+  >
+  > For **Claude Code**, I use the MCP server (`headroom mcp install`) instead.
+</Highlight>
+
+## Remembering the why
+
+When it comes to pure memory organisation, one project stands out - **mempalace**, released by [Milla Jovovich](https://github.com/milla-jovovich).
+
+<GithubLink url="https://github.com/mempalace/mempalace">
+  **Mem Palace** stores your conversations in a searchable form, in order to
+  keep the reasoning behind decisions in the loop. It **works as a local MCP
+  service**, which can learn from an existing codebase and will auto-learn as you use it.
+
+  The data model is inspired by the Roman and Greek "Memory Palace"
+  concept - people and projects become **wings**, topics become **rooms** and
+  the original content lives in **drawers**.
+</GithubLink>
+
+My `git log` and task tracker tell the agent **what** has been done, but not **why** things are built the way they are. Without that, the same decisions get re-explained every session, or the agent re-reads half the codebase to infer them.
+
+Getting started:
+
+<WrapText>
+  ```sh
+  uv tool install mempalace
+  mempalace init ~/projects/myapp
+  mempalace mine ~/.claude/projects/ --mode convos
+  ```
+</WrapText>
+
+The last command mines your existing **Claude Code** sessions, so you don't start from scratch. There's also a **Claude Code plugin** in the repository's marketplace, which is how I run it.
+
+## Leaner context, sharper agents
+
+Each of these tools deals with a different kind of waste: **rtk** trims what commands return, **headroom** trims what gets sent and **mempalace** cuts down what has to be re-discovered. None of them is a silver bullet, but together they keep context windows lean and agents focused.
+
+Keep in mind that these are young, fast-moving projects, so expect rough edges. Measure, don't assume - both **rtk** and **headroom** give you the numbers.
+
+For the rest of my setup, check out [spec-driven development](/blog/2026/01/claude-code-spec-driven-development/) and [devcontainers](/blog/2025/claude-code-devcontainers/). If you've found other tools worth adding to the list, let me know in the comments. Happy coding!
