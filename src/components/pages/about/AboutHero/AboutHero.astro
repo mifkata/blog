@@ -1,27 +1,28 @@
 ---
 import { Image } from "astro:assets";
 import avatar from "@/assets/avatar.jpeg";
+
+// Where/when the photo was taken, e.g. "Rajasthan, India · Nov 2024"
+const photoCaption = "Black Sea coast near Balchik · Aug 2026";
 ---
 
 <section class="mb-12">
   <div class="flex flex-col md:flex-row gap-8 md:items-start">
-    <div
-      class="flex-shrink-0 text-center order-2 md:order-1 flex flex-col items-center"
-    >
+    <div class="flex-shrink-0 text-center flex flex-col items-center">
       <div
         class="w-72 h-72 rounded-full overflow-hidden border-4 border-gray-light"
       >
         <Image
           src={avatar}
           alt="Andriyan Ivanov"
-          width={160}
-          height={160}
-          class="w-full h-full object-cover mt-[-40px]"
+          width={288}
+          densities={[1, 2, 3]}
+          class="w-full h-full! object-cover object-[center_40%]"
         />
       </div>
-      <p class="text-xs text-gray mt-2">Rajasthan, India · Nov 2024</p>
+      {photoCaption && <p class="text-xs text-gray mt-2">{photoCaption}</p>}
     </div>
-    <div class="order-1 md:order-2">
+    <div>
       <h1 class="text-4xl md:text-5xl mb-4">About Me</h1>
       <p class="text-xl text-gray mb-4">
         Born in Varna, Bulgaria in 1983. Started working when most people were
@@ -32,8 +33,17 @@ import avatar from "@/assets/avatar.jpeg";
         was a good idea. I spent my teenage years ignoring school, obsessed with
         computers, video games, and the idea of becoming a hacker. When I got my
         first PC in '98, I thought I'd be a designer, but life shoved me into
-        programming — PHP, websites, anything that paid rent. That's how it
+        programming: PHP, websites, anything that paid rent. That's how it
         started.
+      </p>
+      <p class="text-gray-dark mt-4">
+        I'm a Holistic Product Generalist, focused on AI adoption and
+        engineering. Over the years I've worn most of the hats a product needs:
+        I've built products, designed them, written their copy, measured them
+        and helped them grow, and I've led the teams doing all of that. Wearing
+        them all taught me to care about the whole product, not just the code.
+        I'm curious by default, and I treat my own habits like a product: try
+        things, keep what works, improve the rest.
       </p>
     </div>
   </div>

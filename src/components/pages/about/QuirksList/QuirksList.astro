@@ -8,7 +8,7 @@ interface Props {
 const { quirks } = Astro.props;
 ---
 
-<ul class="space-y-3">
+<ul class="grid gap-3 md:grid-cols-2 md:gap-x-12">
   {
     quirks.map((quirk) => (
       <li class="flex items-start gap-3 text-gray-dark">
