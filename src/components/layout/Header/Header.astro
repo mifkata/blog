@@ -1,8 +1,7 @@
 ---
 import Button from "@/components/ui/Button/Button.astro";
 import HeaderLink from "@/components/layout/HeaderLink/HeaderLink.astro";
-import Document from "@/components/ui/icons/Document.astro";
-import Menu from "@/components/ui/icons/Menu.astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 ---
 
 <header
@@ -25,7 +24,7 @@ import Menu from "@/components/ui/icons/Menu.astro";
         <HeaderLink href="/services" number="03">Services</HeaderLink>
       </div>
       <Button href="/resume" variant="inverse">
-        <Document size={16} />
+        <LucideIcon icon="document" size={16} />
         Resume
       </Button>
     </div>
@@ -34,7 +33,7 @@ import Menu from "@/components/ui/icons/Menu.astro";
       id="mobile-menu-toggle"
       aria-label="Toggle menu"
     >
-      <Menu size={24} />
+      <LucideIcon icon="menu" size={24} />
     </button>
   </nav>
   <div
@@ -46,7 +45,7 @@ import Menu from "@/components/ui/icons/Menu.astro";
       <HeaderLink href="/about" number="02">About</HeaderLink>
       <HeaderLink href="/services" number="03">Services</HeaderLink>
       <Button href="/resume" variant="inverse" class="mt-2 self-start">
-        <Document size={16} />
+        <LucideIcon icon="document" size={16} />
         Resume
       </Button>
     </div>

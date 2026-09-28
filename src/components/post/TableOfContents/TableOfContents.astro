@@ -55,13 +55,10 @@ const { headings } = Astro.props;
     let activeId: string | null = null;
 
     function toggleActive(link: HTMLAnchorElement, active: boolean) {
-      const inactiveClasses = link.dataset.inactiveClass?.split(" ") ?? [];
       if (active) {
-        link.classList.remove(...inactiveClasses);
-        link.classList.add("text-accent", "font-medium");
+        link.classList.add("font-bold");
       } else {
-        link.classList.remove("text-accent", "font-medium");
-        link.classList.add(...inactiveClasses);
+        link.classList.remove("font-bold");
       }
     }
 

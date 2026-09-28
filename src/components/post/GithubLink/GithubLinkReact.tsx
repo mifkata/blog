@@ -128,7 +128,7 @@ export default function GithubLink({
       </div>
 
       {/* Description */}
-      {children && <div className="text-gray text-sm">{children}</div>}
+      {children && <div className="text-sm">{children}</div>}
 
       {/* Invalid URL Warning */}
       {!parsed.isValid && (

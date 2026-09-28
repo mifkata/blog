@@ -1,5 +1,5 @@
 ---
-import Circle from "@/components/ui/icons/Circle.astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 
 interface Props {
   quirks: string[];
@@ -12,8 +12,8 @@ const { quirks } = Astro.props;
   {
     quirks.map((quirk) => (
       <li class="flex items-start gap-3 text-gray-dark">
-        <span class="text-[#D97D55] mt-1.5">
-          <Circle size={12} />
+        <span class="mt-1.5">
+          <LucideIcon icon="circle" size={12} color="#D97D55" />
         </span>
         {quirk}
       </li>
