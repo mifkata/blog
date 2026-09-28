@@ -8,25 +8,10 @@ interface Props {
   title: string;
   description: string;
   image?: ImageMetadata;
-  size?: "default" | "wide" | "full";
   class?: string;
 }
 
-const {
-  title,
-  description,
-  image,
-  size = "default",
-  class: className,
-} = Astro.props;
-
-const sizeClasses = {
-  default: "max-w-[720px]",
-  wide: "max-w-[960px]",
-  full: "max-w-[1120px]",
-};
-
-const sizeClass = sizeClasses[size];
+const { title, description, image, class: className } = Astro.props;
 ---
 
 <html lang="en">
@@ -36,7 +21,9 @@ const sizeClass = sizeClasses[size];
   <body>
     <div class="content-wrapper">
       <Header />
-      <main class:list={["w-full mx-auto px-6 py-12", sizeClass, className]}>
+      <main
+        class:list={["w-full max-w-[1120px] mx-auto px-6 py-12", className]}
+      >
         <slot />
       </main>
       <Footer />
