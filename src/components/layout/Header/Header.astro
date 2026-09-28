@@ -1,56 +1,48 @@
 ---
-import Button from "@/components/ui/Button/Button.astro";
 import HeaderLink from "@/components/layout/HeaderLink/HeaderLink.astro";
 import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 ---
 
-<header
-  id="site-header"
-  class="px-6 py-2 bg-white sticky top-0 z-50 shadow-sm w-full transition-[padding] duration-300 motion-reduce:transition-none"
->
-  <nav class="max-w-[1080px] mx-auto flex items-center justify-between">
-    <h1
-      id="site-header-logo"
-      class="text-2xl mt-2 whitespace-nowrap transition-[font-size] duration-300 motion-reduce:transition-none"
-    >
-      <a href="/" class="text-black no-underline hover:text-accent">
-        {"<MIFKATA />"}
-      </a>
-    </h1>
-    <div class="hidden md:flex items-center gap-8">
-      <div class="flex items-center gap-6 uppercase">
+<!-- The slot keeps the expanded header height in the layout while the header
+     shrinks, so shrinking never shifts the page (and never triggers scroll
+     anchoring, which used to bounce the header back and forth). -->
+<div id="site-header-slot" class="sticky top-0 z-50 w-full pointer-events-none">
+  <header
+    id="site-header"
+    class="pointer-events-auto px-6 py-2 bg-white shadow-sm w-full transition-[padding] duration-300 motion-reduce:transition-none"
+  >
+    <nav class="max-w-[1072px] mx-auto flex items-center justify-between">
+      <h1
+        id="site-header-logo"
+        class="text-2xl mt-2 whitespace-nowrap transition-[font-size] duration-300 motion-reduce:transition-none"
+      >
+        <a href="/" class="text-black no-underline hover:text-accent">
+          {"<MIFKATA />"}
+        </a>
+      </h1>
+      <div class="hidden md:flex items-center gap-6 uppercase">
         <HeaderLink href="/blog" number="01">Blog</HeaderLink>
         <HeaderLink href="/about" number="02">About</HeaderLink>
-        <HeaderLink href="/services" number="03">Services</HeaderLink>
       </div>
-      <Button href="/resume" variant="inverse">
-        <LucideIcon icon="document" size={16} />
-        Resume
-      </Button>
-    </div>
-    <button
-      class="md:hidden p-2 text-black"
-      id="mobile-menu-toggle"
-      aria-label="Toggle menu"
+      <button
+        class="md:hidden p-2 text-black"
+        id="mobile-menu-toggle"
+        aria-label="Toggle menu"
+      >
+        <LucideIcon icon="menu" size={24} />
+      </button>
+    </nav>
+    <div
+      class="hidden md:hidden bg-white max-h-[calc(100vh-60px)] overflow-y-auto relative z-50"
+      id="mobile-menu"
     >
-      <LucideIcon icon="menu" size={24} />
-    </button>
-  </nav>
-  <div
-    class="hidden md:hidden bg-white max-h-[calc(100vh-60px)] overflow-y-auto relative z-50"
-    id="mobile-menu"
-  >
-    <div class="flex flex-col gap-4 py-4 uppercase">
-      <HeaderLink href="/blog" number="01">Blog</HeaderLink>
-      <HeaderLink href="/about" number="02">About</HeaderLink>
-      <HeaderLink href="/services" number="03">Services</HeaderLink>
-      <Button href="/resume" variant="inverse" class="mt-2 self-start">
-        <LucideIcon icon="document" size={16} />
-        Resume
-      </Button>
+      <div class="flex flex-col gap-4 py-4 uppercase">
+        <HeaderLink href="/blog" number="01">Blog</HeaderLink>
+        <HeaderLink href="/about" number="02">About</HeaderLink>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
+</div>
 
 <!-- Mobile menu overlay -->
 <div
@@ -98,20 +90,64 @@ import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
   document.addEventListener("astro:page-load", setupMobileMenu);
 
   function setupHeaderScroll() {
+    const slot = document.getElementById("site-header-slot");
     const header = document.getElementById("site-header");
     const logo = document.getElementById("site-header-logo");
-    if (!header) return;
+    if (!slot || !header) return;
 
     const SHRINK_AT = 40;
     const EXPAND_AT = 10;
     let scrolled = false;
     let ticking = false;
 
-    function applyState() {
-      header!.style.paddingTop = scrolled ? "0.25rem" : "";
-      header!.style.paddingBottom = scrolled ? "0.25rem" : "";
-      logo?.style.setProperty("font-size", scrolled ? "1.125rem" : "");
+    function setShrunk(shrunk: boolean) {
+      header!.style.paddingTop = shrunk ? "0.25rem" : "";
+      header!.style.paddingBottom = shrunk ? "0.25rem" : "";
+      logo?.style.setProperty("font-size", shrunk ? "1.125rem" : "");
     }
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    // Pin the slot to the header's expanded height. Measured with transitions
+    // off, then the previous inline styles are restored untouched, so any
+    // shrink/expand animation still runs afterwards.
+    function lockSlotHeight() {
+      const previous = {
+        paddingTop: header!.style.paddingTop,
+        paddingBottom: header!.style.paddingBottom,
+        fontSize: logo?.style.fontSize ?? "",
+      };
+      header!.style.transition = "none";
+      logo?.style.setProperty("transition", "none");
+      slot!.style.height = "";
+      setShrunk(false);
+      const height = slot!.getBoundingClientRect().height;
+      header!.style.paddingTop = previous.paddingTop;
+      header!.style.paddingBottom = previous.paddingBottom;
+      logo?.style.setProperty("font-size", previous.fontSize);
+      void header!.offsetHeight;
+      header!.style.transition = "";
+      logo?.style.removeProperty("transition");
+      slot!.style.height = `${height}px`;
+    }
+
+    function applyState() {
+      if (scrolled) {
+        lockSlotHeight();
+        setShrunk(true);
+      } else {
+        setShrunk(false);
+        if (reducedMotion.matches) slot!.style.height = "";
+      }
+    }
+
+    // Once fully expanded again, let the slot follow the header (e.g. when the
+    // mobile menu opens).
+    header.addEventListener("transitionend", (event) => {
+      if (!scrolled && event.propertyName === "padding-top") {
+        slot.style.height = "";
+      }
+    });
 
     function update() {
       if (!scrolled && window.scrollY > SHRINK_AT) {
@@ -133,6 +169,9 @@ import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", () => {
+      if (scrolled) lockSlotHeight();
+    });
   }
   setupHeaderScroll();
   document.addEventListener("astro:page-load", setupHeaderScroll);
