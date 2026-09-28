@@ -10,98 +10,83 @@ import { SITE_TITLE } from "@/consts";
 
 const quirks = [
   "I read multiple books at the same time and finish them unpredictably.",
-  "I talk to my dog as if he's a rational adult — because he basically is.",
+  "I talk to my dog as if he's a rational adult, because he basically is.",
   "I hate small talk but can talk for hours about motorcycles, psychology, or why a line of code is ugly.",
   "I don't watch much new media; I rewatch the same favourite shows like comfort rituals.",
-  "When I travel, I reliably end up doing something stupid just to feel alive.",
-  "I adore individuals and distrust crowds.",
-  "I hoard browser tabs like a digital dragon.",
-  "I give brutally honest feedback, but only when asked — unsolicited advice is rude.",
-  "I cook by instinct, not recipe.",
+  "When I travel, I plan only one day ahead and leave the rest open to discovery.",
+  "One person can be brilliant. A crowd mostly makes sure nobody stands out.",
+  "I read the documentation. All of it. Sometimes twice. Thank the universe for AI summaries.",
+  "I give honest feedback, but only when asked. Unsolicited advice is rude.",
+  "I cook with love and twist every recipe until it's mine. Like chasing a good idea, getting a dish right is mostly about timing.",
   "I count the number 19 with my fingers constantly, for no good reason.",
 ];
 ---
 
 <PageLayout
   title={`About | ${SITE_TITLE}`}
-  description="Born in Varna, Bulgaria. Started working at 17. Still comparing myself to 'real' engineers after 25+ years."
-  size="wide"
+  description="Born in Varna, Bulgaria. Started working at 17. Holistic Product Generalist with 25+ years of building products, focused on AI adoption and engineering."
 >
   <AboutHero />
 
-  <AboutSection title="Outside of Work">
-    <LucideIcon icon="clock" size={24} color="#6FA4AF" slot="icon" />
-    <p class="text-gray-dark mb-6">
-      My world is made of <strong class="text-black">books</strong>, <strong
-        class="text-black">motorcycles</strong
-      >, <strong class="text-black">travel</strong>, <strong class="text-black"
-        >cooking</strong
-      >, <strong class="text-black">music</strong>, <strong class="text-black"
-        >my daughter</strong
-      >, and <strong class="text-black">my dog</strong> — the two creatures I'd gladly
-      die for.
-    </p>
-    <p class="text-gray-dark">
-      I get obsessive about learning; even after 25+ years of programming, I
-      still compare myself to "real" engineers and feel like I'm far behind.
-      Coffee in the morning is non-negotiable. Everything else can fall apart.
-    </p>
-  </AboutSection>
+  <div class="grid md:grid-cols-2 gap-x-12">
+    <AboutSection title="Outside of Work">
+      <LucideIcon icon="clock" size={24} color="#6FA4AF" slot="icon" />
+      <p class="text-gray-dark mb-6">
+        My world is made of books, motorcycles, travel, cooking, music, my
+        family and my dog. The last two I'd gladly die for.
+      </p>
+      <p class="text-gray-dark">
+        I get obsessive about learning; even after 25+ years in the industry, I
+        still compare myself to the best in the field and feel like I'm far
+        behind. Coffee in the morning is non-negotiable. Everything else can
+        fall apart.
+      </p>
+    </AboutSection>
 
-  <AboutSection title="Values">
-    <LucideIcon icon="heart" size={24} color="#B8C4A9" slot="icon" />
-    <p class="text-gray-dark mb-4">
-      I value <strong class="text-black">intelligence</strong> and <strong
-        class="text-black">kindness</strong
-      >, even if I don't always model them. I can be stupidly impulsive and meet
-      unkindness with unkindness. I believe <strong class="text-black"
-        >freedom</strong
-      > and <strong class="text-black">love</strong> matter more than anything, and
-      most of my decision-making is a strange equilibrium between passion and thought.
-    </p>
-  </AboutSection>
+    <AboutSection title="Values">
+      <LucideIcon icon="heart" size={24} color="#B8C4A9" slot="icon" />
+      <p class="text-gray-dark mb-4">
+        I value intelligence and kindness, and I try to bring both to the people
+        I work with. I believe in freedom: to try new ideas, to question old
+        ones, and to change my mind when the facts change. I lead with
+        creativity, looking for the unexpected solution and refining it until it
+        looks obvious.
+      </p>
+    </AboutSection>
 
-  <AboutSection title="How People See Me">
-    <LucideIcon
-      icon="users"
-      size={24}
-      color="var(--color-accent)"
-      slot="icon"
-    />
-    <p class="text-gray-dark mb-4">
-      People tend to misread me. I come off as strange to the average person, so
-      I gravitate toward creatives and oddballs who find me normal. My humor is
-      dark, sarcastic, and occasionally snobbish. I talk a lot. I can sound
-      arrogant.
-    </p>
-    <p class="text-gray-dark">
-      Some think I'm mean when they first meet me, but if they stay long enough,
-      they discover I'm different in a way they actually enjoy. I make friends
-      easily, but I keep my circle small on purpose.
-    </p>
-  </AboutSection>
+    <AboutSection title="How People See Me">
+      <LucideIcon
+        icon="users"
+        size={24}
+        color="var(--color-accent)"
+        slot="icon"
+      />
+      <p class="text-gray-dark">
+        One face, no hidden settings, and no second opinion for when you leave
+        the room. I try to be as clear as possible. Curious people love that;
+        people who enjoy office politics find it a bit inconvenient. I can live
+        with that.
+      </p>
+    </AboutSection>
 
-  <AboutSection title="Quirks">
-    <LucideIcon icon="star" size={24} color="#D97D55" slot="icon" />
-    <p class="text-gray mb-4 text-sm uppercase tracking-wider">
-      Because everyone has them — mine are just louder
-    </p>
-    <QuirksList quirks={quirks} />
-  </AboutSection>
+    <AboutSection title="Right Now">
+      <LucideIcon icon="info" size={24} color="#6FA4AF" slot="icon" />
+      <p class="text-gray-dark">
+        I'm learning languages, going to the gym, and pushing myself through
+        university because I want to teach someday. Maybe that's my way of
+        giving back, or maybe I just like making things harder than they need to
+        be.
+      </p>
+    </AboutSection>
 
-  <AboutSection title="Right Now">
-    <LucideIcon icon="info" size={24} color="#6FA4AF" slot="icon" />
-    <p class="text-gray-dark">
-      I'm learning languages, going to the gym, and pushing myself through
-      university because I want to teach someday. Maybe that's my way of giving
-      back — or maybe I just like making things harder than they need to be.
-    </p>
-  </AboutSection>
+    <AboutSection title="Quirks" class="md:col-span-2">
+      <LucideIcon icon="star" size={24} color="#D97D55" slot="icon" />
+      <p class="text-gray mb-4 text-sm uppercase tracking-wider">
+        Because everyone has them, mine are just louder
+      </p>
+      <QuirksList quirks={quirks} />
+    </AboutSection>
+  </div>
 
-  <ContactCTA headline="Want to work together?">
-    Check out my <a href="/services" class="text-accent hover:text-accent-dark"
-      >services</a
-    > or <a href="/resume" class="text-accent hover:text-accent-dark">resume</a
-    >.
-  </ContactCTA>
+  <ContactCTA />
 </PageLayout>

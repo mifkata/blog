@@ -1,6 +1,7 @@
 ---
 import GitHub from "@/components/ui/icons/GitHub.astro";
 import LinkedIn from "@/components/ui/icons/LinkedIn.astro";
+import { LINKEDIN_URL } from "@/consts";
 
 const today = new Date();
 const lastUpdated = today.toISOString().split("T")[0];
@@ -11,20 +12,32 @@ const commitSha = import.meta.env.CF_PAGES_COMMIT_SHA?.slice(0, 7);
   class="p-12 md:px-6 xl:px-26 text-sm text-gray-dark bg-gradient-to-t from-gray-dark/10 via-transparent to-transparent border-t border-gray-light/50"
 >
   <div
-    class="mx-auto grid md:text-left md:grid-cols-[1fr_1fr_auto] gap-6 text-center items-start"
+    class="mx-auto grid md:text-left md:grid-cols-[1fr_1fr_auto] gap-4 text-center items-start"
   >
     <!-- Left: Copyright & Contacts -->
     <div class="space-y-1">
       <p class="m-0 md:whitespace-nowrap">
         👨‍💻 &copy; {today.getFullYear()} Andriyan Ivanov
       </p>
-      <p class="m-0 md:whitespace-nowrap">
-        🛠️ Full-stack engineer (Backend · Frontend · DevOps · QA)
+      <p class="m-0">
+        🧭 Holistic Product Generalist · AI adoption and engineering
       </p>
       <p class="m-0 italic mt-2">
         💭 "The problem with the world is that the intelligent people are full
-        of doubts, while the stupid ones are full of confidence." — Charles
+        of doubts, while the stupid ones are full of confidence." - Charles
         Bukowski
+      </p>
+    </div>
+    <!-- Middle: Info -->
+    <div class="space-y-1">
+      <p class="m-0">
+        🏷️ <a href="/tags" class="hover:text-accent">Tags</a> · <a
+          href="/sitemap-index.xml"
+          class="hover:text-accent">Sitemap</a
+        > · <a href="/rss.xml" class="hover:text-accent">RSS</a> · <a
+          href="https://github.com/mifkata/blog"
+          class="hover:text-accent">Source</a
+        >
       </p>
       <p
         class="m-0 flex items-center justify-center md:justify-start gap-2 md:whitespace-nowrap"
@@ -39,39 +52,17 @@ const commitSha = import.meta.env.CF_PAGES_COMMIT_SHA?.slice(0, 7);
         >
           <GitHub size={20} />
         </a>
-        <a
-          href="https://www.linkedin.com/in/andriyan"
-          class="hover:text-accent"
-          aria-label="LinkedIn"
-        >
+        <a href={LINKEDIN_URL} class="hover:text-accent" aria-label="LinkedIn">
           <LinkedIn size={20} />
         </a>
       </p>
-    </div>
-    <!-- Middle: Info -->
-    <div class="space-y-1">
-      <p class="m-0 md:whitespace-nowrap">
-        📚 Currently learning: <a
-          href="https://elixir-lang.org"
-          class="hover:text-accent">Elixir</a
-        >
-      </p>
-      <p class="m-0 md:whitespace-nowrap">
-        🏷️ <a href="/tags" class="hover:text-accent">Tags</a> · <a
-          href="/sitemap-index.xml"
-          class="hover:text-accent">Sitemap</a
-        > · <a href="/rss.xml" class="hover:text-accent">RSS</a> · <a
-          href="https://github.com/mifkata/blog"
-          class="hover:text-accent">Source</a
-        >
-      </p>
-      <p class="m-0 md:whitespace-nowrap">🔥 Footer reached? Respect!</p>
-      <p class="m-0 md:whitespace-nowrap">
+      <p class="m-0 md:whitespace-nowrap p-0">
         🚀 Last updated: {lastUpdated} · Built with <a
           href="https://astro.build"
           class="hover:text-accent">Astro</a
         >{commitSha && ` · Commit ${commitSha}`}
       </p>
+      <p class="m-0 md:whitespace-nowrap">🔥 Footer reached? Respect!</p>
     </div>
     <!-- Cat -->
     <pre
