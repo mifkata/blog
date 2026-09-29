@@ -11,8 +11,9 @@ synopsis:
   This article looks at three tools I run in my local dev setup to fight that -
   one for trimming shell output, one for compressing context and one for giving
   the agent a memory that outlives the session. It also covers where context
-  compression falls short, when running **Claude Code** on a subscription.
+  compression falls short, when running **Claude Code** through a proxy.
 pubDate: "2026-09-21T08:45:00Z"
+updatedDate: "2026-09-29T08:00:00Z"
 heroImage: "@/assets/blog/2026/0921-must-have-tools-for-leaner-ai-agent-context.png"
 tags: ["ai", "agents", "claude", "tools", "tokens", "workflow"]
 ---
@@ -109,11 +110,11 @@ In proxy mode, you run it locally and point your client to it, instead of the pr
 This works well with pretty much anything that talks to an **OpenAI-compatible API** - your own agents, scripts and self-hosted AI setups. It also comes with a dashboard, savings statistics and commands to inspect what has been compressed and how.
 
 <Highlight block color="pink">
-  > #### Claude Code on a subscription
+  > #### Claude Code through the proxy
   >
-  > **headroom** suggests running **Claude Code** through the proxy with `ANTHROPIC_BASE_URL=http://localhost:8787 claude`. On a subscription, routing traffic through the gateway led to **session corruption** and the conversation **could not be continued**.
+  > **headroom** suggests running **Claude Code** through the proxy with `ANTHROPIC_BASE_URL=http://localhost:8787 claude`. By default, the proxy enforces its own rate limit of **100K tokens per minute**, shared by all sessions on the same credentials. Once a conversation grows past that limit, every request is **rejected locally** with a `429`, which **Claude Code** reports as the server limiting requests.
   >
-  > For **Claude Code**, I use the MCP server (`headroom mcp install`) instead.
+  > The limit can be turned off with `--no-rate-limit`, but leaving the proxy mid-session is not an option - headroom adds references to its own `headroom_retrieve` tool to the conversation, and without the proxy, the API **rejects every following turn**.
 </Highlight>
 
 ## Remembering the why
