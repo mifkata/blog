@@ -1,8 +1,12 @@
 ---
 import Button from "@/components/ui/Button/Button.astro";
 import { generateCircuit, toCircuitData, toPathData } from "./circuit";
+import { DESKTOP_COPY, quietRects, stepOpacity } from "./circuitQuiet";
 
 const circuit = generateCircuit();
+// Share of each layer left visible behind the copy.
+const QUIET_LINES = 0.28;
+const QUIET_PULSES = 0.6;
 ---
 
 <section
@@ -17,7 +21,34 @@ const circuit = generateCircuit();
     focusable="false"
     data-circuit
   >
-    <g class="circuit-marks">
+    <defs>
+      <g id="circuit-quiet" data-circuit-quiet>
+        {quietRects(DESKTOP_COPY).map((rect) => <rect {...rect} />)}
+      </g>
+      {
+        [
+          ["circuit-quiet-lines", QUIET_LINES],
+          ["circuit-quiet-pulses", QUIET_PULSES],
+        ].map(([id, kept]) => (
+          <mask
+            id={id}
+            maskUnits="userSpaceOnUse"
+            x="0"
+            y="0"
+            width={circuit.width}
+            height={circuit.height}
+          >
+            <rect width="100%" height="100%" fill="white" />
+            <use
+              href="#circuit-quiet"
+              fill="black"
+              fill-opacity={stepOpacity(Number(kept)).toFixed(4)}
+            />
+          </mask>
+        ))
+      }
+    </defs>
+    <g class="circuit-marks" mask="url(#circuit-quiet-lines)">
       {
         circuit.marks.map(({ kind, x, y, width, height }) =>
           kind === "ring" ? (
@@ -32,14 +63,14 @@ const circuit = generateCircuit();
         )
       }
     </g>
-    <g class="circuit-traces">
+    <g class="circuit-traces" mask="url(#circuit-quiet-lines)">
       {
         circuit.traces.map((trace) => (
           <path d={toPathData(trace.points)} data-tone={trace.tone} />
         ))
       }
     </g>
-    <g class="circuit-chips">
+    <g class="circuit-chips" mask="url(#circuit-quiet-lines)">
       {
         circuit.chips.map((chip, i) => (
           <rect
@@ -54,8 +85,8 @@ const circuit = generateCircuit();
         ))
       }
     </g>
-    <g data-circuit-pulses></g>
-    <g>
+    <g data-circuit-pulses mask="url(#circuit-quiet-pulses)"></g>
+    <g mask="url(#circuit-quiet-lines)">
       {
         circuit.pads.map((pad, i) => (
           <circle
@@ -75,7 +106,7 @@ const circuit = generateCircuit();
     set:html={JSON.stringify(toCircuitData(circuit))}
   />
   <div class="relative max-w-[960px] mx-auto">
-    <div class="max-w-[720px]">
+    <div class="circuit-copy relative w-fit max-w-[720px]" data-circuit-copy>
       <p class="text-lg mb-2">Hello, my name is</p>
       <h1 class="text-5xl md:text-6xl mb-4">Andriyan Ivanov.</h1>
       <h2 class="text-3xl md:text-4xl text-gray mb-6">
@@ -89,7 +120,7 @@ const circuit = generateCircuit();
         <Button href="/about" variant="inverse" class="px-6 py-3">
           Read the longer story
         </Button>
-        <Button href="/blog" variant="ghost" class="px-6 py-3">
+        <Button href="/blog" variant="ghost" class="circuit-solid px-6 py-3">
           Read my thoughts
         </Button>
       </div>
@@ -107,6 +138,34 @@ const circuit = generateCircuit();
     --circuit-packet: var(--color-accent);
     --circuit-charge: var(--color-button);
     background-color: var(--circuit-bg);
+  }
+
+  /* A background-coloured ring around every glyph, so lines stop short of it. */
+  .circuit-copy :is(h1, h2, p) {
+    --knockout: var(--circuit-bg);
+    text-shadow:
+      0 0 3px var(--knockout),
+      2px 0 var(--knockout),
+      -2px 0 var(--knockout),
+      0 2px var(--knockout),
+      0 -2px var(--knockout),
+      1.5px 1.5px var(--knockout),
+      -1.5px -1.5px var(--knockout),
+      1.5px -1.5px var(--knockout),
+      -1.5px 1.5px var(--knockout);
+  }
+
+  /* The outlined button would otherwise show the board through its label. */
+  .circuit-hero :global(.circuit-solid) {
+    background-color: var(--circuit-bg);
+  }
+
+  .circuit-hero :global(.circuit-solid:hover) {
+    background-color: color-mix(
+      in srgb,
+      var(--color-button-light) 50%,
+      var(--circuit-bg)
+    );
   }
 
   .circuit-marks {
@@ -199,13 +258,24 @@ const circuit = generateCircuit();
 
 <script>
   import { initCircuit } from "./circuitAnimation";
+  import { followCopy } from "./circuitQuiet";
 
   function setupCircuitHero() {
     const root = document.querySelector<HTMLElement>("[data-circuit-hero]");
-    if (!root || root.dataset.circuitReady) return;
+    const svg = root?.querySelector<SVGSVGElement>("[data-circuit]");
+    const copy = root?.querySelector<HTMLElement>("[data-circuit-copy]");
+    if (!root || !svg || !copy || root.dataset.circuitReady) return;
     root.dataset.circuitReady = "true";
-    const destroy = initCircuit(root);
-    document.addEventListener("astro:before-swap", destroy, { once: true });
+    const stopFollowing = followCopy(svg, copy);
+    const stopAnimation = initCircuit(root);
+    document.addEventListener(
+      "astro:before-swap",
+      () => {
+        stopFollowing();
+        stopAnimation();
+      },
+      { once: true },
+    );
   }
   setupCircuitHero();
   document.addEventListener("astro:page-load", setupCircuitHero);
