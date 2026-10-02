@@ -58,3 +58,6 @@ dolt-config.log
 .beads-credential-key
 .beads/proxieddb/
 *.gate.lock*
+
+# Misc
+.serena
