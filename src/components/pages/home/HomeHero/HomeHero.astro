@@ -1,13 +1,79 @@
 ---
 import Button from "@/components/ui/Button/Button.astro";
-import heroBackground from "@/assets/home-hero-bg.png";
+import { generateCircuit, toCircuitData, toPathData } from "./circuit";
+
+const circuit = generateCircuit();
 ---
 
 <section
-  class="relative -mt-12 -mx-7 p-6 md:px-14 md:py-12 bg-cover bg-center bg-no-repeat lg:-mx-26 lg:-mt-12"
-  style={`background-image: url(${heroBackground.src});`}
+  class="circuit-hero relative -mt-12 -mx-7 p-6 md:px-14 md:py-12 overflow-hidden lg:-mx-26 lg:-mt-12"
+  data-circuit-hero
 >
-  <div class="absolute inset-0 bg-white/30"></div>
+  <svg
+    class="absolute inset-0 w-full h-full"
+    viewBox={`0 0 ${circuit.width} ${circuit.height}`}
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+    focusable="false"
+    data-circuit
+  >
+    <g class="circuit-marks">
+      {
+        circuit.marks.map(({ kind, x, y, width, height }) =>
+          kind === "ring" ? (
+            <circle cx={x} cy={y} r="6" />
+          ) : kind === "box" ? (
+            <rect x={x} y={y} width={width} height={height} rx="1.5" />
+          ) : (
+            <path
+              d={`M${x} ${y}h${width}M${x} ${y + 4}h${width * 0.7}M${x} ${y + 8}h${width * 0.85}`}
+            />
+          ),
+        )
+      }
+    </g>
+    <g class="circuit-traces">
+      {
+        circuit.traces.map((trace) => (
+          <path d={toPathData(trace.points)} data-tone={trace.tone} />
+        ))
+      }
+    </g>
+    <g class="circuit-chips">
+      {
+        circuit.chips.map((chip, i) => (
+          <rect
+            class="circuit-chip"
+            x={chip.x}
+            y={chip.y}
+            width={chip.width}
+            height={chip.height}
+            rx="3"
+            data-chip={i}
+          />
+        ))
+      }
+    </g>
+    <g data-circuit-pulses></g>
+    <g>
+      {
+        circuit.pads.map((pad, i) => (
+          <circle
+            class:list={["circuit-pad", { hollow: pad.hollow }]}
+            cx={pad.x}
+            cy={pad.y}
+            r={pad.r}
+            data-pad={i}
+          />
+        ))
+      }
+    </g>
+  </svg>
+  <script
+    type="application/json"
+    data-circuit-data
+    set:html={JSON.stringify(toCircuitData(circuit))}
+  />
   <div class="relative max-w-[960px] mx-auto">
     <div class="max-w-[720px]">
       <p class="text-lg mb-2">Hello, my name is</p>
@@ -30,3 +96,117 @@ import heroBackground from "@/assets/home-hero-bg.png";
     </div>
   </div>
 </section>
+
+<style>
+  .circuit-hero {
+    --circuit-bg: #ebe6e3;
+    --circuit-faint: #d3d8d4;
+    --circuit-mid: #bdc6c1;
+    --circuit-strong: #a3b0a9;
+    --circuit-pad: #adbab3;
+    --circuit-packet: var(--color-accent);
+    --circuit-charge: var(--color-button);
+    background-color: var(--circuit-bg);
+  }
+
+  .circuit-marks {
+    fill: none;
+    stroke: var(--circuit-faint);
+    stroke-width: 1.1;
+  }
+
+  .circuit-traces {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .circuit-traces [data-tone="0"] {
+    stroke: var(--circuit-faint);
+    stroke-width: 1.1;
+  }
+
+  .circuit-traces [data-tone="1"] {
+    stroke: var(--circuit-mid);
+    stroke-width: 1.4;
+  }
+
+  .circuit-traces [data-tone="2"] {
+    stroke: var(--circuit-strong);
+    stroke-width: 1.7;
+  }
+
+  .circuit-chip,
+  .circuit-pad {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .circuit-chip {
+    color: var(--circuit-mid);
+    fill: var(--circuit-bg);
+    stroke: currentColor;
+    stroke-width: 1.4;
+  }
+
+  .circuit-pad {
+    color: var(--circuit-pad);
+    fill: currentColor;
+    transition:
+      color 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .circuit-pad.hollow {
+    fill: var(--circuit-bg);
+    stroke: currentColor;
+    stroke-width: 1.3;
+  }
+
+  .circuit-pad.is-active {
+    color: var(--circuit-charge);
+    transform: scale(1.8);
+  }
+
+  .circuit-hero :global(.circuit-pulse) {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .circuit-hero :global(.circuit-pulse--packet) {
+    color: var(--circuit-packet);
+  }
+
+  .circuit-hero :global(.circuit-pulse--charge) {
+    color: var(--circuit-charge);
+  }
+
+  .circuit-hero :global(.circuit-pulse__glow) {
+    stroke-width: 7;
+    opacity: 0.2;
+  }
+
+  .circuit-hero :global(.circuit-pulse__core) {
+    stroke-width: 2.2;
+  }
+
+  .circuit-hero :global(.circuit-pulse__head) {
+    stroke-width: 4.5;
+  }
+</style>
+
+<script>
+  import { initCircuit } from "./circuitAnimation";
+
+  function setupCircuitHero() {
+    const root = document.querySelector<HTMLElement>("[data-circuit-hero]");
+    if (!root || root.dataset.circuitReady) return;
+    root.dataset.circuitReady = "true";
+    const destroy = initCircuit(root);
+    document.addEventListener("astro:before-swap", destroy, { once: true });
+  }
+  setupCircuitHero();
+  document.addEventListener("astro:page-load", setupCircuitHero);
+</script>
