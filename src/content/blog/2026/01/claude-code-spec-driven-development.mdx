@@ -1,21 +1,17 @@
 ---
 title: "Claude Code: Spec-Driven Development (SDD)"
-description: Best practices for organising Claude Code commands and CLAUDE.md
-synopsis: Working on multiple things with Claude Code can quickly become hectic,
-  overcrowded and hard to follow.
+description: What spec-driven development is, why AI coding agents need it, and how to start with frameworks like OpenSpec, Spec Kit, Kiro and BMAD
+synopsis: >-
+  Coding agents forget everything between sessions, and the bigger the
+  codebase grows, the more they have to rediscover before they can do anything
+  useful.
 
 
-  Putting everything in order is a key on-going process. The most
-  obvious solution is to keep a record of the specifications in the codebase
-  itself. A single source of truth about how code components should be working
-  individually and together.
-
-
-  The more granular you're, the easier is would be for the AI agent to load
-  specs and effectively load context and requirements when running tasks for you.
-
+  This article covers spec-driven development as a whole - why agents need
+  specs, the frameworks worth starting with, and how my own setup evolved from
+  homegrown commands to OpenSpec and beads.
 pubDate: "2026-01-08T17:45:00Z"
-updatedDate: Feb 22 2026 21:30:00 GMT+0000 (UTC)
+updatedDate: "2026-10-02T20:28:00Z"
 heroImage: "@/assets/blog/2026/0102-spec-driven-development.png"
 tags: ["ai", "coding", "claude", "devex", "howto", "sdd"]
 ---
@@ -33,363 +29,122 @@ import {
   current="/blog/2026/01/claude-code-spec-driven-development/"
 />
 
+<Highlight block>
+  > **Updated in October 2026:** This guide to spec-driven development has been heavily refined and updated. The original version walked through a set of homegrown slash-commands that I no longer use - you'll find the full history [at the end](#how-this-article-changed).
+</Highlight>
+
 ## Overview
 
-Software development with **code agents** like **Claude Code** can quickly become cumbersome. Agents are very good to providing quantiy when it comes to code generation, quality on the other hand is a matter of good and consistent engineering.
+I [built this blog in a day](/blog/2025/howto-make-custom-astro-blog-in-a-day/) by talking to **Claude Code**. A few weeks later, when I came back to write a new article, I had no recollection of what code I was actually running - and neither did the agent.
 
-Due to the continuous loss of context when working with **generative AI**, it has to be persisted in a way to be loaded on demand. In software engineering, this is best accomplished by managing a neat collection of technical specifications.
+**Spec-driven development (SDD)** fixes that by writing down what the software should do before an agent builds it, and keeping that description where the agent can find it. The spec becomes the source of truth: the agent reads it before a task, implements against it, and the spec is updated when the requirements change.
 
-This article explores **spec-driven development** as a model for continuous engineering of high-quality, production ready, scalable software.
+## Why AI agents need spec-driven development
 
-## Intro
+Every coding agent works within a **context window** - everything the model sees in the current session: your instructions, the files it has read and the output of the commands it has run. The window has a limit. When a long session gets close to it, the agent **compacts** the conversation, replacing the history with a shorter summary to make room. **Claude Code** does this automatically, and you can trigger it yourself with <ClaudeCommand name="compact" external />. Whatever didn't make it into the summary is gone, and a new session starts with nothing at all.
 
-Much like the protagonist pictured above, when starting to work with agents like **Claude Code**, one can quickly clutter their mental space. The code scales so quickly, that **losing the thread becomes the status quo** almost immediately. As soon as a project becomes slightly more complex you start to feel tech-debt settling in.
+The context window is a big part of the problem, but not all of it. The other part is how the work gets defined. Without a spec, development becomes a loop of prompt, result and review, then another prompt and another review. That's exhausting and confusing for both the agent and the person operating it, and it's a poor way to define a piece of work - the definition ends up scattered across a conversation that's about to be compacted.
 
-Suddenly, you're ahead with 30k lines of heavily unoptimised code and you have to start refactoring it or **lose the mental thread forever**. Well, not really _forever-forever_, but lets not focus on the dramatism of the sharks in the image.
+A spec addresses both. It defines the work up front, **refined and explicit**: the logical pieces it breaks down into, and the technical aspects of how each one is implemented. It's also **context that survives** - the agent loads it at the start of a task instead of rediscovering it from the code, and because the agent implements against it, you have something to check the result against.
 
-<Highlight block>
-  > I'm hopeful, that I have totally confused you by now, it's been very much on purpose.
+## Start spec-driven development with OpenSpec
 
-This is how I feel after **ending up with a big pile of bad code** and I have no clue where to start fixing it from. This happens a lot in early stages when working with AI agents. Don't worry about it. **We've almost started fixing that**.
+If you're new to spec-driven development, start with a framework rather than building your own. **OpenSpec** is a much better starting point than the homegrown commands I began with. It shows you what a good spec looks like and gives you a workflow to learn from, before you decide what you'd do differently.
 
-</Highlight>
-
-I started this blog without specs, nor any slash-commands. I just had a chat with **Claude Code** and [designed mifkata.com with it](/blog/2025/howto-make-custom-astro-blog-in-a-day/).
-
-After a while, I kept working on the blog, but I noticed all the technical debt I have created for myself thus far - shitty components, complete lack of code coverage, no storybook. In fact, few weeks in, getting back to writing a new article, I had no recollection of what kind of code I was actually running.
-
-First thing first: I had to step back and start cleaning up this mess that I have created in mare 24 hours. I added a [devcontainer](/blog/2025/claude-code-devcontainers/), I copied over some [slash-commands](/blog/2026/01/claude-code-system-prompting-and-commands/) from another project and modified the `CLAUDE.md`.
-
-<Highlight block>
-  > **Having migrated Claude Code tooling:** I generated couple of specs for existing components using <ClaudeCommand archived name="spec-create" />. After having them to my liking, I effectively created a pattern for future specs. Naturally, I asked **Claude Code** to generate missing specs for components, pages and layout following the pattern.
-
-</Highlight>
-
-<GithubLink url="https://github.com/mifkata/blog/tree/main/public/archive/specs">
-  **The specs for** this website. At the time of writing, most of these are
-  **fully generated and with minimal manual modifications**. Some of them are
-  one-go, others are modified through conversations. All of them are
-  minified/compacted.
-
-  These since **end of February 2026** have been [migrated to openspec](https://github.com/mifkata/blog/tree/main/public/archive/openspec-specs).
+<GithubLink url="https://github.com/Fission-AI/OpenSpec">
+  **Spec-driven development for AI coding assistants.** Every change starts
+  as a proposal with spec updates, a design and a task list, and once it's
+  done, the spec updates are merged into the project's source of truth. Works
+  with 30+ AI tools, including **Claude Code**.
 </GithubLink>
 
-## Necessity for Spec-Driven Development (SDD)
-
-Creating your **first spec is one of the hardest**. The two projects on which I've done heavy speccing on so far, I didn't start with specs. Through the process of creating piles of code (piles of shitty code, tech-debt heavy, complex to add complexity, virtually unmaintained), specs naturally appeared as a solution to my biggest problem: losing context.
-
-While working with an agent, after a certain token limit is reached, it is going to automatically compact the context (conversation) that they're working with. In **Claude Code** this can be manually triggered with the <ClaudeCommand archived name="compact" external /> command.
-
-The context is the equivalent of the current knowledge and instructions that the AI agent is working with. After it (out)grows the agent's capabilities, it is compressed, in order to free more space (memory) for context added by future and ongoing conversations.
-
-Created **specs are effectively logging reusable context** for the AI agent. You can ask for it to be loaded on-demand and to request work to be done on top of it (update, implement, verify, optimise, etc.).
-
-## My SSD Workflow
-
-### Creating new specs and implementing them
-
-In the document, I make a lot of references to **Claude slash-commands**, some of them custom, others are built-in. Lets create a component called `<ClaudeCommand />`, that links to either my **custom command in the blog's repository** or the official [**Claude Code** slash-commands documentation](https://code.claude.com/docs/en/slash-commands).
-
-I'm going to start, like always, with <ClaudeCommand archived name="spec-create" />
+Getting started:
 
 <WrapText>
-```sh
-> /spec-create components/post/ClaudeCommand
-
-● What should the ClaudeCommand component cover? Please describe:
-
-- Purpose/use case
-- Props needed
-- Visual appearance
-- Any special behavior
-
-> I want to link slash-commands in my articles to either https://github.com/mifkata/blog/blob/main/public/archive/commands/<command-name>.md for internal commands and to https://code.claude.com/docs/en/slash-commands for external; there should be either a Github or Claude icon next to the link; link should be inline;
-
-````
+  ```sh
+  npm install -g @fission-ai/openspec@latest
+  cd your-project
+  openspec init
+  ```
 </WrapText>
 
-The agent generated a long, explicit, human-readable spec, the opposite of my instructions to generate short, AI friendly specs. It's very weird to me that I keep compacting my specs, the agent keeps reading them, yet for some reason, especially with a fresh context, or when I've simply didn't work on the app for more than 8-10 hours, it generates more explicit and human-readable content and I have to manually run <ClaudeCommand archived name="spec-compact" /> to minify it.
+Every change then follows the same loop:
 
-<WrapText>
-```sh
-> /spec-compact
-  ...
-● Read(specs/components/post/ClaudeCommand.md)
-  ⎿  Read 22 lines
+- `/opsx:explore` - think through the options before committing to a plan
+- `/opsx:propose` - create the change: a proposal, spec updates, a design and tasks
+- `/opsx:apply` - implement the tasks
+- `/opsx:archive` - merge the spec updates and archive the change
 
-● Compacted from 22 lines to 11 lines (50% reduction).
-````
+OpenSpec is a good fit for **existing codebases**. You can use it to scan the code and build on explicit requirements, which makes it useful for legacy projects, or when you want to work spec-first but the rest of the team doesn't share your workflow.
 
-</WrapText>
-
-The result:
-
-<WrapText>
-```sh
-# ClaudeCommand
-
-`src/components/post/ClaudeCommand/ClaudeCommand.astro` - Inline slash-command link.
-
-Props: `name: string`, `external?: boolean` (default: false)
-
-URLs:
-
-- internal: `github.com/mifkata/blog/blob/main/public/archive/commands/{name}.md`
-- external: `code.claude.com/docs/en/slash-commands`
-
-Visual: `inline-flex items-center gap-1`, icon `w-4 h-4` (GitHub/Claude), `font-mono text-sm text-accent`, `/{name}`
-
-````
-</WrapText>
-
-Still quite understandable, yet not very **human-friendly**. We continue with the
-implementation using <ClaudeCommand archived name="spec-apply" />.
-
-```sh
-> /spec-apply
-  ...
-● Spec applied. Summary:
-
-  | Item                | Status                           |
-  |---------------------|----------------------------------|
-  | ClaudeCommand.astro | Created with GitHub/Claude icons |
-  | Stories             | 4 variants (internal/external)   |
-  | Build               | ✓ Passes                         |
-  | Storybook           | ✓ Builds                         |
-
-  Usage:
-  import ClaudeCommand from "@/components/post/ClaudeCommand/ClaudeCommand.astro";
-
-  <ClaudeCommand archived name="commit-message" />           <!-- GitHub icon → repo link -->
-  <ClaudeCommand archived name="help" external />            <!-- Claude icon → docs link -->
-````
-
-The new `<ClaudeCommand />` is created, with **storybook** nonetheless. It was smart
-enough to make the link open in a new tab/window with `target="_blank" rel="noopener noreferrer"`,
-even though that wasn't part of the spec. I run <ClaudeCommand archived name="spec-verify" /> to see how the
-agent perceives such differences.
-
-<WrapText>
-```sh
-> /spec-verify
-  ...
-  Summary: ✅ 10 correct | ⚠️ 1 differs
-
-Difference: External icon uses a globe SVG, not official Claude icon.
-
-Options:
-
-1. Verify only (keep as-is)
-2. Implement (update icon to Claude logo)
-3. Sync spec (update spec to say "globe icon")
-
-````
-</WrapText>
-
-It found something, but it wasn't what I was looking for. I inspect the **storybook
-story for the component** and decide to keep the spec as it is for now and `push`
-the changes to the repo. I `git add` the spec, component and stories and run <ClaudeCommand archived name="commit-staged" />.
-
-<WrapText>
-```sh
-> /commit-staged
-
-● Suggested commit message:
-
-  feat(ClaudeCommand): add inline slash-command link component
-
-  - links internal commands to repo, external to Claude docs
-  - shows GitHub icon (internal) or globe icon (external)
-  - inline display with monospace font styling
-
-> commit
-
-● Committed: 20f1240
-````
-
-</WrapText>
-
-It is a 2 step process, because I've asked for the agent to confirm the message with me before commiting. My feature is live, even though it hasn't been used anywhere.
-
-### Working with existing specs
-
-There're various aspects of working with specs. Obviously you have to create them and make use of them, thus it's a valid assumption that they should always be up to date.
-
-In practice, that's not entirely true and it doesn't need to be. A spec is not valuable just by its existence. It's likely that in 90% of the time in which the agent works with a spec, it would, pretty much automatically, read it and in the process verify it's validity.
-
-This means, that:
-
-- it is easy to know if a spec is outdated
-- even if outdated, we can continue to work on top of it, by:
-
-  > 1. Asking the agent to bring the spec up-to-date with the code
-  > 2. Modify it manually, using <ClaudeCommand archived name="spec-update" /> or <ClaudeCommand archived name="spec-verify" />, or by having a conversation with the agent
-  > 3. Ask for changes to be implemented
-
-<Highlight block>
-  > **NOTE:** this approach wouldn't be so valid for very large specs, which are affected by multiple smaller specs (components). Updating heavily updated larger specs can and should go through a process of heavier audit and verification. <ClaudeCommand archived name="spec-verify" /> is the command I rely on in such cases.
+<Highlight block color="pink">
+  > **Caveat:** OpenSpec's skills use a lot of tokens. Once a project has its specs in place, the full proposal-to-archive loop can be more process than a small change deserves, and a well-refined prompt often does the job.
 </Highlight>
 
-I have manually added a **title** property in the code of `<ClaudeCommand />` and I want the spec to reflect it using <ClaudeCommand archived name="spec-verify" />. I ran the command without `[spec]` argument, the bot assumed `all` and went to verify all specs, so I had to cancel and rerun the command again.
+### Other spec-driven development frameworks
 
-<WrapText>
-```sh
-> /spec-verify components/blog/ClaudeCommand
+I haven't used these three myself, but they're among the best-known SDD tools and worth a look before you pick one:
 
-● Summary: ✅ 10 correct | ⚠️ 1 differs | ➕ 1 extra feature
+- **[GitHub Spec Kit](https://github.com/github/spec-kit)** - an open-source toolkit from GitHub. Its `specify` CLI sets up the project, and the work moves through a constitution (the project's principles), a specification, a technical plan, tasks and implementation.
+- **[Kiro](https://kiro.dev/)** - an IDE and CLI built by AWS, with specs at its core. Each feature spec is three files: `requirements.md` (user stories with acceptance criteria), `design.md` and `tasks.md`.
+- **[BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD)** - an open-source method that covers product, architecture, UX, development and testing through specialised agents, with a PRD, an architecture document and stories carrying the context from one phase to the next.
 
-Differences:
+## Scale it up with a pipeline
 
-- External icon uses globe SVG instead of Claude logo
-- Implementation adds title tooltip (not in spec)
+For new projects, I now start with a pipeline of skills instead of individual specs. Each skill owns one stage - requirements, audit, technical design, roadmap and task breakdown - and the output of one is the input of the next. Coding agents then pick up the tasks one reviewable chunk at a time, with a human review gate between batches.
 
-Options:
-
-1. Verify only (keep as-is)
-2. Implement (update icon to Claude logo)
-3. Sync spec (update spec to match implementation)
-
-> 3
-
-● Spec synced. Updated:
-
-- Claude → globe icon for external
-- Added title tooltip
-
-All items now ✅ correct
-
-````
-</WrapText>
-
-### Refactoring using specs
-
-One can fiddle with every and any component, but for now I'm done with
-`<ClaudeCommand />` and I want to implement it across my codebase.
-
-Normally I'd go and search and manually implement the change, but come on, we have the right tooling to the get the job done. This time I'm using the <ClaudeCommand archived name="spec-refactor" /> command and hopefully after this change, this command annotation will become a link.
-
-<WrapText>
-```sh
-> /spec-refactor
-● I found the blog post that mentions slash commands extensively.
-  Let me look at specific instances.
-
-● Refactoring Plan: ClaudeCommand
-  Functionality: Inline links to Claude slash-commands with GitHub/globe icons.
-  Found 22 inline command references in blog posts that could use <ClaudeCommand>:
-  ...
-  Proposed refactoring:
-
-  Replace inline code like `/commit-staged` with:
-  - <ClaudeCommand archived name="commit-staged" /> (internal - links to repo)
-  - <ClaudeCommand archived name="compact" external /> (external - links to Claude docs)
-
-  Internal commands (this repo): commit-message, commit-staged, spec-create, spec-update, spec-apply, spec-verify, spec-compact, spec-refactor, test-create, tags-update, post-create
-  External commands (Claude built-in): compact, plugins, help, clear
-
-  Proceed with refactoring? (y/n)
-> yes
-● Refactoring complete. Summary:
-
-  | File                                          | Replacements         |
-  |-----------------------------------------------|----------------------|
-  | claude-code-system-prompting-and-commands.mdx | 10 commands replaced |
-  | claude-code-spec-driven-development.mdx       | 11 commands replaced |
-
-  Internal commands (GitHub icon): spec-create, spec-update, spec-apply, spec-verify, spec-compact, spec-refactor, commit-message, commit-staged, tags-update
-  External commands (globe icon): compact, plugins
-  Build passes ✓
-````
-
-</WrapText>
-
-**Et voilà**, all instances of `/slash-command` of sorts across two blog
-posts were effortlessly refactored in a few minutes.
-
-### Creating test cases
-
-To create test cases I use the <ClaudeCommand archived name="test-create" /> command, which
-relies on `Testing.md` spec to be read before.
-
-<GithubLink url="https://github.com/mifkata/blog/blob/main/public/archive/specs/Testing.md">
-  The code for the **Testing.md** spec
+<GithubLink url="https://github.com/mifkata/project-bootstrap-skills">
+  **The SDD pipeline** I use to bootstrap new projects, from a rough product
+  description to a task graph that agents can work through.
 </GithubLink>
 
-```sh
-> /test-create
+I wrote about how these skills are planned, written and evaluated in [Tips for writing efficient skills for LLM agents](/blog/2026/10/writing-efficient-skills-for-llm-agents/).
 
-● Created ClaudeCommand.test.ts with 8 tests:
+## Keep specs alive with beads
 
-  | Test              | Description                      |
-  |-------------------|----------------------------------|
-  | Internal URL      | GitHub repo link generation      |
-  | Internal title    | Tooltip text for repo commands   |
-  | External URL      | Claude docs link                 |
-  | External same URL | All external commands → same URL |
-  | External title    | Tooltip text for Claude docs     |
-  | Hyphens           | Command names with hyphens       |
-  | Single word       | Simple command names             |
+Once a project is bootstrapped, the specs have to keep up with the code. For that, I work with **beads** directly.
 
-  All 51 tests pass ✓
-```
+<GithubLink url="https://github.com/steveyegge/beads">
+  **Distributed graph issue tracker for AI agents**, powered by Dolt. Issues
+  can depend on each other, and `bd ready` lists the work that has no open
+  blockers.
+</GithubLink>
 
-Truth be told, this is not ideal (it copied a lot of constants, rather
-than exporting them, tests cover same functionality multiple times, while
-not adding much value, etc.). For now, I'd rather have it, than not.
-Ultimately, I can prep a refactoring for all tests and have it applied
-globally, however, that's a problem for another day.
+This blog made that move in July 2026: its OpenSpec specs became closed beads issues, linked to the specs they depend on, and OpenSpec was retired. After the initial setup, OpenSpec felt like more process than most tasks needed. Trivial changes were easier to describe in a well-refined prompt, and bigger ones were easier to break down in beads.
 
-## SSD Tips & Tricks
+That breakdown is the important part. A big task handed to a single agent bloats its context, and the more it carries, the more room there is for discrepancies between what was asked and what was built. So I ask the agent to split bigger work into reviewable chunks in beads, and each chunk goes to a separate agent with a smaller context.
 
-These will be battle-tested in time, however, here's a roundup of things that I do on a daily basis, sharing them in attempt to stay true to whoever might be reading this.
-
-These are things I do when doing Spec-Driven Development.
-
-### Spec Generation
-
-1. **Automate** the process of writing specs
-2. **AI friendly > human-friendly** when keeping specs slim
-3. Update specs **with agent** to keep specs slim and agent context up-to-date
-4. Update specs **manually** to quickly log new feature requirements
-
-### Workflow
-
-5. A spec can be a single source of truth one, but usually isn't
-6. **Verify spec vs implementation** for true code tenacity
-7. **Automate** spec verification
-
-<Highlight block color="blue">
-  Developing with specs is consistent, but you don't have to execute changes
-  unless you're ready to implement, plus human error happens and we end up with
-  inconsistencies. In any case, at any point in time, the agent will be able to
-  detect such inconsistencies and _**WARN YOU**_ to keep you safe, _maybe
-  99.9%_, but not 100% of the time.
+<Highlight block>
+  > **Code should always be verified by a person.** I use a lot of agentic work in code reviews, but a human stays in the loop. When a framework specs a big chunk of work in one go, that review gets much harder.
 </Highlight>
 
-### Scoping work
+## Spec-driven development tips
 
-A **scope of work**, in this context is what you're going to do next with the agent.
-Being able to split that work into smaller functional chunks is the main duty
-of a software engineer.
+These are the habits I'd keep, whatever tool you pick:
 
-7. Spec/re-spec **one scope at a time**
-8. It's **OK to edit code** manually. It's faster sometimes to do cosmetic work, than to talk to the agent. <Highlight color="pink">Sometimes you'll be able to fix a 1 line bug, that the agent cannot detect for multiple iterations</Highlight>.
-9. Use **todo specs** to record tech-debt.
-10. Define **a feature spec** when a it encompasses multiple other specs
+1. **Start with a framework** - learn what a good spec looks like from OpenSpec or a similar tool before you build your own workflow
+2. **Match the process to the task** - a feature deserves a spec, a trivial change usually needs a well-refined prompt
+3. **One reviewable chunk at a time** - break bigger work down, and give each chunk to an agent with a small, focused context
+4. **Keep a human in the loop** - agents can review code, but a person verifies it
+5. **Watch the token usage** - spec frameworks read and write a lot, so check what they cost you before making them the default for everything
 
 ## Final thoughts
 
-<Highlight block color="pink">
-  > **ATTENTION:** The process of keeping a **tidy dev environment** with **Claude Code** is ongoing: you will consistently watch out for bad code, insufficient specs, missing or bad tests, inconsistent behaviour, etc.
+Since January, this blog has gone through three spec setups: homegrown commands, OpenSpec and beads. The tools changed every time. The idea didn't: write down what the code should do, in a form an agent can load, break the work into pieces a person can review, and check the result.
 
-Specs by themselves are **not a silver-bullet**, it's the software engineer's job to keep the codebase and the dev environment tidy. A lot of repetitive processes can be automated with agents, but ultimately, lack of human interaction imminently presents an **exploitable attack vector**.
+If you've found an SDD setup that works for you, let me know in the comments. Coming back to a project after a few weeks shouldn't mean starting from zero, for you or for the agent.
 
-**TL;DR:** No AI control = hack waiting to happen.
+## How this article changed
 
-</Highlight>
+This article was first published in January 2026. Back then, my setup was a handful of homegrown slash-commands - <ClaudeCommand archived name="spec-create" />, <ClaudeCommand archived name="spec-compact" />, <ClaudeCommand archived name="spec-apply" />, <ClaudeCommand archived name="spec-verify" /> and <ClaudeCommand archived name="spec-refactor" /> - and the original walkthrough used them to build the very component that renders those links. In February 2026, the specs moved to OpenSpec, and in July 2026, into beads. In October 2026, the article was rewritten around spec-driven development as a whole.
 
-I see on Google a multitude of tools for managing spec-driven development. I chose a path with **simple Claude commands** and **non-uniform markdown specs**, because it was the approach which was easiest to understand and kept me in **full-control of my [devex](/tags/devex/) toolkit**.
+The original specs and their OpenSpec versions are archived in the blog's repository:
 
-This process is less than ideal, but works well for me and in the process of fiddling with it, I get to learn a great deal of things that keep me surfing on a learning curve.
+<GithubLink url="https://github.com/mifkata/blog/tree/main/public/archive/specs">
+  **The original specs**, created with the homegrown slash-commands in
+  January 2026.
+</GithubLink>
 
-The only way to get better at it is to keep building. Happy coding!
+<GithubLink url="https://github.com/mifkata/blog/tree/main/public/archive/openspec-specs">
+  **The OpenSpec versions** of the same specs, from February to July 2026.
+</GithubLink>
