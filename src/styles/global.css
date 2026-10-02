@@ -28,9 +28,9 @@
 }
 
 @font-face {
-  font-family: "Fugaz One";
-  src: url("/fonts/fugaz-one.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Zilla Slab";
+  src: url("/fonts/zilla-slab-bold.woff2") format("woff2");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -89,7 +89,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Fugaz One", sans-serif;
+  font-family: "Zilla Slab", Rockwell, Georgia, serif;
+  font-weight: 700;
   @apply text-black leading-tight mb-2;
   scroll-margin-top: 7rem;
 }
