@@ -1,0 +1,340 @@
+---
+title: "Tips for writing efficient skills for LLM agents"
+description: How to plan and write skills that regulate how coding agents work - for inner loops, large repetitive tasks and processes agents struggle with on their own
+synopsis: >-
+  Reading a skill is the cheap part. The work it drives is where the tokens
+  and the time go - every search, file read, retry and wrong turn the agent
+  takes along the way. A good skill makes that work predictable: fewer wrong
+  turns, and the same result tomorrow as today.
+
+
+  This article walks through how I plan and write skills, using a spec
+  pipeline of seven skills as the example, and how to test them with tools
+  like **skillgrade**.
+pubDate: "2026-10-02T15:47:00Z"
+# updatedDate: "2026-09-29T09:45:00Z"
+heroImage: "@/assets/blog/2026/1002-writing-efficient-skills-for-llm-agents.jpg"
+tags: ["ai", "agents", "claude", "skills", "evals", "workflow"]
+---
+
+import { GithubLink, Highlight, WrapText } from "@/components/post";
+
+## Skills regulate how agents work
+
+Give an agent a job without a procedure, and it has to discover one on its own. It looks around the codebase, tries an approach, reconsiders it and asks questions it could have asked up front - and the next time, it may take a different route altogether. The result depends on the path it happened to take.
+
+A **skill** writes that procedure down. It's a folder with a `SKILL.md` file - a short header (the frontmatter) with a `name` and a `description`, followed by instructions. Until the skill is used, the agent only sees its name and description. When a request matches, or when you call the skill directly, the whole file is loaded into the agent's context - everything the model sees while it works.
+
+A skill turns the improvised path into a defined role. Think of every skill as an **actor** with a job description, and of the skill file as the rules that actor works by. Done well, it makes the agent's work **shorter and its results consistent**. That's the kind of efficiency this article is about.
+
+The format was introduced by Anthropic and is now an open standard ([agentskills.io](https://agentskills.io/home)), supported by **Claude Code**, Codex, Cursor, GitHub Copilot, Gemini CLI, OpenCode and others.
+
+## The example: project bootstrap skills
+
+Recently I've been building a set of skills that take a product idea and turn it into tasks that coding agents can pick up, one reviewable chunk at a time.
+
+<GithubLink url="https://github.com/mifkata/project-bootstrap-skills">
+  **Seven agent skills** that take a rough product description through
+  requirements, an adversarial audit, a technical design and a roadmap, and
+  end with a **beads** task graph that agents work through behind human
+  review gates.
+</GithubLink>
+
+Each skill owns one stage:
+
+1. `product-architect` writes the requirements
+2. `high-level-auditor` looks for legal and logic holes
+3. `system-architect` turns the requirements into a technical spec
+4. `roadmap-architect` sequences it into milestones
+5. `beads-manager` loads the plan into **beads**, an issue tracker built for coding agents
+
+`improvement-researcher` and `high-level-summary` are optional side steps. The hero image of this post is a fairly accurate picture of it - a crew where everyone has one job and hands their work over to the next.
+
+## Step 1: Decide what deserves a skill
+
+Not every task needs a skill. If the agent already does something reliably on its own, a skill only adds instructions it doesn't need. Skills pay off in three situations.
+
+**Inner loops** - procedures that run many times over. The pipeline ends in one: coding agents pull the next ready task, implement it, close it and stop at a human review gate before the next batch unlocks. `beads-manager` shapes the task graph so that every pass through that loop gets exactly one reviewable chunk of work, and the agent never has to figure out what to pick up next.
+
+**Large, repetitive tasks** - work that's simple per item, but has to be done dozens of times without drifting. `product-architect` turns a product document into one file per feature, actor, data concept and constraint, each with the same frontmatter, an ID and a source. Without a skill, the structure tends to shift a little with every file and every run, and the next agent in the chain can't rely on it.
+
+**Processes the agent isn't good at on its own** - tasks where, left alone, it searches too much and goes back and forth. Auditing a spec for legal exposure is one of them: without guidance, the agent doesn't know which areas matter, and ends up either skimming or researching everything. `high-level-auditor` gives it a checklist (personal data, consumer rights, minors, accessibility, payments and more) and a rule that every legal claim needs a cited source.
+
+Then plan the set as a whole. One skill is **one actor with one job**, and the output of each is the input of the next. Boundaries keep the actors from doing each other's work: `product-architect` defines what gets built and for whom, never how, and `system-architect` proposes technical options, but never picks one without the user's confirmation. Clear hand-offs keep every skill focused, and you can stop after any stage and still have something useful.
+
+## Step 2: Talk it through
+
+I don't start by writing the skill. I start by describing the job to the agent, the same way I'd explain it to a new colleague - what they receive, what they hand over, who reads their work and what they must never do. It's a brain-dump without much structure, and that's fine.
+
+Then I ask the agent to interview me. The questions I can't answer straight away are the most valuable part, because they point to exactly the gaps the skill would otherwise fill with guesses.
+
+A starting prompt can be as plain as this:
+
+<WrapText>
+  ```md
+  > I want a skill that turns a product description into high-level
+    requirements. The output is read by another agent that proposes the
+    technical design, so it should describe what gets built and for whom,
+    never how. It must not invent behaviour the document doesn't state.
+    Before you write anything, ask me questions until you understand the job.
+  ```
+</WrapText>
+
+By the end of the conversation, four things should be clear, because they end up at the very top of the skill:
+
+- **Input** - what the skill reads, and what to do when it's missing
+- **Output** - what it writes and where
+- **Consumer** - who reads the output, a person or the next agent in the chain
+- **Boundary** - what's out of scope, and which decisions stay with the human
+
+## Step 3: Get a readable draft
+
+The first draft the agent produces is prose. It's written for me, and at this point that's the right audience - I have to read it, understand it and agree with it, before it becomes the agent's instructions.
+
+When reviewing the draft, I look for behaviour I didn't ask for:
+
+- **Decisions made on my behalf** - picking a framework, a milestone boundary or a default the source doesn't mention
+- **Gaps filled quietly** - anything assumed instead of asked
+- **Wandering** - places where the agent would have to search or guess to find what it needs
+- **Re-runs** - what happens when the output already exists: does it overwrite, duplicate or update?
+- **No human around** - what happens in CI (automated pipelines) or a headless run, when there's nobody to answer questions
+
+Each of these is now an explicit rule in the pipeline. For example, when a skill finds existing output, it switches to an update mode that keeps IDs and filenames stable and marks removed items as `withdrawn`, instead of deleting them.
+
+## Step 4: Rewrite it for the agent
+
+Once the draft says the right thing, I ask the agent to rewrite it as instructions for itself. The goal isn't a shorter file, it's **precision**. Prose leaves room for interpretation, and an agent may read the same paragraph differently tomorrow, or on a different model. Clear rules, conditions and templates produce the same behaviour run after run.
+
+I ran into the same tension with specs in [spec-driven development](/blog/2026/01/claude-code-spec-driven-development/). Agents default to long, human-readable output, and turning it into precise instructions is a separate, deliberate step.
+
+<Highlight block>
+  > **Skills are for agents, not humans.** As one of my skills puts it: *"The skill file is agent-facing; the OUTPUT is human-facing prose."* That makes a skill harder for people to review, so keep a human-friendly README next to it and update it with every change. Otherwise, the only readable description of what a skill does is the draft you left behind.
+</Highlight>
+
+Here's the top of `product-architect` after the rewrite:
+
+<WrapText>
+  ```md
+  INPUT: `$ARGUMENTS` = path to product description doc. Empty/unreadable → ask for path, halt.
+  OUTPUT: `docs/high-level-spec/**` — atomic files, one ID per file.
+  CONSUMER: System Architect agent (proposes technical solution options). Optimize for machine consumption and per-file revision: stable IDs, frontmatter, ID refs, no prose padding.
+  BOUNDARY: define WHAT and WHO. Never HOW.
+  ```
+</WrapText>
+
+Four lines, and the agent knows what it reads, what it writes, who it writes for and where its job ends. That's the whole conversation from step 2, condensed.
+
+These are the patterns that made the biggest difference.
+
+### Number the rules and the steps
+
+Rules become `R1`...`R8` and the procedure becomes `P1`...`P5`. A step can refer to a rule ("apply R7") instead of repeating it, and when a run goes wrong, I can point at the exact rule that was ignored.
+
+<WrapText>
+  ```md
+  - R2 Every item carries `src`: `§<section>` / short anchor from source, or `Q-<id>` (user answer). No src → question, not item.
+  - R6 Never default an unstated behavior. Hotspots commonly left implicit — always check: roles/permissions, account lifecycle, ownership/multi-tenancy, pricing, data retention/deletion, offline use, locales, notification channels, moderation, audit.
+  ```
+</WrapText>
+
+### Write conditions, not paragraphs
+
+`Empty/unreadable → ask for path, halt.` is a condition and an action, with nothing left to interpret. The same instruction written as a paragraph tends to pick up softeners like "try to", "if possible" or "usually", and each one is a decision the agent has to make on its own, possibly differently every time.
+
+Pick **one term per concept** and stick to it. If the draft says "feature" in one place and "capability" in another, the agent may treat them as two different things.
+
+### Show, don't describe
+
+Agents follow patterns well. Instead of describing what a feature file should contain, the skill includes the template, frontmatter and all. The same goes for lookups - a table that maps signals in the source document ("pricing, plans, checkout") to a candidate domain (`billing`, `BIL`) replaces a paragraph of explanation. As a bonus, the next skill in the chain can rely on the structure, because it's always the same.
+
+### Tell it where to look
+
+This is where most of the wasted work goes. Without directions, an agent searches, reads more than it needs and sometimes reads the same file twice. The skills in the pipeline spell out where to look instead.
+
+Every skill writes a generated `index.md` manifest, and the next one reads the index first, then only the files in scope:
+
+<WrapText>
+  ```md
+  P1 Ingest. Read HLS `index.md`, then files in scope. Read repo for existing stack/conventions.
+  ```
+</WrapText>
+
+In update mode, `product-architect` reads only the files relevant to the changes and touches only the files whose content changes. `beads-manager` checks for existing work with an exact command, instead of browsing the issue tracker:
+
+<WrapText>
+  ```md
+  - I7 Idempotent. Look up by external-ref (`bd list --external-ref <ref> --status open,in_progress,blocked,deferred,closed --json`, review gates via `bd gate list --all --json`) before any create. Never duplicate. Never `bd delete`.
+  ```
+</WrapText>
+
+### Say what's forbidden and what to do when unsure
+
+A helpful agent fills gaps, and that's exactly what a spec pipeline can't afford. The skills close those gaps in two ways:
+
+- **What's forbidden** - `product-architect` has a whole list of forbidden topics, from frameworks to UI layouts
+- **What to do when unsure** - anything that can't be traced to the source becomes a **question, not an item**
+
+The skills that involve real choices follow one principle - **propose, never decide**. Asking early is much cheaper than undoing a guess three stages later.
+
+### Plan for every mode
+
+A skill doesn't always run with a human at the keyboard. Every skill has a short section on how to behave in each mode:
+
+- **Plan mode** - the agent proposes before it acts, so the skill renders every file it would write into the plan, and nothing is written until you approve it
+- **Normal mode** - it asks questions as it goes
+- **Nobody to answer** - it saves the questions as `status: open` files and leaves anything they block in `draft`
+
+### Use the frontmatter
+
+The `description` is what the agent uses to decide whether to load the skill, so it has to say what the skill does and when to use it. My pipeline skills are meant to run only on request, so they set `disable-model-invocation: true` and end the description with *"Manual invocation only."* for agents that ignore that field. `allowed-tools` pre-approves the read-only tools a skill needs, so it doesn't stop to ask for permission on every file read.
+
+### Move repetitive work into tools
+
+When a skill needs the same parsing, validation or query on every run, don't have the agent work it out each time - give it an existing command-line tool (CLI) or a small, tested script. The agent runs one command and reads the result, instead of writing throwaway code and debugging it. My skills lean on existing tools: `bd` with `--json` output for the task graph and `pandoc` for PDF export.
+
+Minko Gechev's best practices guide recommends bundling such scripts in a `scripts/` folder, and moving reference material into `references/` files that the agent reads only when a step calls for them. That keeps `SKILL.md` focused on the procedure, without details for steps the agent isn't on yet.
+
+<GithubLink url="https://github.com/mgechev/skills-best-practices">
+  **Best practices for creating agent skills** - structure, trigger-optimised
+  descriptions, progressive disclosure and a set of prompts for validating a
+  skill with an LLM. It also includes a skill for creating skills.
+</GithubLink>
+
+## Step 5: Grade it
+
+<Highlight block>
+  > **NOTE:** So far, I've evaluated the pipeline skills with the arbiter approach described below. They're at **v0.1.0**, and repeatable evals are the next step - the skillgrade example in this section shows how I'm planning to approach them.
+</Highlight>
+
+In Minko's words, *"skills are instructions for agents, and instructions need tests"*. Models change, a small edit to one rule can change the behaviour of another, and since the output is non-deterministic, one good run proves very little. You need repeated runs and a pass rate.
+
+There are four things worth testing:
+
+- **Discovery** - does the skill load when it should, and stay out of the way when it shouldn't? This is all about the description.
+- **Logic** - can the agent follow the procedure without having to guess?
+- **Outcome** - does the result meet the bar, run after run?
+- **Efficiency** - does the agent get there with fewer searches, commands and retries than without the skill?
+
+### Start with an LLM review
+
+The cheapest check needs no tooling. Minko's guide includes three ready-made prompts for it:
+
+- **Discovery** - generates prompts that should and shouldn't trigger the skill, based on its description alone
+- **Logic** - asks a model to simulate running the skill step by step and flag every line where it has to guess
+- **Edge cases** - has the model act as a QA tester, hunting for edge cases
+
+Run them in a fresh session, so the model only knows what the skill tells it.
+
+### Compare models with an arbiter
+
+For the pipeline skills, I ran each skill on several models and gave the results to a separate model acting as an arbiter. The arbiter compared the runs, measured how efficiently each model got to its result, reviewed the skill itself and proposed improvements.
+
+For simpler, more straightforward skills, where the same input should give the same result every time, I use an eval tool like skillgrade instead.
+
+### Repeatable evals with skillgrade
+
+To measure a skill over many runs, Minko also built a dedicated tool.
+
+<GithubLink url="https://github.com/mgechev/skillgrade">
+  **"Unit tests" for your agent skills.** Skillgrade runs an agent against
+  tasks you define, in an isolated Docker container, scores every run with
+  deterministic and LLM-based graders and reports the pass rate over
+  multiple trials.
+</GithubLink>
+
+Getting started takes a few commands:
+
+<WrapText>
+  ```sh
+  npm i -g skillgrade
+  cd my-skill/
+  ANTHROPIC_API_KEY=... skillgrade init
+  ANTHROPIC_API_KEY=... skillgrade --smoke
+  ```
+</WrapText>
+
+`init` generates an `eval.yaml` with tasks and graders based on the skill. Each task gives the agent an instruction and a workspace of fixture files, and graders score the result:
+
+- **Deterministic graders** run a script that inspects the workspace and prints a score between 0 and 1
+- **LLM rubric graders** have a model score the session transcript against a rubric you write
+
+Since rubric graders see the whole transcript, they can judge the process as well as the result - whether the agent followed the procedure, and whether it got there without wandering. Each grader has a weight and the final score is the weighted average.
+
+Presets control how many times each task runs: `--smoke` (5 trials) for a quick check while editing, `--reliable` (15) for a solid pass-rate estimate and `--regression` (30) before shipping. With `--ci`, it exits with an error when the pass rate falls below the threshold (0.8 by default), so it can run on every change. It can drive Claude, Codex, Gemini and OpenCode agents, which makes it easy to compare the same skill across agents.
+
+For `product-architect`, a first task could look like this:
+
+<WrapText>
+  ```yaml
+  version: "1"
+
+  defaults:
+    agent: claude
+    trials: 5
+    threshold: 0.8
+
+  tasks:
+    - name: product-brief-to-high-level-spec
+      instruction: |
+        Run the product-architect skill on product.md.
+        Nobody is available to answer questions.
+      workspace:
+        - src: fixtures/booking-app.md
+          dest: product.md
+      graders:
+        - type: deterministic
+          run: bash graders/structure.sh
+          weight: 0.6
+        - type: llm_rubric
+          rubric: |
+            Did the agent turn missing information into open questions,
+            instead of inventing behaviour?
+            Does the spec describe WHAT and WHO, without technologies or UI?
+            Did it follow the procedure in order, without re-reading files
+            or retrying steps?
+          weight: 0.4
+  ```
+</WrapText>
+
+The script checks what can be checked mechanically - every feature traces back to a source, and no technology leaks into the high-level spec:
+
+<WrapText>
+  ```sh
+  #!/bin/bash
+  spec=docs/high-level-spec
+  total=0; passed=0
+
+  # every feature file traces back to a source
+  for f in "$spec"/domains/*/features/*.md; do
+    total=$((total + 1))
+    grep -qE '^src: \[.+\]' "$f" && passed=$((passed + 1))
+  done
+
+  # no technology leaks into the high-level spec
+  total=$((total + 1))
+  grep -rqiE 'react|postgres|kubernetes|graphql' "$spec" || passed=$((passed + 1))
+
+  score=$(awk "BEGIN {printf \"%.2f\", $passed/$total}")
+  echo "{\"score\":$score,\"details\":\"$passed/$total checks passed\"}"
+  ```
+</WrapText>
+
+The rubric covers what a script can't - whether the agent asked instead of inventing, and how it got to the result.
+
+A spec pipeline is harder to evaluate than most skills. A single run produces dozens of interlinked documents, shaped by the answers a human gave along the way, and there's rarely one correct result to compare against. Two things work in my favour, though. The non-interactive mode turns unanswered questions into `status: open` files, so a run without a human is repeatable and can be graded. And since every item carries an ID and a `src`, traceability is something a script can check. One thing I still need to figure out is invocation - my skills are manual-only, so discovery isn't in play and every task has to call the skill explicitly.
+
+### skill-creator for Claude Code
+
+If you work in **Claude Code**, Anthropic's **skill-creator** covers the whole loop, from the first draft to evaluation. It runs each test prompt with and without the skill (or against its previous version), grades the results against assertions and aggregates pass rate, time and tokens into a benchmark. That comparison is the real measure of efficiency - it shows whether the skill actually makes the work shorter and better, not just different. It also has a separate loop for tuning the description, based on around 20 queries that should and shouldn't trigger the skill.
+
+<GithubLink url="https://github.com/anthropics/skills">
+  **Anthropic's public repository for Agent Skills**, including
+  **skill-creator** for creating, evaluating and improving skills. It's also
+  available as a plugin in the official Claude Code marketplace.
+</GithubLink>
+
+## Treat skills like code
+
+A skill is a program the agent runs on your behalf, so it deserves the same care as code: plan it, review it, version it and test it. Testing is the step most skills skip, and it's the only one that proves the others worked.
+
+The [project bootstrap skills](https://github.com/mifkata/project-bootstrap-skills) are MIT-licensed, so feel free to use them as a starting point. If you've found other ways to test skills, let me know in the comments. An agent without a procedure will always find a path. A skill decides which one.
