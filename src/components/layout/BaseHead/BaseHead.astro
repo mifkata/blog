@@ -16,6 +16,11 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = FallbackImage } = Astro.props;
+import {
+  PALETTE_BY_MONTH,
+  PALETTE_BY_SEASON,
+  THEME_COLORS,
+} from "@/helpers/season";
 ---
 
 <!-- Global Metadata -->
@@ -37,7 +42,41 @@ const { title, description, image = FallbackImage } = Astro.props;
 />
 <meta name="apple-mobile-web-app-title" content="Mifkata.com" />
 <link rel="manifest" href="/manifest.webmanifest" />
-<meta name="theme-color" content="#ffffff" />
+<meta
+  name="theme-color"
+  content="#fbfcfa"
+  media="(prefers-color-scheme: light)"
+/>
+<meta
+  name="theme-color"
+  content="#0f1714"
+  media="(prefers-color-scheme: dark)"
+/>
+<!-- Pick this season's palette before first paint (see helpers/season.ts).
+     Preview another season with ?season=winter|spring|summer|fall. -->
+<script
+  is:inline
+  define:vars={{
+    byMonth: PALETTE_BY_MONTH,
+    bySeason: PALETTE_BY_SEASON,
+    themeColors: THEME_COLORS,
+  }}
+>
+  let preview = null;
+  try {
+    preview = new URLSearchParams(location.search).get("season");
+  } catch {
+    // No query string: use today's season.
+  }
+  const palette = Object.hasOwn(bySeason, preview)
+    ? bySeason[preview]
+    : byMonth[new Date().getMonth()];
+  document.documentElement.dataset.palette = palette;
+  for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+    meta.content =
+      themeColors[palette][meta.media.includes("dark") ? "dark" : "light"];
+  }
+</script>
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
   rel="alternate"

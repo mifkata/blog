@@ -27,7 +27,7 @@ const styles = tv({
     grid: "flex flex-col md:grid gap-4 overflow-visible h-auto relative md:-mb-24",
     card: [
       "group w-full h-auto md:h-40 p-0 md:my-16",
-      "bg-white border border-gray-light rounded-lg",
+      "bg-surface border border-gray-light rounded-lg",
       "hover:border-accent hover:shadow-lg",
       "transition-all duration-300 ease-out text-left cursor-pointer overflow-hidden",
       "origin-top cursor-pointer",
@@ -44,7 +44,7 @@ const styles = tv({
       "w-0 transition-all duration-200 ease-out",
       "mix-blend-exclusion bg-teal-500/30 z-[5]",
     ],
-    details: "mt-6 p-6 bg-white border border-gray-light rounded-lg",
+    details: "mt-6 p-6 bg-surface border border-gray-light rounded-lg",
     detailsImage: "block md:hidden w-full rounded-t-lg mb-4",
     synopsis: "mb-3 leading-relaxed md:columns-2 gap-6",
     footer: "md:flex items-center justify-between",

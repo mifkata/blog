@@ -114,10 +114,15 @@ export function initCircuit(root: HTMLElement): () => void {
     if (end >= 0) padOwners[end] = { trace, atStart: false };
   });
 
+  // Read on every flash, so a day/night switch recolours them straight away.
   const style = getComputedStyle(root);
   const colors: Record<PulseKind, string> = {
-    packet: style.getPropertyValue("--circuit-packet").trim(),
-    charge: style.getPropertyValue("--circuit-charge").trim(),
+    get packet() {
+      return style.getPropertyValue("--circuit-packet").trim();
+    },
+    get charge() {
+      return style.getPropertyValue("--circuit-charge").trim();
+    },
   };
 
   const timers = new Set<number>();

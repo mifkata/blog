@@ -13,8 +13,8 @@ const baseStyles =
   "inline-flex items-center gap-2 px-4 py-2 rounded no-underline transition-all duration-200 ease-out";
 const variantStyles = {
   normal:
-    "bg-gradient-to-br from-button-light to-[#e8d4bc] !text-button border border-button hover:from-[#f0e2cc] hover:to-[#dcc6a8] hover:-translate-y-0.5 hover:shadow-md",
-  inverse: "bg-gradient-to-br from-[#e8935f] to-[#b85a38] !text-button-light",
+    "bg-button-light !text-button border border-button hover:brightness-95 hover:-translate-y-0.5 hover:shadow-md",
+  inverse: "bg-gradient-to-br from-button-hi to-button-lo !text-button-text",
   ghost:
     "bg-transparent !text-button border border-button hover:bg-button-light/50",
 };
@@ -69,23 +69,23 @@ const Element = href ? "a" : "button";
   }
 
   .hex-button--light {
-    --band: rgb(255 250 240 / 0.85);
-    --band-soft: rgb(255 236 214 / 0.4);
-    --hex-line: rgb(255 236 214 / 0.45);
-    --hex-fill: rgb(255 240 222 / 0.06);
-    --hex-flash: rgb(255 244 230 / 0.55);
-    --spark: #ffd9b8;
-    --spark-head: #ffffff;
+    --band: var(--palette-button-glint);
+    --band-soft: var(--palette-button-glint-soft);
+    --hex-line: var(--palette-button-hex);
+    --hex-fill: var(--palette-button-hex-fill);
+    --hex-flash: var(--palette-button-hex-flash);
+    --spark: var(--palette-button-spark);
+    --spark-head: var(--palette-button-spark-head);
   }
 
   .hex-button--accent {
-    --band: color-mix(in srgb, var(--color-accent) 32%, transparent);
-    --band-soft: color-mix(in srgb, var(--color-accent) 12%, transparent);
-    --hex-line: color-mix(in srgb, var(--color-button) 42%, transparent);
-    --hex-fill: color-mix(in srgb, var(--color-button) 4%, transparent);
-    --hex-flash: color-mix(in srgb, var(--color-button) 35%, transparent);
-    --spark: var(--color-accent);
-    --spark-head: var(--color-accent-dark);
+    --band: color-mix(in srgb, var(--palette-accent) 32%, transparent);
+    --band-soft: color-mix(in srgb, var(--palette-accent) 12%, transparent);
+    --hex-line: color-mix(in srgb, var(--palette-outline) 42%, transparent);
+    --hex-fill: color-mix(in srgb, var(--palette-outline) 4%, transparent);
+    --hex-flash: color-mix(in srgb, var(--palette-outline) 35%, transparent);
+    --spark: var(--palette-accent);
+    --spark-head: var(--palette-accent-strong);
   }
 
   /* The flash: a band of current that wipes the honeycomb away. */
