@@ -130,13 +130,13 @@ const QUIET_PULSES = 0.6;
 
 <style>
   .circuit-hero {
-    --circuit-bg: #ebe6e3;
-    --circuit-faint: #d3d8d4;
-    --circuit-mid: #bdc6c1;
-    --circuit-strong: #a3b0a9;
-    --circuit-pad: #adbab3;
-    --circuit-packet: var(--color-accent);
-    --circuit-charge: var(--color-button);
+    --circuit-bg: var(--palette-hero);
+    --circuit-faint: var(--palette-trace-faint);
+    --circuit-mid: var(--palette-trace-mid);
+    --circuit-strong: var(--palette-trace-strong);
+    --circuit-pad: var(--palette-pad);
+    --circuit-packet: var(--palette-packet);
+    --circuit-charge: var(--palette-charge);
     background-color: var(--circuit-bg);
   }
 
@@ -163,7 +163,7 @@ const QUIET_PULSES = 0.6;
   .circuit-hero :global(.circuit-solid:hover) {
     background-color: color-mix(
       in srgb,
-      var(--color-button-light) 50%,
+      var(--palette-outline-hover) 50%,
       var(--circuit-bg)
     );
   }

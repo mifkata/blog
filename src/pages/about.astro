@@ -30,7 +30,9 @@ const quirks = [
 
   <div class="grid md:grid-cols-2 gap-x-12">
     <AboutSection title="Outside of Work">
-      <LucideIcon icon="clock" size={24} color="#6FA4AF" slot="icon" />
+      <span slot="icon" class="inline-flex text-accent"
+        ><LucideIcon icon="clock" size={24} /></span
+      >
       <p class="text-gray-dark mb-6">
         My world is made of books, motorcycles, travel, cooking, music, my
         family and my dog. The last two I'd gladly die for.
@@ -44,7 +46,9 @@ const quirks = [
     </AboutSection>
 
     <AboutSection title="Values">
-      <LucideIcon icon="heart" size={24} color="#B8C4A9" slot="icon" />
+      <span slot="icon" class="inline-flex text-gray"
+        ><LucideIcon icon="heart" size={24} /></span
+      >
       <p class="text-gray-dark mb-4">
         I value intelligence and kindness, and I try to bring both to the people
         I work with. I believe in freedom: to try new ideas, to question old
@@ -55,12 +59,9 @@ const quirks = [
     </AboutSection>
 
     <AboutSection title="How People See Me">
-      <LucideIcon
-        icon="users"
-        size={24}
-        color="var(--color-accent)"
-        slot="icon"
-      />
+      <span slot="icon" class="inline-flex text-accent"
+        ><LucideIcon icon="users" size={24} /></span
+      >
       <p class="text-gray-dark">
         One face, no hidden settings, and no second opinion for when you leave
         the room. I try to be as clear as possible. Curious people love that;
@@ -70,7 +71,9 @@ const quirks = [
     </AboutSection>
 
     <AboutSection title="Right Now">
-      <LucideIcon icon="info" size={24} color="#6FA4AF" slot="icon" />
+      <span slot="icon" class="inline-flex text-accent"
+        ><LucideIcon icon="info" size={24} /></span
+      >
       <p class="text-gray-dark">
         I'm learning languages, going to the gym, and pushing myself through
         university because I want to teach someday. Maybe that's my way of
@@ -80,7 +83,9 @@ const quirks = [
     </AboutSection>
 
     <AboutSection title="Quirks" class="md:col-span-2">
-      <LucideIcon icon="star" size={24} color="#D97D55" slot="icon" />
+      <span slot="icon" class="inline-flex text-button"
+        ><LucideIcon icon="star" size={24} /></span
+      >
       <p class="text-gray mb-4 text-sm uppercase tracking-wider">
         Because everyone has them, mine are just louder
       </p>

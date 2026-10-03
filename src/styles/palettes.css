@@ -1,0 +1,340 @@
+/*
+ * Seasonal palettes (see helpers/season.ts). BaseHead sets
+ * <html data-palette="…"> for the current season before first paint; without
+ * it the site falls back to the fall palette. Day or night follows the
+ * visitor's OS setting. Utilities read these through the @theme map in
+ * global.css.
+ */
+
+/* Fall: Circuit board, day: a bare board in daylight. Green-grey board material,
+   copper buttons, solder-mask green links. */
+:root {
+  --palette-canvas: #e6ece8;
+  --palette-surface: #fbfcfa;
+  --palette-hero: #eef2ef;
+  --palette-line: #d9e0dc;
+  --palette-text: #1d2a26;
+  --palette-heading: #14201c;
+  --palette-muted: #5b6b65;
+  --palette-accent: #1e7a66;
+  --palette-accent-strong: #145646;
+  --palette-button-hi: #ad5c29;
+  --palette-button-lo: #8b4419;
+  --palette-button-text: #fffaf3;
+  --palette-outline: #9a5020;
+  --palette-outline-hover: #f6ebe1;
+  --palette-code: #e5ece8;
+  --palette-tag: #e3ebe6;
+  --palette-tag-text: #2c4a41;
+  --palette-terminal: #14201c;
+  --palette-terminal-text: #d7e2dc;
+  --palette-terminal-prompt: #4fb39b;
+  /* Hero circuit board */
+  --palette-trace-faint: #d9e1dc;
+  --palette-trace-mid: #c2cec8;
+  --palette-trace-strong: #a7b8b0;
+  --palette-pad: #b3c2bb;
+  --palette-packet: #1e7a66;
+  --palette-charge: #c8743a;
+  /* Hover effect on the filled button */
+  --palette-button-glint: rgb(255 250 240 / 0.85);
+  --palette-button-glint-soft: rgb(255 236 214 / 0.4);
+  --palette-button-hex: rgb(255 236 214 / 0.45);
+  --palette-button-hex-fill: rgb(255 240 222 / 0.06);
+  --palette-button-hex-flash: rgb(255 244 230 / 0.55);
+  --palette-button-spark: #ffd9b8;
+  --palette-button-spark-head: #ffffff;
+  color-scheme: light;
+}
+
+/* Fall: Circuit board, night: a dark solder-mask board. Gold buttons and pads, mint
+   links and signals. Shown when the visitor's OS is set to dark mode. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --palette-canvas: #080d0b;
+    --palette-surface: #0f1714;
+    --palette-hero: #12201a;
+    --palette-line: #22322c;
+    --palette-text: #d8e3dd;
+    --palette-heading: #f1f5f2;
+    --palette-muted: #8fa39a;
+    --palette-accent: #5cc9a7;
+    --palette-accent-strong: #8be0c4;
+    --palette-button-hi: #e8b06a;
+    --palette-button-lo: #c27f38;
+    --palette-button-text: #1a120a;
+    --palette-outline: #e2a35b;
+    --palette-outline-hover: #241c12;
+    --palette-code: #18251f;
+    --palette-tag: #182722;
+    --palette-tag-text: #a9d9c8;
+    --palette-terminal: #070c0a;
+    --palette-terminal-text: #cfe0d8;
+    --palette-terminal-prompt: #5cc9a7;
+    /* Hero circuit board */
+    --palette-trace-faint: #17261f;
+    --palette-trace-mid: #213529;
+    --palette-trace-strong: #2d4739;
+    --palette-pad: #7d6a42;
+    --palette-packet: #5cc9a7;
+    --palette-charge: #e8b06a;
+    /* Hover effect on the filled button */
+    --palette-button-glint: rgb(255 255 255 / 0.85);
+    --palette-button-glint-soft: rgb(255 250 235 / 0.4);
+    --palette-button-hex: rgb(26 18 10 / 0.35);
+    --palette-button-hex-fill: rgb(26 18 10 / 0.04);
+    --palette-button-hex-flash: rgb(255 255 255 / 0.55);
+    --palette-button-spark: #7a4d12;
+    --palette-button-spark-head: #1a120a;
+    color-scheme: dark;
+  }
+}
+
+/* Winter: Blueprint, day: a drawing on drafting paper. Navy ink, cobalt links, red-pencil buttons. */
+:root[data-palette="blueprint"] {
+  --palette-canvas: #e7ecf3;
+  --palette-surface: #fbfcfe;
+  --palette-hero: #eef2f8;
+  --palette-line: #d8e0ec;
+  --palette-text: #16233b;
+  --palette-heading: #0f1a2e;
+  --palette-muted: #56657f;
+  --palette-accent: #1f4fbf;
+  --palette-accent-strong: #163a8c;
+  --palette-button-hi: #c8443a;
+  --palette-button-lo: #a3302a;
+  --palette-button-text: #fff7f5;
+  --palette-outline: #b2362d;
+  --palette-outline-hover: #fbe9e7;
+  --palette-code: #e6ecf5;
+  --palette-tag: #e3eaf6;
+  --palette-tag-text: #22406f;
+  --palette-terminal: #0f1a2e;
+  --palette-terminal-text: #dbe5f5;
+  --palette-terminal-prompt: #7cb3ff;
+  /* Hero circuit board */
+  --palette-trace-faint: #d9e2ef;
+  --palette-trace-mid: #bfcde2;
+  --palette-trace-strong: #9fb3d1;
+  --palette-pad: #a9bcd8;
+  --palette-packet: #1f4fbf;
+  --palette-charge: #c8443a;
+  /* Hover effect on the filled button */
+  --palette-button-glint: rgb(255 250 240 / 0.85);
+  --palette-button-glint-soft: rgb(255 236 214 / 0.4);
+  --palette-button-hex: rgb(255 236 214 / 0.45);
+  --palette-button-hex-fill: rgb(255 240 222 / 0.06);
+  --palette-button-hex-flash: rgb(255 244 230 / 0.55);
+  --palette-button-spark: #ffd9b8;
+  --palette-button-spark-head: #ffffff;
+  color-scheme: light;
+}
+
+/* Winter: Blueprint, night: a cyanotype. Deep blueprint blue, sky-blue links, yellow-pencil buttons.
+   Shown when the visitor's OS is set to dark mode. */
+@media (prefers-color-scheme: dark) {
+  :root[data-palette="blueprint"] {
+    --palette-canvas: #08142b;
+    --palette-surface: #0d1d3a;
+    --palette-hero: #10244a;
+    --palette-line: #21365e;
+    --palette-text: #dfe8f7;
+    --palette-heading: #ffffff;
+    --palette-muted: #9fb2d3;
+    --palette-accent: #8cc8ff;
+    --palette-accent-strong: #b9deff;
+    --palette-button-hi: #ffd166;
+    --palette-button-lo: #f0b23d;
+    --palette-button-text: #1b1405;
+    --palette-outline: #ffd166;
+    --palette-outline-hover: #1d2c4d;
+    --palette-code: #15284d;
+    --palette-tag: #16294f;
+    --palette-tag-text: #b9d3f5;
+    --palette-terminal: #071026;
+    --palette-terminal-text: #d6e3f7;
+    --palette-terminal-prompt: #8cc8ff;
+    --palette-trace-faint: #1d3a70;
+    --palette-trace-mid: #2c4f8f;
+    --palette-trace-strong: #4268ad;
+    --palette-pad: #9fb8e6;
+    --palette-packet: #8cc8ff;
+    --palette-charge: #ffd166;
+    --palette-button-glint: rgb(255 255 255 / 0.9);
+    --palette-button-glint-soft: rgb(255 255 255 / 0.45);
+    --palette-button-hex: rgb(27 20 5 / 0.35);
+    --palette-button-hex-fill: rgb(27 20 5 / 0.04);
+    --palette-button-hex-flash: rgb(255 255 255 / 0.6);
+    --palette-button-spark: #8a5a00;
+    --palette-button-spark-head: #1b1405;
+    color-scheme: dark;
+  }
+}
+
+/* Summer: Lab notebook, day: graph paper and a fountain pen. Ink-black text, violet links,
+   highlighter-yellow buttons. */
+:root[data-palette="notebook"] {
+  --palette-canvas: #efeee9;
+  --palette-surface: #fdfdfb;
+  --palette-hero: #f5f5f0;
+  --palette-line: #e2e1d9;
+  --palette-text: #1f1f24;
+  --palette-heading: #111114;
+  --palette-muted: #5d5d68;
+  --palette-accent: #5a3fc0;
+  --palette-accent-strong: #42299a;
+  --palette-button-hi: #ffe14d;
+  --palette-button-lo: #f7c90f;
+  --palette-button-text: #1f1a00;
+  --palette-outline: #5a3fc0;
+  --palette-outline-hover: #efeafc;
+  --palette-code: #f0efe8;
+  --palette-tag: #fff4b8;
+  --palette-tag-text: #4a3d00;
+  --palette-terminal: #1f1f24;
+  --palette-terminal-text: #e8e8ec;
+  --palette-terminal-prompt: #ffe14d;
+  /* Hero circuit board */
+  --palette-trace-faint: #e1e5ee;
+  --palette-trace-mid: #c9d0de;
+  --palette-trace-strong: #aab4c9;
+  --palette-pad: #b6bfd2;
+  --palette-packet: #5a3fc0;
+  --palette-charge: #e0a800;
+  /* Hover effect on the filled button */
+  --palette-button-glint: rgb(255 255 255 / 0.9);
+  --palette-button-glint-soft: rgb(255 255 255 / 0.45);
+  --palette-button-hex: rgb(31 26 0 / 0.35);
+  --palette-button-hex-fill: rgb(31 26 0 / 0.04);
+  --palette-button-hex-flash: rgb(255 255 255 / 0.6);
+  --palette-button-spark: #8a6a00;
+  --palette-button-spark-head: #1f1a00;
+  color-scheme: light;
+}
+
+/* Summer: Lab notebook, night: a graphite page. Soft white text, lilac links, the same
+   highlighter yellow. Shown when the visitor's OS is set to dark mode. */
+@media (prefers-color-scheme: dark) {
+  :root[data-palette="notebook"] {
+    --palette-canvas: #121214;
+    --palette-surface: #19191d;
+    --palette-hero: #1e1e23;
+    --palette-line: #2c2c33;
+    --palette-text: #e6e5ea;
+    --palette-heading: #ffffff;
+    --palette-muted: #a3a2ad;
+    --palette-accent: #b9a6ff;
+    --palette-accent-strong: #d3c7ff;
+    --palette-button-hi: #ffe14d;
+    --palette-button-lo: #f5c518;
+    --palette-button-text: #1a1600;
+    --palette-outline: #ffe14d;
+    --palette-outline-hover: #2a2716;
+    --palette-code: #26262c;
+    --palette-tag: #2e2a12;
+    --palette-tag-text: #ffe98a;
+    --palette-terminal: #0c0c0e;
+    --palette-terminal-text: #e2e2e6;
+    --palette-terminal-prompt: #ffe14d;
+    /* Hero circuit board */
+    --palette-trace-faint: #26262d;
+    --palette-trace-mid: #33333c;
+    --palette-trace-strong: #45454f;
+    --palette-pad: #5c5c68;
+    --palette-packet: #b9a6ff;
+    --palette-charge: #ffe14d;
+    /* Hover effect on the filled button */
+    --palette-button-glint: rgb(255 255 255 / 0.9);
+    --palette-button-glint-soft: rgb(255 255 255 / 0.45);
+    --palette-button-hex: rgb(26 22 0 / 0.35);
+    --palette-button-hex-fill: rgb(26 22 0 / 0.04);
+    --palette-button-hex-flash: rgb(255 255 255 / 0.6);
+    --palette-button-spark: #8a6a00;
+    --palette-button-spark-head: #1a1600;
+    color-scheme: dark;
+  }
+}
+
+/* Spring: Neon dusk, day: lilac-white with aubergine text, deep cyan links and magenta
+   buttons. */
+:root[data-palette="neon"] {
+  --palette-canvas: #f1edf5;
+  --palette-surface: #fdfbff;
+  --palette-hero: #f6f1fa;
+  --palette-line: #e4dcec;
+  --palette-text: #2a1d3a;
+  --palette-heading: #1e1230;
+  --palette-muted: #6b5a7e;
+  --palette-accent: #00788a;
+  --palette-accent-strong: #005b69;
+  --palette-button-hi: #c2185b;
+  --palette-button-lo: #9c1048;
+  --palette-button-text: #fff5f9;
+  --palette-outline: #b0164f;
+  --palette-outline-hover: #fbe8f0;
+  --palette-code: #f1eaf7;
+  --palette-tag: #efe5f7;
+  --palette-tag-text: #4b2d6b;
+  --palette-terminal: #1e1230;
+  --palette-terminal-text: #eadff5;
+  --palette-terminal-prompt: #4fd1e8;
+  /* Hero circuit board */
+  --palette-trace-faint: #e6ddef;
+  --palette-trace-mid: #d2c3e2;
+  --palette-trace-strong: #b8a3cf;
+  --palette-pad: #c3b0d8;
+  --palette-packet: #00788a;
+  --palette-charge: #c2185b;
+  /* Hover effect on the filled button */
+  --palette-button-glint: rgb(255 245 250 / 0.85);
+  --palette-button-glint-soft: rgb(255 230 240 / 0.4);
+  --palette-button-hex: rgb(255 230 240 / 0.45);
+  --palette-button-hex-fill: rgb(255 240 246 / 0.06);
+  --palette-button-hex-flash: rgb(255 245 250 / 0.55);
+  --palette-button-spark: #ffc2dc;
+  --palette-button-spark-head: #ffffff;
+  color-scheme: light;
+}
+
+/* Spring: Neon dusk, night: an aubergine night with cyan links and hot-pink buttons.
+   Shown when the visitor's OS is set to dark mode. */
+@media (prefers-color-scheme: dark) {
+  :root[data-palette="neon"] {
+    --palette-canvas: #0d0814;
+    --palette-surface: #150e1f;
+    --palette-hero: #1b1228;
+    --palette-line: #2d2140;
+    --palette-text: #ebe2f5;
+    --palette-heading: #ffffff;
+    --palette-muted: #a998bf;
+    --palette-accent: #4fd1e8;
+    --palette-accent-strong: #8ce4f2;
+    --palette-button-hi: #ff5fa2;
+    --palette-button-lo: #e0357f;
+    --palette-button-text: #1a0510;
+    --palette-outline: #ff79b4;
+    --palette-outline-hover: #2a1430;
+    --palette-code: #22172f;
+    --palette-tag: #251933;
+    --palette-tag-text: #d9c6f0;
+    --palette-terminal: #09050f;
+    --palette-terminal-text: #e6dcf2;
+    --palette-terminal-prompt: #ff79b4;
+    /* Hero circuit board */
+    --palette-trace-faint: #241935;
+    --palette-trace-mid: #322347;
+    --palette-trace-strong: #46305f;
+    --palette-pad: #6b4b8c;
+    --palette-packet: #4fd1e8;
+    --palette-charge: #ff5fa2;
+    /* Hover effect on the filled button */
+    --palette-button-glint: rgb(255 255 255 / 0.9);
+    --palette-button-glint-soft: rgb(255 255 255 / 0.45);
+    --palette-button-hex: rgb(26 5 16 / 0.35);
+    --palette-button-hex-fill: rgb(26 5 16 / 0.04);
+    --palette-button-hex-flash: rgb(255 255 255 / 0.6);
+    --palette-button-spark: #7a0f3d;
+    --palette-button-spark-head: #1a0510;
+    color-scheme: dark;
+  }
+}
