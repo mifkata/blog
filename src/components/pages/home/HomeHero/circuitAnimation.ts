@@ -332,6 +332,11 @@ export function initCircuit(root: HTMLElement): () => void {
   root.addEventListener("pointerleave", onPointerLeave);
   root.addEventListener("pointercancel", onPointerLeave);
 
+  // The home page boot hands over to the board with a burst from every chip.
+  const onPowerOn = () =>
+    data.chips.forEach((_, chip) => later(() => burst(chip, -1), chip * 140));
+  root.addEventListener("circuit:power-on", onPowerOn);
+
   return () => {
     stopPackets();
     timers.forEach((id) => window.clearTimeout(id));
@@ -342,6 +347,7 @@ export function initCircuit(root: HTMLElement): () => void {
     root.removeEventListener("pointerdown", onPointerMove);
     root.removeEventListener("pointerleave", onPointerLeave);
     root.removeEventListener("pointercancel", onPointerLeave);
+    root.removeEventListener("circuit:power-on", onPowerOn);
     layer.replaceChildren();
   };
 }

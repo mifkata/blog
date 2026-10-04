@@ -1,5 +1,6 @@
 ---
 import Button from "@/components/ui/Button/Button.astro";
+import HomeBoot from "@/components/pages/home/HomeBoot/HomeBoot.astro";
 import { generateCircuit, toCircuitData, toPathData } from "./circuit";
 import { DESKTOP_COPY, quietRects, stepOpacity } from "./circuitQuiet";
 
@@ -106,6 +107,7 @@ const QUIET_PULSES = 0.6;
     set:html={JSON.stringify(toCircuitData(circuit))}
   />
   <div class="relative max-w-[960px] mx-auto">
+    <HomeBoot />
     <div class="circuit-copy relative w-fit max-w-[720px]" data-circuit-copy>
       <p class="text-lg mb-2">Hello, my name is</p>
       <h1 class="text-5xl md:text-6xl mb-4">Andriyan Ivanov.</h1>
@@ -138,6 +140,16 @@ const QUIET_PULSES = 0.6;
     --circuit-packet: var(--palette-packet);
     --circuit-charge: var(--palette-charge);
     background-color: var(--circuit-bg);
+  }
+
+  /* During the first-visit boot the copy waits underneath (keeping its space)
+     and the board idles dimmed until the boot powers it on. */
+  :global(html[data-boot]) .circuit-copy {
+    opacity: 0;
+  }
+
+  :global(html[data-boot]) [data-circuit] {
+    opacity: 0.35;
   }
 
   /* A background-coloured ring around every glyph, so lines stop short of it. */
