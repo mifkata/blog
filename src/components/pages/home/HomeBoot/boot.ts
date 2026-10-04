@@ -10,6 +10,11 @@
 
 import { PALETTE_BY_SEASON, type Season } from "@/helpers/season";
 import { BOOT_TIMING, type BootTiming } from "./timing";
+import {
+  showFrame,
+  startBlinking,
+  stopBlinking,
+} from "@/components/layout/BaseHead/faviconMotion";
 
 export type BootMode = "full" | "short";
 
@@ -172,12 +177,14 @@ export function runBoot(): void {
       );
     }
 
+    showFrame("empty");
     for (const line of lines) {
       const row = element("p", "boot-line");
       linesEl!.append(row);
       if (line.kind === "command") {
         row.append(element("span", "boot-prompt", "$ "));
         await type(row, line.text, BOOT_TIMING.commandTyping);
+        showFrame("prompt");
       } else {
         row.append(line.text);
         if (line.ok) {
@@ -190,6 +197,7 @@ export function runBoot(): void {
     }
 
     logo!.hidden = false;
+    startBlinking();
     await type(letters!, TAG, BOOT_TIMING.logoTyping);
     caret.remove();
     logo!.classList.add("is-typed");
@@ -198,6 +206,7 @@ export function runBoot(): void {
   }
 
   function finish() {
+    stopBlinking();
     for (const name of events) window.removeEventListener(name, skip);
     delete html.dataset.boot;
   }
