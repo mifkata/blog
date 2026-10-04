@@ -1,99 +1,106 @@
-import type { Meta, StoryObj } from "@storybook/html";
-import { createElement } from "react";
-import { createRoot } from "react-dom/client";
-import { FeaturedSeries, type SeriesItem } from "./FeaturedSeries";
+import type { Meta, StoryObj } from "@storybook-astro/framework";
+import FeaturedSeries from "./FeaturedSeries.astro";
 
-interface FeaturedSeriesArgs {
-  title: string;
-  items: SeriesItem[];
-}
+const createMockImage = (id: number) => ({
+  src: `https://picsum.photos/seed/series${id}/720/405`,
+  width: 720,
+  height: 405,
+  format: "jpg" as const,
+});
 
-const mockItems: SeriesItem[] = [
+const parts = [
   {
-    url: "/blog/2025/article-one",
-    title: "Getting Started with Claude Code",
+    url: "/blog/2025/claude-code-devcontainers/",
+    title: "Dev Containers and How-to Work Securely with AI Agents",
     synopsis:
-      "Learn how to set up **Claude Code** in your development environment. This guide covers installation, configuration, and your first commands.",
-    heroImage: "https://picsum.photos/seed/article1/400/200",
-    updatedDate: "2025-01-15T00:00:00.000Z",
+      "Using tools like **Claude Code** on a daily basis can be quite amazing, however, you cannot always trust it to keep your files safe.",
+    heroImage: createMockImage(1),
+    updatedDate: new Date("2026-01-08"),
+    readingMinutes: 8,
   },
   {
-    url: "/blog/2025/article-two",
-    title: "System Prompting and Commands",
+    url: "/blog/2026/01/claude-code-system-prompting-and-commands/",
+    title: "System prompting and commands",
     synopsis:
-      "A comprehensive guide to customizing Claude Code with system prompts and slash commands. Learn how to create *powerful workflows*.",
-    heroImage: "https://picsum.photos/seed/article2/400/200",
-    updatedDate: "2025-01-10T00:00:00.000Z",
+      "The main entry points for working with an agent in a project are `CLAUDE.md` and custom commands.",
+    heroImage: createMockImage(2),
+    updatedDate: new Date("2026-02-22"),
+    readingMinutes: 7,
   },
   {
-    url: "/blog/2025/article-three",
-    title: "Spec-Driven Development",
+    url: "/blog/2026/01/claude-code-spec-driven-development/",
+    title: "Spec-Driven Development (SDD)",
     synopsis:
-      "Deep dive into using specs to guide your development process. Learn how to write `specs` that Claude Code can implement.",
-    heroImage: "https://picsum.photos/seed/article3/400/200",
-    updatedDate: "2025-01-05T00:00:00.000Z",
+      "Coding agents forget everything between sessions, and the bigger the codebase grows, the more they have to rediscover.",
+    heroImage: createMockImage(3),
+    updatedDate: new Date("2026-10-02"),
+    readingMinutes: 6,
+  },
+  {
+    url: "/blog/example/part-4/",
+    title: "Hooks and Guardrails That Run on Their Own",
+    synopsis:
+      "Hooks run your own scripts at fixed points in a session: before a tool call, after an edit, or when the agent stops.",
+    heroImage: createMockImage(4),
+    updatedDate: new Date("2026-03-14"),
+    readingMinutes: 9,
+  },
+  {
+    url: "/blog/example/part-5/",
+    title: "Subagents: Splitting Work Without Losing the Thread",
+    synopsis:
+      "A single agent on a long task fills its context with search results and dead ends long before it finishes.",
+    heroImage: createMockImage(5),
+    updatedDate: new Date("2026-05-02"),
+    readingMinutes: 11,
+  },
+  {
+    url: "/blog/example/part-6/",
+    title: "MCP Servers",
+    synopsis:
+      "MCP servers connect the agent to the tools your team already uses: issue trackers, docs and databases.",
+    heroImage: createMockImage(6),
+    updatedDate: new Date("2026-08-19"),
+    readingMinutes: 5,
   },
 ];
 
-const meta: Meta<FeaturedSeriesArgs> = {
+const meta: Meta<typeof FeaturedSeries> = {
   title: "Pages/Home/FeaturedSeries",
+  component: FeaturedSeries,
   tags: ["autodocs"],
   argTypes: {
-    title: {
-      control: "text",
-      description: "Series title",
-    },
-    items: {
-      control: "object",
-      description: "Array of series items",
-    },
+    title: { control: "text", description: "Series title" },
+    description: { control: "text", description: "Series description" },
+    parts: { control: "object", description: "Posts in reading order" },
   },
-  render: (args) => {
-    const container = document.createElement("div");
-    const root = createRoot(container);
-    root.render(createElement(FeaturedSeries, args));
-    return container;
+  args: {
+    title: "Claude Code Basics",
+    description:
+      "A collection of articles focused on setting up dev environment, configuring commands and CLAUDE.md for a spec-driven development workflow.",
   },
 };
 
 export default meta;
-type Story = StoryObj<FeaturedSeriesArgs>;
+type Story = StoryObj<typeof FeaturedSeries>;
 
-export const Default: Story = {
-  args: {
-    title: "Claude Code Setup",
-    items: mockItems,
-  },
+export const ThreeParts: Story = {
+  args: { parts: parts.slice(0, 3) },
 };
 
-export const TwoItems: Story = {
-  args: {
-    title: "Getting Started",
-    items: mockItems.slice(0, 2),
-  },
+export const SixParts: Story = {
+  args: { parts },
 };
 
-export const FourItems: Story = {
-  args: {
-    title: "Complete Guide",
-    items: [
-      ...mockItems,
-      {
-        url: "/blog/2025/article-four",
-        title: "Advanced Techniques",
-        synopsis:
-          "The final piece of the puzzle. This article wraps up the series with practical examples and advanced patterns.",
-        heroImage: "https://picsum.photos/seed/article4/400/200",
-        updatedDate: "2025-01-01T00:00:00.000Z",
-      },
-    ],
-  },
+/** Two parts fit on desktop, so the arrows, counter and dots hide. */
+export const FitsWithoutScrolling: Story = {
+  args: { parts: parts.slice(0, 2) },
 };
 
-export const WithoutImages: Story = {
+export const WithoutImagesOrDescription: Story = {
   args: {
-    title: "Text Only Series",
+    description: undefined,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    items: mockItems.map(({ heroImage, ...item }) => item),
+    parts: parts.slice(0, 3).map(({ heroImage, ...part }) => part),
   },
 };
