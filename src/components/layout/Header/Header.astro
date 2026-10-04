@@ -1,6 +1,7 @@
 ---
 import HeaderLink from "@/components/layout/HeaderLink/HeaderLink.astro";
 import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
+import SiteLogo from "@/components/layout/SiteLogo/SiteLogo.astro";
 ---
 
 <!-- The slot keeps the expanded header height in the layout while the header
@@ -16,9 +17,7 @@ import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
         id="site-header-logo"
         class="text-2xl mt-2 whitespace-nowrap transition-[font-size] duration-300 motion-reduce:transition-none"
       >
-        <a href="/" class="text-black no-underline hover:text-accent">
-          {"<MIFKATA />"}
-        </a>
+        <SiteLogo />
       </h1>
       <div class="hidden md:flex items-center gap-6 uppercase">
         <HeaderLink href="/blog" number="01">Blog</HeaderLink>
@@ -44,7 +43,6 @@ import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
   </header>
 </div>
 
-<!-- Mobile menu overlay -->
 <div
   class="fixed inset-0 bg-black/60 z-40 hidden md:hidden"
   id="mobile-menu-overlay"
