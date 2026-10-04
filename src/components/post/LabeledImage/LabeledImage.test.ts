@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
 
-// Test keyboard handling logic
 describe("LabeledImage keyboard interactions", () => {
   describe("open modal triggers", () => {
     it("should trigger on Enter key", () => {

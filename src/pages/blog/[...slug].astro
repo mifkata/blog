@@ -20,7 +20,6 @@ const { post, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
-// Get related posts based on matching tags
 const currentTags = post.data.tags || [];
 const relatedPosts = allPosts
   .filter((p) => p.id !== post.id)
