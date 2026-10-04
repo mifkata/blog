@@ -122,14 +122,12 @@ export function FeaturedSeries({ title, items }: Props) {
 
   return (
     <section className={s.section()}>
-      {/* Header */}
       <div className={s.header()}>
         <h3 className={s.headerLabel()}>Featured Series:</h3>
         <h4 className={s.headerTitle()}>{title}</h4>
         <div className={s.divider()} />
       </div>
 
-      {/* Grid */}
       <div className={s.grid()}>
         {items.map((item, index) => {
           const isActive = index === currentIndex;
@@ -167,7 +165,6 @@ export function FeaturedSeries({ title, items }: Props) {
                 <h4 className={s.titleText()}>{item.title}</h4>
               </a>
 
-              {/* Mobile title with highlight */}
               <div className={s.mobileTitle()}>
                 <div className={itemStyles.mobileHighlight()} />
                 <h4 className={s.titleText()}>{item.title}</h4>
@@ -177,7 +174,6 @@ export function FeaturedSeries({ title, items }: Props) {
         })}
       </div>
 
-      {/* Details */}
       <div className={s.details()}>
         {activeItem?.heroImage && (
           <img
