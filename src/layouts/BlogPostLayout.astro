@@ -39,14 +39,10 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
       tags={tags}
     />
 
-    <div
-      class:list={["flex gap-12 items-start", { "justify-center": !showToc }]}
-    >
+    <div class="flex gap-12 items-start">
       <!-- Main Content -->
-      <div
-        class:list={["min-w-0 max-w-[920px]", showToc ? "flex-1" : "w-full"]}
-      >
-        <div class="prose">
+      <div class="min-w-0 flex-1">
+        <div class="prose max-w-[70ch]">
           <slot />
         </div>
       </div>

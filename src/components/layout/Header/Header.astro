@@ -10,9 +10,11 @@ import SiteLogo from "@/components/layout/SiteLogo/SiteLogo.astro";
 <div id="site-header-slot" class="sticky top-0 z-50 w-full pointer-events-none">
   <header
     id="site-header"
-    class="pointer-events-auto px-6 py-2 bg-surface shadow-sm w-full transition-[padding] duration-300 motion-reduce:transition-none"
+    class="pointer-events-auto px-(--page-gutter) py-2 bg-surface shadow-sm w-full transition-[padding] duration-300 motion-reduce:transition-none"
   >
-    <nav class="max-w-[1072px] mx-auto flex items-center justify-between">
+    <nav
+      class="max-w-(--page-column) mx-auto flex items-center justify-between"
+    >
       <h1
         id="site-header-logo"
         class="text-2xl mt-2 whitespace-nowrap transition-[font-size] duration-300 motion-reduce:transition-none"
