@@ -1,0 +1,213 @@
+---
+/**
+ * The site logo: a terminal mark and the <mifkata /> tag. Hovering retypes
+ * the name. On a first visit to the home page, HomeBoot types the tag in the
+ * hero and morphs it into this one.
+ */
+---
+
+<a href="/" class="site-logo" aria-label="Mifkata, home" data-site-logo>
+  <svg class="site-logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+    <rect class="site-logo-screen" x="1" y="3" width="30" height="26" rx="5"
+    ></rect>
+    <text class="site-logo-prompt" x="6.5" y="20.5">&gt;</text>
+    <rect class="site-logo-cursor" x="16" y="18" width="8" height="2.6" rx="1"
+    ></rect>
+  </svg>
+  <span class="site-logo-word" aria-hidden="true" data-site-logo-word>
+    <span class="site-logo-bracket" data-site-logo-open>&lt;</span><span
+      data-site-logo-letters>mifkata</span
+    ><span class="site-logo-bracket site-logo-close">/&gt;</span>
+  </span>
+</a>
+
+<style>
+  .site-logo {
+    /* The icon's cursor blinks while the name retypes, then this many more
+       times at this speed before it rests. */
+    --site-logo-blinks: 2;
+    --site-logo-blink: 0.5s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--palette-heading);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-logo:hover {
+    color: var(--palette-heading);
+  }
+
+  .site-logo:focus-visible {
+    outline: 2px solid var(--palette-accent);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  .site-logo-mark {
+    width: 1.25em;
+    height: 1.25em;
+    flex: none;
+  }
+
+  .site-logo-screen {
+    fill: var(--palette-terminal);
+  }
+
+  .site-logo-prompt {
+    font:
+      700 13px ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+    fill: var(--palette-terminal-prompt);
+  }
+
+  .site-logo-cursor {
+    fill: var(--palette-terminal-text);
+  }
+
+  .site-logo-word {
+    display: inline-flex;
+    align-items: baseline;
+  }
+
+  .site-logo-bracket {
+    color: var(--palette-accent);
+  }
+
+  .site-logo-close {
+    margin-left: 0.18em;
+  }
+
+  /* While the name retypes, letters still to come keep their space, so the
+     logo never changes size under the pointer (and never re-triggers itself). */
+  [data-site-logo-letters] :global(.is-pending),
+  .is-typing .site-logo-close {
+    visibility: hidden;
+  }
+
+  .site-logo-word :global(.is-caret) {
+    position: relative;
+  }
+
+  .site-logo-word :global(.is-caret)::after {
+    content: "";
+    position: absolute;
+    left: calc(100% + 0.05em);
+    bottom: 0.08em;
+    width: 0.5em;
+    height: 0.12em;
+    background: var(--palette-accent);
+    animation: site-logo-blink 0.5s steps(1) infinite;
+  }
+
+  .is-typing .site-logo-cursor {
+    animation: site-logo-blink var(--site-logo-blink) steps(1) infinite;
+  }
+
+  /* A separate animation name, so these blinks start fresh after the typing
+     instead of counting the ones that happened during it. */
+  .is-blinking .site-logo-cursor {
+    animation: site-logo-blink-out var(--site-logo-blink) steps(1)
+      var(--site-logo-blinks);
+  }
+
+  /* Hidden while the home page boot plays; the boot's tag morphs into it. */
+  :global(html[data-boot]) .site-logo {
+    opacity: 0;
+  }
+
+  @keyframes site-logo-blink-out {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes site-logo-blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  const TYPE_DELAY = 70;
+
+  function setupSiteLogo() {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    for (const logo of document.querySelectorAll<HTMLElement>(
+      "[data-site-logo]",
+    )) {
+      if (logo.dataset.ready || reducedMotion) continue;
+      logo.dataset.ready = "true";
+      const letters = logo.querySelector<HTMLElement>(
+        "[data-site-logo-letters]",
+      );
+      if (!letters) continue;
+      const text = letters.textContent ?? "";
+      let timer = 0;
+
+      const open = logo.querySelector("[data-site-logo-open]");
+      logo
+        .querySelector(".site-logo-cursor")
+        ?.addEventListener("animationend", () =>
+          logo.classList.remove("is-blinking"),
+        );
+      let caret: Element | null = null;
+      const moveCaret = (to: Element | null) => {
+        caret?.classList.remove("is-caret");
+        to?.classList.add("is-caret");
+        caret = to;
+      };
+
+      logo.addEventListener("pointerenter", () => {
+        if (document.documentElement.dataset.boot) return;
+        if (logo.classList.contains("is-typing")) return;
+        const spans = [...text].map((letter) => {
+          const span = document.createElement("span");
+          span.textContent = letter;
+          span.className = "is-pending";
+          return span;
+        });
+        letters.replaceChildren(...spans);
+        logo.classList.remove("is-blinking");
+        logo.classList.add("is-typing");
+        moveCaret(open);
+        let i = 0;
+        const next = () => {
+          if (i < spans.length) {
+            const span = spans[i++];
+            span.classList.remove("is-pending");
+            moveCaret(span);
+            timer = window.setTimeout(next, TYPE_DELAY);
+          } else {
+            moveCaret(null);
+            logo.classList.remove("is-typing");
+            logo.classList.add("is-blinking");
+            letters.textContent = text;
+          }
+        };
+        timer = window.setTimeout(next, TYPE_DELAY);
+      });
+    }
+  }
+
+  setupSiteLogo();
+  document.addEventListener("astro:page-load", setupSiteLogo);
+</script>

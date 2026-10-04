@@ -77,6 +77,40 @@ import {
       themeColors[palette][meta.media.includes("dark") ? "dark" : "light"];
   }
 </script>
+<!-- Home page boot gate (see components/pages/home/HomeBoot/boot.ts). Decides
+     before first paint whether this visit gets the full welcome, the short
+     "welcome back", or nothing, and records the visit. -->
+<script is:inline>
+  (() => {
+    try {
+      const url = new URL(location.href);
+      const firstPage = !sessionStorage.getItem("mifkata-visit");
+      sessionStorage.setItem("mifkata-visit", "1");
+      const last = Number(localStorage.getItem("mifkata-last-visit")) || 0;
+      localStorage.setItem("mifkata-last-visit", String(Date.now()));
+      if (url.pathname !== "/") return;
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const away = Date.now() - last > 30 * 24 * 60 * 60 * 1000;
+      const mode = url.searchParams.has("boot")
+        ? "full"
+        : !firstPage
+          ? null
+          : !last
+            ? "full"
+            : away
+              ? "short"
+              : null;
+      if (!mode) return;
+      document.documentElement.dataset.boot = mode;
+      // Never leave the page hidden if the boot script fails to load.
+      window.__bootFailsafe = setTimeout(() => {
+        delete document.documentElement.dataset.boot;
+      }, 8000);
+    } catch {
+      // Storage blocked: skip the boot.
+    }
+  })();
+</script>
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
   rel="alternate"
@@ -109,7 +143,6 @@ import {
   crossorigin
 />
 
-<!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Primary Meta Tags -->
