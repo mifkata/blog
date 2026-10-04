@@ -1,24 +1,282 @@
 ---
-import { getSeriesWithPosts } from "@/helpers/series";
-import { FeaturedSeries, type SeriesItem } from "./FeaturedSeries";
+import { Image } from "astro:assets";
+import { marked } from "marked";
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import type { SeriesPart } from "@/helpers/series";
 
 interface Props {
-  slug: string;
+  title: string;
+  description?: string;
+  parts: SeriesPart[];
 }
 
-const { slug } = Astro.props;
-const series = await getSeriesWithPosts(slug);
-
-const items: SeriesItem[] = series.items.map((item) => ({
-  url: item.url,
-  title: item.title,
-  synopsis: item.data?.synopsis,
-  heroImage:
-    typeof item.data?.heroImage === "string"
-      ? item.data.heroImage
-      : item.data?.heroImage?.src,
-  updatedDate: (item.data?.updatedDate || item.data?.pubDate)?.toISOString(),
-}));
+const { title, description, parts } = Astro.props;
+const id = `series-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 ---
 
-<FeaturedSeries title={series.title} items={items} client:load client:visible />
+<section class="pb-12" data-series-rail aria-labelledby={`${id}-title`}>
+  <header class="flex items-end justify-between gap-6">
+    <div class="min-w-0">
+      <p class="text-sm text-accent uppercase tracking-wider m-0 mb-2">
+        Featured series · {parts.length} parts
+      </p>
+      <h2 id={`${id}-title`} class="text-3xl md:text-4xl m-0 text-black">
+        {title}
+      </h2>
+      {
+        description && (
+          <p class="text-gray mt-2 mb-0 max-w-[58ch]">{description}</p>
+        )
+      }
+    </div>
+    <div class="rail-controls hidden md:flex items-center gap-2 shrink-0">
+      <span
+        class="text-sm text-gray tabular-nums mr-1.5"
+        data-rail-count
+        aria-live="polite"></span>
+      <button
+        type="button"
+        class="rail-button"
+        data-rail-prev
+        aria-controls={id}
+        aria-label="Previous part"
+        disabled>←</button
+      >
+      <button
+        type="button"
+        class="rail-button"
+        data-rail-next
+        aria-controls={id}
+        aria-label="Next part">→</button
+      >
+    </div>
+  </header>
+
+  <div
+    id={id}
+    class="rail-track mt-6 md:mt-7"
+    data-rail-track
+    tabindex="0"
+    role="region"
+    aria-label={`${title}, all parts`}
+  >
+    {
+      parts.map((part, index) => (
+        <article class="rail-card" data-rail-card>
+          <a
+            href={part.url}
+            class="rail-media"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+            {part.heroImage && (
+              <Image
+                src={part.heroImage}
+                alt=""
+                widths={[480, 720, 960]}
+                sizes="(min-width: 768px) 440px, 84vw"
+              />
+            )}
+            <span class="rail-chip">Part {index + 1}</span>
+          </a>
+          <div class="flex flex-col flex-1 gap-2 px-4.5 pt-4 pb-4.5">
+            <h3>
+              <a href={part.url} class="rail-title no-underline">
+                {part.title}
+              </a>
+            </h3>
+            {part.synopsis && (
+              <p
+                class="m-0 text-base leading-normal line-clamp-3"
+                set:html={marked.parseInline(part.synopsis, { async: false })}
+              />
+            )}
+            <p class="mt-auto pt-1 mb-0 flex items-baseline justify-between gap-3 text-sm text-gray">
+              <span>
+                {part.readingMinutes} min read ·{" "}
+                <FormattedDate date={part.updatedDate} />
+              </span>
+              <a
+                href={part.url}
+                class="font-bold no-underline"
+                tabindex="-1"
+                aria-hidden="true"
+              >
+                Read →
+              </a>
+            </p>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="rail-dots flex justify-center gap-2 mt-4 md:hidden">
+    {
+      parts.map((_, index) => (
+        <button
+          type="button"
+          class="rail-dot"
+          data-rail-dot
+          aria-label={`Go to part ${index + 1}`}
+        />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .rail-track {
+    position: relative;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 84%;
+    gap: 14px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    border-radius: 14px;
+  }
+  .rail-track::-webkit-scrollbar {
+    display: none;
+  }
+  .rail-track:focus-visible {
+    outline: 2px solid var(--palette-accent);
+    outline-offset: 4px;
+  }
+  .rail-track.is-dragging {
+    scroll-snap-type: none;
+    user-select: none;
+  }
+  .rail-track.is-dragging,
+  .rail-track.is-dragging * {
+    cursor: grabbing;
+  }
+  @media (min-width: 768px) {
+    .rail-track {
+      /* Two cards and a slice of the third, which shows there's more */
+      grid-auto-columns: calc((100% - 2 * 24px) / 2.35);
+      gap: 24px;
+    }
+    .rail-track.has-more {
+      -webkit-mask-image: linear-gradient(to right, #000 82%, transparent);
+      mask-image: linear-gradient(to right, #000 82%, transparent);
+    }
+  }
+
+  .rail-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--palette-line);
+    border-radius: 14px;
+    background: var(--palette-hero);
+    scroll-snap-align: start;
+    transition: border-color 0.2s;
+  }
+  .rail-card:not(.is-peek):hover,
+  .rail-card:focus-within {
+    border-color: var(--palette-accent);
+  }
+  .rail-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--palette-surface);
+  }
+  .rail-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    -webkit-user-drag: none;
+    transition: transform 0.5s ease;
+  }
+  .rail-card h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+  .rail-card:not(.is-peek):hover .rail-media :global(img) {
+    transform: scale(1.04);
+  }
+  .rail-chip {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--palette-surface);
+    color: var(--palette-heading);
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+  .rail-title {
+    color: var(--palette-heading);
+  }
+  .rail-card:not(.is-peek):hover .rail-title {
+    color: var(--palette-accent);
+  }
+
+  .rail-button {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--palette-line);
+    border-radius: 50%;
+    background: var(--palette-surface);
+    color: var(--palette-heading);
+    font-size: 1.125rem;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+  }
+  .rail-button:hover:not(:disabled) {
+    border-color: var(--palette-accent);
+    color: var(--palette-accent);
+  }
+  .rail-button:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .rail-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: var(--palette-line);
+    cursor: pointer;
+    transition:
+      width 0.25s,
+      background-color 0.25s;
+  }
+  .rail-dot[aria-current="true"] {
+    width: 22px;
+    background: var(--palette-accent);
+  }
+
+  /* Everything fits, so there's nothing to scroll to */
+  .is-static .rail-controls,
+  .is-static .rail-dots {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rail-media :global(img),
+    .rail-dot {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { setupSeriesRails } from "./rail";
+
+  setupSeriesRails();
+  document.addEventListener("astro:page-load", setupSeriesRails);
+</script>

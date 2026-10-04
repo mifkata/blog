@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { isPublished } from "@/helpers/posts";
+import { getFeaturedSeries } from "@/helpers/series";
 import CurrentlyReading from "@/components/pages/home/CurrentlyReading/CurrentlyReading.astro";
 import FeaturedSeries from "@/components/pages/home/FeaturedSeries/FeaturedSeries.astro";
 import HomeHero from "@/components/pages/home/HomeHero/HomeHero.astro";
@@ -16,13 +17,14 @@ const posts = (await getCollection("blog", isPublished)).sort(
 
 const featuredPost = posts[0] || null;
 const recentPosts = posts.slice(1, 11);
+const featuredSeries = await getFeaturedSeries("claude-code-basics-series");
 ---
 
 <PageLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <HomeHero />
   <HomeTerminal />
   {featuredPost && <FeaturedPost post={featuredPost} />}
-  <FeaturedSeries slug="claude-code-basics-series" />
+  <FeaturedSeries {...featuredSeries} />
   <RecentPosts posts={recentPosts} />
   <CurrentlyReading />
 </PageLayout>
