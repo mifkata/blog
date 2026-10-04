@@ -1,6 +1,8 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import { isPublished } from "@/helpers/posts";
+import { readingMinutes } from "@/helpers/reading";
+import { seriesPosition } from "@/helpers/seriesPosition";
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
 
 export async function getStaticPaths() {
@@ -38,6 +40,8 @@ const relatedPosts = allPosts
   {...post.data}
   headings={tocHeadings}
   relatedPosts={relatedPosts}
+  readingMinutes={readingMinutes(post.body ?? "")}
+  series={seriesPosition(post.id)}
 >
   <Content />
 </BlogPostLayout>
