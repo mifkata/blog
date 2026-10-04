@@ -77,7 +77,7 @@ const meta: Meta<typeof FeaturedSeries> = {
   args: {
     title: "Agentic Engineering Foundations",
     description:
-      "A practical guide to working with AI coding agents: a safe sandbox, clear project instructions and a spec-driven workflow.",
+      "A practical, tool-agnostic guide to engineering with AI coding agents.",
   },
 };
 
