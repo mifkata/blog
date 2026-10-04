@@ -3,12 +3,13 @@
     "slug": "agentic-engineering-foundations",
     "title": "Agentic Engineering Foundations",
     "caption": "This post is from the \"Agentic Engineering Foundations\" series",
-    "description": "A practical guide to working with AI coding agents: a safe sandbox, clear project instructions and a spec-driven workflow.",
+    "description": "A practical, tool-agnostic guide to engineering with AI coding agents.",
     "heroImage": "",
     "items": [
       "2025/sandboxing-ai-agents-with-devcontainers",
       "2026/01/agent-instructions-and-commands",
-      "2026/01/spec-driven-development"
+      "2026/01/spec-driven-development",
+      "2026/10/writing-efficient-skills-for-llm-agents"
     ]
   }
 ]
