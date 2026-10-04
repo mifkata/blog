@@ -49,6 +49,38 @@
   font-display: swap;
 }
 
+/* Page frame, content column and gutter. --page-bleed is the distance from
+   the column to the inside of the frame border, for sections that run edge
+   to edge. --page-border mirrors the .content-wrapper border. */
+:root {
+  --page-frame: 1280px;
+  --page-column: 1072px;
+  --page-gutter: 1.5rem;
+  --page-border: 0px;
+  --page-inner: calc(min(100vw, var(--page-frame)) - 2 * var(--page-border));
+  --page-bleed: calc(
+    (
+        var(--page-inner) -
+          min(var(--page-inner) - 2 * var(--page-gutter), var(--page-column))
+      ) /
+      2
+  );
+}
+
+@media (min-width: 1025px) {
+  :root {
+    --page-border: 1px;
+  }
+}
+
+.full-bleed {
+  margin-inline: calc(-1 * var(--page-bleed));
+}
+
+.column-inset {
+  padding-inline: var(--page-bleed);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -65,7 +97,7 @@ body {
   box-shadow:
     -20px 0 40px rgba(0, 0, 0, 0.08),
     20px 0 40px rgba(0, 0, 0, 0.08);
-  max-width: 1280px;
+  max-width: var(--page-frame);
   width: 100%;
   margin: 0 auto;
   min-height: 100vh;
