@@ -12,6 +12,11 @@ const meta: Meta<typeof PostHero> = {
   title: "Post/PostHero",
   component: PostHero,
   tags: ["autodocs"],
+  args: {
+    description:
+      "How the post opens: the description shows under the title in the hero card.",
+    readingMinutes: 7,
+  },
 };
 
 export default meta;
@@ -33,6 +38,31 @@ export const WithUpdatedDate: Story = {
     updatedDate: new Date("2025-12-01"),
     heroImage: createMockImage(2),
     tags: ["typescript"],
+  },
+};
+
+export const InSeries: Story = {
+  args: {
+    title: "Spec-Driven Development (SDD) for AI Coding Agents",
+    pubDate: new Date("2026-01-08"),
+    updatedDate: new Date("2026-10-02"),
+    heroImage: createMockImage(4),
+    tags: ["ai", "sdd", "workflow"],
+    series: { title: "Agentic Engineering Foundations", part: 3, total: 4 },
+  },
+};
+
+/** A tall image: the hero shows all of it, up to the height of the screen. */
+export const TallImage: Story = {
+  args: {
+    title: "A Post With a Tall Hero Image",
+    pubDate: new Date("2025-08-12"),
+    heroImage: {
+      src: "https://picsum.photos/seed/tall/1120/900",
+      width: 1120,
+      height: 900,
+      format: "jpg" as const,
+    },
   },
 };
 
