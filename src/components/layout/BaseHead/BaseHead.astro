@@ -21,25 +21,16 @@ import {
   PALETTE_BY_SEASON,
   THEME_COLORS,
 } from "@/helpers/season";
+import { FAVICON_BY_PALETTE } from "@/helpers/favicon";
 ---
 
 <!-- Global Metadata -->
 <GoogleAnalytics />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link
-  rel="icon"
-  type="image/png"
-  href="/icons/favicon-96x96.png"
-  sizes="96x96"
-/>
-<link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
-<link rel="shortcut icon" href="/icons/favicon.ico" />
-<link
-  rel="apple-touch-icon"
-  sizes="180x180"
-  href="/icons/apple-touch-icon.png"
-/>
+<link rel="icon" href="/icons/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" data-favicon />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-title" content="Mifkata.com" />
 <link rel="manifest" href="/manifest.webmanifest" />
 <meta
@@ -60,6 +51,7 @@ import {
     byMonth: PALETTE_BY_MONTH,
     bySeason: PALETTE_BY_SEASON,
     themeColors: THEME_COLORS,
+    favicons: FAVICON_BY_PALETTE,
   }}
 >
   let preview = null;
@@ -72,6 +64,9 @@ import {
     ? bySeason[preview]
     : byMonth[new Date().getMonth()];
   document.documentElement.dataset.palette = palette;
+  document
+    .querySelector("link[data-favicon]")
+    ?.setAttribute("href", favicons[palette]);
   for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
     meta.content =
       themeColors[palette][meta.media.includes("dark") ? "dark" : "light"];
@@ -163,3 +158,9 @@ import {
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+
+<script>
+  import { watchReturns } from "./faviconMotion";
+
+  watchReturns();
+</script>
