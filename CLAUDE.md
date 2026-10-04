@@ -12,6 +12,7 @@
 
 - When unsure about a request, ALWAYS ask clarifying questions before proceeding. Do not guess at parameters like copyright holders, next steps, or which file to modify. Ask first, act second.
 - Update `.env.example` when adding ENV vars to code
+- Don't write comments that restate the implementation, e.g. `// Drafts are visible in dev` above `import.meta.env.DEV || !data.draft`, or a label repeating the element or condition right below it. Comments that add what the code can't say (intent, constraints, units, workarounds, config) are welcome.
 
 ---
 

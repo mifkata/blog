@@ -40,7 +40,6 @@ const meta: Meta<LabeledImageArgs> = {
     },
   },
   render: (args, { canvasElement }) => {
-    // Clean up previous root if re-rendering
     const existingRoot = rootMap.get(canvasElement);
     if (existingRoot) {
       existingRoot.unmount();

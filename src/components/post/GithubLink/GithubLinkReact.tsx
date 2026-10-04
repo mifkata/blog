@@ -82,7 +82,6 @@ export default function GithubLink({
   const parsed = parseGithubUrl(url);
   const previewId = useId();
 
-  // Fetch file to count lines and calculate height
   useEffect(() => {
     if (!isExpanded || !parsed.isCode || !parsed.rawUrl) return;
 
@@ -100,7 +99,6 @@ export default function GithubLink({
         setIframeHeight(finalHeight);
       })
       .catch(() => {
-        // On error, use default height
         setIframeHeight(maxHeight || 400);
       })
       .finally(() => setIsLoading(false));
@@ -132,14 +130,12 @@ export default function GithubLink({
         <div className="text-sm [&_p]:leading-normal!">{children}</div>
       )}
 
-      {/* Invalid URL Warning */}
       {!parsed.isValid && (
         <div className="text-amber-600 text-sm bg-amber-50 rounded p-2">
           ⚠️ Could not parse GitHub URL. Preview unavailable.
         </div>
       )}
 
-      {/* Preview Toggle & Content */}
       {parsed.hasPreview && (
         <div>
           <button
@@ -154,7 +150,6 @@ export default function GithubLink({
 
           {isExpanded && (
             <div id={previewId} className="mt-3">
-              {/* Image preview */}
               {parsed.isImage && parsed.rawUrl && (
                 <img
                   src={parsed.rawUrl}
@@ -164,7 +159,6 @@ export default function GithubLink({
                 />
               )}
 
-              {/* Code preview */}
               {parsed.isCode && (
                 <>
                   {isLoading && (

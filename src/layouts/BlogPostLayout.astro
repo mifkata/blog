@@ -46,13 +46,11 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
       <div
         class:list={["min-w-0 max-w-[920px]", showToc ? "flex-1" : "w-full"]}
       >
-        <!-- Article Content -->
         <div class="prose">
           <slot />
         </div>
       </div>
 
-      <!-- Sidebar (TOC only) -->
       {showToc && <TableOfContents headings={headings} />}
     </div>
 

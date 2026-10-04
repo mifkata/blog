@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook-astro/framework";
 import ArticleCard from "./ArticleCard.astro";
 
-// Mock ImageMetadata for heroImage
 const createMockImage = (id: number) => ({
   src: `https://picsum.photos/seed/${id}/200/120`,
   width: 200,

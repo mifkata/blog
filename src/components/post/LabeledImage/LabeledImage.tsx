@@ -29,7 +29,6 @@ export function LabeledImage({
   height,
   children,
 }: Props) {
-  // Handle ImageMetadata (has .src property) or string URLs
   const imgSrc = typeof src === "object" ? src.src : src;
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,7 +50,6 @@ export function LabeledImage({
     [openModal],
   );
 
-  // Handle escape key and body scroll lock
   useEffect(() => {
     if (!isOpen) return;
 
