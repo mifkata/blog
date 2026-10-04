@@ -1,15 +1,14 @@
 [
   {
-    "slug": "claude-code-basics-series",
-    "title": "Claude Code Basics",
-    "caption": "This post is from the \"Claude Code Basics\" series",
-    "description": "A collection of articles focused on setting up dev environment, configuring commands and CLAUDE.md for a spec-driven development workflow.",
+    "slug": "agentic-engineering-foundations",
+    "title": "Agentic Engineering Foundations",
+    "caption": "This post is from the \"Agentic Engineering Foundations\" series",
+    "description": "A practical guide to working with AI coding agents: a safe sandbox, clear project instructions and a spec-driven workflow.",
     "heroImage": "",
-    "trim": "Claude Code: ",
     "items": [
-      "2025/claude-code-devcontainers",
-      "2026/01/claude-code-system-prompting-and-commands",
-      "2026/01/claude-code-spec-driven-development"
+      "2025/sandboxing-ai-agents-with-devcontainers",
+      "2026/01/agent-instructions-and-commands",
+      "2026/01/spec-driven-development"
     ]
   }
 ]

@@ -1,6 +1,6 @@
 ---
-title: "Claude Code: System prompting and commands"
-description: Best practices for organising Claude Code commands and CLAUDE.md
+title: "Project Instructions and Reusable Commands"
+description: Best practices for organising project instructions (CLAUDE.md) and reusable commands for AI coding agents
 synopsis:
   Starting a new codebase with Claude Code or another AI coding agent, requires a lot
   of fine tuning to make long-term, production ready code development consistent.
@@ -24,8 +24,8 @@ import {
 } from "@/components/post";
 
 <ArticleSeries
-  slug="claude-code-basics-series"
-  current="/blog/2026/01/claude-code-system-prompting-and-commands/"
+  slug="agentic-engineering-foundations"
+  current="/blog/2026/01/agent-instructions-and-commands/"
 />
 
 ## Overview
@@ -38,7 +38,7 @@ This article explores organising a project' **system instructions** and **slash-
 
 ## Intro
 
-After setting up your [devcontainer](/blog/2025/claude-code-devcontainers/) the next obvious step is to configure **the reusable prompts** for your steady, production-ready software development cycle using Claude Code. These reusable prompts, are the core of your **Claude toolkit**, so maintain them well:
+After setting up your [devcontainer](/blog/2025/sandboxing-ai-agents-with-devcontainers/) the next obvious step is to configure **the reusable prompts** for your steady, production-ready software development cycle using Claude Code. These reusable prompts, are the core of your **Claude toolkit**, so maintain them well:
 
 - **CLAUDE.md** - this is the primary instruction set that a **Claude agent instance** would load when started and after <ClaudeCommand archived name="compact" external /> completes. This is where you want to put as much nifty instructions that the bot works with your codebase. Having it and configured might seriously benefit _**token usage**_ and reduce agent _**planning time**_. Maitaining an efficient `CLUDE.md` can be considered an art form of its own.
 - **Slash-commands** - a collection of reusable prompts that will help you trigger repetitive actions, whilst working on a project. Whilst there's a case to be made about the benefits of global **Claude** commands, we're talking about these that you put in your repository's `.claude/commands` directory.
@@ -271,7 +271,7 @@ When your project grows, it helps to create a custom `/test-[app]` command, that
 
 Uses <ClaudeCommand archived name="commit-staged" /> to generate the message, asks for confirmation and commits. Requires
 that `git config --global user.name [name]` and `git config --global user.email [name]` are
-configured in the [devcontainer](/blog/2025/claude-code-devcontainers/).
+configured in the [devcontainer](/blog/2025/sandboxing-ai-agents-with-devcontainers/).
 
 <GithubLink
   expanded

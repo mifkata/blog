@@ -17,7 +17,9 @@ const posts = (await getCollection("blog", isPublished)).sort(
 
 const featuredPost = posts[0] || null;
 const recentPosts = posts.slice(1, 11);
-const featuredSeries = await getFeaturedSeries("claude-code-basics-series");
+const featuredSeries = await getFeaturedSeries(
+  "agentic-engineering-foundations",
+);
 ---
 
 <PageLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>

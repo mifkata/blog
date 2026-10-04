@@ -10,8 +10,8 @@ const createMockImage = (id: number) => ({
 
 const parts = [
   {
-    url: "/blog/2025/claude-code-devcontainers/",
-    title: "Dev Containers and How-to Work Securely with AI Agents",
+    url: "/blog/2025/sandboxing-ai-agents-with-devcontainers/",
+    title: "Sandboxing AI Agents with Dev Containers",
     synopsis:
       "Using tools like **Claude Code** on a daily basis can be quite amazing, however, you cannot always trust it to keep your files safe.",
     heroImage: createMockImage(1),
@@ -19,8 +19,8 @@ const parts = [
     readingMinutes: 8,
   },
   {
-    url: "/blog/2026/01/claude-code-system-prompting-and-commands/",
-    title: "System prompting and commands",
+    url: "/blog/2026/01/agent-instructions-and-commands/",
+    title: "Project Instructions and Reusable Commands",
     synopsis:
       "The main entry points for working with an agent in a project are `CLAUDE.md` and custom commands.",
     heroImage: createMockImage(2),
@@ -28,8 +28,8 @@ const parts = [
     readingMinutes: 7,
   },
   {
-    url: "/blog/2026/01/claude-code-spec-driven-development/",
-    title: "Spec-Driven Development (SDD)",
+    url: "/blog/2026/01/spec-driven-development/",
+    title: "Spec-Driven Development (SDD) for AI Coding Agents",
     synopsis:
       "Coding agents forget everything between sessions, and the bigger the codebase grows, the more they have to rediscover.",
     heroImage: createMockImage(3),
@@ -75,9 +75,9 @@ const meta: Meta<typeof FeaturedSeries> = {
     parts: { control: "object", description: "Posts in reading order" },
   },
   args: {
-    title: "Claude Code Basics",
+    title: "Agentic Engineering Foundations",
     description:
-      "A collection of articles focused on setting up dev environment, configuring commands and CLAUDE.md for a spec-driven development workflow.",
+      "A practical guide to working with AI coding agents: a safe sandbox, clear project instructions and a spec-driven workflow.",
   },
 };
 

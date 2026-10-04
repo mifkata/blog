@@ -31,7 +31,7 @@ export async function getSeriesWithPosts(slug: string) {
         acc[index] = {
           ...p,
           url,
-          title: (p.data?.title || url).replace(series.trim || "", ""),
+          title: p.data?.title || url,
         };
       }
 
