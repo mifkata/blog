@@ -6,12 +6,15 @@ import Comments from "@/components/post/Comments/Comments.astro";
 import PostHero from "@/components/post/PostHero/PostHero.astro";
 import RelatedPosts from "@/components/post/RelatedPosts/RelatedPosts.astro";
 import TableOfContents from "@/components/post/TableOfContents/TableOfContents.astro";
+import type { SeriesPosition } from "@/helpers/seriesPosition";
 import PageLayout from "./PageLayout.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
   headings?: MarkdownHeading[];
   relatedPosts?: CollectionEntry<"blog">[];
   showComments?: boolean;
+  readingMinutes?: number;
+  series?: SeriesPosition;
 };
 
 const {
@@ -24,6 +27,8 @@ const {
   headings = [],
   relatedPosts = [],
   showComments = true,
+  readingMinutes,
+  series,
 } = Astro.props;
 const showToc = headings.length >= 2;
 const displayedRelatedPosts = relatedPosts.slice(0, 4);
@@ -33,10 +38,13 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
   <article>
     <PostHero
       title={title}
+      description={description}
       pubDate={pubDate}
       updatedDate={updatedDate}
       heroImage={heroImage}
       tags={tags}
+      readingMinutes={readingMinutes}
+      series={series}
     />
 
     <div class="flex gap-12 items-start">

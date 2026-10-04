@@ -1,104 +1,161 @@
 ---
-import { getImage } from "astro:assets";
+import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
 import Tag from "@/components/ui/Tag/Tag.astro";
+import type { SeriesPosition } from "@/helpers/seriesPosition";
 
 interface Props {
   title: string;
+  description?: string;
   pubDate: Date;
   updatedDate?: Date;
   heroImage?: ImageMetadata;
   tags?: string[];
+  readingMinutes?: number;
+  series?: SeriesPosition;
 }
 
-const { title, pubDate, updatedDate, heroImage, tags } = Astro.props;
-const optimizedHero = heroImage
-  ? await getImage({ src: heroImage, width: 1120 })
-  : null;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  tags,
+  readingMinutes,
+  series,
+} = Astro.props;
 ---
 
-{
-  heroImage && optimizedHero ? (
-    <div
-      class="full-bleed mb-8 -mt-12 min-h-[75vh] sm:min-h-[50vh] lg:min-h-0 lg:max-h-[calc(100svh-7rem)] lg:overflow-hidden bg-cover bg-center relative"
-      style={`background-image: url(${optimizedHero.src});`}
-      data-hero-parallax
-      role="img"
-      aria-label={title}
+<div class="mb-8">
+  {
+    heroImage && (
+      <div
+        class="post-hero-media full-bleed -mt-12"
+        style={`--hero-ratio: ${heroImage.width / heroImage.height}`}
+        data-post-hero-media
+      >
+        <Image
+          src={heroImage}
+          alt=""
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 1280px) 1280px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    )
+  }
+  <header class:list={["post-hero-info", heroImage ? "is-card" : "is-plain"]}>
+    {
+      series && (
+        <p class="text-sm text-accent uppercase tracking-wider text-balance m-0 mb-2.5">
+          {series.title} · Part {series.part}
+        </p>
+      )
+    }
+    <h1>{title}</h1>
+    {
+      description && (
+        <p class="post-hero-dek text-gray text-pretty max-w-[60ch] mt-3 mb-0">
+          {description}
+        </p>
+      )
+    }
+    <p
+      class="post-hero-meta flex flex-wrap gap-x-2 gap-y-0.5 mt-3.5 mb-0 text-sm text-gray tabular-nums"
     >
-      {/* 2:1 spacer: height follows the width without shrinking it when max-h applies */}
-      <div class="hidden lg:block pt-[50%]" aria-hidden="true" />
-      <header class="absolute inset-x-[calc(var(--page-bleed)-1rem)] bottom-2 lg:bottom-4 backdrop-blur-[6px] bg-black/25 p-4 rounded-lg">
-        <h1 class="md:!text-3xl m-0 !text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.8)] block">
-          {title}
-        </h1>
-        <div class="items-center gap-3 text-sm text-gray-300 mt-2 sm:flex">
-          {tags && tags.length > 0 && (
-            <div class="flex gap-2 flex-wrap">
-              {tags.map((t) => (
-                <Tag tag={t} variant="dark" />
-              ))}
-            </div>
-          )}
-          <div class="self-end py-2">
-            <FormattedDate date={pubDate} class="bg-[#000000]/50 px-1" />
-            {updatedDate && (
-              <span class="text-nowrap bg-[#000000]/50 px-1">
-                Updated: <FormattedDate date={updatedDate} class="italic" />
-              </span>
-            )}
-          </div>
-        </div>
-      </header>
-    </div>
-  ) : (
-    <header class="mb-8 pb-8 border-b border-gray-light">
-      <h1 class="text-md md:text-5xl m-0 mb-4">{title}</h1>
-      <div class="flex items-center gap-4 text-sm text-gray mb-4">
-        <FormattedDate date={pubDate} />
-        {updatedDate && (
-          <span class="italic">
+      <FormattedDate date={pubDate} />
+      {
+        updatedDate && (
+          <span>
             Updated <FormattedDate date={updatedDate} />
           </span>
-        )}
-      </div>
-      {tags && tags.length > 0 && (
-        <div class="flex gap-2 flex-wrap">
-          {tags.map((t) => (
-            <Tag tag={t} />
+        )
+      }
+      {readingMinutes && <span>{readingMinutes} min read</span>}
+    </p>
+    {
+      tags && tags.length > 0 && (
+        <div class="flex flex-wrap gap-1.5 mt-3">
+          {tags.map((tag) => (
+            <Tag tag={tag} class="text-xs" />
           ))}
         </div>
-      )}
-    </header>
-  )
-}
+      )
+    }
+  </header>
+</div>
+
+<style>
+  .post-hero-media {
+    position: relative;
+    aspect-ratio: var(--hero-ratio);
+    overflow: hidden;
+    background: var(--palette-hero);
+  }
+  /* Anchored to the top: any crop comes off the bottom, which the card covers */
+  .post-hero-media :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    will-change: transform;
+  }
+  .post-hero-info h1 {
+    margin: 0;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+  .post-hero-meta > :global(* + *)::before {
+    content: "·";
+    margin-right: 0.5rem;
+  }
+  .is-card {
+    position: relative;
+    margin: -44px -16px 0;
+    padding: 22px 16px 0;
+    border-radius: 16px 16px 0 0;
+    background: var(--palette-surface);
+    box-shadow:
+      0 -1px 0 var(--palette-line),
+      0 -22px 44px -30px rgb(0 0 0 / 0.35);
+  }
+  .is-plain {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--palette-line);
+  }
+
+  @media (min-width: 768px) {
+    .post-hero-media {
+      /* The whole image, unless that pushes the title off the first screen:
+         7rem for the expanded header, 120px for the top of the card */
+      aspect-ratio: auto;
+      height: max(
+        320px,
+        min(var(--page-inner) / var(--hero-ratio), 100svh - 7rem - 120px)
+      );
+    }
+    /* The text stays on the column, in line with the logo */
+    .is-card {
+      --pull: min(44px, var(--page-bleed));
+      max-width: 860px;
+      margin: -150px 0 0 calc(-1 * var(--pull));
+      padding: 38px 44px 0 var(--pull);
+      border-radius: 20px 20px 0 0;
+    }
+    .post-hero-dek {
+      font-size: 1.25rem;
+    }
+  }
+</style>
 
 <script>
-  function setupHeroParallax() {
-    const hero = document.querySelector<HTMLElement>("[data-hero-parallax]");
-    if (!hero) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  import { setupHeroParallax } from "./heroParallax";
 
-    const SPEED = 0.35;
-    let ticking = false;
-
-    function update() {
-      const offset = window.scrollY * SPEED;
-      hero!.style.backgroundPositionY = `calc(50% + ${offset}px)`;
-      ticking = false;
-    }
-
-    function onScroll() {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    }
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-  }
   setupHeroParallax();
   document.addEventListener("astro:page-load", setupHeroParallax);
 </script>
