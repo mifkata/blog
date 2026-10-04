@@ -4,3 +4,11 @@
 /resume/     /  301
 /services    /  301
 /services/   /  301
+
+# Claude Code Basics became Agentic Engineering Foundations in Oct 2026, and its posts moved to provider-neutral URLs.
+/blog/2025/claude-code-devcontainers  /blog/2025/sandboxing-ai-agents-with-devcontainers/  301
+/blog/2025/claude-code-devcontainers/  /blog/2025/sandboxing-ai-agents-with-devcontainers/  301
+/blog/2026/01/claude-code-system-prompting-and-commands  /blog/2026/01/agent-instructions-and-commands/  301
+/blog/2026/01/claude-code-system-prompting-and-commands/  /blog/2026/01/agent-instructions-and-commands/  301
+/blog/2026/01/claude-code-spec-driven-development  /blog/2026/01/spec-driven-development/  301
+/blog/2026/01/claude-code-spec-driven-development/  /blog/2026/01/spec-driven-development/  301

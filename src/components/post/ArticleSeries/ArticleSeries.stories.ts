@@ -16,13 +16,13 @@ type Story = StoryObj<typeof ArticleSeries>;
 
 export const Default: Story = {
   args: {
-    slug: "claude-code-basics-series",
+    slug: "agentic-engineering-foundations",
   },
 };
 
 export const WithCurrentArticle: Story = {
   args: {
-    slug: "claude-code-basics-series",
-    current: "2026/01/claude-code-system-prompting-and-commands",
+    slug: "agentic-engineering-foundations",
+    current: "2026/01/agent-instructions-and-commands",
   },
 };

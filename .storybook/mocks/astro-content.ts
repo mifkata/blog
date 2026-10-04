@@ -3,20 +3,20 @@ export async function getCollection(name: string) {
   if (name === "blog") {
     return [
       {
-        id: "2025/claude-code-devcontainers",
-        slug: "2025/claude-code-devcontainers",
+        id: "2025/sandboxing-ai-agents-with-devcontainers",
+        slug: "2025/sandboxing-ai-agents-with-devcontainers",
         data: {
-          title: "Claude Code: Dev Containers",
+          title: "Sandboxing AI Agents with Dev Containers",
           synopsis: "Learn how to set up secure dev containers for AI agents.",
           pubDate: new Date("2025-12-30"),
           updatedDate: new Date("2026-01-02"),
         },
       },
       {
-        id: "2026/01/claude-code-system-prompting-and-commands",
-        slug: "2026/01/claude-code-system-prompting-and-commands",
+        id: "2026/01/agent-instructions-and-commands",
+        slug: "2026/01/agent-instructions-and-commands",
         data: {
-          title: "Claude Code: System Prompting and Commands",
+          title: "Project Instructions and Reusable Commands",
           synopsis:
             "Best practices for organizing Claude Code commands and CLAUDE.md.",
           pubDate: new Date("2026-01-02"),
@@ -24,10 +24,10 @@ export async function getCollection(name: string) {
         },
       },
       {
-        id: "2026/01/claude-code-spec-driven-development",
-        slug: "2026/01/claude-code-spec-driven-development",
+        id: "2026/01/spec-driven-development",
+        slug: "2026/01/spec-driven-development",
         data: {
-          title: "Claude Code: Spec-Driven Development",
+          title: "Spec-Driven Development (SDD) for AI Coding Agents",
           synopsis:
             "Working with specs to maintain organized AI-assisted development.",
           pubDate: new Date("2026-01-03"),
