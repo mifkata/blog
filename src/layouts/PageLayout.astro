@@ -22,7 +22,10 @@ const { title, description, image, class: className } = Astro.props;
     <div class="content-wrapper">
       <Header />
       <main
-        class:list={["w-full max-w-[1120px] mx-auto px-6 py-12", className]}
+        class:list={[
+          "w-full max-w-[calc(var(--page-column)+2*var(--page-gutter))] mx-auto px-(--page-gutter) py-12",
+          className,
+        ]}
       >
         <slot />
       </main>

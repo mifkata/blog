@@ -19,7 +19,7 @@ interface Props {
 
 const styles = tv({
   slots: {
-    section: "max-w-[960px] mx-auto pb-12",
+    section: "pb-12",
     header: "flex flex-col mb-4",
     headerLabel: "text-lg text-gray tracking-wider uppercase text-nowrap",
     headerTitle: "text-lg m-0 text-gray tracking-wider",

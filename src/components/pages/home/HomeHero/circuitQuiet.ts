@@ -28,7 +28,7 @@ const QUIET_SPREAD = 6;
  * hero). Server-rendered so the fade is in place before any script runs.
  */
 export const DESKTOP_COPY: QuietBox = {
-  x: 160,
+  x: 104,
   y: 74,
   width: 560,
   height: 292,
