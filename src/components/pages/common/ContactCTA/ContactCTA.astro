@@ -45,7 +45,7 @@ const Wrapper = inline ? "div" : "section";
       class="px-6 py-3 justify-center border border-transparent bg-origin-border"
       variant="inverse"
     >
-      <LucideIcon icon="mail" size={18} />
+      <LucideIcon slot="icon" icon="mail" size={18} />
       {buttonText}
     </Button>
     {
@@ -57,7 +57,7 @@ const Wrapper = inline ? "div" : "section";
           class="px-6 py-3 justify-center"
           variant="ghost"
         >
-          <LinkedIn size={18} />
+          <LinkedIn slot="icon" size={18} />
           {linkedinText}
           <span class="sr-only">(opens in new tab)</span>
         </Button>
