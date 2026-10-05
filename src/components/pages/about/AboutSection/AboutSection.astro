@@ -1,16 +1,68 @@
 ---
 interface Props {
   title: string;
+  /** A short line under the title, in the margin */
+  note?: string;
   class?: string;
 }
 
-const { title, class: className } = Astro.props;
+const { title, note, class: className } = Astro.props;
 ---
 
-<section class:list={["mb-12", className]}>
-  <h2 class="text-2xl mb-6 flex items-center gap-3">
-    <slot name="icon" />
-    {title}
-  </h2>
-  <slot />
+<section class:list={["about-row", className]}>
+  <div class="about-row-head">
+    <h2>
+      <slot name="icon" />
+      {title}
+    </h2>
+    {note && <p>{note}</p>}
+  </div>
+  <div class="about-row-body">
+    <slot />
+  </div>
 </section>
+
+<style>
+  /* A ruled row like the home page's index: the heading in a margin column,
+     the text beside it. Phones stack the two. */
+  .about-row {
+    display: grid;
+    gap: 10px;
+    padding-block: 24px;
+    border-top: 1px solid var(--palette-line);
+  }
+  .about-row-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .about-row-head h2 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 0;
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+  .about-row-head p {
+    margin: 0;
+    color: var(--palette-muted);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .about-row-body {
+    min-width: 0;
+  }
+  /* Prose keeps a readable measure; lists such as the quirks use the width */
+  .about-row-body :global(p) {
+    max-width: 68ch;
+  }
+
+  @media (min-width: 768px) {
+    .about-row {
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 40px;
+      padding-block: 28px;
+    }
+  }
+</style>

@@ -2,49 +2,151 @@
 import { Image } from "astro:assets";
 import avatar from "@/assets/avatar.jpeg";
 
-// Where/when the photo was taken, e.g. "Rajasthan, India · Nov 2024"
-const photoCaption = "Black Sea coast near Balchik · Aug 2026";
+// Where and when the photo was taken: the caption under it, and the postmark
+// stamped over its corner
+const photo = {
+  caption: "Black Sea coast near Balchik · Aug 2026",
+  place: "Balchik",
+  date: "Aug 2026",
+};
 ---
 
-<section class="mb-12">
-  <div class="flex flex-col md:flex-row gap-8 md:items-start">
-    <div class="flex-shrink-0 text-center flex flex-col items-center">
-      <div
-        class="w-72 h-72 rounded-full overflow-hidden border-4 border-gray-light"
-      >
-        <Image
-          src={avatar}
-          alt="Andriyan Ivanov"
-          width={288}
-          densities={[1, 2, 3]}
-          class="w-full h-full! object-cover object-[center_40%]"
-        />
-      </div>
-      {photoCaption && <p class="text-xs text-gray mt-2">{photoCaption}</p>}
-    </div>
-    <div>
-      <h1 class="text-4xl md:text-5xl mb-4">About Me</h1>
-      <p class="text-xl text-gray mb-4">
-        Born in Varna, Bulgaria in 1983. Started working when most people were
-        still figuring out what to study.
-      </p>
-      <p class="text-gray-dark">
-        By 19 I'd moved to Sofia alone, broke, and stubborn enough to think that
-        was a good idea. I spent my teenage years ignoring school, obsessed with
-        computers, video games, and the idea of becoming a hacker. When I got my
-        first PC in '98, I thought I'd be a designer, but life shoved me into
-        programming: PHP, websites, anything that paid rent. That's how it
-        started.
-      </p>
-      <p class="text-gray-dark mt-4">
-        I'm a Holistic Product Generalist, focused on AI adoption and
-        engineering. Over the years I've worn most of the hats a product needs:
-        I've built products, designed them, written their copy, measured them
-        and helped them grow, and I've led the teams doing all of that. Wearing
-        them all taught me to care about the whole product, not just the code.
-        I'm curious by default, and I treat my own habits like a product: try
-        things, keep what works, improve the rest.
-      </p>
-    </div>
+<section class="about-hero">
+  <div class="about-intro">
+    <p class="text-sm text-accent uppercase tracking-wider m-0 mb-2">About</p>
+    <h1 class="text-4xl md:text-5xl mb-4">About Me</h1>
+    <p class="text-xl text-gray mb-5">
+      Born in Varna, Bulgaria in 1983. Started working when most people were
+      still figuring out what to study.
+    </p>
+    <p class="text-gray-dark">
+      By 19 I'd moved to Sofia alone, broke, and stubborn enough to think that
+      was a good idea. I spent my teenage years ignoring school, obsessed with
+      computers, video games, and the idea of becoming a hacker. When I got my
+      first PC in '98, I thought I'd be a designer, but life shoved me into
+      programming: PHP, websites, anything that paid rent. That's how it
+      started.
+    </p>
+    <p class="text-gray-dark mt-4">
+      I'm a Holistic Product Generalist, focused on AI adoption and engineering.
+      Over the years I've worn most of the hats a product needs: I've built
+      products, designed them, written their copy, measured them and helped them
+      grow, and I've led the teams doing all of that. Wearing them all taught me
+      to care about the whole product, not just the code. I'm curious by
+      default, and I treat my own habits like a product: try things, keep what
+      works, improve the rest.
+    </p>
   </div>
+
+  <figure class="postcard">
+    <div class="postcard-photo">
+      <Image
+        src={avatar}
+        alt="Andriyan Ivanov"
+        widths={[360, 720, 1080]}
+        sizes="(min-width: 768px) 336px, calc(100vw - 80px)"
+        class="w-full h-full object-cover object-[center_40%]"
+      />
+    </div>
+    <figcaption class="postcard-caption">{photo.caption}</figcaption>
+    <svg
+      class="postmark"
+      viewBox="0 0 128 80"
+      fill="none"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <circle cx="44" cy="40" r="32" stroke-width="2"></circle>
+      <circle cx="44" cy="40" r="26" stroke-width="1"></circle>
+      <text x="44" y="35" text-anchor="middle">{photo.place.toUpperCase()}</text
+      >
+      <path d="M26 41h36" stroke-width="1"></path>
+      <text class="postmark-date" x="44" y="53" text-anchor="middle"
+        >{photo.date.toUpperCase()}</text
+      >
+      {
+        [22, 32, 42, 52, 62].map((y) => (
+          <path d={`M80 ${y}q6 -5 12 0t12 0t12 0t12 0`} stroke-width="2" />
+        ))
+      }
+    </svg>
+  </figure>
 </section>
+
+<style>
+  /* The intro, then the photo as a postcard from where it was taken, tilted
+     a little, with its place and date stamped over the sky */
+  .about-hero {
+    display: grid;
+    gap: 40px;
+    margin-bottom: 56px;
+  }
+  .about-intro {
+    min-width: 0;
+  }
+  .postcard {
+    position: relative;
+    justify-self: center;
+    /* Room on the right for the postmark's overhang */
+    width: min(100% - 32px, 360px);
+    margin: 0;
+    padding: 12px 12px 54px;
+    border-radius: 4px;
+    background: color-mix(
+      in oklch,
+      var(--palette-surface) 92%,
+      var(--palette-button-hi)
+    );
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.12),
+      0 22px 40px -24px rgb(0 0 0 / 0.4);
+    transform: rotate(-2.5deg);
+  }
+  .postcard-photo {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  .postcard-caption {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    color: var(--palette-muted);
+    font-size: 0.875rem;
+  }
+  /* Ink that reads on the photo's sky in both themes: the season's accent,
+     darkened, rather than the theme's own accent */
+  .postmark {
+    position: absolute;
+    top: 18px;
+    right: -34px;
+    width: 150px;
+    color: color-mix(in oklch, var(--palette-accent) 62%, black);
+    opacity: 0.85;
+    transform: rotate(12deg);
+  }
+  .postmark text {
+    fill: currentColor;
+    stroke: none;
+    font:
+      9px ui-monospace,
+      "SF Mono",
+      Menlo,
+      monospace;
+    letter-spacing: 1px;
+  }
+  .postmark .postmark-date {
+    font-size: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .about-hero {
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 64px;
+      align-items: center;
+    }
+    .postcard {
+      width: 100%;
+    }
+  }
+</style>
