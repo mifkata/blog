@@ -660,6 +660,17 @@ const another = "read another";
     .footer-wide {
       display: inline;
     }
+
+    /* Too long for the bar on small tablets */
+    .footer-message {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-message {
+      display: inline;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
