@@ -11,7 +11,7 @@ synopsis: >-
   specs, the frameworks worth starting with, and how my own setup evolved from
   homegrown commands to OpenSpec and beads.
 pubDate: "2026-01-08T17:45:00Z"
-updatedDate: "2026-10-02T20:28:00Z"
+updatedDate: "2026-10-05T08:55:00Z"
 heroImage: "@/assets/blog/2026/0102-spec-driven-development.png"
 tags: ["ai", "coding", "claude", "devex", "howto", "sdd", "workflow"]
 ---
@@ -91,14 +91,7 @@ I haven't used these three myself, but they're among the best-known SDD tools an
 
 ## Scale it up with a pipeline
 
-For new projects, I now start with a pipeline of skills instead of individual specs. Each skill owns one stage - requirements, audit, technical design, roadmap and task breakdown - and the output of one is the input of the next. Coding agents then pick up the tasks one reviewable chunk at a time, with a human review gate between batches.
-
-<GithubLink url="https://github.com/mifkata/project-bootstrap-skills">
-  **The SDD pipeline** I use to bootstrap new projects, from a rough product
-  description to a task graph that agents can work through.
-</GithubLink>
-
-I wrote about how these skills are planned, written and evaluated in [Tips for writing efficient skills for LLM agents](/blog/2026/10/writing-efficient-skills-for-llm-agents/).
+For larger projects, the work can be split across a set of skills, each owning one stage, with the output of one as the input of the next. I wrote about how to plan, write and evaluate skills like these in [Tips for writing efficient skills for LLM agents](/blog/2026/10/writing-efficient-skills-for-llm-agents/).
 
 ## Keep specs alive with beads
 
