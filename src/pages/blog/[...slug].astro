@@ -1,28 +1,45 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import { proseComponents } from "@/components/prose";
+import seriesData from "@/data/series.json";
+import tagsData from "@/data/tags.json";
 import { discussions, withStars } from "@/helpers/linkActivity";
 import { extractLinks } from "@/helpers/postLinks";
 import { isPublished } from "@/helpers/posts";
 import { readingMinutes } from "@/helpers/reading";
+import {
+  relatedForAll,
+  type RelatedItem,
+  type RelatedPick,
+} from "@/helpers/related";
 import { seriesForPost } from "@/helpers/series";
 import { seriesPosition } from "@/helpers/seriesPosition";
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", isPublished);
+  // Picked for all posts at once, so no post leads "Read next" everywhere
+  const tagTitles: Record<string, { title: string }> = tagsData;
+  const related = relatedForAll(
+    posts.map((p) => ({ id: p.id, tags: p.data.tags, date: p.data.pubDate })),
+    {
+      series: seriesData.map((s) => s.items),
+      tagLabel: (tag) => tagTitles[tag]?.title ?? tag,
+    },
+  );
   return posts.map((post) => ({
     params: { slug: post.id },
-    props: { post, allPosts: posts },
+    props: { post, allPosts: posts, picks: related.get(post.id) ?? [] },
   }));
 }
 
 interface Props {
   post: CollectionEntry<"blog">;
   allPosts: CollectionEntry<"blog">[];
+  picks: RelatedPick[];
 }
 
-const { post, allPosts } = Astro.props;
+const { post, allPosts, picks } = Astro.props;
 const { Content, headings } = await render(post);
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const links = extractLinks(post.body ?? "");
@@ -32,24 +49,27 @@ const [linksWithStars, stories, seriesParts] = await Promise.all([
   seriesForPost(post.id),
 ]);
 
-const currentTags = post.data.tags || [];
-const relatedPosts = allPosts
-  .filter((p) => p.id !== post.id)
-  .map((p) => {
-    const matchingTags = (p.data.tags || []).filter((tag) =>
-      currentTags.includes(tag),
-    );
-    return { post: p, matchCount: matchingTags.length };
-  })
-  .filter((p) => p.matchCount > 0)
-  .sort((a, b) => b.matchCount - a.matchCount)
-  .map((p) => p.post);
+const related: RelatedItem[] = picks.map(({ id, kind, reason }) => {
+  const p = allPosts.find((entry) => entry.id === id)!;
+  return {
+    id: p.id,
+    url: `/blog/${p.id}/`,
+    title: p.data.title,
+    description: p.data.description,
+    pubDate: p.data.pubDate,
+    heroImage: p.data.heroImage,
+    minutes: readingMinutes(p.body ?? ""),
+    kind,
+    reason,
+  };
+});
 ---
 
 <BlogPostLayout
   {...post.data}
   headings={tocHeadings}
-  relatedPosts={relatedPosts}
+  related={related}
+  postId={post.id}
   readingMinutes={readingMinutes(post.body ?? "")}
   series={seriesPosition(post.id)}
   seriesParts={seriesParts}

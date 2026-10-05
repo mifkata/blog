@@ -9,6 +9,7 @@ import TableOfContents from "@/components/post/TableOfContents/TableOfContents.a
 import Prose from "@/components/prose/Prose.astro";
 import { tocOutline } from "@/components/post/TableOfContents/toc";
 import type { Story } from "@/helpers/linkActivity";
+import type { RelatedItem } from "@/helpers/related";
 import type { PostLink } from "@/helpers/postLinks";
 import type { SeriesForPost } from "@/helpers/series";
 import type { SeriesPosition } from "@/helpers/seriesPosition";
@@ -16,7 +17,8 @@ import PageLayout from "./PageLayout.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
   headings?: MarkdownHeading[];
-  relatedPosts?: CollectionEntry<"blog">[];
+  related?: RelatedItem[];
+  postId?: string;
   showComments?: boolean;
   readingMinutes?: number;
   series?: SeriesPosition;
@@ -34,7 +36,8 @@ const {
   heroImage,
   tags,
   headings = [],
-  relatedPosts = [],
+  related = [],
+  postId,
   showComments = true,
   readingMinutes,
   series,
@@ -45,7 +48,6 @@ const {
 } = Astro.props;
 const outline = tocOutline(headings);
 const showToc = outline.length >= 2;
-const displayedRelatedPosts = relatedPosts.slice(0, 4);
 const around = {
   series: seriesParts,
   links,
@@ -105,7 +107,7 @@ const around = {
       <AroundPost {...around} />
     </div>
 
-    <RelatedPosts posts={displayedRelatedPosts} />
+    <RelatedPosts items={related} current={postId} />
 
     {showComments && <Comments />}
   </article>
