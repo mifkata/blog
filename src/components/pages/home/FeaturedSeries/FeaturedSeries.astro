@@ -200,6 +200,8 @@ const id = `series-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     margin: 0;
     font-size: 1.25rem;
     line-height: 1.2;
+    /* Keeps synopses on the same baseline when titles wrap differently */
+    min-height: 2lh;
   }
   .rail-card:not(.is-peek):hover .rail-media :global(img) {
     transform: scale(1.04);
