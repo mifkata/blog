@@ -1,0 +1,81 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"ol"> & { as: "ul" | "ol" };
+
+const { as: Tag, class: className, start, ...rest } = Astro.props;
+const first = Number(start);
+---
+
+<Tag
+  class:list={["list", { "is-ordered": Tag === "ol" }, className]}
+  start={start}
+  style={first > 1 ? `--list-start: ${first - 1}` : undefined}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  .list {
+    margin: 0 0 var(--prose-gap);
+    padding: 0;
+    list-style: none;
+  }
+  .list > :global(li) {
+    position: relative;
+    margin-bottom: 0.45em;
+    padding-left: 1.75em;
+  }
+  .list > :global(li:last-child) {
+    margin-bottom: 0;
+  }
+  .list > :global(li > p) {
+    margin: 0.55em 0 0;
+  }
+  .list > :global(li > p:first-child) {
+    margin-top: 0;
+  }
+  .list > :global(li) > .list {
+    margin: 0.5em 0 0;
+  }
+
+  /* Markers sit in the item's first line, whatever its line height */
+  .list > :global(li)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.25em;
+    height: calc(1em * var(--prose-leading));
+    background: radial-gradient(
+      circle,
+      var(--palette-accent) 0 3px,
+      transparent 3.5px
+    );
+  }
+  .is-ordered {
+    counter-reset: item var(--list-start, 0);
+  }
+  .is-ordered > :global(li) {
+    counter-increment: item;
+  }
+  /* The number is set at 0.72em, so the line box is 1em / 0.72 tall */
+  .is-ordered > :global(li)::before {
+    content: counter(item);
+    top: calc((1em / 0.72 * var(--prose-leading) - 1.55em) / 2);
+    display: grid;
+    place-items: center;
+    width: 1.55em;
+    height: 1.55em;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--palette-accent) 15%, transparent);
+    color: var(--palette-accent-strong);
+    font:
+      700 0.72em/1 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+/**
+ * The post body: text size, line height and the space between blocks, which
+ * every prose component reads, plus the inline bits Markdown has no
+ * component for: paragraphs, bold, inline code, images and figure numbers.
+ */
+---
+
+<div class="prose-body"><slot /></div>
+
+<style>
+  .prose-body {
+    --prose-size: 17px;
+    --prose-leading: 1.6;
+    --prose-gap: 1em;
+    max-width: 70ch;
+    font-size: var(--prose-size);
+    line-height: var(--prose-leading);
+    counter-reset: figure;
+  }
+  @media (max-width: 767px) {
+    .prose-body {
+      --prose-size: 16px;
+    }
+  }
+
+  .prose-body :global(p) {
+    margin: 0 0 var(--prose-gap);
+    line-height: inherit;
+  }
+  .prose-body > :global(:last-child) {
+    margin-bottom: 0;
+  }
+  .prose-body :global(strong) {
+    color: var(--palette-heading);
+  }
+
+  /* Inline code: a soft pill that repeats cleanly when it wraps */
+  .prose-body :global(:not(pre) > code) {
+    padding: 0.1em 0.38em;
+    border-radius: 5px;
+    background: var(--palette-code);
+    box-shadow: inset 0 0 0 1px
+      color-mix(in srgb, var(--palette-line) 70%, transparent);
+    font-size: 0.84em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* A file name on its own line, above the card or code it names */
+  .prose-body :global(.file-label) {
+    margin-bottom: 0.5em;
+    color: var(--palette-muted);
+    font-size: 0.85em;
+  }
+
+  .prose-body :global(p > img) {
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px var(--palette-line);
+  }
+
+  .prose-body :global(figure.labeled-image:has(figcaption)) {
+    counter-increment: figure;
+  }
+  /* MDX wraps the caption in a paragraph; keep it on the number's line */
+  .prose-body :global(.labeled-image figcaption > p) {
+    display: inline;
+    margin: 0;
+  }
+  .prose-body :global(.labeled-image figcaption)::before {
+    content: "Fig. " counter(figure);
+    margin-right: 0.5em;
+    color: var(--palette-accent);
+    font:
+      600 0.85em ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+  }
+</style>

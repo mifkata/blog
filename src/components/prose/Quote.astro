@@ -1,0 +1,41 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"blockquote">;
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<blockquote class:list={["quote", className]} {...rest}><slot /></blockquote>
+
+<style>
+  /* A pull quote. Quotes inside callouts are reset by Callout. */
+  .quote {
+    position: relative;
+    margin: 0 0 var(--prose-gap);
+    padding: 0.2em 0 0 2.2em;
+    border: 0;
+    color: var(--palette-heading);
+    font-size: 1.22em;
+    font-style: italic;
+    line-height: 1.45;
+  }
+  .quote::before {
+    content: "“";
+    position: absolute;
+    top: -0.1em;
+    left: 0;
+    color: var(--palette-accent);
+    font:
+      700 3em/1 "Zilla Slab",
+      Rockwell,
+      Georgia,
+      serif;
+  }
+  .quote :global(p) {
+    margin-bottom: 0.5em;
+  }
+  .quote :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

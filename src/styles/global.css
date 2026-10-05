@@ -120,15 +120,6 @@ a {
   @apply text-accent hover:text-accent-dark transition-colors;
 }
 
-.prose a {
-  @apply underline decoration-accent/30 underline-offset-2;
-  @apply hover:bg-accent/10 hover:decoration-accent;
-  @apply px-0.5 -mx-0.5 rounded;
-  transition:
-    background-color 0.2s ease,
-    text-decoration-color 0.2s ease;
-}
-
 h1,
 h2,
 h3,
@@ -165,39 +156,8 @@ p {
   @apply mb-4 leading-7;
 }
 
-p:last-child,
-.prose ol:last-child,
-.prose ul:last-child {
+p:last-child {
   @apply mb-0;
-}
-
-.prose ul {
-  @apply list-disc pl-6 mb-4;
-}
-
-.prose ol {
-  @apply list-decimal pl-6 mb-4;
-}
-
-.prose li {
-  @apply leading-7;
-}
-
-.prose li > code,
-.prose p > code {
-  @apply text-sm;
-}
-
-.prose h1,
-.prose h2,
-.prose h4,
-.prose h5,
-.prose h6 {
-  @apply tracking-wide;
-}
-
-.prose h3 {
-  @apply text-accent py-2 tracking-wide;
 }
 
 img {
@@ -219,10 +179,6 @@ pre > code {
 
 blockquote {
   @apply border-l-4 border-accent pl-2 m-0 text-base;
-}
-
-bolckquote > p > code {
-  @apply bg-[red]!;
 }
 
 hr {

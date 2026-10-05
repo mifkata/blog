@@ -1,7 +1,6 @@
 export { default as ArticleCard } from "./ArticleCard/ArticleCard.astro";
 export { default as ArticleSeries } from "./ArticleSeries/ArticleSeries.astro";
 export { default as ClaudeCommand } from "./ClaudeCommand/ClaudeCommand.astro";
-export { default as CodeCopyButton } from "./CodeCopyButton/CodeCopyButton.astro";
 export { default as Comments } from "./Comments/Comments.astro";
 export { default as GithubLink } from "./GithubLink/GithubLink.astro";
 export { default as Highlight } from "./Highlight/Highlight.astro";

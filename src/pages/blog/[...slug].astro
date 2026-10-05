@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
+import { proseComponents } from "@/components/prose";
 import { discussions, withStars } from "@/helpers/linkActivity";
 import { extractLinks } from "@/helpers/postLinks";
 import { isPublished } from "@/helpers/posts";
@@ -56,5 +57,5 @@ const relatedPosts = allPosts
   stories={stories}
   filePath={post.filePath}
 >
-  <Content />
+  <Content components={proseComponents} />
 </BlogPostLayout>

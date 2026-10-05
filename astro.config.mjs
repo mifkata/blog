@@ -7,6 +7,7 @@ import { defineConfig } from "astro/config";
 import rehypeExternalLinks from "rehype-external-links";
 
 import tailwindcss from "@tailwindcss/vite";
+import { rehypeCodeCaptions } from "./src/helpers/codeCaptions.ts";
 
 const OWN_HOSTS = new Set(["mifkata.com", "www.mifkata.com"]);
 
@@ -15,7 +16,11 @@ export default defineConfig({
   site: process.env.SITE_URL || "http://localhost:4321",
   integrations: [mdx(), sitemap(), react()],
   markdown: {
+    // Token colours come from CSS variables, which code blocks set from the
+    // season's palette
+    shikiConfig: { theme: "css-variables" },
     rehypePlugins: [
+      rehypeCodeCaptions,
       [
         rehypeExternalLinks,
         {

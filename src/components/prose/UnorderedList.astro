@@ -1,0 +1,8 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import List from "./List.astro";
+
+type Props = HTMLAttributes<"ul">;
+---
+
+<List as="ul" {...Astro.props}><slot /></List>
