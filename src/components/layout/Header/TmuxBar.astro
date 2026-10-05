@@ -1,0 +1,299 @@
+---
+import { WINDOWS, activeWindow } from "./tmux";
+
+const active = activeWindow(Astro.url.pathname);
+---
+
+<div class="tmux" data-tmux>
+  <div class="tmux-inner">
+    <nav class="tmux-windows" aria-label="Site">
+      <a href="/" class="tmux-mini" tabindex="-1" aria-label="Mifkata, home"
+        >&gt;_ mifkata</a
+      >
+      <span class="tmux-session" aria-hidden="true">mifkata</span>
+      {
+        WINDOWS.map((item, index) => (
+          <a
+            href={item.href}
+            class:list={["tmux-window", { "is-active": item.name === active }]}
+            aria-current={item.name === active ? "page" : undefined}
+          >
+            {index}:{item.name}
+            {item.name === active && <span aria-hidden="true">*</span>}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="tmux-status">
+      <span class="tmux-seg tmux-tip" tabindex="0" data-tmux-radar hidden>
+        <span class="tmux-radar" data-radar-box>
+          <span class="tmux-label">npm</span>
+          <span data-radar-slot></span>
+        </span>
+        <span class="tmux-tip-body tmux-tip-grid" data-radar-list></span>
+      </span>
+      <span class="tmux-seg tmux-tip" tabindex="0" data-tmux-edge hidden>
+        <span data-edge-text></span>
+        <span class="tmux-tip-body" data-edge-tip></span>
+      </span>
+      <span class="tmux-seg tmux-tip" tabindex="0" data-tmux-kp hidden>
+        <span data-kp-text></span>
+        <span class="tmux-tip-body" data-kp-tip></span>
+      </span>
+      <span
+        class="tmux-seg tmux-tip tmux-agents"
+        tabindex="0"
+        data-tmux-agents
+        hidden
+      >
+        <span class="tmux-agents-label" data-agents-label></span>
+        <span class="tmux-dots" data-agents-dots></span>
+        <span class="tmux-tip-body" data-agents-tip></span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .tmux {
+    padding-inline: var(--page-gutter);
+    background: var(--palette-terminal);
+    color: var(--palette-terminal-text);
+    font:
+      0.8125rem/1 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+    white-space: nowrap;
+  }
+  .tmux-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: var(--page-column);
+    height: 30px;
+    margin-inline: auto;
+    transition: height 0.3s;
+  }
+  :global(#site-header.is-shrunk) .tmux-inner {
+    height: 40px;
+  }
+
+  .tmux-windows {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+  }
+  .tmux-session {
+    margin-right: 8px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--palette-terminal-prompt);
+    color: var(--palette-terminal);
+    font-weight: 700;
+  }
+  .tmux-mini {
+    display: none;
+    margin-right: 10px;
+    color: var(--palette-terminal-text);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  :global(#site-header.is-shrunk) .tmux-session {
+    display: none;
+  }
+  :global(#site-header.is-shrunk) .tmux-mini {
+    display: inline;
+  }
+  .tmux-window {
+    padding: 4px 8px;
+    border-radius: 3px;
+    color: var(--palette-terminal-text);
+    text-decoration: none;
+    opacity: 0.75;
+  }
+  .tmux-window:hover {
+    color: var(--palette-terminal-text);
+    opacity: 1;
+    background: rgb(255 255 255 / 0.08);
+  }
+  .tmux-window.is-active {
+    color: var(--palette-terminal-prompt);
+    font-weight: 700;
+    opacity: 1;
+  }
+  .tmux-windows a:focus-visible {
+    outline: 2px solid var(--palette-terminal-prompt);
+    outline-offset: 1px;
+  }
+
+  .tmux-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .tmux-seg {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .tmux-seg[hidden] {
+    display: none;
+  }
+  /* A separator before every visible segment that follows another visible one */
+  .tmux-seg:not([hidden]) ~ .tmux-seg:not([hidden])::before {
+    content: "│";
+    opacity: 0.35;
+  }
+  .tmux-seg:focus-visible {
+    outline: 2px solid var(--palette-terminal-prompt);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .tmux-radar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+    transition: width 0.35s ease;
+  }
+  .tmux-label {
+    color: var(--palette-terminal-prompt);
+  }
+  .tmux-radar :global(.tmux-radar-item) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tmux-radar :global(.tmux-radar-item.is-in) {
+    animation: tmux-in 0.45s ease both;
+  }
+  .tmux :global(.tmux-new) {
+    padding: 2px 5px;
+    border-radius: 3px;
+    background: var(--palette-terminal-prompt);
+    color: var(--palette-terminal);
+    font-size: 0.6875rem;
+    font-weight: 700;
+  }
+  @keyframes tmux-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  .tmux-agents {
+    gap: 9px;
+  }
+  .tmux-dots {
+    display: inline-flex;
+    gap: 6px;
+  }
+  .tmux :global(.tmux-dot) {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--palette-muted);
+  }
+  .tmux :global(.tmux-dot.is-ok) {
+    background: #4cc77d;
+  }
+  .tmux :global(.tmux-dot.is-warn) {
+    background: #f0b04a;
+  }
+  .tmux :global(.tmux-dot.is-bad) {
+    background: #f06a5e;
+  }
+
+  .tmux-tip {
+    position: relative;
+  }
+  .tmux-tip-body {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    z-index: 10;
+    display: grid;
+    gap: 4px;
+    width: max-content;
+    max-width: 300px;
+    padding: 10px 12px;
+    border: 1px solid var(--palette-line);
+    border-radius: 8px;
+    background: var(--palette-surface);
+    box-shadow: 0 12px 30px -12px rgb(0 0 0 / 0.35);
+    color: var(--palette-text);
+    font:
+      0.8125rem/1.5 "Kedebideri",
+      sans-serif;
+    white-space: normal;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition:
+      opacity 0.15s,
+      transform 0.15s;
+  }
+  .tmux-tip:hover .tmux-tip-body,
+  .tmux-tip:focus-within .tmux-tip-body {
+    opacity: 1;
+    transform: none;
+  }
+  .tmux-tip-grid {
+    grid-template-columns: auto auto auto;
+    column-gap: 12px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  .tmux :global(.tmux-new-text) {
+    color: var(--palette-accent);
+  }
+  .tmux :global(.tmux-tip-row) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tmux :global(.tmux-tip-note) {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+    color: var(--palette-muted);
+    font-family: "Kedebideri", sans-serif;
+  }
+
+  /* Phones: the windows and the agent dots */
+  @media (max-width: 767px) {
+    .tmux-session,
+    [data-tmux-radar],
+    [data-tmux-edge],
+    [data-tmux-kp],
+    .tmux-agents-label {
+      display: none !important;
+    }
+    .tmux-agents::before {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tmux-inner,
+    .tmux-radar,
+    .tmux-tip-body {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { setupTmuxBar } from "./tmux";
+
+  setupTmuxBar();
+  document.addEventListener("astro:page-load", setupTmuxBar);
+</script>
