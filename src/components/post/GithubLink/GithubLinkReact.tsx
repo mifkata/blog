@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useId, type ReactNode } from "react";
-import { GitHubIcon } from "@/components/ui/icons/GitHubIcon";
 import { ExternalLinkIcon } from "@/components/ui/icons/ExternalLinkIcon";
 
 interface Props {
   url: string;
   expanded?: boolean;
   maxHeight?: number;
+  /** Star count, already formatted, for repository links */
+  stars?: string;
   children?: ReactNode;
 }
 
@@ -23,7 +24,7 @@ interface ParsedUrl {
   hasPreview: boolean;
 }
 
-function parseGithubUrl(url: string): ParsedUrl {
+export function parseGithubUrl(url: string): ParsedUrl {
   const githubRegex =
     /^https?:\/\/github\.com\/([^\/]+)\/([^\/]+)(?:\/(tree|blob)\/([^\/]+)\/(.+))?/;
   const match = url.match(githubRegex);
@@ -70,10 +71,14 @@ function parseGithubUrl(url: string): ParsedUrl {
 const LINE_HEIGHT = 21;
 const EMBED_PADDING = 60; // Header, footer, padding
 
+// The terminal command that would show what the link points at
+const COMMANDS = { blob: "cat", tree: "ls" } as const;
+
 export default function GithubLink({
   url,
   expanded: initialExpanded = false,
   maxHeight,
+  stars,
   children,
 }: Props) {
   const [isExpanded, setIsExpanded] = useState(initialExpanded);
@@ -108,76 +113,87 @@ export default function GithubLink({
 
   const embedUrl = `https://emgithub.com/iframe.html?target=${encodeURIComponent(url)}&style=default&type=code&showBorder=on&showLineNumbers=on&showFileMeta=on&showFullPath=on&showCopy=on`;
 
-  return (
-    <div className="border border-gray-light rounded-lg p-4 my-4">
-      {/* Header */}
-      <div className="flex items-center gap-2 mb-2">
-        <GitHubIcon size={20} className="text-gray-dark" />
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-mono text-sm text-gray-dark hover:text-accent no-underline flex items-center gap-1 break-all"
-        >
-          {parsed.displayName}
-          <ExternalLinkIcon size={12} />
-          <span className="sr-only">(opens in new tab)</span>
-        </a>
-      </div>
+  const command = parsed.type ? COMMANDS[parsed.type] : "gh repo view";
 
-      {/* Description */}
-      {children && (
-        <div className="text-sm [&_p]:leading-normal!">{children}</div>
-      )}
+  return (
+    <div className="repo-card">
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="repo-card-bar"
+      >
+        <span className="repo-card-command">
+          <span className="repo-card-prompt">$ {command}</span>{" "}
+          {parsed.displayName}
+        </span>
+        {stars && (
+          <span className="repo-card-stars" title={`${stars} stars on GitHub`}>
+            ★ {stars}
+          </span>
+        )}
+        <span className="sr-only">(opens in new tab)</span>
+      </a>
+
+      {children && <div className="repo-card-body">{children}</div>}
 
       {!parsed.isValid && (
-        <div className="text-amber-600 text-sm bg-amber-50 rounded p-2">
-          ⚠️ Could not parse GitHub URL. Preview unavailable.
+        <div className="repo-card-body text-amber-600">
+          Could not parse the GitHub URL. Preview unavailable.
         </div>
       )}
 
-      {parsed.hasPreview && (
-        <div>
+      <div className="repo-card-foot">
+        {parsed.hasPreview && (
           <button
             type="button"
-            className="text-sm text-accent hover:text-accent-dark cursor-pointer bg-transparent border-0 p-0"
+            className="repo-card-toggle"
             onClick={() => setIsExpanded(!isExpanded)}
             aria-expanded={isExpanded}
             aria-controls={previewId}
           >
-            {isExpanded ? "▼ Hide preview" : "▶ Show preview"}
+            {isExpanded ? "Hide preview" : "Show preview"}
           </button>
+        )}
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="repo-card-host"
+        >
+          github.com <ExternalLinkIcon size={11} />
+          <span className="sr-only">(opens in new tab)</span>
+        </a>
+      </div>
 
-          {isExpanded && (
-            <div id={previewId} className="mt-3">
-              {parsed.isImage && parsed.rawUrl && (
-                <img
-                  src={parsed.rawUrl}
-                  alt={parsed.path}
-                  className="max-w-full rounded-lg border border-gray-light"
-                  loading="lazy"
-                />
-              )}
+      {parsed.hasPreview && isExpanded && (
+        <div id={previewId} className="repo-card-preview">
+          {parsed.isImage && parsed.rawUrl && (
+            <img
+              src={parsed.rawUrl}
+              alt={parsed.path}
+              className="max-w-full rounded-lg border border-gray-light"
+              loading="lazy"
+            />
+          )}
 
-              {parsed.isCode && (
-                <>
-                  {isLoading && (
-                    <div className="text-gray text-sm py-2">Loading...</div>
-                  )}
-                  <iframe
-                    src={embedUrl}
-                    className="w-full border-0 rounded-lg"
-                    style={{
-                      height: `${iframeHeight}px`,
-                      maxHeight: maxHeight ? `${maxHeight}px` : undefined,
-                      overflowY: maxHeight ? "auto" : undefined,
-                    }}
-                    loading="lazy"
-                    title={`Code preview: ${parsed.path}`}
-                  />
-                </>
+          {parsed.isCode && (
+            <>
+              {isLoading && (
+                <div className="text-gray text-sm py-2">Loading...</div>
               )}
-            </div>
+              <iframe
+                src={embedUrl}
+                className="w-full border-0 rounded-lg"
+                style={{
+                  height: `${iframeHeight}px`,
+                  maxHeight: maxHeight ? `${maxHeight}px` : undefined,
+                  overflowY: maxHeight ? "auto" : undefined,
+                }}
+                loading="lazy"
+                title={`Code preview: ${parsed.path}`}
+              />
+            </>
           )}
         </div>
       )}

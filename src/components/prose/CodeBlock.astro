@@ -1,0 +1,147 @@
+---
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
+
+/** Props of the `<pre>` Shiki renders, plus a title from codeCaptions */
+interface Props {
+  "data-language"?: string;
+  "data-title"?: string;
+  class?: string;
+  className?: string;
+  [attribute: string]: unknown;
+}
+
+const {
+  "data-language": language,
+  "data-title": title,
+  class: cls,
+  className,
+  ...rest
+} = Astro.props;
+const label = language && language !== "plaintext" ? language : undefined;
+---
+
+<div class="code-block">
+  <div class="code-head">
+    {label && <span class="code-lang">{label}</span>}
+    {title && <span class="code-title">{title}</span>}
+    <button
+      type="button"
+      class="code-copy"
+      aria-label="Copy code"
+      data-code-copy
+    >
+      <LucideIcon icon="copy" size={13} />
+      <span data-code-copy-label>Copy</span>
+    </button>
+  </div>
+  <pre
+    class={cls ?? className}
+    data-language={language}
+    {...rest}><slot /></pre>
+</div>
+
+<style>
+  /* Paper: the palette's code background, with token colours from the
+     season, so it follows light and dark */
+  .code-block {
+    --astro-code-background: transparent;
+    --astro-code-foreground: var(--palette-text);
+    --astro-code-token-keyword: var(--palette-accent-strong);
+    --astro-code-token-function: var(--palette-heading);
+    --astro-code-token-string: color-mix(
+      in srgb,
+      var(--palette-accent) 60%,
+      var(--palette-text)
+    );
+    --astro-code-token-string-expression: var(--astro-code-token-string);
+    --astro-code-token-constant: color-mix(
+      in srgb,
+      #b7791f 80%,
+      var(--palette-text)
+    );
+    --astro-code-token-parameter: var(--astro-code-token-constant);
+    --astro-code-token-comment: var(--palette-muted);
+    --astro-code-token-punctuation: color-mix(
+      in srgb,
+      var(--palette-text) 70%,
+      transparent
+    );
+    --astro-code-token-link: var(--palette-accent);
+    margin: 0 0 var(--prose-gap);
+    overflow: hidden;
+    border: 1px solid var(--palette-line);
+    border-radius: 10px;
+    background: var(--palette-code);
+  }
+  .code-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 8px 7px 12px;
+    border-bottom: 1px solid var(--palette-line);
+    background: color-mix(
+      in srgb,
+      var(--palette-surface) 55%,
+      var(--palette-code)
+    );
+    color: var(--palette-muted);
+    font:
+      12px/1.4 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+  }
+  .code-lang {
+    flex: none;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--palette-accent) 14%, transparent);
+    color: var(--palette-accent-strong);
+    font-weight: 700;
+  }
+  .code-title {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .code-copy {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
+    padding: 4px 8px;
+    border: 0;
+    border-radius: 5px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .code-copy:hover {
+    background: var(--palette-surface);
+    color: var(--palette-heading);
+  }
+  .code-copy:focus-visible {
+    outline: 2px solid var(--palette-accent);
+    outline-offset: 1px;
+  }
+  pre {
+    margin: 0;
+    padding: 14px 16px 16px;
+    border-radius: 0;
+    font:
+      13.5px/1.65 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+  }
+</style>
+
+<script>
+  import { setupCodeCopy } from "./codeCopy";
+
+  setupCodeCopy();
+  document.addEventListener("astro:page-load", setupCodeCopy);
+</script>

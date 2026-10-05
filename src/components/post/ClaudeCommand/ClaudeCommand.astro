@@ -26,9 +26,36 @@ const title = external
   target="_blank"
   rel="noopener noreferrer"
   title={title}
-  class="inline-flex items-center gap-1 font-mono text-sm text-accent hover:text-accent-dark no-underline relative top-[3px]"
+  class="command"
 >
-  {external ? <LucideIcon icon="globe" size={16} /> : <GitHub size={16} />}
+  {external ? <LucideIcon icon="globe" size={13} /> : <GitHub size={13} />}
   /{name}
   <span class="sr-only">(opens in new tab)</span>
 </a>
+
+<style>
+  /* A pill that sits on the text's baseline */
+  .command {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    padding: 0.04em 0.55em 0.04em 0.45em;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--palette-accent) 11%, transparent);
+    color: var(--palette-accent-strong);
+    font:
+      600 0.82em ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+    text-decoration: none;
+    vertical-align: 0.06em;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+  }
+  .command:hover {
+    background: color-mix(in srgb, var(--palette-accent) 20%, transparent);
+    color: var(--palette-accent-strong);
+  }
+</style>

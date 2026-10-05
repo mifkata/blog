@@ -2,11 +2,11 @@
 import type { CollectionEntry } from "astro:content";
 import type { MarkdownHeading } from "astro";
 import AroundPost from "@/components/post/AroundPost/AroundPost.astro";
-import CodeCopyButton from "@/components/post/CodeCopyButton/CodeCopyButton.astro";
 import Comments from "@/components/post/Comments/Comments.astro";
 import PostHero from "@/components/post/PostHero/PostHero.astro";
 import RelatedPosts from "@/components/post/RelatedPosts/RelatedPosts.astro";
 import TableOfContents from "@/components/post/TableOfContents/TableOfContents.astro";
+import Prose from "@/components/prose/Prose.astro";
 import { tocOutline } from "@/components/post/TableOfContents/toc";
 import type { Story } from "@/helpers/linkActivity";
 import type { PostLink } from "@/helpers/postLinks";
@@ -81,9 +81,9 @@ const around = {
       />
 
       <div class="post-body" data-post-body>
-        <div class="prose max-w-[70ch]">
+        <Prose>
           <slot />
-        </div>
+        </Prose>
       </div>
 
       {
@@ -109,8 +109,6 @@ const around = {
 
     {showComments && <Comments />}
   </article>
-
-  <CodeCopyButton />
 </PageLayout>
 
 <style>

@@ -9,6 +9,7 @@ import {
   Cloud,
   Code,
   CodeXml,
+  Copy,
   Database,
   ExternalLink,
   FileText,
@@ -34,6 +35,7 @@ import {
   Shield,
   Star,
   Tag,
+  TriangleAlert,
   Users,
   Wrench,
 } from "@lucide/astro";
@@ -52,6 +54,7 @@ export const icons = {
   cloud: Cloud,
   code: Code,
   "code-xml": CodeXml,
+  copy: Copy,
   database: Database,
   document: FileText,
   "external-link": ExternalLink,
@@ -76,6 +79,7 @@ export const icons = {
   shield: Shield,
   star: Star,
   tag: Tag,
+  "triangle-alert": TriangleAlert,
   tool: Wrench,
   users: Users,
 } as const;

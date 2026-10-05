@@ -1,5 +1,7 @@
 ---
-import GithubLinkReact from "./GithubLinkReact";
+import { githubStars } from "@/helpers/linkActivity";
+import { compactNumber } from "@/helpers/postLinks";
+import GithubLinkReact, { parseGithubUrl } from "./GithubLinkReact";
 
 interface Props {
   url: string;
@@ -9,13 +11,113 @@ interface Props {
 
 const { url, expanded, maxHeight } = Astro.props;
 const hasChildren = Astro.slots.has("default");
+// Stars only for links to a repository itself, not to one of its files
+const { owner, repo, type } = parseGithubUrl(url);
+const count =
+  owner && !type ? await githubStars(`${owner}/${repo}`) : undefined;
 ---
 
-<GithubLinkReact
-  client:load
-  url={url}
-  expanded={expanded}
-  maxHeight={maxHeight}
->
-  {hasChildren && <slot />}
-</GithubLinkReact>
+<div class="github-link">
+  <GithubLinkReact
+    client:load
+    url={url}
+    expanded={expanded}
+    maxHeight={maxHeight}
+    stars={count === undefined ? undefined : compactNumber(count)}
+  >
+    {hasChildren && <slot />}
+  </GithubLinkReact>
+</div>
+
+<style>
+  /* A terminal bar over the description */
+  .github-link {
+    margin: 0 0 var(--prose-gap, 1rem);
+  }
+  .github-link :global(.repo-card) {
+    overflow: hidden;
+    border: 1px solid var(--palette-line);
+    border-radius: 10px;
+    background: var(--palette-surface);
+    font-size: 0.94em;
+    line-height: 1.5;
+  }
+  .github-link :global(.repo-card-bar) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--palette-terminal);
+    color: var(--palette-terminal-text);
+    font:
+      12.5px/1.4 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+    text-decoration: none;
+  }
+  .github-link :global(.repo-card-bar:hover) {
+    color: var(--palette-terminal-text);
+    background: color-mix(
+      in srgb,
+      var(--palette-terminal-text) 6%,
+      var(--palette-terminal)
+    );
+  }
+  .github-link :global(.repo-card-command) {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .github-link :global(.repo-card-prompt) {
+    color: var(--palette-terminal-prompt);
+  }
+  .github-link :global(.repo-card-stars) {
+    flex: none;
+    color: color-mix(in srgb, var(--palette-terminal-text) 60%, transparent);
+    font-variant-numeric: tabular-nums;
+  }
+  .github-link :global(.repo-card-body) {
+    padding: 12px 14px 0;
+    color: var(--palette-text);
+  }
+  .github-link :global(.repo-card-body p) {
+    margin: 0 0 0.5em;
+  }
+  .github-link :global(.repo-card-body p:last-child) {
+    margin-bottom: 0;
+  }
+  .github-link :global(.repo-card-foot) {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px 12px;
+    font-size: 0.85em;
+  }
+  .github-link :global(.repo-card-toggle) {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--palette-accent);
+    font: inherit;
+    cursor: pointer;
+  }
+  .github-link :global(.repo-card-toggle:hover) {
+    color: var(--palette-accent-strong);
+  }
+  .github-link :global(.repo-card-host) {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    color: var(--palette-muted);
+    text-decoration: none;
+  }
+  .github-link :global(.repo-card-host:hover) {
+    color: var(--palette-accent);
+  }
+  .github-link :global(.repo-card-preview) {
+    padding: 0 14px 14px;
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a">;
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<a class:list={["link", className]} {...rest}><slot /></a>
+
+<style>
+  .link {
+    color: var(--palette-accent);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .link:hover {
+    color: var(--palette-accent-strong);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.22em;
+  }
+  /* Links that leave the site; screen readers get "(opens in new tab)" */
+  .link[target="_blank"]::after {
+    content: "↗";
+    content: "↗" / "";
+    margin-left: 0.1em;
+    font-size: 0.72em;
+    font-weight: 400;
+    vertical-align: 0.32em;
+  }
+</style>

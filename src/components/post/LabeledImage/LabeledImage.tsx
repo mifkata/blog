@@ -70,13 +70,13 @@ export function LabeledImage({
 
   return (
     <>
-      <figure className="labeled-image my-6 p-0">
+      <figure className="labeled-image mx-0 mt-0 mb-[var(--prose-gap,1.5rem)] p-0">
         <img
           src={imgSrc}
           alt={alt}
           width={width}
           height={height}
-          className="clickable block mx-auto rounded-lg cursor-zoom-in"
+          className="clickable block mx-auto rounded-xl shadow-[0_0_0_1px_var(--palette-line)] cursor-zoom-in"
           role="button"
           tabIndex={0}
           aria-label={`${alt} - Click to enlarge`}
@@ -84,7 +84,7 @@ export function LabeledImage({
           onKeyDown={handleImageKeyDown}
         />
         {children && (
-          <figcaption className="text-center text-sm text-gray mt-2 italic [&_a]:text-accent">
+          <figcaption className="mt-2.5 text-[0.85em] leading-normal text-gray">
             {children}
           </figcaption>
         )}
