@@ -1,91 +1,160 @@
 ---
 import GitHub from "@/components/ui/icons/GitHub.astro";
 import LinkedIn from "@/components/ui/icons/LinkedIn.astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
+import type { IconName } from "@/components/ui/icons/lucide";
 import { LINKEDIN_URL } from "@/consts";
+import { BUILD_COMMIT, BUILD_DATE } from "@/helpers/build";
+import { FLAME_CYCLE_SECONDS, QUOTES, flameCells } from "./footer";
 
-const today = new Date();
-const lastUpdated = today.toISOString().split("T")[0];
-const commitSha = import.meta.env.CF_PAGES_COMMIT_SHA?.slice(0, 7);
+interface FooterLink {
+  label: string;
+  href: string;
+  icon?: IconName;
+  Brand?: typeof GitHub;
+}
+
+const columns: { title: string; links: FooterLink[] }[] = [
+  {
+    title: "Read",
+    links: [
+      { label: "Blog", href: "/blog", icon: "book" },
+      { label: "Tags", href: "/tags", icon: "tag" },
+      { label: "RSS", href: "/rss.xml", icon: "rss" },
+      { label: "Sitemap", href: "/sitemap-index.xml", icon: "map" },
+    ],
+  },
+  {
+    title: "Elsewhere",
+    links: [
+      { label: "hi@mifkata.com", href: "mailto:hi@mifkata.com", icon: "mail" },
+      { label: "LinkedIn", href: LINKEDIN_URL, Brand: LinkedIn },
+      { label: "GitHub", href: "https://github.com/mifkata", Brand: GitHub },
+      {
+        label: "Source",
+        href: "https://github.com/mifkata/blog",
+        icon: "code-xml",
+      },
+    ],
+  },
+];
+
+const [quote] = QUOTES;
+const year = BUILD_DATE.slice(0, 4);
 const reboot = "reboot?";
+const robot = `
+       |
+     .-^-.
+    |[o o]|
+    | --- |
+    '-----'
+  .-=|___|=-.
+  | |[:::]| |
+  d |_____| b
+     |   |
+    [_] [_]`;
+const another = "read another";
 ---
 
-<footer
-  class="px-(--page-gutter) py-12 text-sm text-gray-dark bg-gradient-to-t from-gray-dark/10 via-transparent to-transparent border-t border-gray-light/50"
->
-  <div
-    class="max-w-(--page-column) mx-auto grid md:text-left md:grid-cols-[1fr_1fr_auto] gap-4 text-center items-start"
-  >
-    <!-- Left: Copyright & Contacts -->
-    <div class="space-y-1">
-      <p class="m-0 md:whitespace-nowrap">
-        👨‍💻 &copy; {today.getFullYear()} Andriyan Ivanov
+<footer class="footer" data-footer>
+  <div class="footer-main">
+    <div>
+      <p class="footer-name">
+        <svg class="footer-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect
+            class="footer-mark-screen"
+            x="1"
+            y="3"
+            width="30"
+            height="26"
+            rx="5"></rect>
+          <text class="footer-mark-prompt" x="6.5" y="20.5">&gt;</text>
+          <rect
+            class="footer-mark-cursor"
+            x="16"
+            y="18"
+            width="8"
+            height="2.6"
+            rx="1"></rect>
+        </svg>
+        Andriyan Ivanov
       </p>
-      <p class="m-0">
-        🧭 Holistic Product Generalist · AI adoption and engineering
+      <p class="footer-role">
+        Holistic Product Generalist · AI adoption and engineering
       </p>
-      <p class="m-0 italic mt-2">
-        💭 "The problem with the world is that the intelligent people are full
-        of doubts, while the stupid ones are full of confidence." - Charles
-        Bukowski
-      </p>
+      <figure class="footer-quote" data-footer-quotes>
+        <blockquote class="footer-quote-text" data-quote-text>
+          "{quote.text}"
+        </blockquote>
+        <figcaption class="footer-credit">
+          <span data-quote-credit
+            >{quote.author}{quote.source && " "}{
+              quote.source && <cite>· {quote.source}</cite>
+            }</span
+          >
+        </figcaption>
+        <button
+          type="button"
+          class="footer-another"
+          data-quote-next
+          aria-label="Read another quote"
+        >
+          <LucideIcon icon="refresh" size={14} />
+          <span class="footer-roll" aria-hidden="true">
+            {
+              [...another].map((letter, i) =>
+                letter === " " ? (
+                  <span class="is-space" style={`--i: ${i}`}>
+                    {" "}
+                  </span>
+                ) : (
+                  <span style={`--i: ${i}`}>{letter}</span>
+                ),
+              )
+            }
+          </span>
+        </button>
+      </figure>
     </div>
-    <!-- Middle: Info -->
-    <div class="space-y-1">
-      <p class="m-0">
-        🏷️ <a href="/tags" class="hover:text-accent">Tags</a> · <a
-          href="/sitemap-index.xml"
-          class="hover:text-accent">Sitemap</a
-        > · <a href="/rss.xml" class="hover:text-accent">RSS</a> · <a
-          href="https://github.com/mifkata/blog"
-          class="hover:text-accent">Source</a
-        >
-      </p>
-      <p
-        class="m-0 flex items-center justify-center md:justify-start gap-2 md:whitespace-nowrap"
-      >
-        ✉️ <a href="mailto:hi@mifkata.com" class="hover:text-accent"
-          >hi@mifkata.com</a
-        >
-        <a
-          href="https://github.com/mifkata"
-          class="hover:text-accent"
-          aria-label="GitHub"
-        >
-          <GitHub size={20} />
-        </a>
-        <a href={LINKEDIN_URL} class="hover:text-accent" aria-label="LinkedIn">
-          <LinkedIn size={20} />
-        </a>
-      </p>
-      <p class="m-0 md:whitespace-nowrap p-0">
-        🚀 Last updated: {lastUpdated} · Built with <a
-          href="https://astro.build"
-          class="hover:text-accent">Astro</a
-        >{commitSha && ` · Commit ${commitSha}`}
-      </p>
-      <p class="m-0 md:whitespace-nowrap">
-        🔥 Footer reached? Respect!<span class="md:hidden"
-          >{" · "}<a href="/?boot" class="hover:text-accent"
-            >Reboot the welcome</a
-          ></span
-        >
-      </p>
-    </div>
-    <!-- Cat -->
-    <div class="hidden md:grid justify-items-start gap-1">
+
+    <nav class="footer-links" aria-label="Footer">
+      {
+        columns.map(({ title, links }) => (
+          <div>
+            <p class="footer-label">{title}</p>
+            <ul>
+              {links.map(({ label, href, icon, Brand }) => (
+                <li>
+                  <a class="footer-link" href={href}>
+                    {Brand ? (
+                      <Brand size={16} />
+                    ) : (
+                      icon && <LucideIcon icon={icon} size={16} />
+                    )}
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </nav>
+
+    <div class="footer-robot">
       <a
         href="/?boot"
-        class="cat-bubble"
+        class="reboot-bubble"
         aria-label="Replay the welcome"
         title="Replay the welcome"
       >
-        <svg class="cat-bubble-shape" viewBox="0 0 96 46" aria-hidden="true">
+        <svg class="reboot-bubble-shape" viewBox="0 0 96 46" aria-hidden="true">
           <path
             d="M13 1H83A12 12 0 0 1 95 13V23A12 12 0 0 1 83 35H38L22 45L28 35H13A12 12 0 0 1 1 23V13A12 12 0 0 1 13 1Z"
           ></path>
         </svg>
-        <span class="cat-bubble-label">
-          <span class="cat-bubble-word">
+        <span class="reboot-bubble-label">
+          <span class="reboot-bubble-word">
             {
               [...reboot].map((letter, i) => (
                 <span style={`--i: ${i}`}>{letter}</span>
@@ -94,36 +163,290 @@ const reboot = "reboot?";
           </span>
         </span>
       </a>
-      <pre
-        class="cat-ascii font-mono text-xs leading-none m-0 text-gray">{`
- /\\_/\\
-( o.o )
- > ^ <`}</pre>
+      <pre class="footer-robot-art" aria-hidden="true">{robot}</pre>
     </div>
+  </div>
+
+  <div class="footer-bar">
+    <span class="footer-bar-side">
+      <span class="footer-session">mifkata</span>
+      <span>&copy; {year}</span>
+      <span class="footer-wide">Andriyan Ivanov</span>
+    </span>
+    <span class="footer-bar-side">
+      <span class="footer-wide footer-message">footer reached · respect</span>
+      <svg
+        class="footer-flame"
+        viewBox="0 0 5 7"
+        aria-hidden="true"
+        style={`--flame-cycle: ${FLAME_CYCLE_SECONDS}s`}
+      >
+        {
+          flameCells().map(({ x, y, layer }) => (
+            <rect class={`is-${layer}`} x={x} y={y} width="1" height="1" />
+          ))
+        }
+      </svg>
+      {
+        BUILD_COMMIT && (
+          <>
+            <a href={`https://github.com/mifkata/blog/commit/${BUILD_COMMIT}`}>
+              build {BUILD_COMMIT.slice(0, 7)}
+            </a>
+            <span class="footer-wide footer-sep" aria-hidden="true">
+              │
+            </span>
+          </>
+        )
+      }
+      <span class="footer-wide">
+        updated <time datetime={BUILD_DATE} data-local-date>{BUILD_DATE}</time>
+      </span>
+    </span>
   </div>
 </footer>
 
 <style>
-  .cat-bubble {
+  .footer {
+    border-top: 1px solid var(--palette-line);
+    line-height: 1.6;
+  }
+
+  .footer p {
+    margin: 0;
+    line-height: inherit;
+  }
+
+  .footer-main {
+    display: grid;
+    gap: 28px;
+    width: 100%;
+    max-width: calc(var(--page-column) + 2 * var(--page-gutter));
+    margin-inline: auto;
+    padding: 36px var(--page-gutter) 32px;
+  }
+
+  .footer .footer-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--palette-heading);
+    font:
+      700 1.375rem / 1.2 "Zilla Slab",
+      Rockwell,
+      Georgia,
+      serif;
+  }
+
+  .footer-mark {
+    width: 28px;
+    height: 28px;
+    flex: none;
+  }
+
+  .footer-mark-screen {
+    fill: var(--palette-terminal);
+  }
+
+  .footer-mark-prompt {
+    font:
+      700 13px ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+    fill: var(--palette-terminal-prompt);
+  }
+
+  .footer-mark-cursor {
+    fill: var(--palette-terminal-text);
+  }
+
+  .footer .footer-role {
+    margin-top: 4px;
+    color: var(--palette-muted);
+    font-size: 0.9375rem;
+  }
+
+  .footer-quote {
+    display: flex;
+    flex-direction: column;
+    margin: 16px 0 0;
+  }
+
+  .footer-quote-text {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--palette-muted);
+    font-size: 0.9375rem;
+    font-style: italic;
+    text-wrap: pretty;
+  }
+
+  .footer-credit {
+    display: flex;
+    margin-top: 6px;
+    color: var(--palette-muted);
+    font-size: 0.875rem;
+  }
+
+  .footer-credit :global(cite) {
+    font-style: normal;
+    opacity: 0.75;
+  }
+
+  .footer-quote-text,
+  .footer-credit > span {
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .footer-quote.is-out :is(.footer-quote-text, .footer-credit > span) {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  /* Pinned to the bottom of the height reserved for the longest quote, so it
+     stays put as quotes change */
+  .footer-another {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    padding: 10px 0 0;
+    border: 0;
+    background: none;
+    color: var(--palette-accent);
+    font:
+      0.8125rem / 1 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+    cursor: pointer;
+  }
+
+  .footer-another:focus-visible {
+    outline: 2px solid var(--palette-accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .footer-another :global(svg) {
+    flex: none;
+    transition: transform 0.4s ease;
+  }
+
+  .footer-another:is(:hover, :focus-visible) :global(svg) {
+    transform: rotate(180deg);
+  }
+
+  .footer-roll {
+    display: inline-flex;
+    height: 1.2em;
+    overflow: hidden;
+    line-height: 1.2em;
+  }
+
+  .footer-roll span {
+    display: inline-block;
+    text-shadow: 0 1.2em var(--palette-accent-strong);
+    transition: translate 0.35s cubic-bezier(0.65, 0, 0.25, 1)
+      calc(var(--i) * 25ms);
+  }
+
+  .footer-roll .is-space {
+    width: 0.4ch;
+  }
+
+  .footer-another:is(:hover, :focus-visible) .footer-roll span {
+    translate: 0 -1.2em;
+  }
+
+  .footer-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .footer .footer-label {
+    margin-bottom: 12px;
+    color: var(--palette-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-links ul {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9375rem;
+  }
+
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--palette-text);
+    text-decoration: none;
+  }
+
+  .footer-link:hover {
+    color: var(--palette-accent);
+  }
+
+  .footer-link :global(svg) {
+    flex: none;
+    color: var(--palette-muted);
+    transition: color 0.2s ease;
+  }
+
+  .footer-link:hover :global(svg) {
+    color: var(--palette-accent);
+  }
+
+  .footer-robot {
+    display: none;
+    justify-items: start;
+    align-content: start;
+    gap: 4px;
+    font:
+      0.75rem / 1 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+  }
+
+  /* Puts the tail tip (x 22 of the 96-wide shape) over the robot's antenna,
+     7.5 characters in */
+  .reboot-bubble {
     position: relative;
     display: block;
     width: 6rem;
+    margin-left: calc(7.5ch - 6rem * 22 / 96);
     color: var(--palette-accent);
     text-decoration: none;
   }
 
-  .cat-bubble:hover {
+  .reboot-bubble:hover {
     color: var(--palette-accent);
   }
 
-  .cat-bubble-shape {
+  .reboot-bubble-shape {
     display: block;
     width: 100%;
     height: auto;
     overflow: visible;
   }
 
-  .cat-bubble-shape path {
+  .reboot-bubble-shape path {
     fill: var(--palette-surface);
     stroke: var(--palette-trace-strong);
     stroke-width: 1.5;
@@ -133,16 +456,16 @@ const reboot = "reboot?";
       stroke 0.25s ease;
   }
 
-  .cat-bubble:is(:hover, :focus-visible) path {
+  .reboot-bubble:is(:hover, :focus-visible) path {
     fill: color-mix(in srgb, var(--palette-accent) 8%, var(--palette-surface));
     stroke: var(--palette-accent);
   }
 
-  .cat-bubble:focus-visible {
+  .reboot-bubble:focus-visible {
     outline: none;
   }
 
-  .cat-bubble-label {
+  .reboot-bubble-label {
     position: absolute;
     inset: 0 0 auto;
     height: calc(100% * 35 / 46);
@@ -157,35 +480,208 @@ const reboot = "reboot?";
       monospace;
   }
 
-  .cat-bubble-word {
+  .reboot-bubble-word {
     display: inline-flex;
     height: 1.2em;
     line-height: 1.2em;
     overflow: hidden;
   }
 
-  .cat-bubble-word span {
+  .reboot-bubble-word span {
     display: inline-block;
     text-shadow: 0 1.2em var(--palette-accent-strong);
     transition: translate 0.35s cubic-bezier(0.65, 0, 0.25, 1)
       calc(var(--i) * 30ms);
   }
 
-  .cat-bubble:is(:hover, :focus-visible) .cat-bubble-word span {
+  .reboot-bubble:is(:hover, :focus-visible) .reboot-bubble-word span {
     translate: 0 -1.2em;
   }
 
-  /* Lines the cat's head (3.5 characters in) up under the bubble's tail tip
-     (x 22 of the 96-wide shape). */
-  .cat-ascii {
+  .footer-robot-art {
+    margin: 0;
     padding: 0;
-    margin-left: calc(6rem * 22 / 96 - 3.5ch);
+    border-radius: 0;
+    color: var(--palette-muted);
+    font: inherit;
+  }
+
+  /* A floating card with 12px of padding, sized so its text lines up with
+     the page column at every width */
+  .footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: min(100% - 2 * var(--page-gutter) + 24px, var(--page-column) + 24px);
+    min-height: 34px;
+    margin: 0 auto 16px;
+    padding-inline: 12px;
+    border-radius: 10px;
+    background: var(--palette-terminal);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--palette-terminal-text) 8%, transparent),
+      0 14px 30px -14px rgb(0 0 0 / 0.45);
+    color: var(--palette-terminal-text);
+    font:
+      0.8125rem / 1 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+    white-space: nowrap;
+  }
+
+  .footer-bar-side {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .footer-session {
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--palette-terminal-prompt);
+    color: var(--palette-terminal);
+    font-weight: 700;
+  }
+
+  .footer-message {
+    color: var(--palette-terminal-prompt);
+  }
+
+  .footer-sep {
+    opacity: 0.35;
+  }
+
+  .footer-bar a {
+    color: var(--palette-terminal-text);
+    text-decoration: none;
+  }
+
+  .footer-bar a:hover {
+    color: var(--palette-terminal-prompt);
+  }
+
+  .footer-bar a:focus-visible {
+    outline: 2px solid var(--palette-terminal-prompt);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .footer-wide {
+    display: none;
+  }
+
+  /* A pixel flame for "respect", after Gibson's Burning Chrome, in three
+     shades of the season's prompt colour. Each layer cycles through them a
+     third of a cycle apart, so the colour rolls through the flame. */
+  .footer-flame {
+    --flame-deep: color-mix(
+      in srgb,
+      var(--palette-terminal-prompt) 55%,
+      var(--palette-terminal)
+    );
+    --flame-mid: var(--palette-terminal-prompt);
+    --flame-bright: color-mix(
+      in srgb,
+      var(--palette-terminal-prompt) 45%,
+      var(--palette-terminal-text)
+    );
+    width: 10px;
+    height: 14px;
+    flex: none;
+    shape-rendering: crispEdges;
+    transform-origin: 50% 100%;
+    animation: footer-burn 1.8s ease-in-out infinite alternate;
+  }
+
+  .footer-flame rect {
+    animation: footer-flame-cycle var(--flame-cycle) ease-in-out infinite;
+  }
+
+  .footer-flame .is-outer {
+    fill: var(--flame-deep);
+  }
+
+  .footer-flame .is-mid {
+    fill: var(--flame-mid);
+    animation-delay: calc(var(--flame-cycle) / -3);
+  }
+
+  .footer-flame .is-core {
+    fill: var(--flame-bright);
+    animation-delay: calc(var(--flame-cycle) / -1.5);
+  }
+
+  @keyframes footer-flame-cycle {
+    0%,
+    100% {
+      fill: var(--flame-deep);
+    }
+    33% {
+      fill: var(--flame-mid);
+    }
+    66% {
+      fill: var(--flame-bright);
+    }
+  }
+
+  @keyframes footer-burn {
+    from {
+      transform: scale(1);
+      filter: drop-shadow(0 0 0 transparent);
+    }
+    to {
+      transform: scale(1.08);
+      filter: drop-shadow(
+        0 0 2px
+          color-mix(in srgb, var(--palette-terminal-prompt) 45%, transparent)
+      );
+    }
+  }
+
+  @media (min-width: 768px) {
+    .footer-bar {
+      margin-bottom: 24px;
+    }
+
+    .footer-main {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 48px;
+    }
+
+    .footer-robot {
+      display: grid;
+    }
+
+    .footer-wide {
+      display: inline;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cat-bubble-word span,
-    .cat-bubble-shape path {
+    .footer-flame,
+    .footer-flame rect {
+      animation: none;
+    }
+
+    .footer-quote-text,
+    .footer-credit > span,
+    .footer-another :global(svg),
+    .footer-roll span,
+    .reboot-bubble-word span,
+    .reboot-bubble-shape path {
       transition: none;
     }
   }
 </style>
+
+<script>
+  import { setupFooter } from "./footer";
+
+  setupFooter();
+  document.addEventListener("astro:page-load", setupFooter);
+</script>
