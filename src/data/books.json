@@ -1,47 +1,95 @@
 [
   {
-    "title": "Designing Data-Intensive Applications",
-    "author": "Martin Kleppmann",
-    "url": "https://www.goodreads.com/book/show/23463279-designing-data-intensive-applications"
-  },
-  {
-    "title": "Elixir in Action",
-    "author": "Saša Jurić",
-    "url": "https://www.goodreads.com/book/show/38732242-elixir-in-action"
-  },
-  {
-    "title": "Deep Learning with Python",
-    "author": "François Chollet",
-    "url": "https://www.goodreads.com/book/show/235364769-deep-learning-with-python-third-edition"
-  },
-  {
     "title": "Programming Erlang",
+    "subtitle": "Software for a Concurrent World",
     "author": "Joe Armstrong",
+    "pages": 519,
+    "topic": "Languages",
     "url": "https://www.goodreads.com/book/show/808814.Programming_Erlang"
-  },
-  {
-    "title": "Craft GraphQL APIs in Elixir With Absinthe",
-    "author": "Bruce Williams & Ben Wilson",
-    "url": "https://www.goodreads.com/book/show/34921690-craft-graphql-apis-in-elixir-with-absinthe"
   },
   {
     "title": "The Rust Programming Language",
     "author": "Steve Klabnik & Carol Nichols",
+    "pages": 560,
+    "topic": "Languages",
     "url": "https://www.goodreads.com/book/show/63891183-the-rust-programming-language-2nd-edition"
   },
   {
-    "title": "SwiftUI Cookbook",
-    "author": "Giordano Scalzo & Edgar Nzokwe",
-    "url": "https://www.goodreads.com/book/show/201119516-swiftui-cookbook"
+    "title": "Designing Data-Intensive Applications",
+    "subtitle": "The Big Ideas Behind Reliable, Scalable, and Maintainable Systems",
+    "author": "Martin Kleppmann",
+    "pages": 562,
+    "topic": "Data & ML",
+    "url": "https://www.goodreads.com/book/show/23463279-designing-data-intensive-applications"
   },
   {
-    "title": "Mastering Swift 6",
-    "author": "Jon Hoffman",
-    "url": "https://www.goodreads.com/book/show/219237326-mastering-swift-6"
+    "title": "Deep Learning with Python",
+    "author": "François Chollet",
+    "pages": 648,
+    "topic": "Data & ML",
+    "url": "https://www.goodreads.com/book/show/235364769-deep-learning-with-python-third-edition"
   },
   {
-    "title": "The Art of Game Design: A Book of Lenses",
+    "title": "Zero to One",
+    "subtitle": "Notes on Startups, or How to Build the Future",
+    "author": "Peter Thiel",
+    "pages": 195,
+    "topic": "Startups",
+    "url": "https://www.goodreads.com/book/show/18050143-zero-to-one"
+  },
+  {
+    "title": "The Hard Thing About Hard Things",
+    "subtitle": "Building a Business When There Are No Easy Answers",
+    "author": "Ben Horowitz",
+    "pages": 308,
+    "topic": "Startups",
+    "url": "https://www.goodreads.com/book/show/20657434-the-hard-thing-about-hard-things"
+  },
+  {
+    "title": "The Art of Game Design",
+    "subtitle": "A Book of Lenses",
     "author": "Jesse Schell",
+    "pages": 520,
+    "topic": "Game design",
     "url": "https://www.goodreads.com/book/show/3396933-the-art-of-game-design"
+  },
+  {
+    "title": "Foundation",
+    "author": "Isaac Asimov",
+    "pages": 244,
+    "topic": "Science & sci-fi",
+    "url": "https://www.goodreads.com/book/show/29579.Foundation"
+  },
+  {
+    "title": "A Brief History of Time",
+    "subtitle": "From the Big Bang to Black Holes",
+    "author": "Stephen Hawking",
+    "pages": 226,
+    "topic": "Science & sci-fi",
+    "url": "https://www.goodreads.com/book/show/3869.A_Brief_History_of_Time"
+  },
+  {
+    "title": "Existential Physics",
+    "subtitle": "A Scientist's Guide to Life's Biggest Questions",
+    "author": "Sabine Hossenfelder",
+    "pages": 269,
+    "topic": "Science & sci-fi",
+    "url": "https://www.goodreads.com/book/show/59695048-existential-physics"
+  },
+  {
+    "title": "Noise",
+    "subtitle": "A Flaw in Human Judgment",
+    "author": "Daniel Kahneman",
+    "pages": 454,
+    "topic": "Psychology",
+    "url": "https://www.goodreads.com/book/show/55339408-noise"
+  },
+  {
+    "title": "Sapiens",
+    "subtitle": "A Brief History of Humankind",
+    "author": "Yuval Noah Harari",
+    "pages": 512,
+    "topic": "History",
+    "url": "https://www.goodreads.com/book/show/23692271-sapiens"
   }
 ]

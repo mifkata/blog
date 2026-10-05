@@ -1,0 +1,785 @@
+---
+import books from "@/data/books.json";
+import {
+  byTopic,
+  shelfOrder,
+  spineAuthor,
+  spineSize,
+  spineTone,
+} from "./readingTopics";
+
+const topics = byTopic(books);
+const hueOf = new Map(topics.map(({ topic, hue }) => [topic, hue]));
+const shelved = shelfOrder(books).map((book) => ({
+  ...book,
+  hue: hueOf.get(book.topic)!,
+  ...spineSize(book.title, book.pages),
+  ...spineTone(book.title),
+}));
+
+// Where each spine starts on the shelf, so all of them share one light.
+// Matches .shelf-books: 14px padding, the pot pulled back so its base sits
+// 4px in from the board's end, then books 5px apart, and 4px at the far end.
+const POT_WIDTH = 88;
+const POT_HEIGHT = 168;
+const POT_PULL = 32;
+let left = 14 - POT_PULL + POT_WIDTH;
+const placed = shelved.map((book) => {
+  left += 5;
+  const x = left;
+  left += book.width;
+  return { ...book, x };
+});
+const shelfWidth = left + 4;
+
+// Cover patterns are cycled along the shelf, so neighbours always differ
+const PATTERNS = 7;
+---
+
+<section class="py-12" aria-labelledby="reading-title">
+  <header class="reading-head mb-6">
+    <p class="text-sm text-accent uppercase tracking-wider m-0 mb-2">
+      Reading · {books.length} books
+    </p>
+    <h2 id="reading-title" class="text-3xl m-0 text-black">
+      Currently reading
+    </h2>
+  </header>
+
+  <div class="shelf" data-shelf>
+    <div class="shelf-scroll">
+      <div class="shelf-unit">
+        <div class="wallpaper" aria-hidden="true">
+          <i class="wallpaper-frames"></i>
+          <i class="wallpaper-flowers"></i>
+          <i class="wallpaper-dots"></i>
+        </div>
+        <div class="shelf-books">
+          <svg
+            class="shelf-pot"
+            viewBox="8 0 44 84"
+            width={POT_WIDTH}
+            height={POT_HEIGHT}
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="shelf-pot-clay">
+                <stop offset="0" class="clay-lit"></stop>
+                <stop offset="1" class="clay-shade"></stop>
+              </linearGradient>
+            </defs>
+            <g class="plant" data-shelf-leaves>
+              <path
+                class="leaf leaf-back"
+                d="M29 52C30 38 33 24 36 12C36 26 34 40 32 52Z"></path>
+              <path
+                class="leaf leaf-back"
+                d="M34 52C38 47 43 44 50 43C44 47 39 50 35 54Z"></path>
+            </g>
+            <g class="plant" data-shelf-bloom>
+              <path class="stem" d="M31 46Q36 30 41 18"></path>
+              <g class="flower">
+                <circle cx="41" cy="13" r="2.8"></circle>
+                <circle cx="45.2" cy="16" r="2.8"></circle>
+                <circle cx="43.6" cy="20.6" r="2.8"></circle>
+                <circle cx="38.6" cy="20.6" r="2.8"></circle>
+                <circle cx="37" cy="16" r="2.8"></circle>
+                <circle class="flower-core" cx="41.1" cy="17.3" r="2"></circle>
+              </g>
+            </g>
+            <g class="plant" data-shelf-leaves>
+              <path
+                class="leaf leaf-front"
+                d="M27 52C24 38 23 22 26 6C29 20 31 36 31 52Z"></path>
+              <path
+                class="leaf leaf-front"
+                d="M25 52C21 44 16 36 10 30C15 38 20 46 23 53Z"></path>
+              <path class="leaf" d="M31 52C33 42 36 34 41 27C40 36 36 44 34 52Z"
+              ></path>
+            </g>
+            <path class="pot" d="M15 56H45L41 82Q41 84 39 84H21Q19 84 19 82Z"
+            ></path>
+            <rect class="pot-rim" x="12" y="50" width="36" height="8" rx="1.5"
+            ></rect>
+            <rect class="pot-lip" x="12" y="50" width="36" height="1.6" rx="0.8"
+            ></rect>
+          </svg>
+          {
+            placed.map((book, i) => (
+              <a
+                href={book.url}
+                class:list={["spine", `pattern-${i % PATTERNS}`]}
+                style={`--hue: ${book.hue}; --tone: ${book.tone}; --wear: ${book.wear}%; --x: ${book.x}px; --shelf: ${shelfWidth}px; width: ${book.width}px; height: ${book.height}px`}
+                data-shelf-book
+                aria-label={`${book.title}${book.subtitle ? `: ${book.subtitle}` : ""} by ${book.author}`}
+              >
+                <span class="spine-light" aria-hidden="true" />
+                <span class="spine-title" aria-hidden="true">
+                  {book.title}
+                </span>
+                <span class="spine-author" aria-hidden="true">
+                  {spineAuthor(book.author)}
+                </span>
+              </a>
+            ))
+          }
+        </div>
+        <div class="shelf-board"></div>
+      </div>
+    </div>
+
+    <div class="shelf-side">
+      <div class="shelf-caption">
+        <p class="shelf-hint" data-shelf-hint>
+          <span class="hint-hover">Hover a book to see what it is</span>
+          <span class="hint-touch">Tap a book to see what it is</span>
+          {` · ${books.length} books, ${topics.length} topics`}
+        </p>
+        {
+          shelved.map((book) => (
+            <div class="shelf-card" data-shelf-card hidden>
+              <span class="shelf-card-title">{book.title}</span>
+              {book.subtitle && (
+                <span class="shelf-card-subtitle">{book.subtitle}</span>
+              )}
+              <span class="shelf-card-meta">
+                <span class="shelf-card-author">{book.author}</span>
+                <a href={book.url} class="shelf-card-link">
+                  {book.topic} · Goodreads ↗
+                </a>
+              </span>
+            </div>
+          ))
+        }
+      </div>
+      <ul class="shelf-legend" aria-label="Topics">
+        {
+          topics.map(({ topic, hue }) => (
+            <li>
+              <i style={`--hue: ${hue}`} aria-hidden="true" />
+              {topic}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Spines stand on a board, coloured by topic. From 1024px the caption and
+     legend sit beside the shelf; below that they follow it, and the shelf
+     scrolls sideways when it doesn't fit.
+
+     The page is the wall, lit from the left like a window: the books get
+     darker toward the right and cast a soft shadow onto the wall beside
+     them, and the plank casts its own, down and to the right. */
+  .shelf {
+    --book-l: 0.52;
+    --book-c: 0.085;
+    --contact: rgb(0 0 0 / 0.14);
+    --cast: rgb(0 0 0 / 0.1);
+    --board-cast: rgb(0 0 0 / 0.2);
+    --corner-edge: rgb(0 0 0 / 0.12);
+    --corner-shade: rgb(0 0 0 / 0.07);
+    --wood: oklch(0.6 0.075 62);
+    display: grid;
+    gap: 0 48px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .shelf {
+      --book-l: 0.44;
+      --book-c: 0.075;
+      --contact: rgb(0 0 0 / 0.4);
+      --cast: rgb(0 0 0 / 0.3);
+      --board-cast: rgb(0 0 0 / 0.5);
+      --corner-edge: rgb(255 255 255 / 0.08);
+      --corner-shade: rgb(0 0 0 / 0.3);
+      --wood: oklch(0.43 0.06 58);
+    }
+  }
+  .shelf-legend i {
+    background-color: color-mix(
+      in oklch,
+      oklch(var(--book-l) var(--book-c) var(--hue)) 82%,
+      var(--palette-accent)
+    );
+  }
+
+  .shelf-scroll {
+    min-width: 0;
+    /* Room for the shadow and the pot's overhang, which the scroller would
+       otherwise clip */
+    padding-top: 24px;
+    padding-bottom: 40px;
+    padding-left: 14px;
+    overflow-x: auto;
+    /* Sideways only: the shadows hang past the box, and a sideways scroller
+       would otherwise scroll up and down to reach them too */
+    overflow-y: hidden;
+    scrollbar-width: none;
+    /* Hints that more books are off to the right */
+    -webkit-mask-image: linear-gradient(to right, #000 82%, transparent);
+    mask-image: linear-gradient(to right, #000 82%, transparent);
+  }
+  .shelf-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .shelf-books {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    width: max-content;
+    padding: 18px 4px 0 14px;
+    /* The books' and pot's shadow on the wall: tight where they meet it and
+       soft further right, kept level so the plank hides what falls below */
+    filter: drop-shadow(3px 1px 2px var(--contact))
+      drop-shadow(10px 3px 6px var(--cast));
+  }
+  .shelf-unit {
+    position: relative;
+    isolation: isolate;
+    width: max-content;
+    min-width: 100%;
+  }
+  /* The heading stays above the wallpaper, which reaches up behind it */
+  .reading-head {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* A damask ogee wallpaper on the wall behind books and pot, printed in the
+     season's colours on a paper tinted with its button colour. It stops at
+     the wall's corner on the right and fades out everywhere else. Phones keep
+     it inside the sideways scroller; from 1024px it reaches up behind the
+     heading and left toward the page frame. */
+  .wallpaper {
+    --wallpaper-top: -24px;
+    --wallpaper-bottom: -40px;
+    --wallpaper-left: -14px;
+    position: absolute;
+    z-index: -1;
+    top: var(--wallpaper-top);
+    right: -12px;
+    bottom: var(--wallpaper-bottom);
+    left: var(--wallpaper-left);
+    pointer-events: none;
+    background: color-mix(
+      in oklch,
+      var(--palette-button-hi) 18%,
+      var(--palette-surface)
+    );
+    /* Phones scroll the shelf, so the paper fades in past the pot and above
+       and below the books, but not along the shelf */
+    -webkit-mask-image:
+      linear-gradient(to right, transparent, #000 96px),
+      linear-gradient(transparent, #000 30%, #000 72%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, transparent, #000 96px),
+      linear-gradient(transparent, #000 30%, #000 72%, transparent);
+    mask-composite: intersect;
+  }
+  .wallpaper i {
+    position: absolute;
+    inset: 0;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+    -webkit-mask-size: 72px 108px;
+    mask-size: 72px 108px;
+  }
+  /* Ogee frames and medallions */
+  .wallpaper-frames {
+    background: color-mix(
+      in oklch,
+      var(--palette-accent) 85%,
+      var(--palette-surface)
+    );
+    -webkit-mask-image: url("/wallpaper/damask-frames.svg");
+    mask-image: url("/wallpaper/damask-frames.svg");
+  }
+  /* Cross-petal flowers and the diamonds between ogees */
+  .wallpaper-flowers {
+    background: color-mix(
+      in oklch,
+      var(--palette-button-hi) 88%,
+      var(--palette-surface)
+    );
+    -webkit-mask-image: url("/wallpaper/damask-flowers.svg");
+    mask-image: url("/wallpaper/damask-flowers.svg");
+  }
+  /* Dots at the centres and where ogees meet */
+  .wallpaper-dots {
+    background: color-mix(
+      in oklch,
+      var(--palette-accent-strong) 50%,
+      var(--palette-heading)
+    );
+    -webkit-mask-image: url("/wallpaper/damask-dots.svg");
+    mask-image: url("/wallpaper/damask-dots.svg");
+  }
+  /* The wall turns away at the plank's end: an outside corner, with the
+     side beyond it in shade, fading out above the books and below the
+     plank's shadow */
+  .shelf-unit::after {
+    content: "";
+    position: absolute;
+    top: -12px;
+    bottom: -64px;
+    left: calc(100% + 12px);
+    width: 32px;
+    border-left: 1px solid var(--corner-edge);
+    background: linear-gradient(to right, var(--corner-shade), transparent);
+    -webkit-mask-image: linear-gradient(
+      transparent,
+      #000 18%,
+      #000 78%,
+      transparent
+    );
+    mask-image: linear-gradient(transparent, #000 18%, #000 78%, transparent);
+    pointer-events: none;
+  }
+  /* A small potted plant at the left end, lit like the books */
+  .shelf {
+    --clay-lit: oklch(0.68 0.11 48);
+    --clay-shade: oklch(0.5 0.1 40);
+    --clay-rim: oklch(0.72 0.1 50);
+    --leaf: oklch(0.6 0.11 145);
+    --leaf-lit: oklch(0.68 0.12 140);
+    --leaf-back: oklch(0.48 0.09 150);
+    --petal: oklch(0.78 0.11 0);
+    --petal-core: oklch(0.86 0.14 90);
+  }
+  @media (prefers-color-scheme: dark) {
+    .shelf {
+      --clay-lit: oklch(0.55 0.1 48);
+      --clay-shade: oklch(0.4 0.08 40);
+      --clay-rim: oklch(0.6 0.09 50);
+      --leaf: oklch(0.5 0.1 145);
+      --leaf-lit: oklch(0.57 0.11 140);
+      --leaf-back: oklch(0.4 0.08 150);
+      --petal: oklch(0.68 0.1 0);
+      --petal-core: oklch(0.78 0.12 90);
+    }
+  }
+  /* Pulled back over the shelf's padding: the base sits 4px in from the
+     board's end, and the rim and a leaf overhang it a little */
+  .shelf-pot {
+    flex: none;
+    margin-left: -32px;
+    overflow: visible;
+  }
+  .clay-lit {
+    stop-color: var(--clay-lit);
+  }
+  .clay-shade {
+    stop-color: var(--clay-shade);
+  }
+  .pot {
+    fill: url(#shelf-pot-clay);
+  }
+  .pot-rim {
+    fill: url(#shelf-pot-clay);
+  }
+  .pot-lip {
+    fill: var(--clay-rim);
+  }
+  /* The plant sways from where it meets the soil */
+  .plant {
+    transform-box: view-box;
+    transform-origin: 30px 52px;
+  }
+  .leaf {
+    fill: var(--leaf);
+  }
+  .leaf-front {
+    fill: var(--leaf-lit);
+  }
+  .leaf-back {
+    fill: var(--leaf-back);
+  }
+  .stem {
+    fill: none;
+    stroke: var(--leaf-back);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+  .flower circle {
+    fill: var(--petal);
+  }
+  .flower .flower-core {
+    fill: var(--petal-core);
+  }
+
+  /* A wooden plank: a lit top edge, a grain that wanders a little, and the
+     light falling off toward the right */
+  .shelf-board {
+    position: relative;
+    /* A little longer than the row of books and pot, on both ends */
+    margin-inline: -12px;
+    height: 16px;
+    border-radius: 2px;
+    background:
+      linear-gradient(
+        rgb(255 255 255 / 0.22) 0 2px,
+        rgb(0 0 0 / 0.1) 2px 3px,
+        transparent 3px
+      ),
+      linear-gradient(
+        to right,
+        rgb(255 255 255 / 0.06),
+        transparent 45%,
+        rgb(0 0 0 / 0.16)
+      ),
+      repeating-linear-gradient(
+        179.4deg,
+        rgb(0 0 0 / 0.08) 0 1px,
+        transparent 1px 4px
+      ),
+      repeating-linear-gradient(
+        180.7deg,
+        rgb(255 255 255 / 0.06) 0 1px,
+        transparent 1px 5px,
+        rgb(0 0 0 / 0.05) 5px 6px,
+        transparent 6px 9px
+      ),
+      var(--wood);
+  }
+  /* The plank's shadow on the wall, fading as it falls: its left side runs
+     at 45° from the plank's corner, and it stops at the wall's corner */
+  .shelf-board::after {
+    --depth: 37px;
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    height: var(--depth);
+    background: linear-gradient(var(--board-cast), transparent);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, var(--depth) 100%);
+  }
+  .spine {
+    position: relative;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 0 10px;
+    border-radius: 3px 3px 2px 2px;
+    color: rgb(255 255 255 / 0.94);
+    text-decoration: none;
+    background-color: color-mix(
+      in oklch,
+      oklch(calc(var(--book-l) + var(--tone)) var(--book-c) var(--hue)) 82%,
+      var(--palette-accent)
+    );
+    background-image: var(--pattern, none);
+    background-size: var(--pattern-size, auto);
+    /* The lamp side of each spine is lit, the far side in its shade */
+    box-shadow:
+      inset 1px 1px 0 rgb(255 255 255 / 0.14),
+      inset -2px 0 0 rgb(0 0 0 / 0.18);
+    transition: transform 0.25s ease;
+  }
+  /* The lamp, above whatever pattern the cover has */
+  .spine-light {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image:
+      /* Its falloff across the whole shelf: each spine shows its own slice */
+      linear-gradient(
+        to right,
+        rgb(255 255 255 / 0.07),
+        transparent 40%,
+        rgb(0 0 0 / 0.16)
+      ),
+      /* A worn patch, at a different height on every book */
+      radial-gradient(
+          90% 40% at 45% var(--wear),
+          rgb(255 255 255 / 0.06),
+          transparent 70%
+        ),
+      /* The tops catch more of the light */
+      linear-gradient(
+          rgb(255 255 255 / 0.05),
+          transparent 30%,
+          rgb(0 0 0 / 0.08)
+        );
+    background-position:
+      calc(var(--x) * -1) 0,
+      0 0,
+      0 0;
+    background-size:
+      var(--shelf) 100%,
+      100% 100%,
+      100% 100%;
+  }
+
+  /* Cover patterns, very light and covering the whole spine, so no book is
+     a flat colour */
+  .pattern-0 {
+    /* Linen */
+    --pattern:
+      repeating-linear-gradient(
+        0deg,
+        rgb(255 255 255 / 0.045) 0 1px,
+        transparent 1px 3px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgb(0 0 0 / 0.05) 0 1px,
+        transparent 1px 3px
+      );
+  }
+  .pattern-1 {
+    /* Fine horizontal grain */
+    --pattern: repeating-linear-gradient(
+      0deg,
+      rgb(255 255 255 / 0.045) 0 1px,
+      transparent 1px 4px
+    );
+  }
+  .pattern-2 {
+    /* Diagonal stripes */
+    --pattern: repeating-linear-gradient(
+      -45deg,
+      rgb(255 255 255 / 0.05) 0 2px,
+      transparent 2px 8px
+    );
+  }
+  .pattern-3 {
+    /* A small checker weave */
+    --pattern: repeating-conic-gradient(
+      rgb(255 255 255 / 0.045) 0 25%,
+      transparent 0 50%
+    );
+    --pattern-size: 6px 6px;
+  }
+  .pattern-4 {
+    /* Fine dots */
+    --pattern: radial-gradient(rgb(255 255 255 / 0.1) 0.8px, transparent 1.4px);
+    --pattern-size: 6px 6px;
+  }
+  .pattern-5 {
+    /* Pinstripes */
+    --pattern: repeating-linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.05) 0 1px,
+      transparent 1px 6px
+    );
+  }
+  .pattern-6 {
+    /* Crosshatch */
+    --pattern:
+      repeating-linear-gradient(
+        45deg,
+        rgb(0 0 0 / 0.06) 0 1px,
+        transparent 1px 5px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgb(0 0 0 / 0.06) 0 1px,
+        transparent 1px 5px
+      );
+  }
+
+  /* Pressed bands near the top and bottom of the spine */
+  .spine::before,
+  .spine::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 2px;
+    background: rgb(255 255 255 / 0.22);
+    box-shadow: 0 1px 0 rgb(0 0 0 / 0.14);
+  }
+  .spine::before {
+    top: 9px;
+  }
+  .spine::after {
+    bottom: 26px;
+  }
+  .spine:hover,
+  .spine:focus-visible,
+  .spine.is-on {
+    transform: translateY(-12px);
+  }
+  .spine:focus-visible {
+    outline: 2px solid var(--palette-accent);
+    outline-offset: 3px;
+  }
+  .spine-title {
+    position: relative;
+    overflow: hidden;
+    max-height: calc(100% - 50px);
+    font-family: "Zilla Slab", Rockwell, Georgia, serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 0 rgb(0 0 0 / 0.2);
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+  }
+  .spine-author {
+    position: relative;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-shadow: 0 1px 0 rgb(0 0 0 / 0.2);
+    opacity: 0.8;
+  }
+
+  .shelf-side {
+    min-width: 0;
+  }
+  .shelf-caption {
+    min-height: 5em;
+  }
+  .shelf-hint {
+    margin: 0;
+    color: var(--palette-muted);
+    font-size: 0.875rem;
+  }
+  .hint-touch {
+    display: none;
+  }
+  @media (hover: none) {
+    .hint-hover {
+      display: none;
+    }
+    .hint-touch {
+      display: inline;
+    }
+  }
+  .shelf-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .shelf-card-title {
+    color: var(--palette-heading);
+    font-family: "Zilla Slab", Rockwell, Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .shelf-card-subtitle {
+    color: var(--palette-muted);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+  .shelf-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 14px;
+    align-items: baseline;
+    margin-top: 4px;
+  }
+  .shelf-card-author {
+    color: var(--palette-text);
+  }
+  .shelf-card-link {
+    color: var(--palette-muted);
+    font-size: 0.8125rem;
+    white-space: nowrap;
+  }
+  .shelf-card-link:hover {
+    color: var(--palette-accent);
+  }
+  .shelf-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin: 6px 0 0;
+    padding: 0;
+    color: var(--palette-muted);
+    font-size: 0.8125rem;
+    list-style: none;
+  }
+  .shelf-legend li {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .shelf-legend i {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  @media (min-width: 1024px) {
+    .shelf {
+      grid-template-columns: max-content minmax(0, 1fr);
+      align-items: end;
+    }
+    .shelf-scroll {
+      padding-top: 0;
+      padding-left: 0;
+      overflow: visible;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    /* Beside the shelf, the column is bottom-aligned, so a shorter card
+       just starts lower; the reserved height would leave a gap instead */
+    .shelf-caption {
+      min-height: 0;
+      margin-top: 0;
+    }
+    .shelf-card-title {
+      font-size: 1.45rem;
+    }
+    /* Beside the caption it fades out all around, strongest at the books */
+    .wallpaper {
+      --wallpaper-top: -150px;
+      --wallpaper-bottom: -72px;
+      --wallpaper-left: max(-96px, calc(-1 * var(--page-bleed)));
+      -webkit-mask-image: radial-gradient(
+        ellipse 66% 42% at 66% 58%,
+        #000 50%,
+        transparent 100%
+      );
+      -webkit-mask-composite: source-over;
+      mask-image: radial-gradient(
+        ellipse 66% 42% at 66% 58%,
+        #000 50%,
+        transparent 100%
+      );
+      mask-composite: add;
+    }
+    /* The rule under the caption lines up with the band at the foot of the
+       spines: 40px of shadow room, the 16px plank, then the band 26-28px up
+       the spine. The legend hangs below the rule, so wrapping can't move it. */
+    .shelf-side {
+      position: relative;
+      margin-bottom: 82px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--palette-line);
+    }
+    .shelf-legend {
+      position: absolute;
+      top: calc(100% + 14px);
+      right: 0;
+      left: 0;
+      margin: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spine {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { setupShelves } from "./shelf";
+
+  setupShelves();
+  document.addEventListener("astro:page-load", setupShelves);
+</script>
