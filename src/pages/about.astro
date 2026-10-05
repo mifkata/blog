@@ -28,70 +28,72 @@ const quirks = [
 >
   <AboutHero />
 
-  <div class="grid md:grid-cols-2 gap-x-12">
-    <AboutSection title="Outside of Work">
-      <span slot="icon" class="inline-flex text-accent"
-        ><LucideIcon icon="clock" size={24} /></span
-      >
-      <p class="text-gray-dark mb-6">
-        My world is made of books, motorcycles, travel, cooking, music, my
-        family and my dog. The last two I'd gladly die for.
-      </p>
-      <p class="text-gray-dark">
-        I get obsessive about learning; even after 25+ years in the industry, I
-        still compare myself to the best in the field and feel like I'm far
-        behind. Coffee in the morning is non-negotiable. Everything else can
-        fall apart.
-      </p>
-    </AboutSection>
+  <AboutSection title="Outside of Work">
+    <span slot="icon" class="inline-flex text-accent"
+      ><LucideIcon icon="clock" size={22} /></span
+    >
+    <p class="text-gray-dark mb-4">
+      My world is made of books, motorcycles, travel, cooking, music, my family
+      and my dog. The last two I'd gladly die for.
+    </p>
+    <p class="text-gray-dark">
+      I get obsessive about learning; even after 25+ years in the industry, I
+      still compare myself to the best in the field and feel like I'm far
+      behind. Coffee in the morning is non-negotiable. Everything else can fall
+      apart.
+    </p>
+  </AboutSection>
 
-    <AboutSection title="Values">
-      <span slot="icon" class="inline-flex text-gray"
-        ><LucideIcon icon="heart" size={24} /></span
-      >
-      <p class="text-gray-dark mb-4">
-        I value intelligence and kindness, and I try to bring both to the people
-        I work with. I believe in freedom: to try new ideas, to question old
-        ones, and to change my mind when the facts change. I lead with
-        creativity, looking for the unexpected solution and refining it until it
-        looks obvious.
-      </p>
-    </AboutSection>
+  <AboutSection title="Values">
+    <span slot="icon" class="inline-flex text-accent"
+      ><LucideIcon icon="heart" size={22} /></span
+    >
+    <p class="text-gray-dark">
+      I value intelligence and kindness, and I try to bring both to the people I
+      work with. I believe in freedom: to try new ideas, to question old ones,
+      and to change my mind when the facts change. I lead with creativity,
+      looking for the unexpected solution and refining it until it looks
+      obvious.
+    </p>
+  </AboutSection>
 
-    <AboutSection title="How People See Me">
-      <span slot="icon" class="inline-flex text-accent"
-        ><LucideIcon icon="users" size={24} /></span
-      >
-      <p class="text-gray-dark">
-        One face, no hidden settings, and no second opinion for when you leave
-        the room. I try to be as clear as possible. Curious people love that;
-        people who enjoy office politics find it a bit inconvenient. I can live
-        with that.
-      </p>
-    </AboutSection>
+  <AboutSection title="How People See Me">
+    <span slot="icon" class="inline-flex text-accent"
+      ><LucideIcon icon="users" size={22} /></span
+    >
+    <p class="text-gray-dark">
+      One face, no hidden settings, and no second opinion for when you leave the
+      room. I try to be as clear as possible. Curious people love that; people
+      who enjoy office politics find it a bit inconvenient. I can live with
+      that.
+    </p>
+  </AboutSection>
 
-    <AboutSection title="Right Now">
-      <span slot="icon" class="inline-flex text-accent"
-        ><LucideIcon icon="info" size={24} /></span
-      >
-      <p class="text-gray-dark">
-        I'm learning languages, going to the gym, and pushing myself through
-        university because I want to teach someday. Maybe that's my way of
-        giving back, or maybe I just like making things harder than they need to
-        be.
-      </p>
-    </AboutSection>
+  <AboutSection title="Right Now">
+    <span slot="icon" class="inline-flex text-accent"
+      ><LucideIcon icon="info" size={22} /></span
+    >
+    <p class="text-gray-dark">
+      I'm learning languages, going to the gym, and pushing myself through
+      university because I want to teach someday. Maybe that's my way of giving
+      back, or maybe I just like making things harder than they need to be.
+    </p>
+  </AboutSection>
 
-    <AboutSection title="Quirks" class="md:col-span-2">
-      <span slot="icon" class="inline-flex text-button"
-        ><LucideIcon icon="star" size={24} /></span
-      >
-      <p class="text-gray mb-4 text-sm uppercase tracking-wider">
-        Because everyone has them, mine are just louder
-      </p>
-      <QuirksList quirks={quirks} />
-    </AboutSection>
-  </div>
+  <AboutSection
+    title="Quirks"
+    note="Because everyone has them, mine are just louder"
+  >
+    <span slot="icon" class="inline-flex text-accent"
+      ><LucideIcon icon="star" size={22} /></span
+    >
+    <QuirksList quirks={quirks} />
+  </AboutSection>
 
-  <ContactCTA />
+  <AboutSection title="Let's talk" class="mb-12">
+    <span slot="icon" class="inline-flex text-accent"
+      ><LucideIcon icon="message-square" size={22} /></span
+    >
+    <ContactCTA inline />
+  </AboutSection>
 </PageLayout>

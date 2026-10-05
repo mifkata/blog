@@ -1,6 +1,4 @@
 ---
-import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
-
 interface Props {
   quirks: string[];
 }
@@ -8,15 +6,55 @@ interface Props {
 const { quirks } = Astro.props;
 ---
 
-<ul class="grid gap-3 md:grid-cols-2 md:gap-x-12">
-  {
-    quirks.map((quirk) => (
-      <li class="flex items-start gap-3 text-gray-dark">
-        <span class="mt-1.5 text-button">
-          <LucideIcon icon="circle" size={12} />
-        </span>
-        {quirk}
-      </li>
-    ))
-  }
+<ul class="quirks">
+  {quirks.map((quirk) => <li>{quirk}</li>)}
 </ul>
+
+<style>
+  /* Ruled lines, two columns from 768px, each marked with a small diamond */
+  .quirks {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .quirks li {
+    position: relative;
+    padding: 12px 0 12px 22px;
+    border-top: 1px solid
+      color-mix(in srgb, var(--palette-line) 70%, transparent);
+    color: var(--palette-text);
+  }
+  .quirks li:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .quirks li::before {
+    content: "";
+    position: absolute;
+    top: 22px;
+    left: 2px;
+    width: 7px;
+    height: 7px;
+    background: var(--palette-button-hi);
+    transform: rotate(45deg);
+  }
+  .quirks li:first-child::before {
+    top: 10px;
+  }
+
+  @media (min-width: 768px) {
+    .quirks {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 36px;
+    }
+    /* The second column starts level with the first */
+    .quirks li:nth-child(2) {
+      border-top: 0;
+      padding-top: 0;
+    }
+    .quirks li:nth-child(2)::before {
+      top: 10px;
+    }
+  }
+</style>
