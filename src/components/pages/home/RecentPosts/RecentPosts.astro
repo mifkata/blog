@@ -1,46 +1,235 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import type { RecentIndex } from "./recentIndex";
 
 interface Props {
-  posts: CollectionEntry<"blog">[];
+  index: RecentIndex;
+  /** The series featured above, which its marked parts point up to */
+  seriesTitle?: string;
 }
 
-const { posts } = Astro.props;
+const { index, seriesTitle } = Astro.props;
+
+// Local time, like FormattedDate
+const shortDate = (date: Date) =>
+  date.toLocaleDateString("en-us", { month: "short", day: "2-digit" });
 ---
 
-<section>
-  <div class="flex items-center justify-between mb-8">
-    <div class="flex items-center gap-3">
-      <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
-        Recent Posts
-      </h3>
-      <div class="flex-1 h-px bg-gray-light min-w-[100px]"></div>
-    </div>
-    <a
-      href="/blog"
-      class="text-accent hover:text-accent-dark no-underline text-sm text-nowrap"
-    >
-      View all posts →
-    </a>
-  </div>
-  <ul class="list-none m-0 p-0 space-y-4">
-    {
-      posts.map((post) => (
-        <li class="border-b border-gray-light pb-4 last:border-0">
-          <a
-            href={`/blog/${post.id}/`}
-            class="group flex justify-between items-baseline gap-4 no-underline"
-          >
-            <span class="text-black group-hover:text-accent transition-colors">
-              {post.data.title}
-            </span>
-            <span class="text-gray text-sm shrink-0">
-              <FormattedDate date={post.data.pubDate} />
-            </span>
-          </a>
-        </li>
-      ))
+{
+  index.groups.length > 0 && (
+    <section aria-labelledby="recent-title">
+      <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-1 mb-6">
+        <div class="min-w-0">
+          <p class="text-sm text-accent uppercase tracking-wider m-0 mb-2">
+            {index.eyebrow}
+          </p>
+          <h2 id="recent-title" class="text-3xl m-0 text-black">
+            Recent posts
+          </h2>
+        </div>
+        <a
+          href="/blog/"
+          class="text-accent hover:text-accent-dark no-underline text-sm text-nowrap"
+        >
+          All posts →
+        </a>
+      </header>
+
+      {index.groups.map((group) => (
+        <div
+          class:list={["recent-group", { "is-month": index.by === "month" }]}
+        >
+          <h3 class="recent-period">{group.label}</h3>
+          <ol class="recent-rows">
+            {group.rows.map((row) => (
+              <li>
+                <a href={row.url} class="recent-row">
+                  <time class="recent-date" datetime={row.date.toISOString()}>
+                    {shortDate(row.date)}
+                  </time>
+                  <span class="recent-title">{row.title}</span>
+                  <span class="recent-side">
+                    {row.part ? (
+                      <span
+                        class="recent-chip is-series"
+                        title={
+                          seriesTitle &&
+                          `Part ${row.part} of ${seriesTitle}, featured above`
+                        }
+                      >
+                        Part {row.part} <span aria-hidden="true">↑</span>
+                      </span>
+                    ) : (
+                      row.tag && <span class="recent-chip">#{row.tag}</span>
+                    )}
+                    <span class="recent-minutes">{row.minutes} min</span>
+                  </span>
+                  {row.description && (
+                    <span class="recent-desc">{row.description}</span>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </section>
+  )
+}
+
+<style>
+  /* Phones stack each row; from 768px the period sits in a margin and each
+     row is date, title, chip and minutes on one line over its description */
+  .recent-group {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border-top: 1px solid var(--palette-line);
+  }
+  .recent-group + .recent-group {
+    margin-top: 10px;
+  }
+  .recent-period {
+    margin: 0;
+    padding-top: 12px;
+    color: var(--palette-muted);
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+  .recent-rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .recent-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    margin-inline: -12px;
+    padding: 14px 12px;
+    border-radius: 10px;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  .recent-row:hover {
+    background: color-mix(in srgb, var(--palette-accent) 7%, transparent);
+  }
+  .recent-row:focus-visible {
+    outline: 2px solid var(--palette-accent);
+    outline-offset: 2px;
+  }
+  /* Separators inset to the text, hidden around the hovered row */
+  .recent-rows li + li .recent-row::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 12px;
+    left: 12px;
+    height: 1px;
+    background: color-mix(in srgb, var(--palette-line) 70%, transparent);
+  }
+  .recent-rows li:hover + li .recent-row::before,
+  .recent-row:hover::before {
+    display: none;
+  }
+
+  .recent-date {
+    color: var(--palette-muted);
+    font:
+      0.8125rem/1.6 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+    font-variant-numeric: tabular-nums;
+  }
+  .recent-title {
+    color: var(--palette-heading);
+    font-family: "Zilla Slab", Rockwell, Georgia, serif;
+    font-size: 1.18rem;
+    font-weight: 700;
+    line-height: 1.22;
+    text-wrap: balance;
+    transition: color 0.2s;
+  }
+  .recent-row:hover .recent-title {
+    color: var(--palette-accent);
+  }
+  .recent-side {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 4px;
+  }
+  .recent-chip {
+    padding: 1px 9px;
+    border-radius: 999px;
+    background: var(--palette-tag);
+    color: var(--palette-tag-text);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+  .recent-chip.is-series {
+    border: 1px solid
+      color-mix(in srgb, var(--palette-accent) 45%, var(--palette-line));
+    background: transparent;
+    color: var(--palette-accent);
+  }
+  .recent-minutes {
+    color: var(--palette-muted);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .recent-desc {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: var(--palette-muted);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  @media (min-width: 768px) {
+    .recent-group {
+      grid-template-columns: 76px minmax(0, 1fr);
+      column-gap: 20px;
     }
-  </ul>
-</section>
+    /* Room for "September" */
+    .recent-group.is-month {
+      grid-template-columns: 124px minmax(0, 1fr);
+    }
+    .recent-period {
+      padding-top: 15px;
+      font-size: 1.35rem;
+    }
+    .recent-row {
+      grid-template-columns: 58px minmax(0, 1fr) auto;
+      gap: 2px 20px;
+      align-items: baseline;
+    }
+    .recent-side {
+      grid-row: 1;
+      grid-column: 3;
+      justify-content: flex-end;
+      margin-top: 0;
+    }
+    .recent-minutes {
+      min-width: 3.6em;
+      text-align: right;
+    }
+    .recent-desc {
+      grid-column: 2;
+      -webkit-line-clamp: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .recent-row,
+    .recent-title {
+      transition: none;
+    }
+  }
+</style>

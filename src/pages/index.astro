@@ -1,7 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import { isPublished } from "@/helpers/posts";
+import { readingMinutes } from "@/helpers/reading";
 import { getFeaturedSeries } from "@/helpers/series";
+import {
+  recentIndex,
+  tagCounts,
+} from "@/components/pages/home/RecentPosts/recentIndex";
 import CurrentlyReading from "@/components/pages/home/CurrentlyReading/CurrentlyReading.astro";
 import FeaturedSeries from "@/components/pages/home/FeaturedSeries/FeaturedSeries.astro";
 import HomeHero from "@/components/pages/home/HomeHero/HomeHero.astro";
@@ -16,9 +21,22 @@ const posts = (await getCollection("blog", isPublished)).sort(
 );
 
 const featuredPost = posts[0] || null;
-const recentPosts = posts.slice(1, 11);
 const featuredSeries = await getFeaturedSeries(
   "agentic-engineering-foundations",
+);
+const recent = recentIndex(
+  posts.slice(1, 11).map((post) => ({
+    id: post.id,
+    title: post.data.title,
+    description: post.data.description,
+    date: post.data.pubDate,
+    tags: post.data.tags,
+    minutes: readingMinutes(post.body ?? ""),
+  })),
+  {
+    counts: tagCounts(posts.map((post) => post.data)),
+    seriesUrls: featuredSeries.parts.map((part) => part.url),
+  },
 );
 ---
 
@@ -27,6 +45,6 @@ const featuredSeries = await getFeaturedSeries(
   <HomeTerminal />
   {featuredPost && <FeaturedPost post={featuredPost} />}
   <FeaturedSeries {...featuredSeries} />
-  <RecentPosts posts={recentPosts} />
+  <RecentPosts index={recent} seriesTitle={featuredSeries.title} />
   <CurrentlyReading />
 </PageLayout>
