@@ -1,0 +1,66 @@
+---
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
+import type { CalloutType } from "./callout";
+
+interface Props {
+  type?: CalloutType;
+}
+
+const { type = "note" } = Astro.props;
+const ICONS = { note: "info", warning: "triangle-alert", tip: "bulb" } as const;
+const LABELS = { note: "Note", warning: "Warning", tip: "Tip" };
+---
+
+<aside class="callout" data-type={type}>
+  <p class="callout-label">
+    <LucideIcon icon={ICONS[type]} size={14} />
+    {LABELS[type]}
+  </p>
+  <slot />
+</aside>
+
+<style>
+  /* A tinted panel with a bar and a label in the type's colour */
+  .callout {
+    --note: #c8961c;
+    --warning: #d9406f;
+    --tip: var(--palette-accent);
+    --tone: var(--note);
+    margin: 0 0 var(--prose-gap);
+    padding: 14px 18px 16px;
+    border-left: 3px solid var(--tone);
+    border-radius: 0 10px 10px 0;
+    background: color-mix(in srgb, var(--tone) 9%, var(--palette-surface));
+    font-size: 0.94em;
+  }
+  .callout[data-type="warning"] {
+    --tone: var(--warning);
+  }
+  .callout[data-type="tip"] {
+    --tone: var(--tip);
+  }
+  .callout .callout-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 0 6px;
+    color: color-mix(in srgb, var(--tone) 78%, var(--palette-text));
+    font-size: 0.75em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .callout :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  /* Posts wrap callout text in a quote; here it's plain text */
+  .callout :global(.quote) {
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+  }
+  .callout :global(.quote)::before {
+    content: none;
+  }
+</style>

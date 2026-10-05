@@ -1,10 +1,20 @@
 ---
+import Callout from "@/components/prose/Callout.astro";
+import {
+  calloutType,
+  type CalloutType,
+  type HighlightColor,
+} from "@/components/prose/callout";
+
 interface Props {
-  color?: "yellow" | "green" | "blue" | "pink";
+  color?: HighlightColor;
+  /** A callout instead of a highlighted phrase */
   block?: boolean;
+  /** For blocks; otherwise read from the colour */
+  type?: CalloutType;
 }
 
-const { color = "yellow", block = false } = Astro.props;
+const { color = "yellow", block = false, type } = Astro.props;
 
 const colorClasses = {
   yellow: "bg-yellow-200/60 dark:bg-yellow-500/30",
@@ -16,9 +26,9 @@ const colorClasses = {
 
 {
   block ? (
-    <div class:list={["p-4 rounded-md text-base my-4", colorClasses[color]]}>
+    <Callout type={calloutType(type, color)}>
       <slot />
-    </div>
+    </Callout>
   ) : (
     <mark class:list={["px-1 rounded-sm", colorClasses[color]]}>
       <slot />
