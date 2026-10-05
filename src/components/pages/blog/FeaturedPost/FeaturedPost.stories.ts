@@ -13,15 +13,19 @@ const createMockPost = (overrides: {
   title?: string;
   synopsis?: string;
   pubDate?: string;
+  updatedDate?: string;
   tags?: string[];
   heroImage?: ReturnType<typeof createMockImage>;
+  words?: number;
 }) => ({
   id: overrides.id ?? "example-post",
+  body: "word ".repeat(overrides.words ?? 1200),
   data: {
     title: overrides.title ?? "Example Post",
     synopsis: overrides.synopsis,
     description: overrides.synopsis ?? "Example description",
     pubDate: overrides.pubDate ?? "2025-12-30",
+    updatedDate: overrides.updatedDate,
     tags: overrides.tags ?? ["example"],
     heroImage: overrides.heroImage,
   },
@@ -41,9 +45,11 @@ export const Default: Story = {
     post: createMockPost({
       title: "Getting Started with Astro",
       synopsis:
-        "Learn how to build fast, content-focused websites with Astro framework.",
+        "Learn how to build fast, content-focused websites with Astro framework.\n\nThis article walks through a small blog, from the first page to a **deploy**.",
+      updatedDate: "2026-01-04",
       tags: ["astro", "web"],
       heroImage: createMockImage(10),
+      words: 2300,
     }),
   },
 };

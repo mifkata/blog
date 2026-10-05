@@ -1,69 +1,188 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import { marked } from "marked";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
-import { Markdown } from "@/components/post/Markdown/Markdown";
 import Tag from "@/components/ui/Tag/Tag.astro";
+import { readingMinutes } from "@/helpers/reading";
 
 interface Props {
   post: CollectionEntry<"blog">;
 }
 
 const { post } = Astro.props;
+const { title, synopsis, description, pubDate, updatedDate, heroImage, tags } =
+  post.data;
+const href = `/blog/${post.id}/`;
+const minutes = readingMinutes(post.body ?? "");
 ---
 
-<section class="mb-16 py-8 border-t border-b border-gray-light group">
-  <div class="grid md:grid-cols-2 gap-8 items-start">
-    <div>
-      <div class="text-sm text-accent uppercase tracking-wider mb-2">
-        Latest Post
-      </div>
-      <a href={`/blog/${post.id}/`} class="no-underline">
-        <h2
-          class="text-3xl md:text-4xl m-0 mb-4 text-black group-hover:text-accent transition-colors"
-        >
-          {post.data.title}
-        </h2>
+<section
+  class:list={["featured mb-16", { "has-media": heroImage }]}
+  aria-labelledby="featured-title"
+>
+  <header class="featured-head">
+    <p class="text-sm text-accent uppercase tracking-wider m-0 mb-2">
+      Latest post · <FormattedDate date={pubDate} />
+    </p>
+    <h2 id="featured-title">
+      <a href={href} class="featured-title no-underline">{title}</a>
+    </h2>
+  </header>
+
+  {
+    heroImage && (
+      <a href={href} class="featured-media" tabindex="-1" aria-hidden="true">
+        <Image
+          src={heroImage}
+          alt=""
+          widths={[480, 720, 960, 1280]}
+          sizes="(min-width: 768px) 560px, 100vw"
+        />
       </a>
-      {
-        post.data.heroImage && (
-          <a href={`/blog/${post.id}/`} class="block">
-            <Image
-              width={720}
-              height={400}
-              src={post.data.heroImage}
-              alt=""
-              class="rounded-xl shadow-lg group-hover:shadow-xl group-hover:opacity-80 group-hover:transition-opacity transition-shadow"
-            />
-          </a>
-        )
-      }
-    </div>
-    <div>
-      <div class="text-sm text-gray tracking-wider mb-2">
-        <strong>Published:</strong>
-        <FormattedDate date={post.data.pubDate} />
-      </div>
-      <div class="flex items-center gap-4 text-sm text-gray mb-4 xl:flex-wrap">
+    )
+  }
+
+  <div class="featured-body">
+    <div
+      class="featured-synopsis"
+      set:html={marked.parse(synopsis ?? description, { async: false })}
+    />
+    {
+      tags.length > 0 && (
+        <div class="flex flex-wrap gap-1.5">
+          {tags.map((tag) => (
+            <Tag tag={tag} class="text-xs" />
+          ))}
+        </div>
+      )
+    }
+    <p class="featured-foot">
+      <span class="text-sm text-gray tabular-nums">
+        {minutes} min read
         {
-          post.data.tags && (
-            <div class="flex gap-2 flex-wrap">
-              {post.data.tags.map((tag) => (
-                <Tag tag={tag} class="text-xs" />
-              ))}
-            </div>
+          updatedDate && (
+            <>
+              {" "}
+              · Updated <FormattedDate date={updatedDate} />
+            </>
           )
         }
-      </div>
-      <p class="text-gray mb-4">
-        <Markdown text={post.data.synopsis || post.data.description} />
-      </p>
+      </span>
       <a
-        href={`/blog/${post.id}/`}
-        class="text-accent hover:text-accent-dark no-underline text-sm"
+        href={href}
+        class="featured-cta font-bold no-underline text-[0.9375rem]"
+        tabindex="-1"
+        aria-hidden="true"
       >
-        Read more →
+        Read the post →
       </a>
-    </div>
+    </p>
   </div>
 </section>
+
+<style>
+  /* Phones stack title, image, then text. From tablets up the text holds
+     the left column and the image sits beside it. */
+  .featured {
+    display: grid;
+    grid-template-areas: "head" "media" "body";
+    gap: 20px;
+  }
+  .featured-head {
+    grid-area: head;
+  }
+  .featured-head h2 {
+    margin: 0;
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+  .featured-title {
+    color: var(--palette-heading);
+  }
+  /* Only the post's own links light it up, not the tags */
+  .featured:has(
+      .featured-title:hover,
+      .featured-media:hover,
+      .featured-cta:hover
+    )
+    .featured-title {
+    color: var(--palette-accent);
+  }
+  .featured-media {
+    grid-area: media;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid var(--palette-line);
+    border-radius: 14px;
+    background: var(--palette-hero);
+  }
+  .featured-media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .featured:has(
+      .featured-title:hover,
+      .featured-media:hover,
+      .featured-cta:hover
+    )
+    .featured-media
+    :global(img) {
+    transform: scale(1.03);
+  }
+  .featured-body {
+    grid-area: body;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 72ch;
+  }
+  .featured-synopsis {
+    color: var(--palette-muted);
+    text-wrap: pretty;
+  }
+  .featured-synopsis :global(p) {
+    margin: 0 0 0.75rem;
+  }
+  .featured-synopsis :global(p:last-child) {
+    margin: 0;
+  }
+  .featured-synopsis :global(strong) {
+    color: var(--palette-text);
+  }
+  .featured-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin: 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--palette-line);
+  }
+
+  @media (min-width: 768px) {
+    .featured-head h2 {
+      font-size: 2.5rem;
+    }
+    .featured.has-media {
+      grid-template-areas: "head media" "body media";
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      grid-template-rows: auto 1fr;
+      gap: 18px 48px;
+    }
+    .featured-media {
+      align-self: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured-media :global(img) {
+      transition: none;
+    }
+  }
+</style>
