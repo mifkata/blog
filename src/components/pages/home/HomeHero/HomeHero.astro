@@ -1,5 +1,6 @@
 ---
 import Button from "@/components/ui/Button/Button.astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 import HomeBoot from "@/components/pages/home/HomeBoot/HomeBoot.astro";
 import { generateCircuit, toCircuitData, toPathData } from "./circuit";
 import { DESKTOP_COPY, quietRects, stepOpacity } from "./circuitQuiet";
@@ -118,11 +119,22 @@ const QUIET_PULSES = 0.6;
         AI adoption and engineering. I look at the whole product, not only the
         code.
       </p>
-      <div class="flex flex-wrap gap-4">
-        <Button href="/about" variant="inverse" class="px-6 py-3">
-          Read the longer story
+      <!-- Equal-width buttons side by side, the wider one setting the width;
+           more compact on phones so both fit on one line -->
+      <div class="inline-grid grid-flow-col auto-cols-fr gap-2 sm:gap-4">
+        <Button
+          href="/about"
+          variant="inverse"
+          class="hero-button justify-center border border-transparent bg-origin-border"
+        >
+          The longer story
         </Button>
-        <Button href="/blog" variant="ghost" class="circuit-solid px-6 py-3">
+        <Button
+          href="/blog"
+          variant="ghost"
+          class="hero-button circuit-solid justify-center"
+        >
+          <LucideIcon slot="icon" icon="notebook" size={18} />
           Read my thoughts
         </Button>
       </div>
@@ -168,6 +180,45 @@ const QUIET_PULSES = 0.6;
   }
 
   /* The outlined button would otherwise show the board through its label. */
+  /* Phones: both buttons on one line, so the label scales with the screen
+     and the padding tightens; below 340px there's no room for the icons */
+  .circuit-hero :global(.hero-button) {
+    gap: 6px;
+    padding: 10px;
+    font-size: clamp(14px, 3.9vw, 16px);
+    white-space: nowrap;
+  }
+
+  .circuit-hero :global(.hero-button svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (max-width: 379px) {
+    .circuit-hero :global(.hero-button) {
+      padding-inline: 8px;
+    }
+  }
+
+  @media (max-width: 339px) {
+    .circuit-hero :global(.hero-button .button-icon) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .circuit-hero :global(.hero-button) {
+      gap: 8px;
+      padding: 12px 24px;
+      font-size: 1.125rem;
+    }
+
+    .circuit-hero :global(.hero-button svg) {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
   .circuit-hero :global(.circuit-solid) {
     background-color: var(--circuit-bg);
   }
