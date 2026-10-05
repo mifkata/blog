@@ -1,36 +1,282 @@
 ---
 import { Image } from "astro:assets";
-import type { CollectionEntry } from "astro:content";
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import type { RelatedItem } from "@/helpers/related";
 
 interface Props {
-  posts: CollectionEntry<"blog">[];
+  items: RelatedItem[];
+  /** The post being read, which the browser remembers as read */
+  current?: string;
 }
 
-const { posts } = Astro.props;
+const { items, current } = Astro.props;
 ---
 
 {
-  posts.length > 0 && (
-    <section class="sm:mt-12 mt-6 pt-8 border-t border-gray-light">
-      <h2 class="text-2xl text-center lg:text-left">Related Posts</h2>
-      <div class="grid mt-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {posts.map((post) => (
-          <a href={`/blog/${post.id}/`} class="group block no-underline">
-            {post.data.heroImage && (
-              <Image
-                width={420}
-                height={170}
-                src={post.data.heroImage}
-                alt=""
-                class="rounded-lg mb-3 mx-auto group-hover:shadow-md transition-shadow aspect-video object-cover"
-              />
-            )}
-            <div class="text-base max-w-[300px] mx-auto text-center px-4 lg:px-0 lg:text-left text-gray-dark group-hover:text-accent transition-colors line-clamp-2">
-              {post.data.title}
-            </div>
-          </a>
-        ))}
+  items.length > 0 && (
+    <section class="related" aria-labelledby="related-title">
+      <div class="related-head">
+        <h2 id="related-title">Read next</h2>
+        <a href="/blog/" class="related-all">
+          All posts →
+        </a>
       </div>
+
+      <ol class="related-list" data-related data-current={current}>
+        {items.map((item, i) => (
+          <li class="related-item" data-related-id={item.id}>
+            <a href={item.url} class="related-card">
+              <div class="related-img">
+                {item.heroImage && (
+                  <Image
+                    src={item.heroImage}
+                    alt=""
+                    widths={[144, 480, 960]}
+                    sizes={i === 0 ? "(min-width: 768px) 460px, 100vw" : "72px"}
+                  />
+                )}
+              </div>
+              <div class="related-text">
+                <span
+                  class:list={[
+                    "related-reason",
+                    { "is-latest": item.kind === "latest" },
+                  ]}
+                >
+                  {item.reason}
+                </span>
+                <h3>{item.title}</h3>
+                {item.description && (
+                  <p class="related-desc">{item.description}</p>
+                )}
+                <span class="related-meta">
+                  <FormattedDate date={item.pubDate} />
+                  {item.minutes && (
+                    <span class="related-minutes">
+                      {" "}
+                      · {item.minutes} min read
+                    </span>
+                  )}
+                </span>
+                <span class="related-cta">Read the post →</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ol>
     </section>
   )
 }
+
+<style>
+  /* The first item is the lead card, the next three are rows, and the rest
+     wait in case the reader has opened those already */
+  .related {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--palette-line);
+  }
+  .related a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .related-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 1.4rem;
+  }
+  .related-head h2 {
+    margin: 0;
+    font-size: 1.55rem;
+    line-height: 1.2;
+  }
+  .related .related-all {
+    color: var(--palette-accent);
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+  .related .related-all:hover {
+    text-decoration: underline;
+  }
+
+  .related-list {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .related-item:nth-child(n + 5) {
+    display: none;
+  }
+  .related-reason {
+    color: var(--palette-accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+  .related-reason.is-latest {
+    color: var(--palette-muted);
+  }
+  .related-meta {
+    color: var(--palette-muted);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .related h3 {
+    margin: 0;
+    color: var(--palette-heading);
+    font-family: "Zilla Slab", Rockwell, Georgia, serif;
+    font-weight: 700;
+    line-height: 1.2;
+    text-wrap: balance;
+    transition: color 0.2s;
+  }
+  .related a:hover h3 {
+    color: var(--palette-accent);
+  }
+  .related-img {
+    overflow: hidden;
+    background: var(--palette-hero);
+  }
+  .related-img :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  /* Rows */
+  .related-card {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 12px;
+    transition: background-color 0.2s;
+  }
+  .related-card:hover {
+    background: color-mix(in srgb, var(--palette-accent) 7%, transparent);
+  }
+  .related-img {
+    aspect-ratio: 1;
+    border-radius: 10px;
+  }
+  .related-text {
+    display: grid;
+    gap: 3px;
+  }
+  .related h3 {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 1.02rem;
+  }
+  .related-desc,
+  .related-minutes,
+  .related-cta {
+    display: none;
+  }
+
+  /* The lead */
+  .related-item:first-child {
+    margin-bottom: 8px;
+  }
+  .related-item:first-child .related-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    align-items: stretch;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--palette-line);
+    border-radius: 16px;
+    background: var(--palette-surface);
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .related-item:first-child .related-card:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--palette-accent) 45%,
+      var(--palette-line)
+    );
+    background: var(--palette-surface);
+    box-shadow: 0 22px 44px -32px rgb(0 0 0 / 0.35);
+  }
+  .related-item:first-child .related-img {
+    aspect-ratio: 16 / 9;
+    border-radius: 0;
+  }
+  .related-item:first-child .related-card:hover .related-img :global(img) {
+    transform: scale(1.03);
+  }
+  .related-item:first-child .related-text {
+    align-content: center;
+    gap: 10px;
+    padding: 20px 22px 22px;
+  }
+  .related-item:first-child h3 {
+    display: block;
+    font-size: 1.45rem;
+  }
+  .related-item:first-child .related-desc {
+    display: block;
+    margin: 0;
+    color: var(--palette-muted);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  .related-item:first-child .related-minutes {
+    display: inline;
+  }
+  .related-item:first-child .related-cta {
+    display: block;
+    color: var(--palette-accent);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  @media (min-width: 768px) {
+    .related-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 14px;
+    }
+    .related-item:first-child {
+      grid-column: 1 / -1;
+    }
+    .related-item:first-child .related-card {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    }
+    .related-item:first-child .related-img {
+      aspect-ratio: auto;
+      min-height: 280px;
+    }
+    .related-item:first-child .related-text {
+      padding: 28px 32px;
+    }
+    .related-item:first-child h3 {
+      font-size: 1.8rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .related-img :global(img) {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { setupReadNext } from "./readNext";
+
+  setupReadNext();
+  document.addEventListener("astro:page-load", setupReadNext);
+</script>

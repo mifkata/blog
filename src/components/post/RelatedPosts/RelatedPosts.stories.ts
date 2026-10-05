@@ -1,23 +1,11 @@
 import type { Meta, StoryObj } from "@storybook-astro/framework";
 import RelatedPosts from "./RelatedPosts.astro";
 
-const createMockImage = (id: number) => ({
-  src: `https://picsum.photos/seed/${id}/300/170`,
-  width: 300,
-  height: 170,
+const image = (id: number) => ({
+  src: `https://picsum.photos/seed/${id}/960/540`,
+  width: 960,
+  height: 540,
   format: "jpg" as const,
-});
-
-const createMockPost = (overrides: {
-  id?: string;
-  title?: string;
-  heroImage?: ReturnType<typeof createMockImage>;
-}) => ({
-  id: overrides.id ?? "example-post",
-  data: {
-    title: overrides.title ?? "Example Post",
-    heroImage: overrides.heroImage,
-  },
 });
 
 const meta: Meta<typeof RelatedPosts> = {
@@ -31,50 +19,68 @@ type Story = StoryObj<typeof RelatedPosts>;
 
 export const FourPosts: Story = {
   args: {
-    posts: [
-      createMockPost({
+    items: [
+      {
         id: "post-1",
-        title: "Getting Started with Astro",
-        heroImage: createMockImage(1),
-      }),
-      createMockPost({
+        url: "/blog/post-1/",
+        title: "Spec-Driven Development (SDD) for AI Coding Agents",
+        description:
+          "What spec-driven development is, why AI coding agents need it, and how to start.",
+        pubDate: new Date("2026-01-08"),
+        heroImage: image(1),
+        minutes: 6,
+        kind: "series",
+        reason: "Previous in the series",
+      },
+      {
         id: "post-2",
-        title: "Understanding TypeScript Generics",
-        heroImage: createMockImage(2),
-      }),
-      createMockPost({
+        url: "/blog/post-2/",
+        title: "3 must-have tools for a leaner AI agent context",
+        pubDate: new Date("2026-09-21"),
+        heroImage: image(2),
+        minutes: 5,
+        kind: "topic",
+        reason: "Also about agents",
+      },
+      {
         id: "post-3",
-        title: "Building Scalable Systems",
-        heroImage: createMockImage(3),
-      }),
-      createMockPost({
+        url: "/blog/post-3/",
+        title: "The rise of OpenClaw",
+        pubDate: new Date("2026-02-04"),
+        heroImage: image(3),
+        minutes: 4,
+        kind: "topic",
+        reason: "Also about agents",
+      },
+      {
         id: "post-4",
-        title: "A Deep Dive into Component Architecture",
-        heroImage: createMockImage(4),
-      }),
+        url: "/blog/post-4/",
+        title: "Project Instructions and Reusable Commands",
+        pubDate: new Date("2026-01-02"),
+        heroImage: image(4),
+        minutes: 7,
+        kind: "latest",
+        reason: "More from the blog",
+      },
     ],
   },
 };
 
-export const TwoPosts: Story = {
+export const SinglePost: Story = {
   args: {
-    posts: [
-      createMockPost({
+    items: [
+      {
         id: "post-1",
-        title: "Getting Started with Astro",
-        heroImage: createMockImage(5),
-      }),
-      createMockPost({
-        id: "post-2",
-        title: "Understanding TypeScript Generics",
-        heroImage: createMockImage(6),
-      }),
+        url: "/blog/post-1/",
+        title: "The rise of OpenClaw",
+        description:
+          "OpenClaw, the agentic sensation that took the world by storm.",
+        pubDate: new Date("2026-02-04"),
+        heroImage: image(5),
+        minutes: 4,
+        kind: "topic",
+        reason: "Also about agents",
+      },
     ],
-  },
-};
-
-export const NoPosts: Story = {
-  args: {
-    posts: [],
   },
 };
