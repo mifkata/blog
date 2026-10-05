@@ -61,3 +61,5 @@ dolt-config.log
 
 # Misc
 .serena
+# Claude Code: local settings, commands and skills stay private
+.claude/
