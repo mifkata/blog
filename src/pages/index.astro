@@ -7,7 +7,7 @@ import {
   recentIndex,
   tagCounts,
 } from "@/components/pages/home/RecentPosts/recentIndex";
-import CurrentlyReading from "@/components/pages/home/CurrentlyReading/CurrentlyReading.astro";
+import ReadingShelf from "@/components/pages/home/CurrentlyReading/ReadingShelf.astro";
 import FeaturedSeries from "@/components/pages/home/FeaturedSeries/FeaturedSeries.astro";
 import HomeHero from "@/components/pages/home/HomeHero/HomeHero.astro";
 import HomeTerminal from "@/components/pages/home/HomeTerminal/HomeTerminal.astro";
@@ -46,5 +46,5 @@ const recent = recentIndex(
   {featuredPost && <FeaturedPost post={featuredPost} />}
   <FeaturedSeries {...featuredSeries} />
   <RecentPosts index={recent} seriesTitle={featuredSeries.title} />
-  <CurrentlyReading />
+  <ReadingShelf />
 </PageLayout>

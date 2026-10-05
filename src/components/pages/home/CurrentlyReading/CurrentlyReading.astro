@@ -1,29 +1,116 @@
 ---
 import books from "@/data/books.json";
+import { byTopic } from "./readingTopics";
+
+const topics = byTopic(books);
 ---
 
-<section class="py-12">
-  <div class="flex items-center gap-3 mb-6">
-    <h3 class="text-lg m-0 text-gray uppercase tracking-wider">
-      Currently Reading
-    </h3>
-    <div class="flex-1 h-px bg-gray-light"></div>
-  </div>
-  <div class="bg-gray-light/50 p-6 rounded-lg border-l-4 border-accent">
-    <ul class="m-0 p-0 list-none space-y-2">
-      {
-        books.map((book) => (
-          <li class="text-gray-dark">
-            <a
-              href={book.url}
-              class="text-accent font-medium hover:text-accent-dark"
-            >
-              {book.title}
-            </a>{" "}
-            by {book.author}
-          </li>
-        ))
-      }
-    </ul>
+<section class="py-12" aria-labelledby="reading-title">
+  <header class="mb-6">
+    <p class="text-sm text-accent uppercase tracking-wider m-0 mb-2">
+      Reading · {books.length} books
+    </p>
+    <h2 id="reading-title" class="text-3xl m-0 text-black">
+      Currently reading
+    </h2>
+  </header>
+
+  <div class="reading">
+    {
+      topics.map(({ topic, hue, books }) => (
+        <p class="reading-line">
+          <span class="reading-topic">
+            <i style={`--hue: ${hue}`} aria-hidden="true" />
+            {topic}
+          </span>
+          {books.map((book, i) => (
+            <>
+              {i > 0 && (
+                <span class="reading-sep" aria-hidden="true">
+                  ·
+                </span>
+              )}
+              <a href={book.url} class="reading-title">
+                {book.title}
+              </a>{" "}
+              <span class="reading-by">by {book.author}</span>
+            </>
+          ))}
+        </p>
+      ))
+    }
   </div>
 </section>
+
+<style>
+  /* One line per topic: a small label, then its books, like the reading list
+     in a book's back matter */
+  .reading {
+    border-top: 1px solid var(--palette-line);
+  }
+  .reading-line {
+    margin: 0;
+    padding-block: 14px;
+    font-size: 1.08rem;
+    line-height: 1.75;
+  }
+  .reading-line + .reading-line {
+    border-top: 1px solid
+      color-mix(in srgb, var(--palette-line) 70%, transparent);
+  }
+  .reading-topic {
+    display: inline-flex;
+    gap: 7px;
+    align-items: baseline;
+    margin-right: 10px;
+    color: var(--palette-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .reading-topic i {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: color-mix(
+      in oklch,
+      oklch(0.6 0.1 var(--hue)) 82%,
+      var(--palette-accent)
+    );
+  }
+  .reading-title {
+    color: var(--palette-heading);
+    font-family: "Zilla Slab", Rockwell, Georgia, serif;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--palette-accent) 55%,
+      transparent
+    );
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    transition: color 0.2s;
+  }
+  .reading-title:hover {
+    color: var(--palette-accent);
+  }
+  .reading-title:focus-visible {
+    outline: 2px solid var(--palette-accent);
+    outline-offset: 2px;
+  }
+  .reading-by {
+    color: var(--palette-muted);
+  }
+  .reading-sep {
+    margin-inline: 8px;
+    color: var(--palette-line);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reading-title {
+      transition: none;
+    }
+  }
+</style>
