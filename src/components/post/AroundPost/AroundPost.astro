@@ -1,0 +1,262 @@
+---
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
+import { REPO_URL } from "@/consts";
+import AroundLink from "./AroundLink.astro";
+import type { Story } from "@/helpers/linkActivity";
+import type { PostLink } from "@/helpers/postLinks";
+import type { SeriesForPost } from "@/helpers/series";
+
+interface Props {
+  series?: SeriesForPost;
+  links?: (PostLink & { stars?: number })[];
+  stories?: Story[];
+  pubDate: Date;
+  updatedDate?: Date;
+  /** The post's path in the repository */
+  filePath?: string;
+}
+
+/** Links shown before the rest fold into "N more". */
+const SHOWN_LINKS = 6;
+
+const {
+  series,
+  links = [],
+  stories = [],
+  pubDate,
+  updatedDate,
+  filePath,
+} = Astro.props;
+const shown = links.slice(0, SHOWN_LINKS);
+const more = links.slice(SHOWN_LINKS);
+const month = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  year: "numeric",
+});
+const host = (url: string) => new URL(url).hostname.replace(/^www\./, "");
+---
+
+<section class="around" aria-label="Around this post">
+  <h2 class="around-title">Around this post</h2>
+
+  {
+    series && (
+      <section class="around-card">
+        <p class="around-label">
+          <LucideIcon icon="layers" size={14} />
+          Series · part {series.part} of {series.parts.length}
+        </p>
+        <p class="around-series">{series.title}</p>
+        <ol class="around-parts">
+          {series.parts.map((part, i) => (
+            <li class:list={{ "is-current": part.current }}>
+              <span>{i + 1}</span>
+              {part.current ? (
+                <span aria-current="page">{part.title}</span>
+              ) : (
+                <a href={part.url}>{part.title}</a>
+              )}
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  {
+    links.length > 0 && (
+      <section class="around-card">
+        <p class="around-label">
+          <LucideIcon icon="link" size={14} />
+          Links in this post · {links.length}
+        </p>
+        <ul class="around-links">
+          {shown.map((link) => (
+            <li>
+              <AroundLink link={link} />
+            </li>
+          ))}
+        </ul>
+        {more.length > 0 && (
+          <details class="around-more">
+            <summary>{more.length} more</summary>
+            <ul class="around-links">
+              {more.map((link) => (
+                <li>
+                  <AroundLink link={link} />
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+      </section>
+    )
+  }
+
+  {
+    stories.length > 0 && (
+      <section class="around-card">
+        <p class="around-label">
+          <LucideIcon icon="message-square" size={14} />
+          Discussed on Hacker News
+        </p>
+        <ul class="around-stories">
+          {stories.map((story) => (
+            <li>
+              <span class="around-meta">
+                {month.format(story.date)} · {story.points} points ·{" "}
+                {story.comments} comments
+              </span>
+              <a href={`https://news.ycombinator.com/item?id=${story.id}`}>
+                {story.title}
+              </a>
+              <span class="around-meta">{host(story.url)}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <section class="around-card">
+    <p class="around-label">
+      <LucideIcon icon="history" size={14} />
+      Post history
+    </p>
+    <ul class="around-history">
+      <li class="around-meta">
+        Published <FormattedDate date={pubDate} />
+        {
+          updatedDate && (
+            <>
+              {" "}
+              · updated <FormattedDate date={updatedDate} />
+            </>
+          )
+        }
+      </li>
+      {
+        filePath && (
+          <>
+            <li>
+              <a href={`${REPO_URL}/commits/main/${filePath}`}>
+                <LucideIcon icon="git-commit" size={14} />
+                View changes on GitHub
+              </a>
+            </li>
+            <li>
+              <a href={`${REPO_URL}/edit/main/${filePath}`}>
+                <LucideIcon icon="pencil" size={14} />
+                Suggest an edit
+              </a>
+            </li>
+          </>
+        )
+      }
+    </ul>
+  </section>
+</section>
+
+<style>
+  .around {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+  .around .around-title {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+  .around-card {
+    padding: 16px;
+    border: 1px solid var(--palette-line);
+    border-radius: 14px;
+    background: var(--palette-surface);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  .around .around-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 10px;
+    color: var(--palette-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .around .around-series {
+    margin: 0 0 10px;
+    color: var(--palette-heading);
+    font:
+      700 1.05rem/1.2 "Zilla Slab",
+      Rockwell,
+      Georgia,
+      serif;
+  }
+  ol,
+  ul {
+    display: grid;
+    gap: 9px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  a {
+    color: var(--palette-text);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--palette-accent);
+  }
+  .around-parts li {
+    display: grid;
+    grid-template-columns: 1.3em 1fr;
+    gap: 6px;
+  }
+  .around-parts li > span:first-child {
+    color: var(--palette-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .around-parts .is-current > span {
+    color: var(--palette-heading);
+  }
+  .around-parts .is-current > span:first-child {
+    color: var(--palette-accent);
+  }
+  .around-meta {
+    color: var(--palette-muted);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .around-more {
+    margin-top: 9px;
+  }
+  .around-more summary {
+    color: var(--palette-muted);
+    font-size: 0.8125rem;
+    cursor: pointer;
+  }
+  .around-more summary:hover {
+    color: var(--palette-accent);
+  }
+  .around-more ul {
+    margin-top: 9px;
+  }
+  .around-stories {
+    gap: 12px;
+  }
+  .around-stories li {
+    display: grid;
+    gap: 2px;
+  }
+  .around-history a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .around-history :global(svg) {
+    color: var(--palette-muted);
+  }
+</style>

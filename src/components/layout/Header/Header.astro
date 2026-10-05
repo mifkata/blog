@@ -1,6 +1,13 @@
 ---
 import SiteLogo from "@/components/layout/SiteLogo/SiteLogo.astro";
+import type { TocChapter } from "@/components/post/TableOfContents/toc";
 import TmuxBar from "./TmuxBar.astro";
+
+interface Props {
+  outline?: TocChapter[];
+}
+
+const { outline } = Astro.props;
 ---
 
 <!-- The slot keeps the expanded header height in the layout while the header
@@ -22,7 +29,7 @@ import TmuxBar from "./TmuxBar.astro";
         </div>
       </div>
     </div>
-    <TmuxBar />
+    <TmuxBar outline={outline} />
   </header>
 </div>
 

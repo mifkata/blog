@@ -1,29 +1,44 @@
 ---
+import ChapterButton from "@/components/post/TableOfContents/ChapterButton.astro";
+import ChapterProgress from "@/components/post/TableOfContents/ChapterProgress.astro";
+import type { TocChapter } from "@/components/post/TableOfContents/toc";
 import { WINDOWS, activeWindow } from "./tmux";
 
+interface Props {
+  /** A post's chapters, for the current chapter and the progress line */
+  outline?: TocChapter[];
+}
+
+const { outline } = Astro.props;
 const active = activeWindow(Astro.url.pathname);
 ---
 
-<div class="tmux" data-tmux>
+<div class:list={["tmux", { "has-chapters": outline }]} data-tmux>
   <div class="tmux-inner">
-    <nav class="tmux-windows" aria-label="Site">
-      <a href="/" class="tmux-mini" tabindex="-1" aria-label="Mifkata, home"
-        >&gt;_ mifkata</a
-      >
-      <span class="tmux-session" aria-hidden="true">mifkata</span>
-      {
-        WINDOWS.map((item, index) => (
-          <a
-            href={item.href}
-            class:list={["tmux-window", { "is-active": item.name === active }]}
-            aria-current={item.name === active ? "page" : undefined}
-          >
-            {index}:{item.name}
-            {item.name === active && <span aria-hidden="true">*</span>}
-          </a>
-        ))
-      }
-    </nav>
+    <div class="tmux-left">
+      <nav class="tmux-windows" aria-label="Site">
+        <a href="/" class="tmux-mini" tabindex="-1" aria-label="Mifkata, home"
+          >&gt;_ mifkata</a
+        >
+        <span class="tmux-session" aria-hidden="true">mifkata</span>
+        {
+          WINDOWS.map((item, index) => (
+            <a
+              href={item.href}
+              class:list={[
+                "tmux-window",
+                { "is-active": item.name === active },
+              ]}
+              aria-current={item.name === active ? "page" : undefined}
+            >
+              {index}:{item.name}
+              {item.name === active && <span aria-hidden="true">*</span>}
+            </a>
+          ))
+        }
+      </nav>
+      {outline && <ChapterButton outline={outline} />}
+    </div>
 
     <div class="tmux-status">
       <span class="tmux-seg tmux-tip" tabindex="0" data-tmux-radar hidden>
@@ -54,6 +69,7 @@ const active = activeWindow(Astro.url.pathname);
     </div>
   </div>
 </div>
+{outline && <ChapterProgress outline={outline} />}
 
 <style>
   .tmux {
@@ -82,6 +98,18 @@ const active = activeWindow(Astro.url.pathname);
     height: 40px;
   }
 
+  /* The chapter title gives way first; the windows and the status keep
+     their width */
+  .tmux-left {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .has-chapters .tmux-windows {
+    flex: none;
+  }
   .tmux-windows {
     display: flex;
     align-items: center;
@@ -133,9 +161,9 @@ const active = activeWindow(Astro.url.pathname);
 
   .tmux-status {
     display: flex;
+    flex: none;
     align-items: center;
     gap: 12px;
-    min-width: 0;
   }
   .tmux-seg {
     display: inline-flex;
@@ -268,8 +296,19 @@ const active = activeWindow(Astro.url.pathname);
     font-family: "Kedebideri", sans-serif;
   }
 
-  /* Phones: the windows and the agent dots */
+  /* Tablets: on posts, the chapter takes the windows' place */
+  @media (max-width: 1023px) {
+    .has-chapters .tmux-window {
+      display: none;
+    }
+  }
+
+  /* Phones: the windows and the agent dots, or on posts, the chapter instead
+     of the windows */
   @media (max-width: 767px) {
+    .has-chapters .tmux-windows {
+      display: none;
+    }
     .tmux-session,
     [data-tmux-radar],
     [data-tmux-edge],

@@ -1,0 +1,44 @@
+---
+import type { TocChapter } from "./toc";
+
+interface Props {
+  outline: TocChapter[];
+}
+
+const { outline } = Astro.props;
+---
+
+<!-- One segment per chapter, as long as the chapter, filled as you read.
+     The chapter menu offers the same jumps to keyboards and screen readers. -->
+<div class="chapter-progress" aria-hidden="true">
+  {
+    outline.map((chapter) => (
+      <a
+        href={`#${chapter.slug}`}
+        title={chapter.text}
+        tabindex="-1"
+        data-chapter-segment={chapter.slug}
+      />
+    ))
+  }
+</div>
+
+<style>
+  .chapter-progress {
+    display: flex;
+    gap: 2px;
+    height: 4px;
+    background: var(--palette-terminal);
+  }
+  a {
+    flex: 1 1 0;
+    min-width: 2px;
+    background:
+      linear-gradient(
+          var(--palette-terminal-prompt),
+          var(--palette-terminal-prompt)
+        )
+        0 0 / calc(var(--progress, 0) * 100%) 100% no-repeat,
+      color-mix(in srgb, var(--palette-terminal-text) 18%, transparent);
+  }
+</style>
