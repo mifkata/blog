@@ -1,7 +1,6 @@
 ---
-import HeaderLink from "@/components/layout/HeaderLink/HeaderLink.astro";
-import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 import SiteLogo from "@/components/layout/SiteLogo/SiteLogo.astro";
+import TmuxBar from "./TmuxBar.astro";
 ---
 
 <!-- The slot keeps the expanded header height in the layout while the header
@@ -10,141 +9,91 @@ import SiteLogo from "@/components/layout/SiteLogo/SiteLogo.astro";
 <div id="site-header-slot" class="sticky top-0 z-50 w-full pointer-events-none">
   <header
     id="site-header"
-    class="pointer-events-auto px-(--page-gutter) py-2 bg-surface shadow-sm w-full transition-[padding] duration-300 motion-reduce:transition-none"
+    class="pointer-events-auto bg-surface shadow-sm w-full"
   >
-    <nav
-      class="max-w-(--page-column) mx-auto flex items-center justify-between"
-    >
-      <h1
-        id="site-header-logo"
-        class="text-2xl mt-2 whitespace-nowrap transition-[font-size] duration-300 motion-reduce:transition-none"
-      >
-        <SiteLogo />
-      </h1>
-      <div class="hidden md:flex items-center gap-6 uppercase">
-        <HeaderLink href="/blog" number="01">Blog</HeaderLink>
-        <HeaderLink href="/about" number="02">About</HeaderLink>
-      </div>
-      <button
-        class="md:hidden p-2 text-black"
-        id="mobile-menu-toggle"
-        aria-label="Toggle menu"
-      >
-        <LucideIcon icon="menu" size={24} />
-      </button>
-    </nav>
-    <div
-      class="hidden md:hidden bg-surface max-h-[calc(100vh-60px)] overflow-y-auto relative z-50"
-      id="mobile-menu"
-    >
-      <div class="flex flex-col gap-4 py-4 uppercase">
-        <HeaderLink href="/blog" number="01">Blog</HeaderLink>
-        <HeaderLink href="/about" number="02">About</HeaderLink>
+    <div class="header-top" data-header-top>
+      <div class="header-top-inner">
+        <div class="px-(--page-gutter) py-2">
+          <div class="max-w-(--page-column) mx-auto">
+            <h1 id="site-header-logo" class="text-2xl mt-2 whitespace-nowrap">
+              <SiteLogo />
+            </h1>
+          </div>
+        </div>
       </div>
     </div>
+    <TmuxBar />
   </header>
 </div>
 
-<div
-  class="fixed inset-0 bg-black/60 z-40 hidden md:hidden"
-  id="mobile-menu-overlay"
->
-</div>
-
-<script>
-  function setupMobileMenu() {
-    const toggle = document.getElementById("mobile-menu-toggle");
-    const menu = document.getElementById("mobile-menu");
-    const overlay = document.getElementById("mobile-menu-overlay");
-
-    function openMenu() {
-      menu?.classList.remove("hidden");
-      overlay?.classList.remove("hidden");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeMenu() {
-      menu?.classList.add("hidden");
-      overlay?.classList.add("hidden");
-      document.body.style.overflow = "";
-    }
-
-    function toggleMenu() {
-      const isHidden = menu?.classList.contains("hidden");
-      if (isHidden) {
-        openMenu();
-      } else {
-        closeMenu();
-      }
-    }
-
-    if (toggle) {
-      toggle.addEventListener("click", toggleMenu);
-    }
-
-    if (overlay) {
-      overlay.addEventListener("click", closeMenu);
+<style>
+  /* Scrolling collapses the logo row, leaving the status bar as the header */
+  .header-top {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .header-top-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+  #site-header.is-shrunk .header-top {
+    grid-template-rows: 0fr;
+  }
+  #site-header.is-measuring,
+  #site-header.is-measuring :global(*) {
+    transition: none !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .header-top {
+      transition: none;
     }
   }
-  setupMobileMenu();
-  document.addEventListener("astro:page-load", setupMobileMenu);
+</style>
 
+<script>
   function setupHeaderScroll() {
     const slot = document.getElementById("site-header-slot");
     const header = document.getElementById("site-header");
-    const logo = document.getElementById("site-header-logo");
-    if (!slot || !header) return;
+    const top = header?.querySelector<HTMLElement>("[data-header-top]");
+    if (!slot || !header || !top || header.dataset.scrollReady) return;
+    header.dataset.scrollReady = "true";
 
     const SHRINK_AT = 40;
     const EXPAND_AT = 10;
     let scrolled = false;
     let ticking = false;
 
-    function setShrunk(shrunk: boolean) {
-      header!.style.paddingTop = shrunk ? "0.25rem" : "";
-      header!.style.paddingBottom = shrunk ? "0.25rem" : "";
-      logo?.style.setProperty("font-size", shrunk ? "1.125rem" : "");
-    }
-
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     // Pin the slot to the header's expanded height. Measured with transitions
-    // off, then the previous inline styles are restored untouched, so any
-    // shrink/expand animation still runs afterwards.
+    // off, then the previous state is restored, so any shrink/expand
+    // animation still runs afterwards.
     function lockSlotHeight() {
-      const previous = {
-        paddingTop: header!.style.paddingTop,
-        paddingBottom: header!.style.paddingBottom,
-        fontSize: logo?.style.fontSize ?? "",
-      };
-      header!.style.transition = "none";
-      logo?.style.setProperty("transition", "none");
+      const wasShrunk = header!.classList.contains("is-shrunk");
+      header!.classList.add("is-measuring");
+      header!.classList.remove("is-shrunk");
       slot!.style.height = "";
-      setShrunk(false);
       const height = slot!.getBoundingClientRect().height;
-      header!.style.paddingTop = previous.paddingTop;
-      header!.style.paddingBottom = previous.paddingBottom;
-      logo?.style.setProperty("font-size", previous.fontSize);
+      header!.classList.toggle("is-shrunk", wasShrunk);
       void header!.offsetHeight;
-      header!.style.transition = "";
-      logo?.style.removeProperty("transition");
+      header!.classList.remove("is-measuring");
       slot!.style.height = `${height}px`;
     }
 
     function applyState() {
       if (scrolled) {
         lockSlotHeight();
-        setShrunk(true);
+        header!.classList.add("is-shrunk");
       } else {
-        setShrunk(false);
+        header!.classList.remove("is-shrunk");
         if (reducedMotion.matches) slot!.style.height = "";
       }
     }
 
-    // Once fully expanded again, let the slot follow the header (e.g. when the
-    // mobile menu opens).
-    header.addEventListener("transitionend", (event) => {
-      if (!scrolled && event.propertyName === "padding-top") {
+    // Once fully expanded again, let the slot follow the header.
+    top.addEventListener("transitionend", (event) => {
+      if (!scrolled && event.propertyName === "grid-template-rows") {
         slot.style.height = "";
       }
     });
