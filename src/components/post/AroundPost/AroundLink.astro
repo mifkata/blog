@@ -1,0 +1,60 @@
+---
+import GitHub from "@/components/ui/icons/GitHub.astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
+import { compactNumber, type PostLink } from "@/helpers/postLinks";
+
+interface Props {
+  link: PostLink & { stars?: number };
+}
+
+const { link } = Astro.props;
+---
+
+<a href={link.url}>
+  {
+    link.kind === "github" ? (
+      <GitHub size={14} />
+    ) : (
+      <LucideIcon icon={link.kind === "npm" ? "package" : "globe"} size={14} />
+    )
+  }
+  <span class="name">{link.label}</span>
+  {
+    link.stars !== undefined && (
+      <span class="stars" title={`${link.stars} stars on GitHub`}>
+        <LucideIcon icon="star" size={12} />
+        {compactNumber(link.stars)}
+      </span>
+    )
+  }
+</a>
+
+<style>
+  a {
+    display: grid;
+    grid-template-columns: 14px minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    color: var(--palette-text);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--palette-accent);
+  }
+  a > :global(svg:first-child) {
+    color: var(--palette-muted);
+  }
+  .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--palette-muted);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

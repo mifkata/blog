@@ -1,0 +1,118 @@
+---
+import type { TocChapter } from "./toc";
+
+interface Props {
+  outline: TocChapter[];
+}
+
+const { outline } = Astro.props;
+---
+
+<div class="toc-rail" data-toc-list>
+  <ol>
+    {
+      outline.map((chapter) => (
+        <li data-toc-chapter={chapter.slug}>
+          <a href={`#${chapter.slug}`} data-toc-link={chapter.slug}>
+            {chapter.text}
+          </a>
+          {chapter.children.length > 0 && (
+            <div class="toc-sub">
+              <ol>
+                {chapter.children.map((section) => (
+                  <li>
+                    <a href={`#${section.slug}`} data-toc-link={section.slug}>
+                      {section.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+  <span class="toc-marker" aria-hidden="true" data-toc-marker></span>
+</div>
+
+<style>
+  .toc-rail {
+    position: relative;
+    border-left: 2px solid var(--palette-line);
+  }
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  a {
+    display: block;
+    padding: 4px 0 4px 12px;
+    color: var(--palette-text);
+    font-size: 0.875rem;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  a:hover {
+    color: var(--palette-accent);
+  }
+  a.is-active {
+    color: var(--palette-heading);
+  }
+  /* Only the current chapter's sections are open */
+  .toc-sub {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+  .toc-sub > ol {
+    min-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: visibility 0s 0.3s;
+  }
+  li.is-open > .toc-sub {
+    grid-template-rows: 1fr;
+  }
+  li.is-open > .toc-sub > ol {
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .toc-sub a {
+    padding: 3px 0 3px 24px;
+    color: var(--palette-muted);
+    font-size: 0.8125rem;
+  }
+  .toc-sub a.is-active {
+    color: var(--palette-heading);
+  }
+  .toc-marker {
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 2px;
+    height: 0;
+    border-radius: 2px;
+    background: var(--palette-accent);
+    transition:
+      top 0.15s ease,
+      height 0.15s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc-sub,
+    .toc-sub > ol,
+    .toc-marker {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { setupToc } from "./toc";
+
+  setupToc();
+  document.addEventListener("astro:page-load", setupToc);
+</script>

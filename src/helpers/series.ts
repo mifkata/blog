@@ -57,3 +57,28 @@ export async function getFeaturedSeries(slug: string) {
   }));
   return { title, description, parts };
 }
+
+export interface SeriesForPost {
+  title: string;
+  part: number;
+  parts: { title: string; url: string; current: boolean }[];
+}
+
+/** The series a post belongs to, with every part, if it's in one. */
+export async function seriesForPost(
+  id: string,
+): Promise<SeriesForPost | undefined> {
+  const series = seriesData.find((s) => s.items.includes(id));
+  if (!series) return undefined;
+  const { title, items } = await getSeriesWithPosts(series.slug);
+  const parts = items.map((item) => ({
+    title: item.title,
+    url: item.url,
+    current: item.id === id,
+  }));
+  return {
+    title,
+    part: parts.findIndex((part) => part.current) + 1,
+    parts,
+  };
+}

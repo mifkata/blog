@@ -1,95 +1,89 @@
 ---
-import type { MarkdownHeading } from "astro";
+import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
+import TocList from "./TocList.astro";
+import type { TocChapter } from "./toc";
 
 interface Props {
-  headings: MarkdownHeading[];
+  outline: TocChapter[];
+  readingMinutes?: number;
 }
 
-const { headings } = Astro.props;
+const { outline, readingMinutes } = Astro.props;
 ---
 
-<aside class="hidden lg:block w-[240px] shrink-0 sticky top-28">
-  <div class="max-h-[calc(100vh-4rem)] overflow-y-auto">
-    <h3 class="text-sm m-0 mb-4 text-gray uppercase tracking-wider">
-      Table of Contents
-    </h3>
-    <ul class="list-none m-0 p-0 space-y-1">
-      {
-        headings.map((heading) => {
-          const inactiveClass =
-            heading.depth === 2 ? "text-gray-dark" : "text-sm text-gray pl-3";
-          return (
-            <li>
-              <a
-                href={`#${heading.slug}`}
-                data-toc-link={heading.slug}
-                data-inactive-class={inactiveClass}
-                class:list={[
-                  "block no-underline hover:text-accent transition-colors",
-                  inactiveClass,
-                ]}
-              >
-                {heading.text}
-              </a>
-            </li>
-          );
-        })
-      }
-    </ul>
+<nav class="toc" aria-label="On this page">
+  <div class="toc-head">
+    <span>On this page</span>
+    {
+      readingMinutes && (
+        <span class="toc-left" data-toc-left={readingMinutes}>
+          {readingMinutes} min left
+        </span>
+      )
+    }
   </div>
-</aside>
+  <div class="toc-progress" data-toc-progress></div>
+  <TocList outline={outline} />
+  <button type="button" class="toc-top" data-toc-top>
+    <LucideIcon icon="arrow-up" size={14} />
+    Back to top
+  </button>
+</nav>
 
-<script>
-  function setupTocScrollSpy() {
-    const links = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]"),
-    );
-    if (links.length === 0) return;
-
-    const linkMap = new Map(links.map((link) => [link.dataset.tocLink!, link]));
-    const headingEls = links
-      .map((link) => document.getElementById(link.dataset.tocLink!))
-      .filter((el): el is HTMLElement => el !== null);
-    if (headingEls.length === 0) return;
-
-    let activeId: string | null = null;
-
-    function toggleActive(link: HTMLAnchorElement, active: boolean) {
-      if (active) {
-        link.classList.add("font-bold");
-      } else {
-        link.classList.remove("font-bold");
-      }
-    }
-
-    function setActive(id: string) {
-      if (activeId === id) return;
-      if (activeId) {
-        const prev = linkMap.get(activeId);
-        if (prev) toggleActive(prev, false);
-      }
-      activeId = id;
-      const next = linkMap.get(id);
-      if (next) toggleActive(next, true);
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
-          }
-        }
-      },
-      {
-        rootMargin: "-96px 0px -66% 0px",
-        threshold: 0,
-      },
-    );
-
-    headingEls.forEach((el) => observer.observe(el));
+<style>
+  /* Sticks under the shrunk header: the 40px status bar and the 4px
+     chapter line */
+  .toc {
+    position: sticky;
+    top: calc(44px + 1.5rem);
+    max-height: calc(100vh - 44px - 3rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 16px 18px 14px;
+    border: 1px solid var(--palette-line);
+    border-radius: 14px;
+    background: var(--palette-surface);
+    box-shadow: 0 18px 40px -28px rgb(0 0 0 / 0.35);
   }
-
-  setupTocScrollSpy();
-  document.addEventListener("astro:page-load", setupTocScrollSpy);
-</script>
+  .toc-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: var(--palette-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .toc-left {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .toc-progress {
+    height: 2px;
+    margin-bottom: 12px;
+    border-radius: 2px;
+    background:
+      linear-gradient(var(--palette-accent), var(--palette-accent)) 0 0 /
+        calc(var(--progress, 0) * 100%) 100% no-repeat,
+      var(--palette-line);
+  }
+  .toc-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--palette-muted);
+    font: inherit;
+    font-size: 0.8125rem;
+    cursor: pointer;
+  }
+  .toc-top:hover {
+    color: var(--palette-accent);
+  }
+</style>

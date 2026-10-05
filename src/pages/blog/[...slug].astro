@@ -1,7 +1,10 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
+import { discussions, withStars } from "@/helpers/linkActivity";
+import { extractLinks } from "@/helpers/postLinks";
 import { isPublished } from "@/helpers/posts";
 import { readingMinutes } from "@/helpers/reading";
+import { seriesForPost } from "@/helpers/series";
 import { seriesPosition } from "@/helpers/seriesPosition";
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
 
@@ -21,6 +24,12 @@ interface Props {
 const { post, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const links = extractLinks(post.body ?? "");
+const [linksWithStars, stories, seriesParts] = await Promise.all([
+  withStars(links),
+  discussions(links),
+  seriesForPost(post.id),
+]);
 
 const currentTags = post.data.tags || [];
 const relatedPosts = allPosts
@@ -42,6 +51,10 @@ const relatedPosts = allPosts
   relatedPosts={relatedPosts}
   readingMinutes={readingMinutes(post.body ?? "")}
   series={seriesPosition(post.id)}
+  seriesParts={seriesParts}
+  links={linksWithStars}
+  stories={stories}
+  filePath={post.filePath}
 >
   <Content />
 </BlogPostLayout>

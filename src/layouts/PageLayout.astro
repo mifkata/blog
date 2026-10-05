@@ -3,15 +3,18 @@ import type { ImageMetadata } from "astro";
 import BaseHead from "@/components/layout/BaseHead/BaseHead.astro";
 import Header from "@/components/layout/Header/Header.astro";
 import Footer from "@/components/layout/Footer/Footer.astro";
+import type { TocChapter } from "@/components/post/TableOfContents/toc";
 
 interface Props {
   title: string;
   description: string;
   image?: ImageMetadata;
   class?: string;
+  /** A post's chapters, shown in the header's status bar */
+  outline?: TocChapter[];
 }
 
-const { title, description, image, class: className } = Astro.props;
+const { title, description, image, class: className, outline } = Astro.props;
 ---
 
 <html lang="en">
@@ -20,7 +23,7 @@ const { title, description, image, class: className } = Astro.props;
   </head>
   <body>
     <div class="content-wrapper">
-      <Header />
+      <Header outline={outline} />
       <main
         class:list={[
           "w-full max-w-[calc(var(--page-column)+2*var(--page-gutter))] mx-auto px-(--page-gutter) py-12",

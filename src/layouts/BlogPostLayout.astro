@@ -1,11 +1,16 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import type { MarkdownHeading } from "astro";
+import AroundPost from "@/components/post/AroundPost/AroundPost.astro";
 import CodeCopyButton from "@/components/post/CodeCopyButton/CodeCopyButton.astro";
 import Comments from "@/components/post/Comments/Comments.astro";
 import PostHero from "@/components/post/PostHero/PostHero.astro";
 import RelatedPosts from "@/components/post/RelatedPosts/RelatedPosts.astro";
 import TableOfContents from "@/components/post/TableOfContents/TableOfContents.astro";
+import { tocOutline } from "@/components/post/TableOfContents/toc";
+import type { Story } from "@/helpers/linkActivity";
+import type { PostLink } from "@/helpers/postLinks";
+import type { SeriesForPost } from "@/helpers/series";
 import type { SeriesPosition } from "@/helpers/seriesPosition";
 import PageLayout from "./PageLayout.astro";
 
@@ -15,6 +20,10 @@ type Props = CollectionEntry<"blog">["data"] & {
   showComments?: boolean;
   readingMinutes?: number;
   series?: SeriesPosition;
+  seriesParts?: SeriesForPost;
+  links?: (PostLink & { stars?: number })[];
+  stories?: Story[];
+  filePath?: string;
 };
 
 const {
@@ -29,33 +38,71 @@ const {
   showComments = true,
   readingMinutes,
   series,
+  seriesParts,
+  links,
+  stories,
+  filePath,
 } = Astro.props;
-const showToc = headings.length >= 2;
+const outline = tocOutline(headings);
+const showToc = outline.length >= 2;
 const displayedRelatedPosts = relatedPosts.slice(0, 4);
+const around = {
+  series: seriesParts,
+  links,
+  stories,
+  pubDate,
+  updatedDate,
+  filePath,
+};
 ---
 
-<PageLayout title={title} description={description} image={heroImage}>
+<PageLayout
+  title={title}
+  description={description}
+  image={heroImage}
+  outline={showToc ? outline : undefined}
+>
   <article>
-    <PostHero
-      title={title}
-      description={description}
-      pubDate={pubDate}
-      updatedDate={updatedDate}
-      heroImage={heroImage}
-      tags={tags}
-      readingMinutes={readingMinutes}
-      series={series}
-    />
+    <div
+      class:list={[
+        "post-grid",
+        { "has-aside": showToc, "has-hero": heroImage },
+      ]}
+    >
+      <PostHero
+        title={title}
+        description={description}
+        pubDate={pubDate}
+        updatedDate={updatedDate}
+        heroImage={heroImage}
+        tags={tags}
+        readingMinutes={readingMinutes}
+        series={series}
+      />
 
-    <div class="flex gap-12 items-start">
-      <!-- Main Content -->
-      <div class="min-w-0 flex-1">
+      <div class="post-body" data-post-body>
         <div class="prose max-w-[70ch]">
           <slot />
         </div>
       </div>
 
-      {showToc && <TableOfContents headings={headings} />}
+      {
+        showToc && (
+          <aside class="post-aside" aria-label="Contents and links">
+            <div>
+              <TableOfContents
+                outline={outline}
+                readingMinutes={readingMinutes}
+              />
+            </div>
+            <AroundPost {...around} />
+          </aside>
+        )
+      }
+    </div>
+
+    <div class:list={["post-around", { "is-inline": showToc }]}>
+      <AroundPost {...around} />
     </div>
 
     <RelatedPosts posts={displayedRelatedPosts} />
@@ -65,3 +112,65 @@ const displayedRelatedPosts = relatedPosts.slice(0, 4);
 
   <CodeCopyButton />
 </PageLayout>
+
+<style>
+  .post-aside {
+    display: none;
+  }
+  .post-around {
+    max-width: 70ch;
+    margin-top: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .post-around :global(.around) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .post-around :global(.around-title) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* The contents card starts beside the post card, over the hero, and
+     follows the reader down the post. Once the post ends, it scrolls away
+     and the modules come up beside the conclusion. */
+  @media (min-width: 1024px) {
+    .has-aside {
+      --aside-width: clamp(280px, 28vw, 340px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) var(--aside-width);
+      column-gap: 3rem;
+    }
+    .has-aside > :global(.post-hero) {
+      display: contents;
+    }
+    .has-aside :global(.post-hero-media) {
+      grid-column: 1 / -1;
+      grid-row: 1;
+    }
+    .has-aside :global(.post-hero-info) {
+      grid-column: 1;
+      grid-row: 2;
+      margin-bottom: 2rem;
+    }
+    .has-aside .post-body {
+      grid-column: 1;
+      grid-row: 3;
+    }
+    .has-aside .post-aside {
+      position: relative;
+      grid-column: 2;
+      grid-row: 2 / 4;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 1.5rem;
+    }
+    /* Level with the post card, which overlaps the hero by this much */
+    .has-aside.has-hero .post-aside {
+      margin-top: -150px;
+    }
+    .post-around.is-inline {
+      display: none;
+    }
+  }
+</style>
