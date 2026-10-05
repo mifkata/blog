@@ -11,6 +11,9 @@ interface Props {
   buttonHref?: string;
   linkedinText?: string;
   linkedinHref?: string;
+  /** Just the text and buttons, left-aligned, for a section that already has
+   * its own heading */
+  inline?: boolean;
 }
 
 const {
@@ -20,11 +23,16 @@ const {
   buttonHref = "mailto:hi@mifkata.com",
   linkedinText = "LinkedIn Profile",
   linkedinHref = LINKEDIN_URL,
+  inline = false,
 } = Astro.props;
+
+const Wrapper = inline ? "div" : "section";
 ---
 
-<section class="text-center py-12 border-t border-gray-light">
-  <p class="text-xl text-gray mb-2">{headline}</p>
+<Wrapper
+  class={inline ? undefined : "text-center py-12 border-t border-gray-light"}
+>
+  {!inline && <p class="text-xl text-gray mb-2">{headline}</p>}
   <p class="text-gray-dark mb-6">
     {description}
     {Astro.slots.has("default") && " "}
@@ -56,4 +64,4 @@ const {
       )
     }
   </div>
-</section>
+</Wrapper>
