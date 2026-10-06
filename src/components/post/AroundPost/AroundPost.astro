@@ -17,7 +17,7 @@ interface Props {
   filePath?: string;
 }
 
-/** Links shown before the rest fold into "N more". */
+/** Links shown before the rest fold away under a "Show N more" button. */
 const SHOWN_LINKS = 6;
 
 const {
@@ -28,7 +28,6 @@ const {
   updatedDate,
   filePath,
 } = Astro.props;
-const shown = links.slice(0, SHOWN_LINKS);
 const more = links.slice(SHOWN_LINKS);
 const month = new Intl.DateTimeFormat("en-US", {
   month: "short",
@@ -66,29 +65,30 @@ const host = (url: string) => new URL(url).hostname.replace(/^www\./, "");
 
   {
     links.length > 0 && (
-      <section class="around-card">
+      <section class="around-card" data-around-links>
         <p class="around-label">
           <LucideIcon icon="link" size={14} />
           Links in this post · {links.length}
         </p>
         <ul class="around-links">
-          {shown.map((link) => (
-            <li>
+          {links.map((link, i) => (
+            <li class:list={{ "is-more": i >= SHOWN_LINKS }}>
               <AroundLink link={link} />
             </li>
           ))}
         </ul>
         {more.length > 0 && (
-          <details class="around-more">
-            <summary>{more.length} more</summary>
-            <ul class="around-links">
-              {more.map((link) => (
-                <li>
-                  <AroundLink link={link} />
-                </li>
-              ))}
-            </ul>
-          </details>
+          <button
+            type="button"
+            class="around-more"
+            data-around-toggle
+            data-more={more.length}
+            aria-expanded="true"
+            hidden
+          >
+            <LucideIcon icon="chevron-down" size={14} />
+            <span data-around-label>Show fewer</span>
+          </button>
         )}
       </section>
     )
@@ -230,19 +230,35 @@ const host = (url: string) => new URL(url).hostname.replace(/^www\./, "");
     font-size: 0.78rem;
     font-variant-numeric: tabular-nums;
   }
+  /* The button sits under the list, so new links appear above it */
   .around-more {
-    margin-top: 9px;
-  }
-  .around-more summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 10px;
+    padding: 0;
+    border: 0;
+    background: none;
     color: var(--palette-muted);
+    font: inherit;
     font-size: 0.8125rem;
     cursor: pointer;
   }
-  .around-more summary:hover {
+  .around-more:hover {
     color: var(--palette-accent);
   }
-  .around-more ul {
-    margin-top: 9px;
+  .around-more:focus-visible {
+    outline: 2px solid var(--palette-accent);
+    outline-offset: 2px;
+  }
+  .around-more :global(svg) {
+    transition: rotate 0.2s ease;
+  }
+  .around-more[aria-expanded="true"] :global(svg) {
+    rotate: 180deg;
+  }
+  [data-collapsed] .is-more {
+    display: none;
   }
   .around-stories {
     gap: 12px;
@@ -260,3 +276,10 @@ const host = (url: string) => new URL(url).hostname.replace(/^www\./, "");
     color: var(--palette-muted);
   }
 </style>
+
+<script>
+  import { setupAroundLinks } from "./aroundLinks";
+
+  setupAroundLinks();
+  document.addEventListener("astro:page-load", setupAroundLinks);
+</script>
