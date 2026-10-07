@@ -24,7 +24,7 @@ export default defineConfig({
     // Images are cached by their own props, not these, so clear the build
     // cache after changing them.
     service: sharpImageService({
-      avif: { quality: 45 },
+      avif: { quality: 40, chromaSubsampling: "4:2:0", effort: 6 },
       webp: { quality: 70, effort: 6 },
       jpeg: { quality: 80, mozjpeg: true },
     }),
