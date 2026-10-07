@@ -36,8 +36,9 @@ const minutes = readingMinutes(post.body ?? "");
         <Image
           src={heroImage}
           alt=""
-          widths={[480, 720, 960, 1280]}
-          sizes="(min-width: 768px) 560px, 100vw"
+          widths={[400, 640, 800, 960, 1280]}
+          sizes="(min-width: 768px) min(560px, 49vw), calc(100vw - 48px)"
+          quality={70}
         />
       </a>
     )

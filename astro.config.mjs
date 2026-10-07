@@ -15,6 +15,9 @@ const OWN_HOSTS = new Set(["mifkata.com", "www.mifkata.com"]);
 export default defineConfig({
   site: process.env.SITE_URL || "http://localhost:4321",
   integrations: [mdx(), sitemap(), react()],
+  // The CSS arrives with the page instead of in requests that block the first
+  // paint; it's small enough that caching it separately saves little
+  build: { inlineStylesheets: "always" },
   markdown: {
     // Token colours come from CSS variables, which code blocks set from the
     // season's palette
