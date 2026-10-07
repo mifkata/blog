@@ -1,5 +1,6 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
+import { PICTURE_FORMATS } from "@/consts";
 import { marked } from "marked";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
 import type { SeriesPart } from "@/helpers/series";
@@ -72,12 +73,12 @@ const id = `series-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
             aria-hidden="true"
           >
             {part.heroImage && (
-              <Image
+              <Picture
+                {...PICTURE_FORMATS}
                 src={part.heroImage}
                 alt=""
                 widths={[320, 400, 560, 720, 960]}
                 sizes="(min-width: 768px) min(440px, 39vw), calc(84vw - 42px)"
-                quality={70}
               />
             )}
             <span class="rail-chip">Part {index + 1}</span>
@@ -114,7 +115,7 @@ const id = `series-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     }
   </div>
 
-  <div class="rail-dots flex justify-center gap-2 mt-4 md:hidden">
+  <div class="rail-dots flex justify-center mt-2 md:hidden">
     {
       parts.map((_, index) => (
         <button
@@ -248,20 +249,30 @@ const id = `series-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     opacity: 0.35;
     cursor: default;
   }
+  /* Each dot sits in a 24px tap target; the gaps between dots are the
+     targets' padding */
   .rail-dot {
-    width: 8px;
-    height: 8px;
+    position: relative;
+    width: 24px;
+    height: 24px;
     padding: 0;
     border: 0;
+    background: none;
+    cursor: pointer;
+    transition: width 0.25s;
+  }
+  .rail-dot::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
     border-radius: 4px;
     background: var(--palette-line);
-    cursor: pointer;
-    transition:
-      width 0.25s,
-      background-color 0.25s;
+    transition: background-color 0.25s;
   }
   .rail-dot[aria-current="true"] {
-    width: 22px;
+    width: 38px;
+  }
+  .rail-dot[aria-current="true"]::before {
     background: var(--palette-accent);
   }
 
@@ -273,7 +284,8 @@ const id = `series-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
   @media (prefers-reduced-motion: reduce) {
     .rail-media :global(img),
-    .rail-dot {
+    .rail-dot,
+    .rail-dot::before {
       transition: none;
     }
   }

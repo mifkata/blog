@@ -3,7 +3,7 @@
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import { defineConfig } from "astro/config";
+import { defineConfig, sharpImageService } from "astro/config";
 import rehypeExternalLinks from "rehype-external-links";
 
 import tailwindcss from "@tailwindcss/vite";
@@ -18,6 +18,17 @@ export default defineConfig({
   // The CSS arrives with the page instead of in requests that block the first
   // paint; it's small enough that caching it separately saves little
   build: { inlineStylesheets: "always" },
+  image: {
+    // AVIF looks as good as WebP at a much lower quality setting; WebP is the
+    // fallback for browsers without AVIF, and JPEG is for link previews.
+    // Images are cached by their own props, not these, so clear the build
+    // cache after changing them.
+    service: sharpImageService({
+      avif: { quality: 45 },
+      webp: { quality: 70, effort: 6 },
+      jpeg: { quality: 80, mozjpeg: true },
+    }),
+  },
   markdown: {
     // Token colours come from CSS variables, which code blocks set from the
     // season's palette

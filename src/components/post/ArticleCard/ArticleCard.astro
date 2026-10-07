@@ -1,5 +1,6 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
+import { PICTURE_FORMATS } from "@/consts";
 import type { CollectionEntry } from "astro:content";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
 import { Markdown } from "@/components/post/Markdown/Markdown";
@@ -9,47 +10,68 @@ interface Props {
   post: CollectionEntry<"blog">;
   class?: string;
   showTags?: boolean;
+  /** The title's level in the page outline; it looks the same at any level */
+  heading?: "h2" | "h3" | "h4";
 }
 
-const { post, class: className, showTags = true } = Astro.props;
+const {
+  post,
+  class: className,
+  showTags = true,
+  heading: Heading = "h4",
+} = Astro.props;
 ---
 
 <article class:list={["group grid md:grid-cols-[200px_1fr] gap-6", className]}>
   {
     post.data.heroImage && (
-      <a href={`/blog/${post.id}/`} class="md:hidden">
-        <Image
-          loading="lazy"
-          width={640}
-          height={384}
-          src={post.data.heroImage}
-          alt=""
-          class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
-        />
-      </a>
-      <a href={`/blog/${post.id}/`} class="md:block hidden">
-        <Image
-          loading="lazy"
-          width={200}
-          height={120}
-          src={post.data.heroImage}
-          alt=""
-          class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
-        />
-      </a>
+      <>
+        <a
+          href={`/blog/${post.id}/`}
+          class="md:hidden"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <Picture
+            {...PICTURE_FORMATS}
+            loading="lazy"
+            width={640}
+            height={384}
+            src={post.data.heroImage}
+            alt=""
+            class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
+          />
+        </a>
+        <a
+          href={`/blog/${post.id}/`}
+          class="md:block hidden"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <Picture
+            {...PICTURE_FORMATS}
+            loading="lazy"
+            width={200}
+            height={120}
+            src={post.data.heroImage}
+            alt=""
+            class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
+          />
+        </a>
+      </>
     )
   }
   <div class="flex flex-col justify-center">
     <a href={`/blog/${post.id}/`} class="no-underline">
-      <h4
-        class="text-xl m-0 mb-2 text-black group-hover:text-accent transition-colors"
+      <Heading
+        class="card-title m-0 mb-2 text-black group-hover:text-accent transition-colors"
       >
         {post.data.title}
-      </h4>
+      </Heading>
     </a>
-    <p class="text-gray m-0 mb-2 line-clamp-2">
+    <div class="card-text text-gray m-0 mb-2 line-clamp-2">
       <Markdown text={post.data.synopsis || post.data.description} />
-    </p>
+    </div>
     <div class="flex items-center gap-4 text-sm text-gray">
       <FormattedDate date={post.data.pubDate} />
       {
@@ -64,3 +86,15 @@ const { post, class: className, showTags = true } = Astro.props;
     </div>
   </div>
 </article>
+
+<style>
+  /* The size of the global h4, whichever level the page needs */
+  .card-title {
+    font-size: var(--text-2xl);
+  }
+  /* Links in the synopsis are underlined, not only coloured */
+  .card-text :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>
