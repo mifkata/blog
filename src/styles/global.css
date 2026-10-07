@@ -164,6 +164,17 @@ img {
   @apply max-w-full h-auto;
 }
 
+/* <Picture> only offers the browser a choice of formats; the <img> inside
+   lays out as if the wrapper weren't there, and the <source> elements never
+   become grid or flex items */
+picture {
+  display: contents;
+}
+
+picture > source {
+  display: none;
+}
+
 code {
   @apply px-1.5 py-0.5 bg-code rounded;
 }

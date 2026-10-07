@@ -1,7 +1,7 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import PageLayout from "@/layouts/PageLayout.astro";
-import { SITE_TITLE } from "@/consts";
+import { PICTURE_FORMATS, SITE_TITLE } from "@/consts";
 import notFoundImage from "@/assets/404.png";
 ---
 
@@ -11,7 +11,12 @@ import notFoundImage from "@/assets/404.png";
   image={notFoundImage}
   class="text-center"
 >
-  <Image src={notFoundImage} alt="Page not found" class="mx-auto mb-8" />
+  <Picture
+    {...PICTURE_FORMATS}
+    src={notFoundImage}
+    alt="Page not found"
+    class="mx-auto mb-8"
+  />
   <h1 class="text-7xl m-0">
     These are not the droids that you're looking for...
   </h1>

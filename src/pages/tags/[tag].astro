@@ -42,7 +42,7 @@ const pageDescription = tagInfo?.description || `Posts tagged with ${tag}`;
       )
     }
     <div class="space-y-8 mt-8">
-      {posts.map((post) => <ArticleCard post={post} />)}
+      {posts.map((post) => <ArticleCard post={post} heading="h2" />)}
     </div>
   </section>
 </PageLayout>
