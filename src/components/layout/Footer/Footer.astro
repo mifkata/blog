@@ -601,6 +601,12 @@ const another = "read another";
     animation: footer-flame-cycle var(--flame-cycle) ease-in-out infinite;
   }
 
+  /* Held still until footer.ts sees it on screen */
+  .footer-flame:not(.is-burning),
+  .footer-flame:not(.is-burning) rect {
+    animation-play-state: paused;
+  }
+
   .footer-flame .is-outer {
     fill: var(--flame-deep);
   }

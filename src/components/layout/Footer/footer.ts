@@ -149,4 +149,12 @@ export function setupFooter(): void {
 
   const figure = footer.querySelector<HTMLElement>("[data-footer-quotes]");
   if (figure && QUOTES.length > 1) rotateQuotes(footer, figure);
+
+  // The flame's colours can't be animated off the main thread, so it only
+  // burns while it's on screen
+  const flame = footer.querySelector(".footer-flame");
+  if (flame)
+    new IntersectionObserver(([entry]) =>
+      flame.classList.toggle("is-burning", entry.isIntersecting),
+    ).observe(flame);
 }

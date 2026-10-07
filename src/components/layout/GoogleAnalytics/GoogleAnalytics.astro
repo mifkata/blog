@@ -1,22 +1,26 @@
 ---
 const isProd = import.meta.env.PROD;
 const GA_ID = "G-SDS8ZJG4SS";
+// gtag() queues the visit straight away; gtag.js, which sends it, waits until
+// the page has loaded and the browser is idle, so its download and start-up
+// work never hold up the page
 const gtagScript = `
   window.dataLayer = window.dataLayer || [];
   function gtag() { dataLayer.push(arguments); }
   gtag("js", new Date());
   gtag("config", "${GA_ID}");
+  addEventListener("load", () => {
+    const load = () => {
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=${GA_ID}";
+      document.head.append(script);
+    };
+    "requestIdleCallback" in window
+      ? requestIdleCallback(load, { timeout: 3000 })
+      : setTimeout(load, 500);
+  }, { once: true });
 `;
 ---
 
-{
-  isProd && (
-    <>
-      <script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-      />
-      <script is:inline set:html={gtagScript} />
-    </>
-  )
-}
+{isProd && <script is:inline set:html={gtagScript} />}
