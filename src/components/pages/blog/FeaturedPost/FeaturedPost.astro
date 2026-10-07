@@ -1,5 +1,6 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
+import { PICTURE_FORMATS } from "@/consts";
 import type { CollectionEntry } from "astro:content";
 import { marked } from "marked";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
@@ -33,12 +34,12 @@ const minutes = readingMinutes(post.body ?? "");
   {
     heroImage && (
       <a href={href} class="featured-media" tabindex="-1" aria-hidden="true">
-        <Image
+        <Picture
+          {...PICTURE_FORMATS}
           src={heroImage}
           alt=""
           widths={[400, 640, 800, 960, 1280]}
           sizes="(min-width: 768px) min(560px, 49vw), calc(100vw - 48px)"
-          quality={70}
         />
       </a>
     )
