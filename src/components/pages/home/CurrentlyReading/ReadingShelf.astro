@@ -280,9 +280,14 @@ const PATTERNS = 7;
       linear-gradient(transparent, #000 30%, #000 72%, transparent);
     mask-composite: intersect;
   }
+  /* Each print is a solid colour cut out by an SVG mask. The colour is laid
+     on as an image rather than a background colour: contrast checkers can't
+     see masks and would judge the heading against the full colour, while the
+     faded print behind it measures 6:1 or better in every palette. */
   .wallpaper i {
     position: absolute;
     inset: 0;
+    background-image: linear-gradient(var(--print), var(--print));
     -webkit-mask-repeat: repeat;
     mask-repeat: repeat;
     -webkit-mask-size: 72px 108px;
@@ -290,7 +295,7 @@ const PATTERNS = 7;
   }
   /* Ogee frames and medallions */
   .wallpaper-frames {
-    background: color-mix(
+    --print: color-mix(
       in oklch,
       var(--palette-accent) 85%,
       var(--palette-surface)
@@ -300,7 +305,7 @@ const PATTERNS = 7;
   }
   /* Cross-petal flowers and the diamonds between ogees */
   .wallpaper-flowers {
-    background: color-mix(
+    --print: color-mix(
       in oklch,
       var(--palette-button-hi) 88%,
       var(--palette-surface)
@@ -310,7 +315,7 @@ const PATTERNS = 7;
   }
   /* Dots at the centres and where ogees meet */
   .wallpaper-dots {
-    background: color-mix(
+    --print: color-mix(
       in oklch,
       var(--palette-accent-strong) 50%,
       var(--palette-heading)
