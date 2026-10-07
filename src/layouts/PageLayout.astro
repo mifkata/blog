@@ -1,5 +1,4 @@
 ---
-import type { ImageMetadata } from "astro";
 import BaseHead from "@/components/layout/BaseHead/BaseHead.astro";
 import Header from "@/components/layout/Header/Header.astro";
 import Footer from "@/components/layout/Footer/Footer.astro";
@@ -8,18 +7,19 @@ import type { TocChapter } from "@/components/post/TableOfContents/toc";
 interface Props {
   title: string;
   description: string;
-  image?: ImageMetadata;
+  /** The social card to share this page with; the home page's by default */
+  card?: string;
   class?: string;
   /** A post's chapters, shown in the header's status bar */
   outline?: TocChapter[];
 }
 
-const { title, description, image, class: className, outline } = Astro.props;
+const { title, description, card, class: className, outline } = Astro.props;
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} image={image} />
+    <BaseHead title={title} description={description} card={card} />
   </head>
   <body>
     <div class="content-wrapper">
