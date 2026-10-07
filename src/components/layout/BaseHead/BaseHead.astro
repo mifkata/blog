@@ -2,28 +2,22 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import "@/styles/global.css";
-import type { ImageMetadata } from "astro";
-import { getImage } from "astro:assets";
-import FallbackImage from "@/assets/og-default.jpg";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics/GoogleAnalytics.astro";
 import { SITE_TITLE } from "@/consts";
+import { CARD_HEIGHT, CARD_WIDTH, cardPath } from "@/helpers/socialCard";
 
 interface Props {
   title: string;
   description: string;
-  image?: ImageMetadata;
+  /** The social card to share this page with (see pages/og); the home
+   * page's by default */
+  card?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage } = Astro.props;
-// Link previews get a 1200px JPEG rather than the full-size original
-const preview = await getImage({
-  src: image,
-  width: Math.min(1200, image.width),
-  format: "jpg",
-});
-const previewURL = new URL(preview.src, Astro.url);
+const { title, description, card = "home" } = Astro.props;
+const cardURL = new URL(cardPath(card), Astro.url);
 import {
   PALETTE_BY_MONTH,
   PALETTE_BY_SEASON,
@@ -158,14 +152,18 @@ import { FAVICON_BY_PALETTE } from "@/helpers/favicon";
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={previewURL} />
+<meta property="og:image" content={cardURL} />
+<meta property="og:image:width" content={String(CARD_WIDTH)} />
+<meta property="og:image:height" content={String(CARD_HEIGHT)} />
+<meta property="og:image:alt" content={title} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={previewURL} />
+<meta property="twitter:image" content={cardURL} />
+<meta property="twitter:image:alt" content={title} />
 
 <script>
   import { watchReturns } from "./faviconMotion";

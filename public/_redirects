@@ -21,4 +21,8 @@
 /_astro/0101-ai-agent-tooling-101.DebIfLUZ.png  /_astro/0101-ai-agent-tooling-101.9mshfHgu.png  301
 /_astro/0102-spec-driven-development.CSLDWFh7.png  /_astro/0102-spec-driven-development.CjORzfx0.png  301
 /_astro/0204-the-openclaw-invasion.DRvN_iKW.png  /_astro/0204-the-openclaw-invasion.yG-1Acbs.png  301
-/_astro/og-default.DMTizbtC.jpg  /_astro/og-default.COuThPSO.jpg  301
+/_astro/og-default.DMTizbtC.jpg  /og/home.png  301
+
+# The default link preview became the generated home card in Oct 2026.
+/_astro/og-default.COuThPSO.jpg  /og/home.png  301
+/_astro/og-default.COuThPSO_ZpnXxl.jpg  /og/home.png  301
