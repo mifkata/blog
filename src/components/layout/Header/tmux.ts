@@ -228,7 +228,21 @@ const loaders = {
   },
 };
 
-/** Loads a source now and again whenever it goes stale, while the tab is visible. */
+/** Runs once the page has loaded and the browser has a moment to spare. */
+function whenIdle(run: () => void) {
+  const idle = () =>
+    typeof window.requestIdleCallback === "function"
+      ? window.requestIdleCallback(run, { timeout: 3000 })
+      : window.setTimeout(run, 500);
+  if (document.readyState === "complete") idle();
+  else window.addEventListener("load", idle, { once: true });
+}
+
+/**
+ * Loads a source and again whenever it goes stale, while the tab is visible.
+ * A fresh copy from this session shows at once; a new request waits until the
+ * page has loaded, so the bar never competes with the page's own downloads.
+ */
 function poll<T>(
   key: keyof typeof TTL,
   load: () => Promise<T | null>,
@@ -244,7 +258,9 @@ function poll<T>(
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) run();
   });
-  run();
+  const entry = readStore<{ at: number }>(sessionStorage, CACHE_PREFIX + key);
+  if (isFresh(entry, TTL[key], Date.now())) run();
+  else whenIdle(run);
 }
 
 function escape(text: string): string {

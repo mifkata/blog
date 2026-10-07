@@ -75,8 +75,9 @@ const id = `series-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
               <Image
                 src={part.heroImage}
                 alt=""
-                widths={[480, 720, 960]}
-                sizes="(min-width: 768px) 440px, 84vw"
+                widths={[320, 400, 560, 720, 960]}
+                sizes="(min-width: 768px) min(440px, 39vw), calc(84vw - 42px)"
+                quality={70}
               />
             )}
             <span class="rail-chip">Part {index + 1}</span>
