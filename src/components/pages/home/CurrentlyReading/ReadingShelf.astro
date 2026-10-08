@@ -54,7 +54,7 @@ const PATTERNS = 7;
           <i class="wallpaper-flowers"></i>
           <i class="wallpaper-dots"></i>
         </div>
-        <div class="shelf-books">
+        <div class="shelf-books" role="toolbar" aria-label="Books">
           <svg
             class="shelf-pot"
             viewBox="8 0 44 84"
@@ -106,8 +106,8 @@ const PATTERNS = 7;
           </svg>
           {
             placed.map((book, i) => (
-              <a
-                href={book.url}
+              <button
+                type="button"
                 class:list={["spine", `pattern-${i % PATTERNS}`]}
                 style={`--hue: ${book.hue}; --tone: ${book.tone}; --wear: ${book.wear}%; --x: ${book.x}px; --shelf: ${shelfWidth}px; width: ${book.width}px; height: ${book.height}px`}
                 data-shelf-book
@@ -120,7 +120,7 @@ const PATTERNS = 7;
                 <span class="spine-author" aria-hidden="true">
                   {spineAuthor(book.author)}
                 </span>
-              </a>
+              </button>
             ))
           }
         </div>
@@ -144,8 +144,14 @@ const PATTERNS = 7;
               )}
               <span class="shelf-card-meta">
                 <span class="shelf-card-author">{book.author}</span>
-                <a href={book.url} class="shelf-card-link">
+                <a
+                  href={book.url}
+                  class="shelf-card-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {book.topic} · Goodreads ↗
+                  <span class="sr-only">(opens in new tab)</span>
                 </a>
               </span>
             </div>
@@ -466,6 +472,9 @@ const PATTERNS = 7;
   .spine {
     position: relative;
     display: flex;
+    margin: 0;
+    border: 0;
+    font: inherit;
     flex: none;
     flex-direction: column;
     align-items: center;
