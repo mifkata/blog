@@ -1,7 +1,10 @@
 /**
- * Shows a book under the shelf when its spine is hovered or focused. Touch
- * screens can't hover, so there the first tap shows the book and a second tap
- * on the same spine opens it. Each new book stirs the plant in the pot.
+ * Shows a book under the shelf when its spine is hovered, focused or tapped;
+ * the book's Goodreads link is in what shows. Each new book stirs the plant
+ * in the pot.
+ *
+ * The shelf is one tab stop: arrow keys move between the books, and Tab goes
+ * on to the shown book's link.
  */
 export function setupShelves(): void {
   document.querySelectorAll<HTMLElement>("[data-shelf]").forEach((shelf) => {
@@ -9,17 +12,21 @@ export function setupShelves(): void {
     shelf.dataset.shelfReady = "true";
 
     const spines = [
-      ...shelf.querySelectorAll<HTMLAnchorElement>("[data-shelf-book]"),
+      ...shelf.querySelectorAll<HTMLButtonElement>("[data-shelf-book]"),
     ];
     const cards = [...shelf.querySelectorAll<HTMLElement>("[data-shelf-card]")];
     const hint = shelf.querySelector<HTMLElement>("[data-shelf-hint]");
     const sway = plantSway(shelf);
-    let tapped = -1;
     let shown = -1;
+
+    const tabStop = (index: number) =>
+      spines.forEach((spine, i) => (spine.tabIndex = i === index ? 0 : -1));
+    tabStop(0);
 
     const show = (index: number) => {
       if (index !== shown) sway();
       shown = index;
+      tabStop(index);
       spines.forEach((spine, i) =>
         spine.classList.toggle("is-on", i === index),
       );
@@ -32,11 +39,20 @@ export function setupShelves(): void {
         if (event.pointerType === "mouse") show(i);
       });
       spine.addEventListener("focus", () => show(i));
-      spine.addEventListener("click", (event) => {
-        if (!matchMedia("(hover: none)").matches || tapped === i) return;
+      spine.addEventListener("click", () => show(i));
+      spine.addEventListener("keydown", (event) => {
+        const last = spines.length - 1;
+        const to = {
+          ArrowLeft: i - 1,
+          ArrowUp: i - 1,
+          ArrowRight: i + 1,
+          ArrowDown: i + 1,
+          Home: 0,
+          End: last,
+        }[event.key];
+        if (to === undefined) return;
         event.preventDefault();
-        tapped = i;
-        show(i);
+        spines[Math.min(Math.max(to, 0), last)].focus();
       });
     });
   });
