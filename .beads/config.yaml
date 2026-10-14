@@ -40,3 +40,7 @@
 # - linear.api-key
 # - github.org
 # - github.repo
+
+sync.remote: "git+ssh://git@github.com/mifkata/blog.git"
+export:
+    auto: true
