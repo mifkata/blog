@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "blog-post-editor": {
+      "source": "mifkata/blog-skills",
+      "sourceType": "github",
+      "skillPath": "blog-post-editor/SKILL.md",
+      "computedHash": "71af9de4f083a968f3f9121991742843db2db4366a56d8e2c0f016fbcb40e54f"
+    },
+    "blog-post-enhancer": {
+      "source": "mifkata/blog-skills",
+      "sourceType": "github",
+      "skillPath": "blog-post-enhancer/SKILL.md",
+      "computedHash": "7db2fce9fef1596e6a7b56b79b643f627fe885b7798399d26f0452d0384329ed"
+    },
+    "blog-post-proofreader": {
+      "source": "mifkata/blog-skills",
+      "sourceType": "github",
+      "skillPath": "blog-post-proofreader/SKILL.md",
+      "computedHash": "9ea931f52fe6b1d531b471a9ffbe1969eb580f9af8a752776f665960ba605b5d"
+    }
+  }
+}
