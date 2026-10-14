@@ -22,6 +22,10 @@ describe("activeWindow", () => {
     expect(activeWindow("/tags/agents/")).toBe("blog");
   });
 
+  it("should mark notes", () => {
+    expect(activeWindow("/notes/")).toBe("notes");
+  });
+
   it("should mark about, and nothing on other pages", () => {
     expect(activeWindow("/about/")).toBe("about");
     expect(activeWindow("/404")).toBeUndefined();

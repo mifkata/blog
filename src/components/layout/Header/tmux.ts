@@ -8,6 +8,7 @@ export type Level = "ok" | "warn" | "bad" | "unknown";
 export const WINDOWS = [
   { name: "home", href: "/" },
   { name: "blog", href: "/blog" },
+  { name: "notes", href: "/notes" },
   { name: "about", href: "/about" },
 ] as const;
 
@@ -47,6 +48,7 @@ export function activeWindow(pathname: string): string | undefined {
   const section = pathname.split("/").filter(Boolean)[0];
   if (!section) return "home";
   if (section === "blog" || section === "tags") return "blog";
+  if (section === "notes") return "notes";
   if (section === "about") return "about";
   return undefined;
 }

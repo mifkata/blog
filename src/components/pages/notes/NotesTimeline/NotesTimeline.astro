@@ -1,0 +1,321 @@
+---
+import type { render } from "astro:content";
+import Link from "@/components/prose/Link.astro";
+import OrderedList from "@/components/prose/OrderedList.astro";
+import UnorderedList from "@/components/prose/UnorderedList.astro";
+import Button from "@/components/ui/Button/Button.astro";
+import { isoDay, NOTES_PAGE_SIZE, type NoteMonth } from "@/helpers/notes";
+
+export interface TimelineNote {
+  id: string;
+  title: string;
+  date: Date;
+  /** The note's rendered MDX body */
+  Content?: Awaited<ReturnType<typeof render>>["Content"];
+  /** Plain body, for where there's no MDX to render */
+  text?: string;
+}
+
+interface Props {
+  months: NoteMonth<TimelineNote>[];
+  /** Notes shown at first, and revealed by each "Load more" */
+  pageSize?: number;
+}
+
+const { months, pageSize = NOTES_PAGE_SIZE } = Astro.props;
+
+const total = months.reduce((sum, month) => sum + month.notes.length, 0);
+const firstShown = Math.min(pageSize, total);
+
+// Every note is in the page, so it works without JavaScript and every
+// note's anchor resolves; the ones past the first batch wait behind
+// data-later until "Load more".
+let position = 0;
+const rows = months.map((month) => {
+  const first = position;
+  const notes = month.notes.map((note) => ({ note, index: position++ }));
+  return { month, notes, later: first >= pageSize };
+});
+---
+
+<div data-notes data-page-size={pageSize}>
+  {
+    rows.map(({ month, notes, later }) => (
+      <section
+        class="notes-month"
+        aria-label={`Notes, ${month.month} ${month.year}`}
+        data-month
+        data-later={later ? "" : undefined}
+      >
+        <h2 class="notes-month-label">
+          {month.month}
+          <span class="notes-year">{month.year}</span>
+        </h2>
+        <ol class="notes-list">
+          {notes.map(({ note, index }) => (
+            <li
+              id={note.id}
+              class:list={["note", { "is-latest": index === 0 }]}
+              data-note
+              data-later={index >= pageSize ? "" : undefined}
+            >
+              <span class="note-dot" aria-hidden="true" />
+              <time class="note-date" datetime={isoDay(note.date)}>
+                {isoDay(note.date)}
+              </time>
+              <h3 class="note-title" tabindex="-1">
+                {note.title}
+              </h3>
+              <div class="note-body">
+                {note.Content ? (
+                  <note.Content
+                    components={{ a: Link, ul: UnorderedList, ol: OrderedList }}
+                  />
+                ) : (
+                  <p>{note.text}</p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))
+  }
+
+  {
+    total > 0 && (
+      <div class="notes-footer">
+        <span aria-hidden="true" />
+        <div class="notes-footer-body">
+          <div class="notes-more" data-more hidden={total <= pageSize}>
+            <Button variant="inverse">
+              Load{" "}
+              <span data-more-label>
+                {Math.min(pageSize, total - firstShown)}
+              </span>{" "}
+              more
+            </Button>
+          </div>
+          <div class="notes-progress">
+            <div class="notes-bar" aria-hidden="true">
+              <div
+                class="notes-bar-fill"
+                data-bar
+                style={`width: ${(firstShown / total) * 100}%`}
+              />
+            </div>
+            <p class="notes-count" aria-live="polite">
+              <span data-shown>{firstShown}</span> of {total} notes
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<noscript>
+  <style>
+    [data-later] {
+      display: block !important;
+    }
+    .notes-month[data-later] {
+      display: grid !important;
+    }
+    [data-more] {
+      display: none !important;
+    }
+  </style>
+</noscript>
+
+<style>
+  /* Phones stack the month over its notes; from 768px it sits in a margin,
+     like the home page's recent posts */
+  .notes-month,
+  .notes-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .notes-month + .notes-month {
+    margin-top: 8px;
+  }
+  [data-later] {
+    display: none;
+  }
+  .notes-month-label {
+    margin: 0 0 12px;
+    padding-top: 2px;
+    color: var(--palette-muted);
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+  .notes-year {
+    display: block;
+    font:
+      0.875rem/1.6 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+  }
+  .notes-list {
+    margin: 0;
+    padding: 0 0 0 8px;
+    list-style: none;
+  }
+
+  .note {
+    position: relative;
+    padding: 0 0 32px 36px;
+    border-left: 2px solid var(--palette-trace-mid);
+    scroll-margin-top: 7rem;
+  }
+  .note-dot {
+    position: absolute;
+    top: 6px;
+    left: -8px;
+    box-sizing: border-box;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--palette-accent);
+  }
+  /* The newest note's dot is a ring, as the log's open end */
+  .is-latest .note-dot {
+    border: 3px solid var(--palette-accent);
+    background: var(--palette-surface);
+  }
+  .note-date {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 1px 10px;
+    border-radius: 999px;
+    background: var(--palette-tag);
+    color: var(--palette-tag-text);
+    font:
+      0.75rem/1.7 ui-monospace,
+      "SF Mono",
+      Menlo,
+      Consolas,
+      monospace;
+  }
+  .note-title {
+    margin: 0 0 6px;
+    font-size: 1.375rem;
+    line-height: 1.25;
+    outline: none;
+  }
+  .note:target .note-title {
+    color: var(--palette-accent);
+  }
+  .note-body {
+    /* What the post lists read for their spacing and marker height */
+    --prose-leading: 1.65;
+    --prose-gap: 1em;
+    font-size: 1rem;
+    line-height: var(--prose-leading);
+  }
+
+  .notes-footer {
+    margin-top: 8px;
+  }
+  .notes-footer-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    padding-left: 44px;
+  }
+  .notes-progress {
+    flex: 1 1 160px;
+    min-width: 0;
+  }
+  .notes-bar {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--palette-line);
+  }
+  .notes-bar-fill {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--palette-accent);
+    transition: width 0.3s ease;
+  }
+  .notes-count {
+    margin: 6px 0 0;
+    color: var(--palette-muted);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 768px) {
+    .notes-month,
+    .notes-footer {
+      grid-template-columns: 124px minmax(0, 1fr);
+      column-gap: 20px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .notes-bar-fill {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function setupNotes(root: HTMLElement) {
+    const size = Number(root.dataset.pageSize);
+    const notes = [...root.querySelectorAll<HTMLElement>("[data-note]")];
+    const months = [...root.querySelectorAll<HTMLElement>("[data-month]")];
+    const more = root.querySelector<HTMLElement>("[data-more]");
+    const label = root.querySelector<HTMLElement>("[data-more-label]");
+    const bar = root.querySelector<HTMLElement>("[data-bar]");
+    const count = root.querySelector<HTMLElement>("[data-shown]");
+
+    let shown = notes.filter((note) => !note.hasAttribute("data-later")).length;
+
+    const render = () => {
+      notes.forEach((note, i) =>
+        note.toggleAttribute("data-later", i >= shown),
+      );
+      months.forEach((month) =>
+        month.toggleAttribute(
+          "data-later",
+          !month.querySelector("[data-note]:not([data-later])"),
+        ),
+      );
+      if (more) more.hidden = shown >= notes.length;
+      if (label)
+        label.textContent = String(Math.min(size, notes.length - shown));
+      if (bar) bar.style.width = `${(shown / notes.length) * 100}%`;
+      if (count) count.textContent = String(shown);
+    };
+
+    const revealTo = (target: number) => {
+      shown = Math.min(notes.length, Math.max(shown, target));
+      render();
+    };
+
+    more?.querySelector("button")?.addEventListener("click", () => {
+      const firstNew = notes[shown];
+      revealTo(shown + size);
+      firstNew?.querySelector<HTMLElement>("h3")?.focus();
+    });
+
+    // A link to a note that's still waiting opens its batch first
+    const showHash = () => {
+      const id = decodeURIComponent(location.hash.slice(1));
+      const index = notes.findIndex((note) => note.id === id);
+      if (index < 0) return;
+      revealTo(index + 1);
+      notes[index].scrollIntoView();
+    };
+    showHash();
+    window.addEventListener("hashchange", showHash);
+  }
+
+  document
+    .querySelectorAll<HTMLElement>("[data-notes]")
+    .forEach((root) => setupNotes(root));
+</script>
