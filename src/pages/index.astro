@@ -7,7 +7,14 @@ import {
   recentIndex,
   tagCounts,
 } from "@/components/pages/home/RecentPosts/recentIndex";
+import {
+  excerpt,
+  isPublishedNote,
+  newestFirst,
+  plainText,
+} from "@/helpers/notes";
 import ReadingShelf from "@/components/pages/home/CurrentlyReading/ReadingShelf.astro";
+import NotesWidget from "@/components/pages/home/NotesWidget/NotesWidget.astro";
 import FeaturedSeries from "@/components/pages/home/FeaturedSeries/FeaturedSeries.astro";
 import HomeHero from "@/components/pages/home/HomeHero/HomeHero.astro";
 import HomeTerminal from "@/components/pages/home/HomeTerminal/HomeTerminal.astro";
@@ -38,6 +45,15 @@ const recent = recentIndex(
     seriesUrls: featuredSeries.parts.map((part) => part.url),
   },
 );
+
+const latestNotes = newestFirst(
+  (await getCollection("notes", isPublishedNote)).map((note) => ({
+    id: note.id,
+    title: note.data.title,
+    date: note.data.date,
+    text: excerpt(plainText(note.body ?? "")),
+  })),
+).slice(0, 4);
 ---
 
 <PageLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -46,5 +62,6 @@ const recent = recentIndex(
   {featuredPost && <FeaturedPost post={featuredPost} />}
   <FeaturedSeries {...featuredSeries} />
   <RecentPosts index={recent} seriesTitle={featuredSeries.title} />
+  <NotesWidget notes={latestNotes} />
   <ReadingShelf />
 </PageLayout>
