@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from "astro:content";
+import { groupByMonth, isPublishedNote } from "@/helpers/notes";
+import NotesTimeline from "@/components/pages/notes/NotesTimeline/NotesTimeline.astro";
+import PageLayout from "@/layouts/PageLayout.astro";
+import { SITE_TITLE } from "@/consts";
+
+const entries = await getCollection("notes", isPublishedNote);
+const notes = await Promise.all(
+  entries.map(async (entry) => ({
+    id: entry.id,
+    title: entry.data.title,
+    date: entry.data.date,
+    Content: (await render(entry)).Content,
+  })),
+);
+const months = groupByMonth(notes);
+---
+
+<PageLayout
+  title={`Mental Notes | ${SITE_TITLE}`}
+  description="Short updates on what I'm working on"
+>
+  <header
+    class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 mb-10 pb-6 border-b border-gray-light"
+  >
+    <div class="min-w-0">
+      <p class="font-mono text-sm text-accent tracking-wide m-0 mb-2">
+        $ tail -f brain.log
+      </p>
+      <h1 class="m-0">Mental Notes</h1>
+    </div>
+    <p class="m-0 max-w-sm text-base text-gray">
+      Diary-like message board for quick, unpolished, personal confessions and
+      random thoughts.
+    </p>
+  </header>
+
+  {
+    months.length > 0 ? (
+      <NotesTimeline months={months} />
+    ) : (
+      <p class="text-gray">Nothing logged yet.</p>
+    )
+  }
+</PageLayout>
