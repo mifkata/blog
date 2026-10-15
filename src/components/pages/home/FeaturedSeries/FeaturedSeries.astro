@@ -2,6 +2,7 @@
 import { Picture } from "astro:assets";
 import { PICTURE_FORMATS } from "@/consts";
 import { marked } from "marked";
+import RailDots from "@/components/ui/RailDots/RailDots.astro";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
 import type { SeriesPart } from "@/helpers/series";
 
@@ -115,18 +116,7 @@ const id = `series-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     }
   </div>
 
-  <div class="rail-dots flex justify-center mt-2 md:hidden">
-    {
-      parts.map((_, index) => (
-        <button
-          type="button"
-          class="rail-dot"
-          data-rail-dot
-          aria-label={`Go to part ${index + 1}`}
-        />
-      ))
-    }
-  </div>
+  <RailDots count={parts.length} label="part" class="mt-2 md:hidden" />
 </section>
 
 <style>
@@ -249,43 +239,13 @@ const id = `series-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
     opacity: 0.35;
     cursor: default;
   }
-  /* Each dot sits in a 24px tap target; the gaps between dots are the
-     targets' padding */
-  .rail-dot {
-    position: relative;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-    transition: width 0.25s;
-  }
-  .rail-dot::before {
-    content: "";
-    position: absolute;
-    inset: 8px;
-    border-radius: 4px;
-    background: var(--palette-line);
-    transition: background-color 0.25s;
-  }
-  .rail-dot[aria-current="true"] {
-    width: 38px;
-  }
-  .rail-dot[aria-current="true"]::before {
-    background: var(--palette-accent);
-  }
-
   /* Everything fits, so there's nothing to scroll to */
-  .is-static .rail-controls,
-  .is-static .rail-dots {
+  .is-static .rail-controls {
     display: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .rail-media :global(img),
-    .rail-dot,
-    .rail-dot::before {
+    .rail-media :global(img) {
       transition: none;
     }
   }
