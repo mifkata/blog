@@ -5,3 +5,10 @@ pnpm-lock.yaml
 .devcontainer/.claude
 !.devcontainer/.claude/settings.json
 *.mdx
+storybook-static
+.devcontainer/.home
+worktrees
+.beads
+public/archive
+CLAUDE.md
+AGENTS.md
