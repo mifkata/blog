@@ -7,6 +7,10 @@ export default [
     ignores: [
       "dist/**",
       ".astro/**",
+      "storybook-static/**",
+      ".devcontainer/.home/**",
+      "worktrees/**",
+      ".worktrees/**",
       "node_modules/**",
       ".devcontainer/.claude/**",
       "!.devcontainer/.claude/settings.json",
