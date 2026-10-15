@@ -225,6 +225,8 @@ const loaders = {
   },
   kp: async (): Promise<number | null> => latestKp(await getJson(KP_URL)),
   edge: async (): Promise<Edge | null> => {
+    // Only Cloudflare serves the trace; locally it would just log a 404
+    if (import.meta.env.DEV) return null;
     const response = await fetch(TRACE_URL, { cache: "no-store" });
     return response.ok ? parseTrace(await response.text()) : null;
   },
