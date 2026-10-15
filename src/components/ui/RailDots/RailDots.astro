@@ -1,0 +1,67 @@
+---
+interface Props {
+  count: number;
+  /** What each dot goes to, for its label: "Go to part 2" */
+  label?: string;
+  /** Where the dots are laid out or hidden, e.g. "mt-2 md:hidden" */
+  class?: string;
+}
+
+const { count, label = "item", class: className } = Astro.props;
+---
+
+<!-- The pagination of a sideways-scrolling rail: setupSeriesRails marks the
+     current dot and scrolls to the one pressed -->
+<div class:list={["rail-dots flex justify-center", className]}>
+  {
+    Array.from({ length: count }, (_, index) => (
+      <button
+        type="button"
+        class="rail-dot"
+        data-rail-dot
+        aria-label={`Go to ${label} ${index + 1}`}
+      />
+    ))
+  }
+</div>
+
+<style>
+  /* Each dot sits in a 24px tap target; the gaps between dots are the
+     targets' padding */
+  .rail-dot {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    transition: width 0.25s;
+  }
+  .rail-dot::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 4px;
+    background: var(--palette-line);
+    transition: background-color 0.25s;
+  }
+  .rail-dot[aria-current="true"] {
+    width: 38px;
+  }
+  .rail-dot[aria-current="true"]::before {
+    background: var(--palette-accent);
+  }
+
+  /* Everything fits, so there's nothing to scroll to */
+  :global(.is-static) .rail-dots {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rail-dot,
+    .rail-dot::before {
+      transition: none;
+    }
+  }
+</style>
