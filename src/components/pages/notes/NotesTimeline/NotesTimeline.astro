@@ -83,11 +83,11 @@ const rows = months.map((month) => {
   }
 
   {
-    total > 0 && (
-      <div class="notes-footer">
+    total > pageSize && (
+      <div class="notes-footer" data-notes-footer>
         <span aria-hidden="true" />
         <div class="notes-footer-body">
-          <div class="notes-more" data-more hidden={total <= pageSize}>
+          <div class="notes-more" data-more>
             <Button variant="inverse">
               Load{" "}
               <span data-more-label>
@@ -122,7 +122,7 @@ const rows = months.map((month) => {
     .notes-month[data-later] {
       display: grid !important;
     }
-    [data-more] {
+    [data-notes-footer] {
       display: none !important;
     }
   </style>
@@ -216,6 +216,9 @@ const rows = months.map((month) => {
     line-height: var(--prose-leading);
   }
 
+  .notes-footer[hidden] {
+    display: none;
+  }
   .notes-footer {
     margin-top: 8px;
   }
@@ -268,7 +271,7 @@ const rows = months.map((month) => {
     const size = Number(root.dataset.pageSize);
     const notes = [...root.querySelectorAll<HTMLElement>("[data-note]")];
     const months = [...root.querySelectorAll<HTMLElement>("[data-month]")];
-    const more = root.querySelector<HTMLElement>("[data-more]");
+    const footer = root.querySelector<HTMLElement>("[data-notes-footer]");
     const label = root.querySelector<HTMLElement>("[data-more-label]");
     const bar = root.querySelector<HTMLElement>("[data-bar]");
     const count = root.querySelector<HTMLElement>("[data-shown]");
@@ -285,7 +288,8 @@ const rows = months.map((month) => {
           !month.querySelector("[data-note]:not([data-later])"),
         ),
       );
-      if (more) more.hidden = shown >= notes.length;
+      // Once everything is shown there is nothing left to say
+      if (footer) footer.hidden = shown >= notes.length;
       if (label)
         label.textContent = String(Math.min(size, notes.length - shown));
       if (bar) bar.style.width = `${(shown / notes.length) * 100}%`;
@@ -297,7 +301,7 @@ const rows = months.map((month) => {
       render();
     };
 
-    more?.querySelector("button")?.addEventListener("click", () => {
+    footer?.querySelector("button")?.addEventListener("click", () => {
       const firstNew = notes[shown];
       revealTo(shown + size);
       firstNew?.querySelector<HTMLElement>("h3")?.focus();
