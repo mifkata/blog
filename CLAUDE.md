@@ -23,15 +23,7 @@
 - Do not include author/co-author information in commit messages
 - Use conventional commit messages (e.g., `feat: add random forest training script`)
 - Commit messages should be terse, do not explicit details, just focus on the change
-
-# Pull Requests
-
-- Pushing a branch for the first time, should open a Draft PR automatically. Use `gh` CLI tool for GitHub operations.
-- Automatically assign the current `git` user to newly created PRs.
-- PR description should include only: Change requirements (goal of the PR), summary of applied changes.
-- PR description summary of applied changes should be dynamically updated.
-- Do not add any generation/co-authoring references in PR description.
-- Do not add test plans to PR descriptions.
+- Work on `main`: no feature branches or pull requests unless the user asks for one
 
 ---
 
