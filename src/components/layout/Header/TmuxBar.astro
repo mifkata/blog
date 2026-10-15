@@ -31,7 +31,10 @@ const active = activeWindow(Astro.url.pathname);
               ]}
               aria-current={item.name === active ? "page" : undefined}
             >
-              {index}:{item.name}
+              <span class="tmux-index" aria-hidden="true">
+                {index}:
+              </span>
+              {item.name}
               {item.name === active && <span aria-hidden="true">*</span>}
             </a>
           ))
@@ -318,6 +321,28 @@ const active = activeWindow(Astro.url.pathname);
     }
     .tmux-agents::before {
       display: none;
+    }
+    /* On phones the bar is the same size scrolled or not, and the mini logo
+       would push the windows off the screen */
+    .tmux-inner,
+    :global(#site-header.is-shrunk) .tmux-inner {
+      height: 40px;
+    }
+    :global(#site-header.is-shrunk) .tmux-mini {
+      display: none;
+    }
+  }
+
+  /* Narrow phones: four windows and the status dots don't fit with their
+     numbers, so the numbers go */
+  @media (max-width: 479px) {
+    .tmux-index {
+      display: none;
+    }
+    /* Roomier windows to tap; the width left over by the numbers going is
+       what pays for the padding */
+    .tmux-window {
+      padding: 13px 9px;
     }
   }
 
