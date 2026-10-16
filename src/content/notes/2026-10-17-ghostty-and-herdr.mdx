@@ -1,0 +1,8 @@
+---
+title: Upgraded my terminal toolkit
+date: 2026-10-17
+---
+
+I switched to **iTerm2** last year, because I couldn't source the session ID from `tmux` to make a clickable notification which focuses the correct terminal tab when one out of 4 agents needed attention. It didn't work right off the bat and I had to make a [quick hacky app](https://github.com/mifkata/iterm2-focus) to sort the notifications.
+
+Fortunatelly iTerm recently started crashing, so I needed to look for a replacement. Switched to [ghostty](https://ghostty.org/) and I'm never looking back! Paired it with [herdr](https://herdr.dev/) and I got an upgraded tmux  clone designed for running agents. Slapped it with `herdr-focus-notify` and `alerter` et voilà: magic!
