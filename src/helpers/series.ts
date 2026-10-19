@@ -2,6 +2,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import { isPublished } from "./posts";
 import { firstParagraph, readingMinutes } from "./reading";
 import seriesData from "@/data/series.json";
+import { isShownSeries } from "./seriesPosition";
 
 export interface SeriesPart {
   url: string;
@@ -64,13 +65,14 @@ export interface SeriesForPost {
   parts: { title: string; url: string; current: boolean }[];
 }
 
-/** The series a post belongs to, with every part, if it's in one. */
+/** The series a post belongs to, with every part, if it's in a shown one. */
 export async function seriesForPost(
   id: string,
 ): Promise<SeriesForPost | undefined> {
   const series = seriesData.find((s) => s.items.includes(id));
   if (!series) return undefined;
   const { title, items } = await getSeriesWithPosts(series.slug);
+  if (!isShownSeries(items)) return undefined;
   const parts = items.map((item) => ({
     title: item.title,
     url: item.url,

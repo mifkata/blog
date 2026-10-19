@@ -6,6 +6,14 @@ export interface SeriesPosition {
   total: number;
 }
 
+/**
+ * A series shows once it has a second published part; until then, e.g. right
+ * after its first article goes out, it's just a post.
+ */
+export function isShownSeries(parts: readonly unknown[]): boolean {
+  return parts.length > 1;
+}
+
 export function seriesPosition(
   id: string,
   series: { title: string; items: string[] }[] = seriesData,

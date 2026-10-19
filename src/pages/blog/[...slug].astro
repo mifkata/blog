@@ -71,7 +71,7 @@ const related: RelatedItem[] = picks.map(({ id, kind, reason }) => {
   related={related}
   postId={post.id}
   readingMinutes={readingMinutes(post.body ?? "")}
-  series={seriesPosition(post.id)}
+  series={seriesParts && seriesPosition(post.id)}
   seriesParts={seriesParts}
   links={linksWithStars}
   stories={stories}
