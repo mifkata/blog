@@ -1,6 +1,7 @@
 ---
 import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 import { getSeriesWithPosts } from "@/helpers/series";
+import { isShownSeries } from "@/helpers/seriesPosition";
 
 interface Props {
   slug: string;
@@ -16,7 +17,7 @@ const index = items.findIndex(
 ---
 
 {
-  items.length > 0 && (
+  isShownSeries(items) && (
     <details class="series" open={open}>
       <summary>
         <span class="series-head">

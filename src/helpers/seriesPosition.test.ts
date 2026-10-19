@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { seriesPosition } from "./seriesPosition";
+import { isShownSeries, seriesPosition } from "./seriesPosition";
 
 const series = [
   { title: "First Series", items: ["2025/a", "2026/01/b", "2026/02/c"] },
@@ -25,5 +25,13 @@ describe("seriesPosition", () => {
 
   it("should return undefined for posts outside every series", () => {
     expect(seriesPosition("2026/04/e", series)).toBeUndefined();
+  });
+});
+
+describe("isShownSeries", () => {
+  it("should hide a series until it has a second part", () => {
+    expect(isShownSeries([])).toBe(false);
+    expect(isShownSeries(["2026/03/d"])).toBe(false);
+    expect(isShownSeries(["2026/03/d", "2026/04/e"])).toBe(true);
   });
 });

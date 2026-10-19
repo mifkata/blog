@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import { isPublished } from "@/helpers/posts";
 import { readingMinutes } from "@/helpers/reading";
 import { getFeaturedSeries } from "@/helpers/series";
+import { isShownSeries } from "@/helpers/seriesPosition";
 import {
   recentIndex,
   tagCounts,
@@ -28,9 +29,8 @@ const posts = (await getCollection("blog", isPublished)).sort(
 );
 
 const featuredPost = posts[0] || null;
-const featuredSeries = await getFeaturedSeries(
-  "agentic-engineering-foundations",
-);
+const series = await getFeaturedSeries("agentic-engineering-foundations");
+const featuredSeries = isShownSeries(series.parts) ? series : undefined;
 const recent = recentIndex(
   posts.slice(1, 11).map((post) => ({
     id: post.id,
@@ -42,7 +42,7 @@ const recent = recentIndex(
   })),
   {
     counts: tagCounts(posts.map((post) => post.data)),
-    seriesUrls: featuredSeries.parts.map((part) => part.url),
+    seriesUrls: featuredSeries?.parts.map((part) => part.url),
   },
 );
 
@@ -60,8 +60,8 @@ const latestNotes = newestFirst(
   <HomeHero />
   <HomeTerminal />
   {featuredPost && <FeaturedPost post={featuredPost} />}
-  <FeaturedSeries {...featuredSeries} />
-  <RecentPosts index={recent} seriesTitle={featuredSeries.title} />
+  {featuredSeries && <FeaturedSeries {...featuredSeries} />}
+  <RecentPosts index={recent} seriesTitle={featuredSeries?.title} />
   <NotesWidget notes={latestNotes} />
   <ReadingShelf />
 </PageLayout>
