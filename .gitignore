@@ -63,3 +63,7 @@ dolt-config.log
 .serena
 # Claude Code: local settings, commands and skills stay private
 .claude/
+
+# Agent skills stay private (skills-lock.json is tracked). `/*` rather than `/`
+# so a skill made public can be re-included with `!.agents/skills/<name>/`
+.agents/skills/*

@@ -5,19 +5,19 @@
       "source": "mifkata/blog-skills",
       "sourceType": "github",
       "skillPath": "blog-post-editor/SKILL.md",
-      "computedHash": "71af9de4f083a968f3f9121991742843db2db4366a56d8e2c0f016fbcb40e54f"
+      "computedHash": "1e52adf1cd71274b38f450be9eef7371515bbd12279ef5e6acaca0b31b5655a1"
     },
     "blog-post-enhancer": {
       "source": "mifkata/blog-skills",
       "sourceType": "github",
       "skillPath": "blog-post-enhancer/SKILL.md",
-      "computedHash": "7db2fce9fef1596e6a7b56b79b643f627fe885b7798399d26f0452d0384329ed"
+      "computedHash": "859d001a51794f97b8b1d412af6614c47ffcc0b35d71b9bf31e95cbcedead2de"
     },
     "blog-post-proofreader": {
       "source": "mifkata/blog-skills",
       "sourceType": "github",
       "skillPath": "blog-post-proofreader/SKILL.md",
-      "computedHash": "9ea931f52fe6b1d531b471a9ffbe1969eb580f9af8a752776f665960ba605b5d"
+      "computedHash": "fe165e1f7f5ffd38b6ae9e3b89f9341af36e5e85977ef70b5eab3746fa4d5304"
     }
   }
 }
