@@ -67,3 +67,4 @@ dolt-config.log
 # Agent skills stay private (skills-lock.json is tracked). `/*` rather than `/`
 # so a skill made public can be re-included with `!.agents/skills/<name>/`
 .agents/skills/*
+!.agents/skills/blog-post-new/
