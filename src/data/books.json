@@ -30,14 +30,6 @@
     "url": "https://www.goodreads.com/book/show/235364769-deep-learning-with-python-third-edition"
   },
   {
-    "title": "Zero to One",
-    "subtitle": "Notes on Startups, or How to Build the Future",
-    "author": "Peter Thiel",
-    "pages": 195,
-    "topic": "Startups",
-    "url": "https://www.goodreads.com/book/show/18050143-zero-to-one"
-  },
-  {
     "title": "The Hard Thing About Hard Things",
     "subtitle": "Building a Business When There Are No Easy Answers",
     "author": "Ben Horowitz",
@@ -83,6 +75,13 @@
     "pages": 454,
     "topic": "Psychology",
     "url": "https://www.goodreads.com/book/show/55339408-noise"
+  },
+  {
+    "title": "Thinking, Fast and Slow",
+    "author": "Daniel Kahneman",
+    "pages": 512,
+    "topic": "Psychology",
+    "url": "https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow"
   },
   {
     "title": "Sapiens",

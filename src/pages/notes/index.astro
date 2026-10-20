@@ -11,6 +11,7 @@ const notes = await Promise.all(
     id: entry.id,
     title: entry.data.title,
     date: entry.data.date,
+    bookReview: entry.data.tags?.includes("book-review") ?? false,
     Content: (await render(entry)).Content,
   })),
 );
@@ -21,19 +22,13 @@ const months = groupByMonth(notes);
   title={`Mental Notes | ${SITE_TITLE}`}
   description="Short updates on what I'm working on"
 >
-  <header
-    class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 mb-10 pb-6 border-b border-gray-light"
-  >
+  <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
     <div class="min-w-0">
       <p class="font-mono text-sm text-accent tracking-wide m-0 mb-2">
         $ tail -f brain.log
       </p>
       <h1 class="m-0">Mental Notes</h1>
     </div>
-    <p class="m-0 max-w-sm text-base text-gray">
-      Diary-like message board for quick, unpolished, personal confessions and
-      random thoughts.
-    </p>
   </header>
 
   {

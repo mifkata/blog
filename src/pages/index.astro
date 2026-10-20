@@ -52,6 +52,7 @@ const latestNotes = newestFirst(
     title: note.data.title,
     date: note.data.date,
     text: excerpt(plainText(note.body ?? "")),
+    bookReview: note.data.tags?.includes("book-review") ?? false,
   })),
 ).slice(0, 4);
 ---

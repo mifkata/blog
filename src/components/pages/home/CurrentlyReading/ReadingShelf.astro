@@ -1,4 +1,5 @@
 ---
+import { ArrowRight, BookCheck } from "@lucide/astro";
 import books from "@/data/books.json";
 import {
   byTopic,
@@ -36,17 +37,25 @@ const shelfWidth = left + 4;
 const PATTERNS = 7;
 ---
 
-<section class="py-12" aria-labelledby="reading-title">
-  <header class="reading-head mb-6">
-    <p class="text-sm text-accent uppercase tracking-wider m-0 mb-2">
+<section
+  class="grid grid-cols-1 py-12 lg:grid-cols-[minmax(0,1fr)_auto]"
+  aria-labelledby="reading-title"
+>
+  <header class="reading-head contents">
+    <p
+      class="col-span-full text-sm text-accent uppercase tracking-wider m-0 mb-2"
+    >
       Reading · {books.length} books
     </p>
-    <h2 id="reading-title" class="text-3xl m-0 text-black">
+    <h2
+      id="reading-title"
+      class="col-start-1 row-start-2 text-3xl m-0! text-black"
+    >
       Currently reading
     </h2>
   </header>
 
-  <div class="shelf" data-shelf>
+  <div class="shelf col-span-full mt-6" data-shelf>
     <div class="shelf-scroll">
       <div class="shelf-unit">
         <div class="wallpaper" aria-hidden="true">
@@ -170,6 +179,14 @@ const PATTERNS = 7;
       </ul>
     </div>
   </div>
+  <a
+    class="mt-6 text-sm inline-flex items-center gap-2 justify-self-start text-accent no-underline underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent lg:col-start-2 lg:row-start-2 lg:mt-0 lg:self-center lg:justify-self-end"
+    href="/notes/?filter=book-review"
+  >
+    <BookCheck size={16} class="text-button" aria-hidden="true" />
+    Reading Afterthoughts
+    <ArrowRight size={16} aria-hidden="true" />
+  </a>
 </section>
 
 <style>
