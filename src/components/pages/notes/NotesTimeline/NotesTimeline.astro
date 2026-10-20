@@ -1,4 +1,5 @@
 ---
+import { BookOpen, LibraryBig, Notebook } from "@lucide/astro";
 import type { render } from "astro:content";
 import Link from "@/components/prose/Link.astro";
 import OrderedList from "@/components/prose/OrderedList.astro";
@@ -10,6 +11,7 @@ export interface TimelineNote {
   id: string;
   title: string;
   date: Date;
+  bookReview?: boolean;
   /** The note's rendered MDX body */
   Content?: Awaited<ReturnType<typeof render>>["Content"];
   /** Plain body, for where there's no MDX to render */
@@ -39,6 +41,40 @@ const rows = months.map((month) => {
 ---
 
 <div data-notes data-page-size={pageSize}>
+  <div
+    class="relative mb-7 flex flex-wrap items-end justify-between gap-x-6 border-b border-gray-light"
+  >
+    <nav
+      class="flex flex-wrap gap-3"
+      aria-label="Filter notes"
+      data-notes-filters
+    >
+      <button
+        class="-mb-px inline-flex cursor-pointer items-center gap-2 border-0 border-b-2 border-transparent bg-transparent px-0 py-2.5 text-[0.9375rem] text-gray hover:text-black aria-pressed:border-accent aria-pressed:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+        type="button"
+        data-filter="all"
+        aria-pressed="true"
+      >
+        <Notebook size={16} aria-hidden="true" />
+        All notes
+      </button>
+      <button
+        class="-mb-px inline-flex cursor-pointer items-center gap-2 border-0 border-b-2 border-transparent bg-transparent px-0 py-2.5 text-[0.9375rem] text-gray hover:text-black aria-pressed:border-accent aria-pressed:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+        type="button"
+        data-filter="book-review"
+        aria-pressed="false"
+      >
+        <LibraryBig size={16} aria-hidden="true" />
+        Books
+      </button>
+    </nav>
+    <p
+      class="order-first m-0 max-w-sm basis-full pb-2.5 text-base text-gray md:absolute md:right-0 md:bottom-2.5 md:pb-0 md:text-right"
+    >
+      Diary-like message board for quick, unpolished, personal confessions and
+      random thoughts.
+    </p>
+  </div>
   {
     rows.map(({ month, notes, later }) => (
       <section
@@ -55,11 +91,27 @@ const rows = months.map((month) => {
           {notes.map(({ note, index }) => (
             <li
               id={note.id}
-              class:list={["note", { "is-latest": index === 0 }]}
+              class:list={[
+                "note",
+                "before:absolute before:bottom-0 before:-left-0.5 before:w-0.5 before:bg-[var(--palette-trace-mid)] before:content-[''] [&:has(+_.is-book-review)]:before:bottom-1",
+                note.bookReview ? "before:top-7" : "before:top-0",
+                { "is-latest": index === 0, "is-book-review": note.bookReview },
+              ]}
               data-note
+              data-book-review={note.bookReview ? "" : undefined}
               data-later={index >= pageSize ? "" : undefined}
             >
-              <span class="note-dot" aria-hidden="true" />
+              {note.bookReview ? (
+                <span
+                  class="absolute top-0.5 -left-[11px] grid size-5 place-items-center text-button"
+                  role="img"
+                  aria-label="Book review"
+                >
+                  <BookOpen size={20} aria-hidden="true" />
+                </span>
+              ) : (
+                <span class="note-dot" aria-hidden="true" />
+              )}
               <time class="note-date" datetime={isoDay(note.date)}>
                 {isoDay(note.date)}
               </time>
@@ -105,7 +157,8 @@ const rows = months.map((month) => {
               />
             </div>
             <p class="notes-count" aria-live="polite">
-              <span data-shown>{firstShown}</span> of {total} notes
+              <span data-shown>{firstShown}</span> of{" "}
+              <span data-total>{total}</span> notes
             </p>
           </div>
         </div>
@@ -122,6 +175,7 @@ const rows = months.map((month) => {
     .notes-month[data-later] {
       display: grid !important;
     }
+    [data-notes-filters],
     [data-notes-footer] {
       display: none !important;
     }
@@ -167,7 +221,7 @@ const rows = months.map((month) => {
   .note {
     position: relative;
     padding: 0 0 32px 36px;
-    border-left: 2px solid var(--palette-trace-mid);
+    border-left: 2px solid transparent;
     scroll-margin-top: 7rem;
   }
   .note-dot {
@@ -269,18 +323,22 @@ const rows = months.map((month) => {
 <script>
   function setupNotes(root: HTMLElement) {
     const size = Number(root.dataset.pageSize);
-    const notes = [...root.querySelectorAll<HTMLElement>("[data-note]")];
+    const allNotes = [...root.querySelectorAll<HTMLElement>("[data-note]")];
+    let notes = allNotes;
     const months = [...root.querySelectorAll<HTMLElement>("[data-month]")];
     const footer = root.querySelector<HTMLElement>("[data-notes-footer]");
     const label = root.querySelector<HTMLElement>("[data-more-label]");
     const bar = root.querySelector<HTMLElement>("[data-bar]");
     const count = root.querySelector<HTMLElement>("[data-shown]");
 
+    const total = root.querySelector<HTMLElement>("[data-total]");
+    const filters = root.querySelectorAll<HTMLButtonElement>("[data-filter]");
     let shown = notes.filter((note) => !note.hasAttribute("data-later")).length;
 
     const render = () => {
-      notes.forEach((note, i) =>
-        note.toggleAttribute("data-later", i >= shown),
+      const visible = new Set(notes.slice(0, shown));
+      allNotes.forEach((note) =>
+        note.toggleAttribute("data-later", !visible.has(note)),
       );
       months.forEach((month) =>
         month.toggleAttribute(
@@ -294,7 +352,33 @@ const rows = months.map((month) => {
         label.textContent = String(Math.min(size, notes.length - shown));
       if (bar) bar.style.width = `${(shown / notes.length) * 100}%`;
       if (count) count.textContent = String(shown);
+      if (total) total.textContent = String(notes.length);
     };
+
+    const filterNotes = (filter: string) => {
+      notes = allNotes.filter(
+        (note) =>
+          filter !== "book-review" || note.hasAttribute("data-book-review"),
+      );
+      shown = Math.min(size, notes.length);
+      filters.forEach((button) =>
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.filter === filter),
+        ),
+      );
+      render();
+    };
+    filters.forEach((button) =>
+      button.addEventListener("click", () =>
+        filterNotes(button.dataset.filter!),
+      ),
+    );
+    if (
+      filters.length &&
+      new URLSearchParams(location.search).get("filter") === "book-review"
+    )
+      filterNotes("book-review");
 
     const revealTo = (target: number) => {
       shown = Math.min(notes.length, Math.max(shown, target));

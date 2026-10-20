@@ -1,4 +1,5 @@
 ---
+import { Bookmark, BookOpen } from "@lucide/astro";
 import RailDots from "@/components/ui/RailDots/RailDots.astro";
 import { isoDay } from "@/helpers/notes";
 
@@ -8,6 +9,7 @@ export interface WidgetNote {
   date: Date;
   /** The note as plain text, shown in place of the title on hover */
   text: string;
+  bookReview?: boolean;
 }
 
 interface Props {
@@ -47,8 +49,20 @@ const shortDate = (date: Date) =>
       <ul class="note-cards" data-rail-track>
         {notes.map((note) => (
           <li data-rail-card>
-            <a href={`/notes/#${note.id}`} class="note-card">
-              <span class="note-stack">
+            <a
+              href={`/notes/#${note.id}`}
+              class:list={["note-card", { "is-book-review": note.bookReview }]}
+              aria-label={
+                note.bookReview ? `${note.title} (book review)` : undefined
+              }
+            >
+              {note.bookReview && (
+                <BookOpen
+                  size={20}
+                  class="absolute top-6 right-6 text-button"
+                />
+              )}
+              <span class:list={["note-stack", { "pr-9": note.bookReview }]}>
                 <span class="note-title">{note.title}</span>
                 <span class="note-text">{note.text}</span>
               </span>
@@ -141,7 +155,6 @@ const shortDate = (date: Date) =>
     outline: 2px solid var(--palette-accent);
     outline-offset: 2px;
   }
-
   .note-card::before {
     content: "";
     position: absolute;

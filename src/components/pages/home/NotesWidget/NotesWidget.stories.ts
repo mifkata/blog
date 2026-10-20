@@ -45,6 +45,29 @@ export const TwoNotes: Story = {
   args: { notes: NOTES.slice(0, 2) },
 };
 
+export const BookReviews: Story = {
+  args: {
+    notes: [
+      NOTES[0],
+      {
+        id: "2026-10-07-four-thousand-weeks",
+        title: "Four Thousand Weeks",
+        date: new Date("2026-10-07"),
+        text: "A time-management book about accepting that you cannot fit everything into a Tuesday.",
+        bookReview: true,
+      },
+      NOTES[2],
+      {
+        id: "2026-10-06-software-design",
+        title: "A Philosophy of Software Design",
+        date: new Date("2026-10-06"),
+        text: "The chapter on deep modules made me reconsider several of my abstractions.",
+        bookReview: true,
+      },
+    ],
+  },
+};
+
 export const Empty: Story = {
   args: { notes: [] },
 };

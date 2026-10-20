@@ -59,6 +59,38 @@ export const SinglePage: Story = {
   args: { months: groupByMonth(NOTES), pageSize: 20 },
 };
 
+export const BookReviews: Story = {
+  args: {
+    months: groupByMonth([
+      {
+        ...note(
+          "2026-10-13-four-thousand-weeks",
+          "Four Thousand Weeks",
+          "2026-10-13",
+          "A time-management book about accepting that you cannot fit everything into a Tuesday.",
+        ),
+        bookReview: true,
+      },
+      ...NOTES.slice(0, 2),
+      {
+        ...note(
+          "2026-10-07-software-design",
+          "A Philosophy of Software Design",
+          "2026-10-07",
+          "The chapter on deep modules made me reconsider several of my abstractions.",
+        ),
+        bookReview: true,
+      },
+      ...NOTES.slice(2),
+    ]),
+    pageSize: 3,
+  },
+};
+
+export const Empty: Story = {
+  args: { months: [] },
+};
+
 export const AcrossYears: Story = {
   args: {
     months: groupByMonth([
