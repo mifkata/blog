@@ -3,6 +3,7 @@ import { Picture } from "astro:assets";
 import { PICTURE_FORMATS } from "@/consts";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
 import type { RelatedItem } from "@/helpers/related";
+import { LEAD_SIZES, RELATED_WIDTHS, ROW_SIZES } from "./readNext";
 
 interface Props {
   items: RelatedItem[];
@@ -33,8 +34,8 @@ const { items, current } = Astro.props;
                     {...PICTURE_FORMATS}
                     src={item.heroImage}
                     alt=""
-                    widths={[144, 480, 960]}
-                    sizes={i === 0 ? "(min-width: 768px) 460px, 100vw" : "72px"}
+                    widths={RELATED_WIDTHS}
+                    sizes={i === 0 ? LEAD_SIZES : ROW_SIZES}
                   />
                 )}
               </div>
