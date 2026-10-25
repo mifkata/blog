@@ -46,3 +46,9 @@ Beads runs embedded Dolt (`.beads/embeddeddolt/`, no server). Issues sync via `r
 - Use `bd remember "..."` for project knowledge that isn't tied to one task.
 
 Sanity: say "AGENTS.md LOADED"
+
+<!-- beads:skill -->
+## Task tracking (Beads)
+
+Work is tracked with Beads (`bd`). Load the `beads` skill before any `bd` command or task-tracking step and follow it; it holds the whole workflow. No markdown TODO lists; agent-local task tools only for the current turn.
+<!-- /beads:skill -->
