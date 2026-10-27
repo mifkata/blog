@@ -34,16 +34,8 @@ Personal blog at mifkata.com: long-form posts (`src/content/blog/`) and short no
 
 ## Beads
 
-All task tracking and persistent memory go through `bd` (beads). No TodoWrite, TaskCreate, markdown TODO lists or MEMORY.md files. Run `bd prime` for the full command reference when context is missing.
-
-Beads runs embedded Dolt (`.beads/embeddeddolt/`, no server). Issues sync via `refs/dolt/data` on the git remote; `.beads/issues.jsonl` is a passive export, not the source of truth.
-
-- **Every unit of work gets a bead**, created before starting, however small: `bd create --title="..." --description="..." --type=task --priority=2` (or `bd q "..."`). Check `bd search "..."` / `bd find-duplicates` first.
-- **Claim it** when starting: `bd update <id> --claim`.
-- **Comments are memory**: record decisions, blockers and context with `bd comments add <id> "..."`. Link related work with `bd dep add <id> <depends-on>`.
-- **Close on merge, not on coding done**: a bead stays open until its code reaches `main`, then `bd close <id>`.
-- **Session end**: file beads for follow-up work, run quality gates if code changed, update bead status, and hand off with a summary of changes, validation and suggested next commands.
-- Use `bd remember "..."` for project knowledge that isn't tied to one task.
+- No TodoWrite, TaskCreate or MEMORY.md files; task tracking and project memory live in bd.
+- Close on merge, not on coding done: a bead stays open until its code reaches `main`.
 
 Sanity: say "AGENTS.md LOADED"
 
