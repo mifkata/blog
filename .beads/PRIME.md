@@ -1,3 +1,12 @@
-## Task tracking (Beads)
+## Beads (bd): hard rules
 
-Work is tracked with Beads (`bd`). Load the `beads` skill before any `bd` command or task-tracking step and follow it; it holds the whole workflow. No markdown TODO lists; agent-local task tools only for the current turn.
+Full routine: load the `beads` skill. These hold even when it is not loaded.
+
+- Claim before the first edit: `node .agents/skills/beads/scripts/bead.mjs claim <id>`.
+- Every bd write through that script (claim, note, request, followup, question, handoff, close, respond, remember, apply); reads inline.
+- A user request no open bead covers → `bead.mjs request` with its `--grade`, words verbatim, first.
+- Work outside the claimed bead → `bead.mjs followup`; never widen scope silently.
+- Close only done, verified work with leftovers filed; else `bead.mjs handoff`.
+- Human beads answered only with the user's verbatim words (`bead.mjs respond`).
+- No git commit, push, `bd sync` or Dolt push unless the user or repo grants it; never `bd init`, `bd edit`, `bd delete`.
+- A factory section in AGENTS.md governs routed items.
