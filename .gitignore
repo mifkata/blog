@@ -69,3 +69,6 @@ dolt-config.log
 .agents/skills/*
 !.agents/skills/blog-post-new/
 !.agents/skills/blog-note-new/
+
+# Agent records (audits, skill handoffs) stay local
+docs/
