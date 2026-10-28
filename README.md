@@ -21,7 +21,7 @@ pnpm install
 pnpm dev
 ```
 
-This starts both Astro (`localhost:4321`) and Storybook (`localhost:6006`) in parallel via nx.
+This starts Astro at `localhost:4321`. Run `pnpm storybook` alongside it for Storybook.
 
 ## 🧞 Commands
 
@@ -30,8 +30,7 @@ All commands are run from the root of the project, from a terminal:
 | Command                | Action                                           |
 | :--------------------- | :----------------------------------------------- |
 | `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts Astro + Storybook in parallel (nx)        |
-| `pnpm dev:astro`       | Starts Astro only at `localhost:4321`            |
+| `pnpm dev`             | Starts Astro at `localhost:4321`                 |
 | `pnpm storybook`       | Starts Storybook only at `localhost:6006`        |
 | `pnpm storybook:build` | Build Storybook static site                      |
 | `pnpm build`           | Build production site to `./dist/`               |

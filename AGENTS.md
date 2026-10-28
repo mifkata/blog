@@ -8,7 +8,7 @@ Maintained with the `agentsmd-writer` skill and audited by `agentsmd-auditor`: c
 
 - Astro with MDX, React islands and Tailwind CSS
 - Storybook for components, Vitest for tests, ESLint and Prettier for linting
-- pnpm, with nx running Astro and Storybook together in dev
+- pnpm
 - Cloudflare Pages hosting, provisioned with Terraform (`terraform/`)
 
 ## Skills
