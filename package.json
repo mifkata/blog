@@ -64,7 +64,6 @@
     "eslint-plugin-mdx": "^3.6.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "nx": "^22.3.3",
     "prettier": "^3.7.3",
     "prettier-plugin-astro": "^0.14.1",
     "storybook": "^10.5.0",
