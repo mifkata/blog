@@ -12,6 +12,7 @@ const config: StorybookConfig = {
     name: "@storybook-astro/framework",
     options: {
       integrations: [react()],
+      storyRules: "./.storybook/story-rules.ts",
     },
   },
   core: {
