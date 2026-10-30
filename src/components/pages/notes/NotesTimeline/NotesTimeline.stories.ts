@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook-astro/framework";
+import type { Meta, StoryObj } from "@/helpers/storybook";
 import { groupByMonth } from "@/helpers/notes";
 import NotesTimeline from "./NotesTimeline.astro";
 

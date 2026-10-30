@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "typecheck": "astro check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --check .",
@@ -47,6 +48,7 @@
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.12",
     "@storybook-astro/framework": "^1.8.0",
     "@storybook/addon-a11y": "^10.5.0",
     "@storybook/addon-docs": "^10.5.0",
@@ -67,6 +69,7 @@
     "prettier": "^3.7.3",
     "prettier-plugin-astro": "^0.14.1",
     "storybook": "^10.5.0",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.16"
   },
   "lint-staged": {

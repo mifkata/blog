@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook-astro/framework";
+import type { Meta, StoryObj } from "@/helpers/storybook";
 import RedditEmbed from "./RedditEmbed.astro";
 import { initRedditEmbeds } from "./redditEmbed";
 
