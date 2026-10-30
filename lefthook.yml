@@ -1,0 +1,25 @@
+# rendered by repo-manager
+no_auto_install: true
+pre-commit:
+  jobs:
+    - name: root
+      run: mise run fix {staged_files}
+      stage_fixed: true
+      exclude:
+        - ".agents/**"
+        - ".claude/**"
+        - ".cursor/**"
+        - ".codex/**"
+        - ".gemini/**"
+        - ".windsurf/**"
+pre-push:
+  jobs:
+    - name: check
+      run: mise run check
+    - name: toolchain
+      run: mise x -- tools/repo/toolchain.sh
+commit-msg:
+  jobs:
+    - name: kept-commit-msg
+      run: sh tools/hooks/commit-msg {0}
+      use_stdin: true

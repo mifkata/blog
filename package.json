@@ -19,7 +19,6 @@
     "test:run": "vitest run",
     "storybook": "storybook dev -p 9009 --no-open",
     "storybook:build": "storybook build -o dist/storybook",
-    "prepare": "husky",
     "dc:compose": "docker compose -f .devcontainer/docker-compose.yml",
     "dc:notify": "pgrep -f 'socat TCP-LISTEN:4545' >/dev/null || (nohup socat TCP-LISTEN:4545,reuseaddr,fork EXEC:.devcontainer/notifier.sh >/tmp/hostcmd.log 2>&1 & echo '🔔 Notifier started.')",
     "devcontainer": "pnpm dc:compose exec -e ITERM_SESSION_ID=$ITERM_SESSION_ID dc_blog zsh",
@@ -64,16 +63,10 @@
     "eslint-mdx": "^3.6.2",
     "eslint-plugin-astro": "^1.5.0",
     "eslint-plugin-mdx": "^3.6.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
     "prettier": "^3.7.3",
     "prettier-plugin-astro": "^0.14.1",
     "storybook": "^10.5.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16"
-  },
-  "lint-staged": {
-    "*.{js,ts,astro}": "eslint --fix",
-    "*.{js,ts,astro,css,md,mdx,json}": "prettier --write"
   }
 }

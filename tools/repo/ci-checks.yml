@@ -1,0 +1,8 @@
+version: 1
+deployable: repo
+runner: linux
+paths: [mise.toml, "Dockerfile*"]
+env:
+  MISE_ENABLE_TOOLS: yq
+checks:
+  - { name: toolchain, run: ./toolchain.sh }
