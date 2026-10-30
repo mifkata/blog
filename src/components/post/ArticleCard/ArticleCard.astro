@@ -22,68 +22,73 @@ const {
 } = Astro.props;
 ---
 
-<article class:list={["group grid md:grid-cols-[200px_1fr] gap-6", className]}>
-  {
-    post.data.heroImage && (
-      <>
-        <a
-          href={`/blog/${post.id}/`}
-          class="md:hidden"
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          <Picture
-            {...PICTURE_FORMATS}
-            loading="lazy"
-            width={640}
-            height={384}
-            src={post.data.heroImage}
-            alt=""
-            class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
-          />
-        </a>
-        <a
-          href={`/blog/${post.id}/`}
-          class="md:block hidden"
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          <Picture
-            {...PICTURE_FORMATS}
-            loading="lazy"
-            width={200}
-            height={120}
-            src={post.data.heroImage}
-            alt=""
-            class="rounded-lg w-full md:w-[200px] h-auto object-cover group-hover:shadow-lg transition-shadow"
-          />
-        </a>
-      </>
-    )
-  }
-  <div class="flex flex-col justify-center">
+<article class:list={["group", className]}>
+  <div
+    class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-4"
+  >
     <a href={`/blog/${post.id}/`} class="no-underline">
       <Heading
-        class="card-title m-0 mb-2 text-black group-hover:text-accent transition-colors"
+        class="card-title m-0 text-black group-hover:text-accent transition-colors"
       >
         {post.data.title}
       </Heading>
     </a>
-    <div class="card-text text-gray m-0 mb-2 line-clamp-2">
-      <Markdown text={post.data.synopsis || post.data.description} />
-    </div>
-    <div class="flex items-center gap-4 text-sm text-gray">
+    <span class="text-sm text-gray">
       <FormattedDate date={post.data.pubDate} />
+    </span>
+  </div>
+  <div
+    class:list={[
+      "grid gap-x-6 gap-y-3",
       {
-        showTags && post.data.tags && (
-          <div class="hidden md:flex gap-2">
-            {post.data.tags.map((tag) => (
-              <Tag tag={tag} class="text-xs" />
-            ))}
-          </div>
-        )
-      }
+        "md:grid-cols-[280px_1fr] md:grid-rows-[auto_1fr]": post.data.heroImage,
+      },
+    ]}
+  >
+    {
+      post.data.heroImage && (
+        <a
+          href={`/blog/${post.id}/`}
+          class="block md:col-start-1 md:row-start-1"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <Picture
+            {...PICTURE_FORMATS}
+            loading="lazy"
+            src={post.data.heroImage}
+            alt=""
+            widths={[280, 400, 560, 640, 840]}
+            sizes="(min-width: 768px) 280px, calc(100vw - 48px)"
+            class="rounded-lg w-full h-auto object-cover"
+          />
+        </a>
+      )
+    }
+    <div
+      class:list={[
+        "card-abstract relative border-t border-gray-light pt-10",
+        {
+          "has-media md:border-t-0 md:border-l md:py-1 md:pl-15 md:col-start-2 md:row-start-1 md:row-span-2":
+            post.data.heroImage,
+        },
+      ]}
+    >
+      <div
+        class="card-text relative text-gray-dark [&_p]:m-0 [&_p+p]:mt-3 [&_strong]:text-gray-dark"
+      >
+        <Markdown text={post.data.synopsis || post.data.description} />
+      </div>
     </div>
+    {
+      showTags && post.data.tags.length > 0 && (
+        <div class="flex flex-wrap content-start gap-1.5 md:col-start-1 md:row-start-2">
+          {post.data.tags.map((tag) => (
+            <Tag tag={tag} class="text-xs" />
+          ))}
+        </div>
+      )
+    }
   </div>
 </article>
 
@@ -96,5 +101,38 @@ const {
   .card-text :global(a) {
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+  /* The shade falls away from the rule and ends before the text starts */
+  .card-abstract {
+    --card-shade: rgb(0 0 0 / 0.09);
+  }
+  @media (prefers-color-scheme: dark) {
+    .card-abstract {
+      --card-shade: rgb(0 0 0 / 0.34);
+    }
+  }
+  .card-abstract::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 32px;
+    background: linear-gradient(to bottom, var(--card-shade), transparent);
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+    pointer-events: none;
+  }
+  @media (min-width: 768px) {
+    .card-abstract.has-media::before {
+      inset: 0 auto 0 0;
+      width: 32px;
+      height: auto;
+      background: linear-gradient(to right, var(--card-shade), transparent);
+      mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+    }
   }
 </style>

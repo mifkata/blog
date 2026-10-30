@@ -20,7 +20,7 @@ const { posts, title = "All Posts", showHeader = true } = Astro.props;
       </div>
     )
   }
-  <div class="space-y-8">
+  <div class="space-y-12">
     {posts.map((post) => <ArticleCard post={post} />)}
   </div>
 </section>

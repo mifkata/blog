@@ -1,0 +1,101 @@
+---
+import { Image } from "astro:assets";
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import { Markdown } from "@/components/post/Markdown/Markdown";
+import Tag from "@/components/ui/Tag/Tag.astro";
+import type { LabPost } from "./fixtures";
+
+interface Props {
+  posts: LabPost[];
+  title?: string;
+}
+
+const { posts, title = "All Posts" } = Astro.props;
+---
+
+<section>
+  <div class="flex items-center gap-3 mb-8">
+    <h3 class="text-lg m-0 text-gray uppercase tracking-wider">{title}</h3>
+    <div class="flex-1 h-px bg-gray-light"></div>
+  </div>
+  <div class="space-y-12">
+    {
+      posts.map((post) => (
+        <article class="group">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-4">
+            <a href={`/blog/${post.id}/`} class="no-underline">
+              <h4 class="text-2xl m-0 text-black group-hover:text-accent transition-colors">
+                {post.data.title}
+              </h4>
+            </a>
+            <span class="text-sm text-gray">
+              <FormattedDate date={post.data.pubDate} />
+            </span>
+          </div>
+          <div class="grid md:grid-cols-[280px_1fr] md:grid-rows-[auto_1fr] gap-x-6 gap-y-3">
+            <a
+              href={`/blog/${post.id}/`}
+              tabindex="-1"
+              aria-hidden="true"
+              class="block md:col-start-1 md:row-start-1"
+            >
+              <Image
+                src={post.data.heroImage}
+                alt=""
+                width={840}
+                height={504}
+                class="rounded-lg w-full h-auto object-cover"
+              />
+            </a>
+            <div class="abstract relative border-t md:border-t-0 md:border-l border-gray-light pt-10 md:py-1 md:pl-15 md:col-start-2 md:row-start-1 md:row-span-2">
+              <Markdown
+                text={post.data.synopsis || post.data.description}
+                className="relative text-gray-dark [&_p]:m-0 [&_p+p]:mt-3 [&_a]:underline"
+              />
+            </div>
+            <div class="flex flex-wrap content-start gap-1.5 md:col-start-1 md:row-start-2">
+              {post.data.tags.map((tag) => (
+                <Tag tag={tag} class="text-xs" />
+              ))}
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .abstract {
+    --abstract-shade: rgb(0 0 0 / 0.09);
+  }
+  @media (prefers-color-scheme: dark) {
+    .abstract {
+      --abstract-shade: rgb(0 0 0 / 0.34);
+    }
+  }
+  .abstract::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 32px;
+    background: linear-gradient(to bottom, var(--abstract-shade), transparent);
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 12%,
+      #000 88%,
+      transparent
+    );
+    pointer-events: none;
+  }
+  @media (min-width: 768px) {
+    .abstract::before {
+      inset: 0 auto 0 0;
+      width: 32px;
+      height: auto;
+      background: linear-gradient(to right, var(--abstract-shade), transparent);
+      mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+    }
+  }
+</style>

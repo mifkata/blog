@@ -1,0 +1,60 @@
+---
+import { Image } from "astro:assets";
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import { Markdown } from "@/components/post/Markdown/Markdown";
+import Tag from "@/components/ui/Tag/Tag.astro";
+import type { LabPost } from "./fixtures";
+
+interface Props {
+  posts: LabPost[];
+  title?: string;
+}
+
+const { posts, title = "All Posts" } = Astro.props;
+---
+
+<section>
+  <div class="flex items-center gap-3 mb-8">
+    <h3 class="text-lg m-0 text-gray uppercase tracking-wider">{title}</h3>
+    <div class="flex-1 h-px bg-gray-light"></div>
+  </div>
+  <div class="grid md:grid-cols-2 gap-6">
+    {
+      posts.map((post) => (
+        <article class="group flex flex-col overflow-hidden rounded-xl border border-gray-light bg-surface">
+          <a
+            href={`/blog/${post.id}/`}
+            tabindex="-1"
+            aria-hidden="true"
+            class="block aspect-video overflow-hidden bg-hero"
+          >
+            <Image
+              src={post.data.heroImage}
+              alt=""
+              width={640}
+              height={360}
+              class="block w-full h-full object-cover"
+            />
+          </a>
+          <div class="flex flex-1 flex-col p-5">
+            <a href={`/blog/${post.id}/`} class="no-underline">
+              <h4 class="text-2xl m-0 mb-3 text-black group-hover:text-accent transition-colors">
+                {post.data.title}
+              </h4>
+            </a>
+            <Markdown
+              text={post.data.synopsis || post.data.description}
+              className="flex-1 text-gray mb-4 [&_p]:m-0 [&_p+p]:mt-3 [&_strong]:text-gray-dark [&_a]:underline"
+            />
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 pt-3 border-t border-gray-light text-sm text-gray">
+              <FormattedDate date={post.data.pubDate} />
+              {post.data.tags.map((tag) => (
+                <Tag tag={tag} class="text-xs" />
+              ))}
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
