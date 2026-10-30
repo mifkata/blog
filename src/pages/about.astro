@@ -11,21 +11,21 @@ import { SITE_TITLE } from "@/consts";
 const quirks = [
   "I read multiple books at the same time and finish them unpredictably.",
   "I talk to my dog as if he's a rational adult, because he basically is.",
-  "I hate small talk but can talk for hours about motorcycles, psychology, or why a line of code is ugly.",
-  "I don't watch much new media; I rewatch the same favourite shows like comfort rituals.",
-  "When I travel, I plan only one day ahead and leave the rest open to discovery.",
-  "One person can be brilliant. A crowd mostly makes sure nobody stands out.",
-  "I read the documentation. All of it. Sometimes twice. Thank the universe for AI summaries.",
-  "I give honest feedback, but only when asked. Unsolicited advice is rude.",
-  "I cook with love and twist every recipe until it's mine. Like chasing a good idea, getting a dish right is mostly about timing.",
-  "I count the number 19 with my fingers constantly, for no good reason.",
+  "I hate small talk but can talk for hours about motorcycles, psychology, or why a line of code is ugly (and why the agent failed to make it pretty).",
+  "I don't watch many new movies and TV shows, but I religiously rewatch old ones. I have watched TBBT at least 10 times.",
+  "When I travel, I book at most 3 days ahead and I read about the places I visit after I have visited them.",
+  "I feel that crowds make people dumber rather than smarter. The smartest person in the room always applies.",
+  "I devour documentation like Cookie Monster devours cookies. Now with the help of AI summarisation, I get to devour even more.",
+  "I avoid giving my opinion without being asked, unless I'm rudely provoked - normal human stuff.",
+  "Since I learned how to cook, I only browse cooking recipes as a reference, at most to make sure I'm not missing a key ingredient. Nothing beats cooking with your heart!",
+  "Since I was a little kid, if I'm not on the keyboard, I keep counting the number 19 with the tips of my fingers or with my toes. I always thought 19 is an important number in my life. I'm yet to find out why.",
 ];
 ---
 
 <PageLayout
   title={`About | ${SITE_TITLE}`}
   card="about"
-  description="Born in Varna, Bulgaria. Started working at 17. Holistic Product Generalist with 25+ years of building products, focused on AI adoption and engineering."
+  description="Bulgarian-born hardcore software engineer with a passion for product excellence and state-of-the-art software architecture design."
 >
   <AboutHero />
 
@@ -38,10 +38,10 @@ const quirks = [
       and my dog. The last two I'd gladly die for.
     </p>
     <p class="text-gray-dark">
-      I get obsessive about learning; even after 25+ years in the industry, I
-      still compare myself to the best in the field and feel like I'm far
-      behind. Coffee in the morning is non-negotiable. Everything else can fall
-      apart.
+      I'm obsessed with learning and adopting new skills in any area of life.
+      One of my philosophies is "the more you learn, the less you know". My
+      favourite drinks are coffee and beer and I do my best to never mix them
+      together.
     </p>
   </AboutSection>
 
@@ -50,11 +50,12 @@ const quirks = [
       ><LucideIcon icon="heart" size={22} /></span
     >
     <p class="text-gray-dark">
-      I value intelligence and kindness, and I try to bring both to the people I
-      work with. I believe in freedom: to try new ideas, to question old ones,
-      and to change my mind when the facts change. I lead with creativity,
-      looking for the unexpected solution and refining it until it looks
-      obvious.
+      I value intelligence and kindness, one or the other. When people are kind,
+      they make me want to be kind as well. When they're cruel, I (used to) feel
+      obliged to return the favour. I'm passionate about personal freedoms,
+      trying new things, enhancing creativity and productivity, and I feel that
+      letting yourself get out of your comfort zone is the most valuable skill
+      you can obtain.
     </p>
   </AboutSection>
 
@@ -63,10 +64,11 @@ const quirks = [
       ><LucideIcon icon="users" size={22} /></span
     >
     <p class="text-gray-dark">
-      One face, no hidden settings, and no second opinion for when you leave the
-      room. I try to be as clear as possible. Curious people love that; people
-      who enjoy office politics find it a bit inconvenient. I can live with
-      that.
+      I try to not be rude, but I'm dead honest and the truth can be hurtful.
+      Sometimes being that honest is bad, but most of the time it's great.
+      Still, I don't like hurting people, so I have no problem being apologetic
+      when I see that I hurt somebody's feelings. It's not a sign of weakness,
+      even though in certain cultures it's seen as one.
     </p>
   </AboutSection>
 
@@ -75,15 +77,15 @@ const quirks = [
       ><LucideIcon icon="info" size={22} /></span
     >
     <p class="text-gray-dark">
-      I'm learning languages, going to the gym, and pushing myself through
-      university because I want to teach someday. Maybe that's my way of giving
-      back, or maybe I just like making things harder than they need to be.
+      I'm extremely focused on learning and enhancing my skills. The future is
+      bleak and fast-paced. I try to stay on top of the tech game and absorb as
+      much information as possible.
     </p>
   </AboutSection>
 
   <AboutSection
     title="Quirks"
-    note="Because everyone has them, mine are just louder"
+    note="Being weird and loving oneself is a key to a happy life, no?"
   >
     <span slot="icon" class="inline-flex text-accent"
       ><LucideIcon icon="star" size={22} /></span
@@ -91,7 +93,7 @@ const quirks = [
     <QuirksList quirks={quirks} />
   </AboutSection>
 
-  <AboutSection title="Let's talk" class="mb-12">
+  <AboutSection title="Get in touch" class="mb-12">
     <span slot="icon" class="inline-flex text-accent"
       ><LucideIcon icon="message-square" size={22} /></span
     >
