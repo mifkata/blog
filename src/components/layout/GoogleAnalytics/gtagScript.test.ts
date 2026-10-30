@@ -1,4 +1,5 @@
 import { afterEach, describe, it, expect, vi } from "vitest";
+import "@/components/layout/CookieBanner/consent";
 import { gtagScript } from "./gtagScript";
 
 const GA_ID = "G-TEST";
@@ -6,15 +7,15 @@ const KEY = "consent";
 
 function runScript(stored: string | null | Error) {
   const appended: { src: string }[] = [];
-  const page = globalThis as unknown as Record<string, unknown>;
-  vi.stubGlobal("window", globalThis);
-  vi.stubGlobal("dataLayer", undefined);
-  vi.stubGlobal("requestIdleCallback", (load: () => void) => load());
-  vi.stubGlobal("document", {
+  const page = {
     readyState: "complete",
     createElement: () => ({ src: "" }),
     head: { append: (script: { src: string }) => appended.push(script) },
-  });
+  };
+  vi.stubGlobal("window", globalThis);
+  vi.stubGlobal("dataLayer", undefined);
+  vi.stubGlobal("requestIdleCallback", (load: () => void) => load());
+  vi.stubGlobal("document", page);
   vi.stubGlobal("localStorage", {
     getItem: () => {
       if (stored instanceof Error) throw stored;
@@ -24,18 +25,22 @@ function runScript(stored: string | null | Error) {
   new Function(gtagScript(GA_ID, KEY))();
   return {
     appended,
-    enable: page.enableAnalytics as () => void,
-    disable: page.disableAnalytics as () => void,
-    disabled: () => page[`ga-disable-${GA_ID}`],
+    page,
+    enable: () => window.enableAnalytics?.(),
+    disable: () => window.disableAnalytics?.(),
+    disabled: () => Reflect.get(globalThis, `ga-disable-${GA_ID}`),
   };
 }
 
 afterEach(() => {
   vi.unstubAllGlobals();
-  const page = globalThis as unknown as Record<string, unknown>;
-  delete page.enableAnalytics;
-  delete page.disableAnalytics;
-  delete page[`ga-disable-${GA_ID}`];
+  for (const name of [
+    "enableAnalytics",
+    "disableAnalytics",
+    `ga-disable-${GA_ID}`,
+  ]) {
+    Reflect.deleteProperty(globalThis, name);
+  }
 });
 
 describe("gtagScript", () => {
@@ -75,8 +80,8 @@ describe("gtagScript", () => {
     vi.stubGlobal("addEventListener", (_: string, on: () => void) =>
       listeners.push(on),
     );
-    const { enable, appended } = runScript(null);
-    (document as unknown as { readyState: string }).readyState = "loading";
+    const { appended, enable, page } = runScript(null);
+    page.readyState = "loading";
     enable();
     expect(appended).toEqual([]);
     listeners.forEach((on) => on());

@@ -1,4 +1,3 @@
-/** Inlined into the page head, so it stays plain JavaScript */
 export function gtagScript(gaId: string, consentKey: string): string {
   return `
   window.dataLayer = window.dataLayer || [];
