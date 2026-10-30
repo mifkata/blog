@@ -25,7 +25,7 @@ import {
 
 ## Definition: session context
 
-Starting a new chat session, with any LLM, begins with no previous knowledge of previous conversations and work done so far. As you type the first instruction, `AGENTS.md` (or `CLAUDE.md`) is loaded first. This is known as the **system prompt**. Its purpose is to hold the session instructions which the agent is going (to try) to follow strictly.
+Starting a new chat session, with any LLM, begins with no knowledge of previous conversations and work done so far. As you type the first instruction, `AGENTS.md` (or `CLAUDE.md`) is loaded first. This is known as the **system prompt**. Its purpose is to hold the session instructions which the agent is going (to try) to follow strictly.
 
 The knowledge and decisions made within the current conversation are what we call **session context**. Once the context grows too large (currently around the 200k token mark, <Highlight color="yellow">although many bigger LLMs now support a context window of up to 1M tokens</Highlight>), the agent will force a compaction - it will create a summary of the conversation so far and replace the context with it. When this happens, the **system prompt** is going to be reloaded. This guarantees that a fresh, full-text copy of its instructions exists in the new context.
 
