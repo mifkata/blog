@@ -41,7 +41,7 @@ This article is about the first kind of box: local development with a frontier a
 
 The container keeps the agent away from my machine. Version control can bring back deleted code, and I can live with losing a commit. The rest of my system has no such backup, and outside a container, the agent runs shell commands with my user's privileges. That's not something to merely be careful about: it's an open door for malicious instructions and command injection.
 
-With the box in place, I set up the agent's instructions and slash-commands, which [part 2 of this series](/blog/2026/01/agent-instructions-and-commands/) covers.
+With the box in place, I set up the agent's instructions and slash-commands, which [part 2 of this series](/blog/2026/01/system-prompts-and-skills/) covers.
 
 A swarm needs the second kind: a box per agent. If you self-host agents in an orchestration, one shared dev container is the wrong tool. These open-source projects manage a box per agent, on infrastructure you run:
 

@@ -1,311 +1,193 @@
 ---
-title: "Project Instructions and Reusable Commands"
-description: Best practices for organising project instructions (CLAUDE.md) and reusable commands for AI coding agents
-synopsis:
-  Starting a new codebase with Claude Code or another AI coding agent, requires a lot
-  of fine tuning to make long-term, production ready code development consistent.
+title: System prompts and skills
+description: The basics of having successful AGENTS.md and skills written for successful agentic workflows
+synopsis: >-
+  A deterministic workflow with AI agents is orchestrated by having efficient system prompts and skills to help you combat context rot and agentic drift, and prevent user steering and general frustration.
 
 
-  The main entry points for day-to-day interactions with an agent within a project
-  are `CLAUDE.md` and custom bot commands. In combination with specs, these
-  become the bread and butter of your daily coding activities.
+  The goal of this article is to teach any user (not only developers) how to build those efficiently and to give insights into how to maintain them in the future.
 pubDate: "2026-01-02T17:15:00Z"
-updatedDate: Feb 22 2026 21:30:00 GMT+0000 (UTC)
+updatedDate: "2026-10-30T10:45:00Z"
 heroImage: "@/assets/blog/2026/0101-ai-agent-tooling-101.png"
-tags: ["ai", "coding", "claude", "devex", "howto"]
+tags: ["ai", "agents", "workflow", "llm", "skills", "howto"]
 ---
 
 import {
+  CodeBlock,
   ArticleSeries,
-  ClaudeCommand,
   GithubLink,
   Highlight,
   WrapText,
 } from "@/components/post";
 
-<ArticleSeries
-  slug="agentic-engineering-foundations"
-  current="/blog/2026/01/agent-instructions-and-commands/"
-/>
-
-## Overview
-
-Communicating with **generative AI** goes through prompting. Using it for daily tasks leads to prompt engineering with the goal being "say it best, so that the agent knows exactly what I want".
-
-Day-to-day software development with **AI agents** is very similar: we find ways to organise repetitive instructions, so that we can expect predictable, high-quality results.
-
-This article explores organising a project' **system instructions** and **slash-commands** for improved development experience. The implementation for **Claude Code** is applicable to other agents as well.
-
-## Intro
-
-After setting up your [devcontainer](/blog/2025/sandboxing-ai-agents-with-devcontainers/) the next obvious step is to configure **the reusable prompts** for your steady, production-ready software development cycle using Claude Code. These reusable prompts, are the core of your **Claude toolkit**, so maintain them well:
-
-- **CLAUDE.md** - this is the primary instruction set that a **Claude agent instance** would load when started and after <ClaudeCommand archived name="compact" external /> completes. This is where you want to put as much nifty instructions that the bot works with your codebase. Having it and configured might seriously benefit _**token usage**_ and reduce agent _**planning time**_. Maitaining an efficient `CLUDE.md` can be considered an art form of its own.
-- **Slash-commands** - a collection of reusable prompts that will help you trigger repetitive actions, whilst working on a project. Whilst there's a case to be made about the benefits of global **Claude** commands, we're talking about these that you put in your repository's `.claude/commands` directory.
-
 <Highlight block>
-    > **Plug-ins:** there are many available open-source and as of recently
-    [official Anthropic](https://github.com/anthropics/claude-code/tree/main/plugins)
-    Claude Code marketplace. Ultimately the goal is to achieve the perfect **devex**
-    for you. So feel free to explore. Marketplaces and plugins in **Claude CLI** are managed with
-    the <ClaudeCommand archived name="plugins" external /> command.
+  > **Updated in October 2026:** Rewritten for how system prompts and skills work today. The first version, from January, documented my own command set one file at a time - [more at the end](#how-this-article-changed).
 </Highlight>
 
-In accordance to [Anthropic's official best practices guide](https://www.anthropic.com/engineering/claude-code-best-practices)
-the most common things to put in a `CLAUDE.md` file would include:
+## Definition: session context
 
-- Common bash commands
-- Core files and utility functions
-- Code style guidelines
-- Testing instructions
-- Repository etiquette (e.g., branch naming, merge vs. rebase, etc.)
-- Developer environment setup (e.g., pyenv use, which compilers work)
-- Any unexpected behaviors or warnings particular to the project
-- Other information you want Claude to remember
+Starting a new chat session, with any LLM, begins with no previous knowledge of previous conversations and work done so far. As you type the first instruction, `AGENTS.md` (or `CLAUDE.md`) is loaded first. This is known as the **system prompt**. Its purpose is to hold the session instructions which the agent is going (to try) to follow strictly.
 
-## Configuring CLAUDE.md
+The knowledge and decisions made within the current conversation are what we call **session context**. Once the context grows too large (currently around the 200k token mark, <Highlight color="yellow">although many bigger LLMs now support a context window of up to 1M tokens</Highlight>), the agent will force a compaction - it will create a summary of the conversation so far and replace the context with it. When this happens, the **system prompt** is going to be reloaded. This guarantees that a fresh, full-text copy of its instructions exists in the new context.
 
-Setting up `CLAUDE.md` is almost certainly very project specific, this means,
-unless you're reusing an existing boilerplate, you could in practice reuse
-an existing `CLAUDE.md` that is to your liking (and maybe clean it up a little
-bit to match this particular project with no overhead).
-
-<GithubLink url="https://github.com/mifkata/blog/blob/main/CLAUDE.md">
-  Check out the **mifkata.com**'s `CLAUDE.md` on GitHub
-</GithubLink>
-
-However, when **starting a new Claude Code project** would assume that you
-have to build your codebase first, before you actually specify it.
-
-Optionally, nowadays, a lot of generators that are built around specific frameworks
-would provide an `AGENTS.md` that can be borrowed as a starting point. For example,
-the **Phoenix Elixir framework**'s generator `mix phx.new` provides such a file
-with instructions on coding specific features.
-
-<Highlight block color="green">
-    > Even though it's suggested that `CLAUDE.md` is **human-readable**, ultimately, it's
-    going to be read by the agent, so most of all, it should be **agent-readable**.
-    In practice, asking your agent to compact an AI friendly version of `CLAUDE.md` 
-    with minimal amount of tokens, might produce significantly smaller instruction.
-    In addition, I compact both commands and specs, and in fact anything else which
-    I consider AI agent instructions.
-</Highlight>
-
-## Claude Code slash-commands
-
-<GithubLink url="https://github.com/mifkata/blog/tree/main/public/archive/commands">
-  This blog's **slash-commands**.
-</GithubLink>
-
-### Managing your workflow
-
-The slash-commands are my bread and butter when working with **Claude Code** on a
-daily basis. Even though a lot of the time I work on distrinctful parts of a
-software suite, the things that I do are very repetitive. Here's an example workflow:
-
-1. Create a spec
-2. Implement a spec
-3. Cover spec with tests, stories, etc
-4. (Often) Refactor the codebase to make use of the new spec
-5. Commit changes
-
-As you can see, a lot of my work is related to **specs**, this is because I keep
-the requirements, as specs in the code.
-
-<GithubLink url="https://github.com/mifkata/blog/blob/main/public/archive/specs/components/post/GithubLink.md">
-    Here's an example of a **compact, AI-friendly tech spec** for the `<GithubLink >` component,
-    that it rendering this section 😜 The spec itself is also generated with **Claude**.
-</GithubLink>
-
-### Creating new slash commands
-
-Following the rule of thumb, that **code/prompts designated for agents,
-should be written by agents**. Here's an example conversation with Claude Code
-about creating a new `/commit-message` slash command:
-
+*Add this at the end of `AGENTS.md`, if you want to see when it's loaded:*
 <WrapText>
-  ```sh
-  Create a new command /commit-message that goes and checks all staged diffs and generates a commit message using Conventional Commits. Keep the messages tight, omit references to author/generator, compact the command to be AI-friendly with minimal token usage
-  ```
+    ```md
+    # Sanity check
+    AGENTS.md loaded
+    ```
 </WrapText>
 
-<Highlight block>
-    > **NOTE:** You could have command generation instructions in `CLAUDE.md` or
-    a command called `/command-create` that optimises the instructions when
-    creating new commands. I'm trying to make a note, that explicit requirements,
-    would yield better prompts. Ultimately, that's what a **slash-command is:
-    a chat prompt**.
-
-    > **EDIT:** Since recently, `/commit-message` was renamed to
-    `/commit-staged` with additional to **no-author footer** instruction
-    defined for commit messages in `CLAUDE.md`.
-
+<Highlight block type="note">
+All agents I have tested so far have event hooks that can execute shell commands during `session start` or after `compact`. The text outputted by them is loaded in the context. In addition, many agents now have built-in **memories**, which usually are just a bunch of instructions around the way you work. The agent will inject those too into the context - this is done differently across different platforms and usually can be disabled.
 </Highlight>
 
-The agent would produce some code, I'd review it and modify it and when happy,
-I'd restart my **Claude Code** to load the new <ClaudeCommand archived name="commit-staged" />. Here's the actual
-command from the blog's repository:
+## System prompt priority
 
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/commit-staged.md"
-/>
+**System prompts** are treated differently: they have higher priority than your other text messages, which are known as **user prompts**. Designing them carefully is very important, as your agent will do its very best to follow the instructions in them strictly.
 
-<Highlight block>
-    > **NOTE:** Updating/adding a command requires a restart. Commands
-    like specs and CLAUDE.md are ever evolving.
+Not having an `AGENTS.md` (or `CLAUDE.md`) is going to cause more agentic drift. Because LLM responses to the same prompt are non-deterministic (i.e. the output is different every time for the same question), we use the **system prompts** to constrain that behaviour. This is our "first line of defence" against hallucinations and sporadic behaviour.
+
+<Highlight block type="tip">
+**Claude users**: Write your system prompts to be vendor agnostic and save them in `AGENTS.md`, then put `@AGENTS.md` in your `CLAUDE.md`. Prefixing a filepath with `@` makes **Claude** load that file in full. This is done so you can have **Claude-specific** instructions, if you'd like. This makes system prompts reusable across different platforms such as **Codex**, **Cursor** and **opencode**.
 </Highlight>
 
-## Commands: Specs
+## Typical structure of a system prompt
 
-These are the most important commands for day-to-day development.
-There are various toolits out there for managing specs, I use my
-own commands to stay more flexible, plus in multiple cases, these
-vary slightly from project to project.
+There are numerous things that people put in their **system prompt**. Here I'm going to outline the general sections that apply in principle to most projects:
 
-### /spec-create
+- **Purpose**: this is the top-level description of the project/codebase (e.g. *Project Overview*).
+- **Skills**: a reference to existing skills. The agent might read their descriptions on start, but it might not do it after compaction, so keeping a short index here helps, especially when you have skills that are supposed to be auto-loaded.
+- **Workflow(s)**: explains how work in the repository is done. This might include a series of commands or skill calls. There might be multiple workflows that apply.
+- **Commands/Tools**: if your project has root-level commands (e.g. a `Makefile`) that come in handy, this is a good way to make your agent use them. This will ensure that the agent is executing certain flows consistently.
+- **Authority/Guardrails**: what the agent can do and not do without the user's permission (e.g. "do not commit code without my permission").
+- **Rules**: these might describe ways of working or certain things to avoid while doing repetitive tasks (e.g. "do not reference task IDs in code comments").
+- **Docs/References**: usually during agentic workflows a stack of knowledge is created that goes in a folder like `docs`. This is where you'd like to tell the agent about it and explain the purpose of different sub-sections (e.g. `docs/planning`, `docs/decisions`).
+- **Sub-agents (Advanced)**: when you run a multi-model workflow, specifying what kind of agents should be used can prove very valuable, especially for simpler tasks that can be handled with quicker, cheaper models with disabled reasoning.
 
-I would init new specs with this command.
-
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/spec-create.md"
-/>
-
-### /spec-update
-
-I use this to keep the spec language compact and optimal, but sometimes I'd go
-and update the spec manually, then call <ClaudeCommand archived name="spec-apply" /> or <ClaudeCommand archived name="spec-verify" />.
-
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/spec-update.md"
-/>
-
-### /spec-refine
-
-Not a silver bullet by long shot, but if you keep finding common points of optimisation
-that can apply to any and every spec, you can declare it in here. For example, we could
-suggest looking for ways to improve security, performance, decoupling, modularity, etc.
-
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/spec-refine.md"
-/>
-
-### /spec-apply
-
-I call this after a spec is ready to implement. Sometimes when I have modified both
-**specs** and **code**, I'd run <ClaudeCommand archived name="spec-verify" /> instead.
-
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/spec-apply.md"
-/>
-
-### /spec-verify
-
-This command goes and reads both specs and related code and creates a
-diff table with the option to sync spec to code or code to spec.
-
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/spec-verify.md"
-/>
-
-### /spec-refactor
-
-This command goes and reads a spec and finds places in the code, which
-can be refactored to implement the spec. For example, you just created
-a `<Label />` component, and you want it to be used instead of `<label>`
-to keep the styles in the codebase consistent with a single source of truth.
-
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/spec-refactor.md"
-/>
-
-### /spec-compact
-
-This command is used by others such as <ClaudeCommand archived name="spec-create" />, but also is very nifty,
-when the **agent forgets instructions** in the process of **compacting its context**.
-In many cases I get more expressive specs and these need to be compacted. Not
-just for sake of token compaction, but also template modeling, the bot might generate
-the next one, as explicitly as this one.
-
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/spec-compact.md"
-/>
-
-<Highlight block color="green">
-    > **Not just for specs:** In many cases I would call `/spec-compact [filname]`
-    to compact `CLAUDE.md` or a **slash-command** and even tho the command is scoped
-    to the files in `spec/**/*.md`, **Claude Code** would handle my instruction seamlessly.
+<Highlight block type="note">
+**A system prompt varies** for every person, team and project. Having it efficiently written is a process of experimentation and iteration. Measuring its efficiency is what makes a difference in the long run.
 </Highlight>
 
-## Commands: Testing
+<Highlight block type="note">
+**Sub-agents** spawned within the same project will also load `AGENTS.md`.
+</Highlight>
 
-### /test-create
+<Highlight block type="warning">
+Keeping your `AGENTS.md` minimal is essential. Growing it too big and putting too many rules in there causes context rot and agentic drift (i.e. the agent won't follow your instructions and you will get frustrated).
+</Highlight>
 
-Testing each application is different, so I have an evolving **testing spec** for each different tech stack, being it a **web-based frontend application**, an **Elixir backend**, **a service written in Rust**. We can safely assume that different tech stacks/apps, have different testing instructions, as they would have different implementation specs.
+## Mitigating context rot and agentic drift
 
-In the case of my blog, there's a single application that requires a certain form of code coverage, which is described in `specs/Testing.md`.
+Context rot is the biggest issue when working with agents. Simply put - they forget and get confused. Over the course of multiple compactions, the agent will have little to no knowledge about what you did before that.
 
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/test-create.md"
-/>
+A few techniques to avoid it:
+- Don't stay too long in sessions where context preservation is important. Use additional tools to save the state of work to be referred to or handed off to another session. Start new sessions for your next task.
+- Instructions in the **system prompt** that grow too big can usually be exported as **skills**.
+- Delegate complex tasks to sub-agents which run specific skills. These sub-agents will start with a fresh session and won't suffer confusion from your main one.
 
-> `specs/Testing.md`
+## Advice for writing good system prompts
 
-<GithubLink url="https://github.com/mifkata/blog/blob/main/public/archive/specs/Testing.md" />
+There isn't a definitive framework for how **system prompts** are written, so it makes sense to create your own. You will find yourself repeating instructions across projects to persist the behaviour that you like. Having a way to propagate those without rewriting them manually is essential, so creating a toolkit for managing them can be very helpful.
 
-### /test-[app]
+I personally have a tool to create new repositories with an `AGENTS.md` template that I consistently improve. I also have skills for `AGENTS.md` authoring and verification, in which I add rules (e.g. "agents should never read the contents of `docs` without the call made by a skill").
 
-When your project grows, it helps to create a custom `/test-[app]` command, that works like `/test-create`, but is scoped to tests about a specific application. I find it quite useful to be able to reduce the diff size, when working on a **larger feature spec**, which affects multiple applications (both backend and frontend). In this case, I have coverage implemented on an app basis, so I can keep an eye on what's going on.
+<Highlight block type="tip">
+Three rules that easily apply to every project. Ask the agent to add rules to your `AGENTS.md` to always:
+- explain questions by adding context in the question itself and the description for every option
+- generate a report of the work done, once a job has completed
+- ask what to do next and propose a handoff to be used in a follow-up conversation
+</Highlight>
 
-## Commands: Git
+<Highlight block type="warning">
+Having a toolkit to manage **system prompts** is great, but I advise against starting with it from the beginning. Wait for the need to arise before optimising for it. When it does, ask your agent to scan your existing projects to identify repetitive, viable requirements, and propose a plan for how to reuse them across existing and future projects.
+</Highlight>
 
-### /commit-staged
+## Skills and when to write one
 
-Uses <ClaudeCommand archived name="commit-staged" /> to generate the message, asks for confirmation and commits. Requires
-that `git config --global user.name [name]` and `git config --global user.email [name]` are
-configured in the [devcontainer](/blog/2025/sandboxing-ai-agents-with-devcontainers/).
+A repetitive task in AI slang is also known as an **inner loop**. Identifying such tasks is what creates your **skill toolkit**. For most software engineers this would be things like: bootstrapping a project with a specific framework and creating common boilerplate, writing and auditing code, searching for security issues, etc.
 
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/commit-staged.md"
-/>
+I highly recommend writing **skills** and **system prompts** by hand first, so that you can learn the pitfalls yourself, but using an agent to write them for you becomes invaluable for structure, correctness and completeness. There are various ways to start [writing efficient skills](/blog/2026/10/writing-efficient-skills-for-llm-agents/). I suggest looking first at the [wide variety of open-source examples](https://www.skills.sh/) before starting your own.
 
-## Commands: Generators
+<Highlight block type="warning">
+Never use open-source skills without reading and forking them first. Avoid falling victim to the [prompt injection attack vector](https://en.wikipedia.org/wiki/Prompt_injection).
+</Highlight>
 
-I don't recommend using AI to **scaffold code** for you, from my point of view, that's a waste of tokens and computation time. However, there're cases where you want the agent to generate code for you (and sometimes, we're just being lazy anyway).
+## Anatomy of a skill
 
-### /post-create
+Skills are made of a bunch of files that are either `global` or `project specific`. These are usually placed in `.agents/skills/<skill-name>` inside your project's repository (`.claude/skills/<skill-name>` for **Claude**) with `SKILL.md` as the main (entry) file. For complete and extensive documentation on how agent-agnostic skills are written, refer to the [official agentskills.io specification](https://agentskills.io/specification).
 
-An obvious example of a **super lazy code generator**. I intend to replace this with a proper scaffolding command, but will keep it for historical purposes.
+### The frontmatter
 
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/post-create.md"
-/>
+This is the header part of the `SKILL.md` which describes what the skill does and how it is used. It looks something like this. These are the **required properties** that every skill should have:
 
-### /tags-update
+<WrapText>
+    ```md
+    ---
+    name: readme-writer
+    description: Write, rewrite, or trim README files so a human grasps the project in one pass.
+    ---
+    ```
+</WrapText>
 
-The landing pages for tags, such as the [ai tags page](https://mifkata.com/tags/ai/) have custom title and description and I save them in [src/data/tags.json](https://github.com/mifkata/blog/blob/main/src/data/tags.json) inside my repository. Because I'll add new tags and I'm either too lazy or forget to update the list, I simply run <ClaudeCommand archived name="tags-update" /> and **Claude** does the job for me.
+This would create a skill called `readme-writer`. After creating it, it can be manually invoked. This is done differently across different agents: **Codex** uses `$readme-writer`, **Claude** and **Cursor** use the `/readme-writer` pattern, and other agents like **pi** and **opencode** use `/skill:readme-writer`. Check your agent's documentation for more information.
 
-You can imagine that with hundreds of entries this can be a very slow and token consuming task, so consider this when creating and running pure content generators like this.
+Besides you running the skill manually, the agent might decide to do it based on its description. In this case, if it's editing the README file, it might choose to do so. It's a matter of "does the agent remember it or not?" (context rot might betray you here).
 
-<GithubLink
-  expanded
-  url="https://github.com/mifkata/blog/blob/main/public/archive/commands/tags-update.md"
-/>
+There are additional, **optional**, properties that can go in a skill's frontmatter:
+- **license**: as with any other open-source or proprietary software license, this can be included with a skill
+- **compatibility**: a description, up to 500 chars, of the environment requirements that the skill needs in order to run (grep, node, linux, windows, etc.)
+- **metadata**: additional skill information such as version, author, etc. written as key/value pairs
+- **allowed-tools**: the list of shell commands which the skill can run (e.g. `Bash(git:*) Bash(jq:*) Read`)
+
+<Highlight block type="tip">
+Like with **system prompts**, try to write your skills to be vendor agnostic. However, if you do have strong preferences towards a specific vendor, you should know that both [Anthropic](https://code.claude.com/docs/en/skills) and [OpenAI](https://developers.openai.com/api/docs/guides/tools-skills) have their own specific parameters when executing skills. For example, `disable-model-invocation: true` prevents **Claude** from running a skill and only the user can trigger it manually, and `context: fork` says that a skill can only be executed in a sub-agent.
+</Highlight>
+
+### Skill arguments
+
+Skills can be built to include arguments (parameters). For example, `generate-report period:annual` or `generate-report period:quarterly`. While this approach works well, the agent will still understand how to run the skill when you use natural language such as `/generate-report annual`.
+
+### The SKILL.md body
+
+It's harder to define a reusable structure for skills, as they greatly vary based on their purpose. Here are, however, a few things that apply to most:
+
+- **Procedure**: a step-by-step list of instructions to follow to get the job done. This should also include a verification process that produces a report with *evidence* that the job has completed successfully
+- **Rules**: things to do and things to avoid; keep those separate from the procedure
+- **References**: links to the building blocks of a skill and how to use them
+
+<Highlight block type="note">
+As with **system prompts**, it is essential to have a kit to build skills, but this is slightly harder, as **skills** need to be executed, their performance evaluated, defects fixed, etc. I suggest having a few sets done before working on a framework to optimise them. Since proprietary skills are usually built to work together, debugging them becomes much harder and more complex as they grow.
+</Highlight>
+
+### References, scripts & assets
+
+These are additional components that supplement `SKILL.md` and are explicitly referenced by it. They're never automatically loaded. They follow the [official agent skills specification](https://agentskills.io/specification) and are expected to live in folders called `references`, `scripts` and `assets`, but this is not enforced.
+
+#### References
+
+These are additional `markdown` documents to be conditionally loaded. Imagine you have a skill called `report-generator` that follows the same rules, but there are 3 different domains for which the reports are built - `financial`, `executive` and `marketing`. These might work off the same dataset, but produce completely different output in different formats with different annotations. In this case, you keep the instructions for different kinds of reports in separate documents, loaded by the agent based on the kind of report you're generating now.
+
+#### Scripts
+
+Scripts are the tools that your skill is going to use to "operate heavy machinery".
+
+When a skill runs a more complex operation that requires executing multiple commands in order, it's best to avoid writing it down as a procedure of multiple steps, but to have this as a reusable script. This is not only going to reduce context and token usage, but is also going to guarantee that the sequence of commands is going to be executed exactly the same way every time. For example: download an image from S3, reduce image size, compress, upload back to another S3 bucket. This is best exported in a script, which takes arguments like `--source-file`, `--convert-to`, `--resize-to` and `--target-bucket`, which is called every time correctly.
+
+Scripts are the bread and butter for skills with complex workflows.
+
+#### Assets
+
+These are usually documents that are used verbatim by the skills and usually boil down to template files and boilerplate. This might include configuration files, HTML templates, anything that is copy/pasted as-is or with little to no change.
 
 ## Final thoughts
 
-The more I work with **Claude Code**, the more projects I start. Keeping **chaos to the minimum** is very key in long-term development, as agents are capable of producing ridiculous amounts of code and the same time **technocal debt** and keeping your workflow tidy and in order is the most important part of the job.
+Your **system prompt** and **skills** are virtually the most important parts of your agentic workflow bootstrap. There are many things that professionals use on top of that, but these are the building blocks for a successful CI/CD with agents. The primary risks to consider:
 
-Organise your `CLAUDE.md` and **slash-commands** and improve them as you go. Thus far, I'm yet to see a framework that is an ultimate solution, a silver-bullet for maging your homegrown dev environment.
+- Be diligent about how to organise them and make them vendor agnostic.
+- Create a toolkit for managing them, but not too early. Engineer for improvement, correctness and efficiency.
+- Reference open-source as research, but avoid using out-of-the-box solutions, as these are heavily prone to prompt injections, even from verified sources. Accounts get hacked heavily nowadays.
 
-However, if you do find a replacement toolkit, please let me know in the comments.Happy coding!
+## How this article changed
+
+The January 2026 version of this article documented a manually built set of basic commands and explained how I used them. All of them are gone now and replaced by superior workflows. In the latest update the entire post was rewritten from scratch and focuses better on how **system prompts** and **skills** should be written.

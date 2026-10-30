@@ -19,8 +19,8 @@ const parts = [
     readingMinutes: 8,
   },
   {
-    url: "/blog/2026/01/agent-instructions-and-commands/",
-    title: "Project Instructions and Reusable Commands",
+    url: "/blog/2026/01/system-prompts-and-skills/",
+    title: "System prompts and skills",
     synopsis:
       "The main entry points for working with an agent in a project are `CLAUDE.md` and custom commands.",
     heroImage: createMockImage(2),

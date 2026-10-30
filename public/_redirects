@@ -8,10 +8,16 @@
 # Claude Code Basics became Agentic Engineering Foundations in Oct 2026, and its posts moved to provider-neutral URLs.
 /blog/2025/claude-code-devcontainers  /blog/2025/sandboxing-ai-agents-with-devcontainers/  301
 /blog/2025/claude-code-devcontainers/  /blog/2025/sandboxing-ai-agents-with-devcontainers/  301
-/blog/2026/01/claude-code-system-prompting-and-commands  /blog/2026/01/agent-instructions-and-commands/  301
-/blog/2026/01/claude-code-system-prompting-and-commands/  /blog/2026/01/agent-instructions-and-commands/  301
+/blog/2026/01/claude-code-system-prompting-and-commands  /blog/2026/01/system-prompts-and-skills/  301
+/blog/2026/01/claude-code-system-prompting-and-commands/  /blog/2026/01/system-prompts-and-skills/  301
 /blog/2026/01/claude-code-spec-driven-development  /blog/2026/01/spec-driven-development/  301
 /blog/2026/01/claude-code-spec-driven-development/  /blog/2026/01/spec-driven-development/  301
+
+# Project Instructions and Reusable Commands became System prompts and skills in Oct 2026.
+# Older URLs above point straight at the new one to avoid redirect chains.
+/blog/2026/01/agent-instructions-and-commands  /blog/2026/01/system-prompts-and-skills/  301
+/blog/2026/01/agent-instructions-and-commands/  /blog/2026/01/system-prompts-and-skills/  301
+/og/blog/2026/01/agent-instructions-and-commands.png  /og/blog/2026/01/system-prompts-and-skills.png  301
 
 # Gemini's visible watermark was removed from these images in Oct 2026, which changed their hashed URLs.
 # Shared social cards still point at the old full-size copies.

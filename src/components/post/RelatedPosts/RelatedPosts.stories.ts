@@ -55,7 +55,7 @@ export const FourPosts: Story = {
       {
         id: "post-4",
         url: "/blog/post-4/",
-        title: "Project Instructions and Reusable Commands",
+        title: "System prompts and skills",
         pubDate: new Date("2026-01-02"),
         heroImage: image(4),
         minutes: 7,
