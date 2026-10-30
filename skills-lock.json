@@ -17,7 +17,7 @@
       "source": "mifkata/repo-skills",
       "sourceType": "github",
       "skillPath": "beads/SKILL.md",
-      "computedHash": "4240fece66fa06d6502a81a7ae8630ee04377a0f3bb33eadd57a677b19f6824b"
+      "computedHash": "554526e47b6ef13f6bf99ed3eac82d56c99ba4f780437b5756d263c7a7f3d345"
     },
     "blog-post-editor": {
       "source": "mifkata/blog-skills",
@@ -35,7 +35,7 @@
       "source": "mifkata/blog-skills",
       "sourceType": "github",
       "skillPath": "blog-post-proofreader/SKILL.md",
-      "computedHash": "66b7b19a3b63e46119fd02fac170ba52998019c6540a39870aa1e587067d034b"
+      "computedHash": "b23fe730187719ab0b9845ec82fba96b2e56318f6da45d05651070fbac19c7f1"
     },
     "frontend-astro-bootstrapper": {
       "source": "mifkata/dev-skills",
@@ -65,7 +65,7 @@
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "repo-manager/SKILL.md",
-      "computedHash": "2d81315c2b66563e9379e94bab0b81c124b11896f7374abcd993a24bfd64d72e"
+      "computedHash": "adb5fcd44dc19de82b425e083b17154580f3124f2b7a74ba1bc3ca673dbb5f05"
     },
     "skill-fix-handoff": {
       "source": "mifkata/repo-skills",
