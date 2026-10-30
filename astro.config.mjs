@@ -1,5 +1,6 @@
 // @ts-check
 
+import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
@@ -33,23 +34,25 @@ export default defineConfig({
     // Token colours come from CSS variables, which code blocks set from the
     // season's palette
     shikiConfig: { theme: "css-variables" },
-    rehypePlugins: [
-      rehypeCodeCaptions,
-      [
-        rehypeExternalLinks,
-        {
-          target: "_blank",
-          rel: ["noopener", "noreferrer"],
-          // Absolute links back to this site stay in the same tab
-          test: (/** @type {any} */ node) =>
-            !OWN_HOSTS.has(
-              new URL(String(node.properties.href), "https://x").hostname,
-            ),
-          content: { type: "text", value: "(opens in new tab)" },
-          contentProperties: { className: ["sr-only"] },
-        },
+    processor: unified({
+      rehypePlugins: [
+        rehypeCodeCaptions,
+        [
+          rehypeExternalLinks,
+          {
+            target: "_blank",
+            rel: ["noopener", "noreferrer"],
+            // Absolute links back to this site stay in the same tab
+            test: (/** @type {any} */ node) =>
+              !OWN_HOSTS.has(
+                new URL(String(node.properties.href), "https://x").hostname,
+              ),
+            content: { type: "text", value: "(opens in new tab)" },
+            contentProperties: { className: ["sr-only"] },
+          },
+        ],
       ],
-    ],
+    }),
   },
   server: {
     host: "0.0.0.0",
