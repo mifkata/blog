@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import { isPublished } from "@/helpers/posts";
+import PageLayout from "@/layouts/PageLayout.astro";
+import PageHeader from "@/components/pages/common/PageHeader/PageHeader.astro";
+import Matrix from "@/components/pages/blog/PostsList/PostsList.lab/matrix.astro";
+import type { LabPost } from "@/components/pages/blog/PostsList/PostsList.lab/fixtures";
+
+// No paths in a production build, so labs never ship.
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { lab: "posts-list" } }] : [];
+}
+
+const posts = (await getCollection("blog", isPublished))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(1)
+  .filter((post) => post.data.heroImage) as LabPost[];
+---
+
+<PageLayout title="Lab: All Posts" description="All Posts lab" card="blog">
+  <PageHeader title="Lab: All Posts" subtitle="Candidates O1 to O5." />
+  <Matrix posts={posts} />
+</PageLayout>

@@ -41,7 +41,7 @@ const pageDescription = tagInfo?.description || `Posts tagged with ${tag}`;
         <p class="text-gray text-xl mt-2">{tagInfo.description}</p>
       )
     }
-    <div class="space-y-8 mt-8">
+    <div class="space-y-12 mt-8">
       {posts.map((post) => <ArticleCard post={post} heading="h2" />)}
     </div>
   </section>

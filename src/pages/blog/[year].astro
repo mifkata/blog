@@ -31,7 +31,7 @@ const { posts } = Astro.props;
 >
   <section>
     <h1>Posts from {year}</h1>
-    <div class="space-y-8 mt-8">
+    <div class="space-y-12 mt-8">
       {posts.map((post) => <ArticleCard post={post} heading="h2" />)}
     </div>
   </section>

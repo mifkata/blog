@@ -1,0 +1,67 @@
+---
+import O1FullThumbnail from "./o1-full-thumbnail.astro";
+import O2Ledger from "./o2-ledger.astro";
+import O3CompactFeature from "./o3-compact-feature.astro";
+import O4CardGrid from "./o4-card-grid.astro";
+import O5MarkedAbstract from "./o5-marked-abstract.astro";
+import O6AbstractLargeThumbnail from "./o6-abstract-large-thumbnail.astro";
+import O7AbstractShadedRule from "./o7-abstract-shaded-rule.astro";
+import O8AbstractTagsUnderThumbnail from "./o8-abstract-tags-under-thumbnail.astro";
+import O9AbstractClearShadow from "./o9-abstract-clear-shadow.astro";
+import { posts as fixturePosts, type LabPost } from "./fixtures";
+
+interface Props {
+  posts?: LabPost[];
+}
+
+const { posts = fixturePosts } = Astro.props;
+
+const candidates = [
+  {
+    id: "O1",
+    name: "Full text beside the thumbnail",
+    Component: O1FullThumbnail,
+  },
+  { id: "O2", name: "Ledger with a date rail, no images", Component: O2Ledger },
+  {
+    id: "O3",
+    name: "Compact feature, image on the right",
+    Component: O3CompactFeature,
+  },
+  { id: "O4", name: "Two-column cards", Component: O4CardGrid },
+  { id: "O5", name: "Marked abstract", Component: O5MarkedAbstract },
+  {
+    id: "O6",
+    name: "Marked abstract, larger thumbnail",
+    Component: O6AbstractLargeThumbnail,
+  },
+  {
+    id: "O7",
+    name: "Abstract with a shaded rule",
+    Component: O7AbstractShadedRule,
+  },
+  {
+    id: "O8",
+    name: "Abstract, tags under the thumbnail",
+    Component: O8AbstractTagsUnderThumbnail,
+  },
+  {
+    id: "O9",
+    name: "Abstract, shadow clear of the text",
+    Component: O9AbstractClearShadow,
+  },
+];
+---
+
+<div class="grid gap-20">
+  {
+    candidates.map(({ id, name, Component }) => (
+      <section id={id.toLowerCase()} aria-label={`${id} ${name}`}>
+        <h2 class="mb-8 text-accent">
+          {id} · {name}
+        </h2>
+        <Component posts={posts} />
+      </section>
+    ))
+  }
+</div>
