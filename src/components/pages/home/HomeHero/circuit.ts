@@ -449,9 +449,8 @@ class Board {
       to: number,
       vertical: boolean,
     ) =>
-      Array.from(
-        { length: to - from + 1 },
-        (_, i): Vec => (vertical ? [fixed, from + i] : [from + i, fixed]),
+      Array.from({ length: to - from + 1 }, (_, i): Vec =>
+        vertical ? [fixed, from + i] : [from + i, fixed],
       );
 
     for (const heading of sides) {
@@ -485,9 +484,8 @@ class Board {
     const along = this.rng.int(2, (vertical ? cols : rows) - size - 2);
     const fixed =
       heading === S ? 0 : heading === N ? rows : heading === E ? 0 : cols;
-    const starts = Array.from(
-      { length: size },
-      (_, i): Vec => (vertical ? [along + i, fixed] : [fixed, along + i]),
+    const starts = Array.from({ length: size }, (_, i): Vec =>
+      vertical ? [along + i, fixed] : [fixed, along + i],
     );
     if (!starts.every(([x, y]) => this.grid.isFree(x, y))) return;
 
@@ -529,10 +527,10 @@ class Board {
     const x = this.rng.int(1, cols - 1);
     const y = this.rng.int(1, rows - 1);
     const size = this.rng.int(1, 3);
-    const starts = Array.from(
-      { length: size },
-      (_, i): Vec => [x - lateral[0] * i, y - lateral[1] * i],
-    );
+    const starts = Array.from({ length: size }, (_, i): Vec => [
+      x - lateral[0] * i,
+      y - lateral[1] * i,
+    ]);
     if (
       !starts.every(([sx, sy]) =>
         this.grid.isAreaFree(sx - 1, sy - 1, sx + 1, sy + 1),
