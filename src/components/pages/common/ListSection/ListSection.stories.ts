@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook-astro/framework";
+import type { Meta, StoryObj } from "@/helpers/storybook";
 import ListSection from "./ListSection.astro";
 
 const meta: Meta<typeof ListSection> = {

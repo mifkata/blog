@@ -1,0 +1,5 @@
+[tasks.fix]
+run = "sh -c 'pnpm exec eslint --fix --no-warn-ignored \"$@\" && pnpm exec prettier --write --ignore-unknown \"$@\"' fix"
+
+[tasks.check]
+run = "pnpm install --frozen-lockfile && pnpm run typecheck && pnpm run test:run"

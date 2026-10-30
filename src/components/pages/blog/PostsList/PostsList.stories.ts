@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook-astro/framework";
+import type { Meta, StoryObj } from "@/helpers/storybook";
 import PostsList from "./PostsList.astro";
 
 const createMockImage = (id: number) => ({
@@ -16,11 +16,12 @@ const createMockPost = (overrides: {
   heroImage?: ReturnType<typeof createMockImage>;
 }) => ({
   id: overrides.id ?? "example-post",
+  collection: "blog" as const,
   data: {
     title: overrides.title ?? "Example Post",
     synopsis: overrides.synopsis,
     description: overrides.synopsis ?? "Example description",
-    pubDate: "2025-12-30",
+    pubDate: new Date("2025-12-30"),
     tags: overrides.tags ?? ["example"],
     heroImage: overrides.heroImage,
   },

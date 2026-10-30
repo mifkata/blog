@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook-astro/framework";
+import type { Meta, StoryObj } from "@/helpers/storybook";
 import RecentPosts from "./RecentPosts.astro";
 import { recentIndex, tagCounts, type RecentPost } from "./recentIndex";
 

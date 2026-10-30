@@ -9,6 +9,10 @@ const circuit = generateCircuit();
 // Share of each layer left visible behind the copy.
 const QUIET_LINES = 0.28;
 const QUIET_PULSES = 0.6;
+const QUIET_MASKS = [
+  ["circuit-quiet-lines", QUIET_LINES],
+  ["circuit-quiet-pulses", QUIET_PULSES],
+] as const;
 ---
 
 <section
@@ -28,10 +32,7 @@ const QUIET_PULSES = 0.6;
         {quietRects(DESKTOP_COPY).map((rect) => <rect {...rect} />)}
       </g>
       {
-        [
-          ["circuit-quiet-lines", QUIET_LINES],
-          ["circuit-quiet-pulses", QUIET_PULSES],
-        ].map(([id, kept]) => (
+        QUIET_MASKS.map(([id, kept]) => (
           <mask
             id={id}
             maskUnits="userSpaceOnUse"
@@ -44,7 +45,7 @@ const QUIET_PULSES = 0.6;
             <use
               href="#circuit-quiet"
               fill="black"
-              fill-opacity={stepOpacity(Number(kept)).toFixed(4)}
+              fill-opacity={stepOpacity(kept).toFixed(4)}
             />
           </mask>
         ))

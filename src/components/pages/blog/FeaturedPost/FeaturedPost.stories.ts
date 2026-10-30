@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook-astro/framework";
+import type { Meta, StoryObj } from "@/helpers/storybook";
 import FeaturedPost from "./FeaturedPost.astro";
 
 const createMockImage = (id: number) => ({
@@ -19,13 +19,16 @@ const createMockPost = (overrides: {
   words?: number;
 }) => ({
   id: overrides.id ?? "example-post",
+  collection: "blog" as const,
   body: "word ".repeat(overrides.words ?? 1200),
   data: {
     title: overrides.title ?? "Example Post",
     synopsis: overrides.synopsis,
     description: overrides.synopsis ?? "Example description",
-    pubDate: overrides.pubDate ?? "2025-12-30",
-    updatedDate: overrides.updatedDate,
+    pubDate: new Date(overrides.pubDate ?? "2025-12-30"),
+    updatedDate: overrides.updatedDate
+      ? new Date(overrides.updatedDate)
+      : undefined,
     tags: overrides.tags ?? ["example"],
     heroImage: overrides.heroImage,
   },

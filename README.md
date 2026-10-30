@@ -75,19 +75,20 @@ Set these in `.env`. [`terraform/main.tf`](terraform/main.tf) sets `SITE_URL` an
 
 Run every command from the project root.
 
-| Command                | Action                                         |
-| :--------------------- | :--------------------------------------------- |
-| `pnpm storybook`       | Starts Storybook at `localhost:9009`           |
-| `pnpm storybook:build` | Builds Storybook to `./dist/storybook/`        |
-| `pnpm build`           | Builds the production site to `./dist/`        |
-| `pnpm preview`         | Previews the build locally                     |
-| `pnpm test`            | Runs tests in watch mode                       |
-| `pnpm test:run`        | Runs tests once                                |
-| `pnpm lint`            | Checks for linting errors                      |
-| `pnpm lint:fix`        | Fixes linting errors                           |
-| `pnpm format`          | Checks formatting                              |
-| `pnpm format:fix`      | Fixes formatting                               |
-| `pnpm astro ...`       | Runs Astro CLI commands, such as `astro check` |
+| Command                | Action                                  |
+| :--------------------- | :-------------------------------------- |
+| `pnpm storybook`       | Starts Storybook at `localhost:9009`    |
+| `pnpm storybook:build` | Builds Storybook to `./dist/storybook/` |
+| `pnpm build`           | Builds the production site to `./dist/` |
+| `pnpm preview`         | Previews the build locally              |
+| `pnpm test`            | Runs tests in watch mode                |
+| `pnpm test:run`        | Runs tests once                         |
+| `pnpm typecheck`       | Checks types with `astro check`         |
+| `pnpm lint`            | Checks for linting errors               |
+| `pnpm lint:fix`        | Fixes linting errors                    |
+| `pnpm format`          | Checks formatting                       |
+| `pnpm format:fix`      | Fixes formatting                        |
+| `pnpm astro ...`       | Runs Astro CLI commands                 |
 
 Git hooks run `lint-staged` before each commit and reject messages that do not follow Conventional Commits.
 
