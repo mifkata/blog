@@ -11,7 +11,13 @@ export function Markdown({ text, className }: Props) {
 
   const html = marked.parse(text, { async: false }) as string;
 
+  // Links are underlined, not told apart from the text by colour alone
+  const linkCue = "[&_a]:underline [&_a]:underline-offset-2";
+
   return (
-    <div className={className} dangerouslySetInnerHTML={{ __html: html }} />
+    <div
+      className={className ? `${linkCue} ${className}` : linkCue}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   );
 }

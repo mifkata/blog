@@ -138,7 +138,7 @@ export default function GithubLink({
       {children && <div className="repo-card-body">{children}</div>}
 
       {!parsed.isValid && (
-        <div className="repo-card-body text-amber-600">
+        <div className="repo-card-body text-gray-dark">
           Could not parse the GitHub URL. Preview unavailable.
         </div>
       )}
