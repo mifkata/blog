@@ -11,6 +11,7 @@ export default [
       ".devcontainer/.home/**",
       "worktrees/**",
       ".worktrees/**",
+      ".agents/**",
       "node_modules/**",
       ".devcontainer/.claude/**",
       "!.devcontainer/.claude/settings.json",
