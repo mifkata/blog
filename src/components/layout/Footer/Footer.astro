@@ -9,7 +9,8 @@ import { FLAME_CYCLE_SECONDS, QUOTES, flameCells } from "./footer";
 
 interface FooterLink {
   label: string;
-  href: string;
+  /** A link without one is the button that reopens the cookie banner */
+  href?: string;
   icon?: IconName;
   Brand?: typeof GitHub;
 }
@@ -22,6 +23,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
       { label: "Tags", href: "/tags", icon: "tag" },
       { label: "RSS", href: "/rss.xml", icon: "rss" },
       { label: "Sitemap", href: "/sitemap-index.xml", icon: "map" },
+      { label: "Cookie settings", icon: "cookie" },
     ],
   },
   {
@@ -125,14 +127,25 @@ const another = "read another";
             <ul>
               {links.map(({ label, href, icon, Brand }) => (
                 <li>
-                  <a class="footer-link" href={href}>
-                    {Brand ? (
-                      <Brand size={16} />
-                    ) : (
-                      icon && <LucideIcon icon={icon} size={16} />
-                    )}
-                    {label}
-                  </a>
+                  {href ? (
+                    <a class="footer-link" href={href}>
+                      {Brand ? (
+                        <Brand size={16} />
+                      ) : (
+                        icon && <LucideIcon icon={icon} size={16} />
+                      )}
+                      {label}
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      class="footer-link cursor-pointer border-0 bg-transparent p-0 text-left whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                      data-cookie-settings
+                    >
+                      {icon && <LucideIcon icon={icon} size={16} />}
+                      {label}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>

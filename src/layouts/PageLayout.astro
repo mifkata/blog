@@ -1,5 +1,6 @@
 ---
 import BaseHead from "@/components/layout/BaseHead/BaseHead.astro";
+import CookieBanner from "@/components/layout/CookieBanner/CookieBanner.astro";
 import Header from "@/components/layout/Header/Header.astro";
 import Footer from "@/components/layout/Footer/Footer.astro";
 import type { TocChapter } from "@/components/post/TableOfContents/toc";
@@ -34,5 +35,6 @@ const { title, description, card, class: className, outline } = Astro.props;
       </main>
       <Footer />
     </div>
+    <CookieBanner />
   </body>
 </html>

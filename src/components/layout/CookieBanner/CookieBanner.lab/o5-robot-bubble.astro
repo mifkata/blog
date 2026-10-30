@@ -1,0 +1,24 @@
+---
+import Actions from "./Actions.astro";
+import { COPY } from "./copy";
+
+const robot = `  .-^-.
+ |[o o]|
+ | --- |
+ '-----'`;
+---
+
+<div class="absolute inset-x-4 bottom-4 ml-auto flex max-w-md items-end gap-3">
+  <div
+    class="relative grid min-w-0 flex-1 gap-3 rounded-xl border border-accent bg-surface p-4 shadow-lg"
+  >
+    <p class="m-0! text-sm leading-normal! text-gray-dark">{COPY}</p>
+    <Actions />
+    <span
+      class="absolute -right-1.5 bottom-6 size-3 rotate-45 border-t border-r border-accent bg-surface"
+      aria-hidden="true"></span>
+  </div>
+  <pre
+    class="m-0! flex-none overflow-visible rounded-none! bg-transparent p-0! font-mono text-xs leading-tight! text-gray"
+    aria-hidden="true">{robot}</pre>
+</div>

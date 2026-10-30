@@ -1,0 +1,17 @@
+---
+import Actions from "./Actions.astro";
+import { COPY } from "./copy";
+---
+
+<div class="absolute inset-x-0 bottom-0 border-t border-gray-light bg-surface">
+  <div
+    class="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-3"
+  >
+    <p
+      class="m-0! min-w-0 flex-1 basis-64 text-sm leading-normal! text-gray-dark"
+    >
+      {COPY}
+    </p>
+    <Actions />
+  </div>
+</div>

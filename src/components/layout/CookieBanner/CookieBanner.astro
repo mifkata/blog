@@ -1,0 +1,42 @@
+---
+interface Props {
+  /** Shown from the start; on the site, the script decides */
+  open?: boolean;
+}
+
+const { open = false } = Astro.props;
+---
+
+<section
+  class="fixed inset-x-4 bottom-4 z-50 md:bottom-8 mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-[10px] bg-terminal px-4 py-3 font-mono text-sm text-terminal-text shadow-lg ring-1 ring-terminal-text/20 in-data-boot:hidden print:hidden"
+  aria-label="Cookie consent"
+  hidden={!open}
+  data-cookie-banner
+>
+  <p class="m-0! min-w-0 flex-1 basis-64 leading-normal! text-terminal-text">
+    This site uses Google Analytics cookies to see which pages get read. They
+    stay off unless you accept.
+  </p>
+  <div class="flex flex-none gap-2">
+    <button
+      type="button"
+      class="cursor-pointer rounded-[3px] border border-terminal-text bg-transparent px-3 py-1.5 text-terminal-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terminal-prompt"
+      data-cookie-decline
+    >
+      Decline
+    </button>
+    <button
+      type="button"
+      class="cursor-pointer rounded-[3px] border-0 bg-terminal-prompt px-3 py-1.5 font-bold text-terminal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terminal-prompt"
+      data-cookie-accept
+    >
+      Accept
+    </button>
+  </div>
+</section>
+
+<script>
+  import { setupCookieBanner } from "./consent";
+
+  setupCookieBanner();
+</script>

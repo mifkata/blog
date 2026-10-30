@@ -1,0 +1,35 @@
+---
+import O1TerminalCard from "./o1-terminal-card.astro";
+import O2CornerCard from "./o2-corner-card.astro";
+import O3PageBar from "./o3-page-bar.astro";
+import O4StatusLine from "./o4-status-line.astro";
+import O5RobotBubble from "./o5-robot-bubble.astro";
+
+const candidates = [
+  { id: "O1", name: "Floating terminal card", Component: O1TerminalCard },
+  { id: "O2", name: "Corner card", Component: O2CornerCard },
+  { id: "O3", name: "Full-width page bar", Component: O3PageBar },
+  { id: "O4", name: "Slim status line", Component: O4StatusLine },
+  { id: "O5", name: "Robot speech bubble", Component: O5RobotBubble },
+];
+---
+
+<div class="grid gap-16 p-6">
+  {
+    candidates.map(({ id, name, Component }) => (
+      <section id={id.toLowerCase()} aria-label={`${id} ${name}`}>
+        <h2 class="mb-4 text-accent">
+          {id} · {name}
+        </h2>
+        <div class="flex flex-wrap items-start gap-6">
+          <div class="relative h-72 w-full max-w-4xl overflow-hidden rounded border border-gray-light bg-canvas">
+            <Component />
+          </div>
+          <div class="relative h-72 w-[375px] max-w-full overflow-hidden rounded border border-gray-light bg-canvas">
+            <Component />
+          </div>
+        </div>
+      </section>
+    ))
+  }
+</div>

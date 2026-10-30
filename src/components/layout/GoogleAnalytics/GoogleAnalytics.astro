@@ -1,25 +1,46 @@
 ---
+import { CONSENT_KEY, GA_ID } from "@/components/layout/CookieBanner/consent";
+
 const isProd = import.meta.env.PROD;
-const GA_ID = "G-SDS8ZJG4SS";
-// gtag() queues the visit straight away; gtag.js, which sends it, waits until
-// the page has loaded and the browser is idle, so its download and start-up
-// work never hold up the page
+// Nothing reaches Google until the visitor accepts. gtag() then queues the
+// visit straight away; gtag.js, which sends it, waits until the page has
+// loaded and the browser is idle, so its download and start-up work never hold
+// up the page
 const gtagScript = `
   window.dataLayer = window.dataLayer || [];
   function gtag() { dataLayer.push(arguments); }
-  gtag("js", new Date());
-  gtag("config", "${GA_ID}");
-  addEventListener("load", () => {
+  let started = false;
+  window.enableAnalytics = () => {
+    window["ga-disable-${GA_ID}"] = false;
+    if (started) return;
+    started = true;
+    gtag("js", new Date());
+    gtag("config", "${GA_ID}");
     const load = () => {
       const script = document.createElement("script");
       script.async = true;
       script.src = "https://www.googletagmanager.com/gtag/js?id=${GA_ID}";
       document.head.append(script);
     };
-    "requestIdleCallback" in window
-      ? requestIdleCallback(load, { timeout: 3000 })
-      : setTimeout(load, 500);
-  }, { once: true });
+    const whenIdle = () => {
+      "requestIdleCallback" in window
+        ? requestIdleCallback(load, { timeout: 3000 })
+        : setTimeout(load, 500);
+    };
+    document.readyState === "complete"
+      ? whenIdle()
+      : addEventListener("load", whenIdle, { once: true });
+  };
+  window.disableAnalytics = () => {
+    window["ga-disable-${GA_ID}"] = true;
+  };
+  try {
+    if (localStorage.getItem("${CONSENT_KEY}") === "granted") {
+      window.enableAnalytics();
+    }
+  } catch {
+    // Storage blocked: no recorded consent.
+  }
 `;
 ---
 

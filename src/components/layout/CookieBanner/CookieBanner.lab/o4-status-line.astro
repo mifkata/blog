@@ -1,0 +1,27 @@
+---
+import { COPY } from "./copy";
+---
+
+<div
+  class="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-terminal-text/20 bg-terminal px-3 py-1.5 font-mono text-[0.8125rem] leading-normal text-terminal-text"
+>
+  <span
+    class="rounded-[3px] bg-terminal-prompt px-2 py-0.5 font-bold text-terminal"
+    >cookies</span
+  >
+  <p class="m-0! min-w-0 flex-1 basis-64 leading-normal! text-terminal-text">
+    {COPY}
+  </p>
+  <button
+    type="button"
+    class="cursor-pointer border-0 bg-transparent p-1 font-bold text-terminal-prompt underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-terminal-prompt"
+  >
+    Accept
+  </button>
+  <button
+    type="button"
+    class="cursor-pointer border-0 bg-transparent p-1 text-terminal-text underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-terminal-prompt"
+  >
+    Decline
+  </button>
+</div>
