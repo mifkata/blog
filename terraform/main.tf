@@ -38,7 +38,6 @@ resource "cloudflare_pages_project" "blog" {
   deployment_configs {
     production {
       environment_variables = {
-        NODE_VERSION              = "22"
         SITE_URL                  = "https://${var.custom_domain}"
         PUBLIC_GISCUS_REPO        = var.giscus_repo
         PUBLIC_GISCUS_REPO_ID     = var.giscus_repo_id
@@ -48,7 +47,6 @@ resource "cloudflare_pages_project" "blog" {
     }
     preview {
       environment_variables = {
-        NODE_VERSION              = "22"
         SITE_URL                  = "https://${var.custom_domain}"
         PUBLIC_GISCUS_REPO        = var.giscus_repo
         PUBLIC_GISCUS_REPO_ID     = var.giscus_repo_id
