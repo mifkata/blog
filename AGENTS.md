@@ -22,7 +22,7 @@ Maintained with the `agentsmd-writer` skill and audited by `agentsmd-auditor`: c
 - README create or rewrite → `readme-writer`
 - AGENTS.md or CLAUDE.md change, agents repeating a mistake → `agentsmd-writer`; audit → `agentsmd-auditor`
 - Task tracking, claims, handoffs → `beads`; owns the `beads:skill` block
-- Installed skill defect or missing capability → `skill-fix-handoff`
+- Installed skill defect or missing capability → `skill-fix-handoff`; restore, update or install skills → `skill-installer`
 
 ## Workflows
 
@@ -45,12 +45,12 @@ Maintained with the `agentsmd-writer` skill and audited by `agentsmd-auditor`: c
 - Pick: `node .agents/skills/agentsmd-auditor/scripts/models.mjs pick <the role's models for the grade that this runner can spawn, in listed order>` → its `top` (the `model-pick` rubric: recorded success rate and runs; a tie → the first listed); `top` null → reported to the user; none it can spawn → its session model.
 - Record each run: `node .agents/skills/agentsmd-auditor/scripts/models.mjs record <provider/model> <role> <grade> success|failure|escalated` (failure: error, timeout, refusal, or work sent back; escalated: handed to the next grade).
 - Never pick a model `models.mjs stats` lists as excluded or `below` (under 60% after 15 runs; a model the registry keeps is never below).
-- Vendors: design and the reviewers' `escalation` entry from Anthropic only; a runner spawning several vendors takes easy and moderate workers from Cursor and OpenAI only.
+- Vendors: design and the workers' and reviewers' `escalation` entries from Anthropic only; a runner spawning several vendors takes easy and moderate workers from Cursor and OpenAI only.
 - Anthropic pacing (subscription limits, shared with every Claude session): at most 5 Anthropic subagents running at once, each start ≥5 s after the previous; "usage limit reached" or a rate-limit error → no new Anthropic subagent, the running ones finish, the rest go to Cursor or OpenAI when the role allows, else reported.
-- Grade (`easy` | `moderate` | `hard` | `complex`): the bead's `grade`; none → the `band` of `node .agents/skills/beads/scripts/rubric.mjs score grade <scores.json>` (scope, files, risk, contracts, migrations scored 0–5 against the `grade` rubric's anchors), recorded on the bead with its score. The grade sets model and effort below; effort never above `medium` (higher levels are for chat sessions) except the complex ladder below.
-- Escalation: a failed review → one grade up, picked again; a failure there, or of a complex review → the reviewers' `escalation` entry. A complex run (worker, or review at `escalation`) that fails at `medium` → one retry at `high`, then one at `xhigh`, then reported to the user.
-- Workers: easy low `cursor/grok-4.3`, `cursor/grok-build-0.1`, `openai-codex/gpt-6-luna`, `anthropic/claude-haiku-5-5`; moderate medium `cursor/grok-4.5`, `openai-codex/gpt-6-sol`, `anthropic/claude-sonnet-5-5`; hard medium `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6.1-sol`, `cursor/grok-4.7`, `cursor/grok-4.6`, `anthropic/claude-opus-5-5`; complex medium `anthropic/claude-opus-5-5`, `openai-codex/gpt-6-astra`, `cursor/grok-4.7`.
-- Reviewers: easy low `anthropic/claude-haiku-4-5`, `openai-codex/gpt-6-luna`, `cursor/grok-4.3`; moderate medium `anthropic/claude-haiku-5-5`, `openai-codex/gpt-6-sol`, `cursor/grok-4.3`; hard medium `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6.1-sol`, `cursor/grok-4.7`, `cursor/grok-4.6`; complex medium `anthropic/claude-opus-5-5`, `openai-codex/gpt-6-astra`, `cursor/grok-4.7`; escalation medium `anthropic/claude-opus-5-5`.
+- Grade (`easy` | `moderate` | `hard` | `complex`): the bead's `grade`; none → the `band` of `node .agents/skills/agentsmd-auditor/scripts/rubric.mjs score grade <scores.json>` (scope, files, risk, contracts, migrations scored 0–5 against the `grade` rubric's anchors), recorded on the bead with its score. The grade sets model and effort below; effort never above `medium` except complex's `high` (higher levels are for chat sessions).
+- Escalation: a failed easy or moderate run or review → one grade up, picked again; a failed hard or complex run or review → one retry on the `escalation` entry (its effort); a failure there → reported to the user.
+- Workers: easy low `cursor/grok-4.3`, `cursor/grok-build-0.1`, `openai-codex/gpt-6-luna`, `anthropic/claude-haiku-5-5`, `anthropic/claude-haiku-4-5`; moderate medium `cursor/grok-4.5`, `cursor/grok-4.3`, `cursor/grok-build-0.1`, `openai-codex/gpt-6-sol`, `openai-codex/gpt-6-luna`, `anthropic/claude-sonnet-5-5`, `anthropic/claude-haiku-5-5`; hard medium `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6.1-sol`, `openai-codex/gpt-6-sol`, `cursor/grok-4.7`, `cursor/grok-4.6`, `cursor/grok-4.5`; complex high `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6-astra`, `openai-codex/gpt-6.1-sol`, `cursor/grok-4.7`; escalation medium `anthropic/claude-opus-5-5`.
+- Reviewers: easy low `anthropic/claude-haiku-4-5`, `anthropic/claude-haiku-5-5`, `openai-codex/gpt-6-luna`, `cursor/grok-4.3`; moderate medium `anthropic/claude-haiku-5-5`, `anthropic/claude-haiku-4-5`, `openai-codex/gpt-6-sol`, `openai-codex/gpt-6-luna`, `cursor/grok-4.3`; hard medium `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6.1-sol`, `cursor/grok-4.7`, `cursor/grok-4.6`; complex high `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6-astra`, `openai-codex/gpt-6.1-sol`, `cursor/grok-4.7`; escalation medium `anthropic/claude-opus-5-5`.
 - Design (`job: design`): medium `anthropic/claude-opus-5-5` only; no scored pick.
 
 ## Rules
@@ -62,8 +62,8 @@ Maintained with the `agentsmd-writer` skill and audited by `agentsmd-auditor`: c
 - Untracked changes unrelated to the task → ignore.
 - No TodoWrite, TaskCreate or MEMORY.md files; task tracking and project memory live in bd.
 - Close on merge, not on coding done: a bead stays open until its code reaches `main`.
-- A defect in an installed skill (its text contradicts a tool, a script fails, a case is missing) or a capability it lacks that a workaround covered (a raw shell command its script has no subcommand for) → `skill-fix-handoff`, never a local edit of the installed copy under `.agents/skills/` or a runtime skill dir.
-- Skill handoff records (`docs/skill-handoffs/SH-<hash>-<slug>.md`) are never committed or staged; a record set `done` → deleted with `node .agents/skills/skill-fix-handoff/scripts/handoff.mjs prune`.
+- A defect in an installed skill (its text contradicts a tool, a script fails, a case is missing) or a capability it lacks that a workaround covered (a raw shell command its script has no subcommand for) → `skill-fix-handoff` (files a GitHub issue on agent-foundry; its URL to the user at once and in the final reply), never a local edit of the installed copy under `.agents/skills/` or a runtime skill dir.
+- Open skill handoffs: after a long chain of work and on request → `node .agents/skills/skill-fix-handoff/scripts/handoff.mjs check`; a fixed one → `skill-installer` reinstalls the skill and records the migration.
 
 <!-- beads:skill -->
 ## Task tracking (Beads)
