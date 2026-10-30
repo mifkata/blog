@@ -35,7 +35,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "@lucide/astro": "^1.24.0",
     "@tailwindcss/vite": "^4.1.17",
-    "astro": "~7.3.8",
+    "astro": "^7.4.4",
     "marked": "^17.0.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
