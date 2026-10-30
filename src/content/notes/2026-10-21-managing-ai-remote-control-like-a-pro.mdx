@@ -1,0 +1,13 @@
+---
+title: Managing AI remote control like a pro
+date: 2026-10-21
+tags: []
+---
+
+So, I've managed to exhaust my **Claude Code** usage in 36 hours. I was desperate to use something else and got both **Codex** and **Cursor**. However, unlike Claude's `/remote-control` quick fix, I had to jump through hoops to enable a remote session - setting up servers, killing current sessions and starting from scratch, etc. Luckily, I got a rather quick and amazing setup that works even better than Claude's remote sessions. It's simple:
+
+* [Tailscale](https://tailscale.com/) - for VPN and SSH tunnelling
+* [Termius](https://termius.com/) - a mobile SSH client for my phone
+* [Ntfy](https://ntfy.sh/) - for terminal notifications emitted through a [herdr plugin](https://github.com/cobanov/herdr-ntfysh)
+
+It's much better. I have full access to my PC. I can spawn new sessions and terminals and run all kinds of agents, not just Claude. My connection is entirely invisible to the world and has double encryption, once from SSH and once from Tailscale's own encryption layer.
