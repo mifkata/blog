@@ -2,19 +2,10 @@
 title: "Sandboxing AI Agents with Dev Containers"
 description: Explore dev containers as a means to protect yourself from losing valuable data, whilst working with AI coding agents
 synopsis: >-
-  Coding agents run shell commands with your user's privileges, whether it's
-  **Claude Code**, **Codex** or an open-source harness like **OpenCode**
-  running against your own models. Their own guardrails have come a long way,
-  but a prompt injection hidden in an open-source package can still turn the
-  agent against your machine. Agents belong in a sandbox, especially when you
-  run a swarm of them.
+  Executing coding agents from the shell or your desktop executes commands with your user's privileges. Their own guardrails have come a long way, but a prompt injection can hide in many places - open-source packages, images with invisible text, which only the agent reads, harmful instructions inside searched pages, the list goes on.
 
 
-  This article shows how I sandbox mine in a dev container: the agent works on
-  the project inside the container, the host keeps the git credentials, and
-  notifications get out through a single whitelisted command. One trade-off up
-  front: containers are slower on macOS and Windows, where they run inside a
-  virtual machine with limited access to the bare metal.
+  This article covers the most basic setup of sandboxing a local agent for daily tasks inside a dev container.
 pubDate: Dec 30 2025 12:30:00 GMT+0000 (UTC)
 updatedDate: 2026-10-30
 heroImage: "@/assets/blog/2025/1230-devcontainers.png"
@@ -27,121 +18,73 @@ import { ArticleSeries, Highlight } from "@/components/post";
   slug="agentic-engineering-foundations"
   current="/blog/2025/sandboxing-ai-agents-with-devcontainers/"
 />
-## The agent reads everything
-
-A coding agent reads whatever lands in its context: your code and docs, but also the READMEs and comments in your dependencies, issues and pull requests, and the web pages it fetches. Anyone who can write to one of those can leave instructions for it. The agent can't always tell yours apart from planted ones, and it runs shell commands with your privileges.
-
-The agents' own guardrails have come a long way, and stray `rm -rf ~/` runs are much rarer than they were. Prompt injection is what still worries me: it's someone else deciding what the agent does on my machine. Run a swarm of agents and that's several pairs of hands on the keyboard, any of which can be talked into it.
-
-So I keep mine in a box. This article is about sandboxing AI coding agents in a **dev container**, a Docker container that holds the agent and the project's tools and sees only what you mount into it. It also covers getting the agent's notifications out of the box without opening it back up.
-
-## A box per project, a box per agent
-
-This article is about the first kind of box: local development with a frontier agent like **Claude Code** or **Codex**, or an open-source harness like **OpenCode** running against your own models. Every new project starts with a `.devcontainer`. I build from scratch as a monolith and split code out only when scalability demands it, so one container runs all of the project's applications, plus whatever the agent needs to run steadily.
-
-The container keeps the agent away from my machine. Version control can bring back deleted code, and I can live with losing a commit. The rest of my system has no such backup, and outside a container, the agent runs shell commands with my user's privileges. That's not something to merely be careful about: it's an open door for malicious instructions and command injection.
-
-With the box in place, I set up the agent's instructions and slash-commands, which [part 2 of this series](/blog/2026/01/system-prompts-and-skills/) covers.
-
-A swarm needs the second kind: a box per agent. If you self-host agents in an orchestration, one shared dev container is the wrong tool. These open-source projects manage a box per agent, on infrastructure you run:
-
-- [Daytona](https://github.com/daytonaio/daytona) - infrastructure for running AI-generated code in isolated sandboxes, with fast cold starts and no session time limit
-- [Coder](https://github.com/coder/coder) - self-hosted environments for developers and their agents
-- [OpenSandbox](https://github.com/opensandbox-group/OpenSandbox) - a sandbox control plane with Docker and Kubernetes backends, network policy, a credential broker and optional gVisor, Kata or Firecracker isolation
-- [E2B](https://github.com/e2b-dev/E2B) - open-source sandboxes for agents, which you can self-host
-- [Cube Sandbox](https://github.com/TencentCloud/CubeSandbox) - Tencent Cloud's open-sourced sandbox service: KVM microVMs with their own kernel that start in under 60ms, compatible with the E2B SDK
 
 <Highlight block>
-  > Agents in a **multi-agent pipeline** need `read/write` access to the repository: pushing to the commit tree is what triggers the next agent. Give them their own, limited credentials, never your personal git tokens.
+This article was first published in December 2025. It was very raw and included mostly code samples from what I did at the time. For some reason, most of the work that I showed was manual, which isn't what I'd recommend in the SOTA of October 2026, so it was fully rewritten, end to end.
 </Highlight>
 
-<Highlight block color="pink">
-  > **Given unrestricted access to your repository**, the agent could modify your commit tree and force push changes, potentially erasing commit history. In the case of GitHub, for example, if a token happens to carry further permissions, it could change the repository settings to grant itself capabilities it didn't have before (like disabling branch restrictions on **main** to allow `--force` push).
-</Highlight>
+## The agent can read everything
 
-## Why a dev container
+AI agents read whatever lands in their context: code, docs, READMEs and comments in your dependencies, issues and pull requests, the web pages they fetch, sometimes even text inside images. A lot of systems get compromised nowadays by adversarial actors and the chance of you becoming a victim of a maliciously planted [prompt injection](https://en.wikipedia.org/wiki/Prompt_injection) grows every day.
 
-Dev containers are a well-trodden path: they make onboarding new team members easier, simplify setting up CI pipelines and put an end to "it works on my machine". There's an [open-source dev container toolchain](https://code.visualstudio.com/docs/devcontainers/containers) that integrates almost natively with VS Code.
+Agents are more secure now than a year ago - execution is done heavily in local sandboxes, without the need for anything to be set up, but even in a local runtime the agent manages to escape its restrictions. It only makes sense that one should approach this problem with caution.
 
-My reason is simpler and more serious. A Claude Code user on Reddit once [lost their entire home directory](https://www.reddit.com/r/ClaudeAI/comments/1pgxckk/claude_cli_deleted_my_entire_home_directory_wiped/) when the agent ran `rm -rf tests/ patches/ plan/ ~/` during a _supposedly controlled_ code cleanup. Guardrails have improved a lot since, but the same command can still arrive through a prompt injection, and a container keeps it away from your files.
+## What got me here
+
+I started using AI for coding about 6 months after the boom of Claude Code. I was on a sabbatical and wasn't looking too much into the scene, while enjoying some quality time off with my family.
+
+Once I came back, I was excited to pick it up. The first thing that I built with it was this blog. I was very cautious, however. Even before I got my Claude subscription, I saw a user on Reddit [losing their entire home directory content](https://www.reddit.com/r/ClaudeAI/comments/1pgxckk/claude_cli_deleted_my_entire_home_directory_wiped/) - the agent ran `rm -rf tests/ patches/ plan/ ~/`. Do you see that dangling `~/` at the end? Yep, that was the end of it.
+
+It got me thinking - I need to protect myself from that before I end up crying about it some day. I was thinking about getting a specific local user with restricted permissions and so on - not a bad idea, but the agent would still have tons of access to my box and I wasn't sure if it wouldn't escalate privileges.
+
+The decision was made: dev containers it is.
+
+## What is a dev container
+
+Dev containers existed long before agentic workflows. They were built so teams of developers could share a dev environment easily, plus it got them as close as possible to the production environment in which the application runs. You build a `Dockerfile` for your application to deploy on it, so you might as well use it to run everything else in it. It doesn't get much closer to prod than that. Of course, deploying to your specific cloud provider, Kubernetes and so on, usually complicates things, but still it helps more than it hurts.
+
+There's an [open-source dev container toolchain](https://code.visualstudio.com/docs/devcontainers/containers) that integrates almost natively with VS Code (which I recently dropped for [Zed](https://zed.dev/)).
 
 ## What a good dev container needs
 
-You don't need my `Dockerfile`: any coding agent can generate one for your stack with little help. What matters is what goes into it. These are the features I wouldn't run a dev container without:
+You don't need my `Dockerfile`: copy/pasting code is, as my friend [Mitko](https://mitkox.com) says, "a cavemen" approach. Just ask the agent to do it for you. Surely you'll survive one run before it nukes your machine. If you're worried about it, do it in a web-based chat session and copy/paste the code (not as caveman-istic as copy/pasting it from my post). The recipe for success is rather trivial:
 
-- **The agent lives inside.** Install it in the image (`@anthropic-ai/claude-code`, `@openai/codex` or `opencode-ai` from npm), so every command it runs starts in the box. To pick up the last conversation:
+- Split the `Dockerfile` into stages - one builds the image with all dependencies for dev, one for CI, one for local dev, one for prod build. Include everything that you'd need to run the project - runtime, libraries, git, netcat (for notifications), etc.
+- In the local dev one, install your agent's harness (Claude Code, Codex, OpenCode, whatever you're using)
+- Make sure your favourite shell is ported (I use **zsh** with [oh-my-zsh](https://ohmyz.sh/)), dotfiles, whatever you need
+- Get a secure GitHub token (I assume you're using GitHub for some reason) and assign it to the container's `gh` in a way that it survives restarts or, if you're feeling more adventurous, propagate your SSH key inside the repo - this can be done in multiple ways, but it's riskier, especially if you're using the same SSH key for more than one host
+- Mount the local code as something like `/app`, so that the agent has access to it
+- Make sure to persist the container's home directory, so it survives restarts; this is where all configuration changes would go, not only for apps, but for the agent too
+- Set up notifications (next section in this article)
+- Use `docker-compose.yml` to orchestrate everything, so that a simple `docker compose up -d` gets you up and running
+- When done, use your agent from the container's terminal
 
-  ```sh
-  # Claude Code: continue, or start a new conversation when there's none
-  docker compose -f .devcontainer/docker-compose.yml exec devcontainer sh -lc 'claude -c || claude'
-  # Codex
-  docker compose -f .devcontainer/docker-compose.yml exec devcontainer sh -lc 'codex resume --last'
-  # OpenCode
-  docker compose -f .devcontainer/docker-compose.yml exec devcontainer sh -lc 'opencode --continue'
-  ```
+Take a look at Anthropic's [dev container reference](https://github.com/anthropics/claude-code/tree/main/.devcontainer) for a guide on how to set up yours. Its firewall limits outbound traffic to the domains its script allows. The idea applies to any agent: allow only what it needs.
 
-- **Everything the project needs.** The runtime, the package manager, `git` and `netcat` for [notifications](#setting-up-agent-notifications). If the agent has to leave the box to build or test, the box has a hole.
 
-- **A home that survives rebuilds.** Mount a folder from the repository as the container user's home. Auth sessions outlive an image rebuild, and dotfiles such as the agent's settings and hooks (e.g. `.claude/settings.json`) and `.zshrc` with your aliases stay versioned with the project. Whitelist those files in `.gitignore` and ignore the rest, so sessions and tokens never get committed. A clean rebuild keeps you signed in:
-
-  ```sh
-  docker compose -f .devcontainer/docker-compose.yml build --no-cache
-  ```
-
-- **A container that stays up.** A long-running default command, like `sleep infinity`, keeps it alive, so you can open shells and agent sessions into it whenever you need them:
-
-  ```sh
-  docker compose -f .devcontainer/docker-compose.yml up -d
-  docker compose -f .devcontainer/docker-compose.yml exec devcontainer zsh
-  ```
-
-- **A shell you enjoy.** I add `zsh` with [oh-my-zsh](https://ohmyz.sh/), since I spend a lot of time in there.
-
-- **Nothing you wouldn't hand the agent.** No personal git credentials, SSH keys or host folders beyond the project. `sudo` for the container user is fine for debugging, never for production containers.
-
-I run mine with plain `docker-compose.yml` rather than the [devcontainer CLI](https://github.com/devcontainers/cli): forwarding ports and reaching other services on my Docker network was simpler, and I start the container from the terminal, not the editor. If you'd rather work from VS Code or a JetBrains IDE, both integrate with `devcontainer.json`.
-
-For a hardened starting point, look at Anthropic's [reference dev container](https://github.com/anthropics/claude-code/tree/main/.devcontainer) for **Claude Code**. Its firewall limits outbound traffic to the domains its script allows. The same idea works for any agent: allow only what it needs, such as your model provider or your own model server, the package registries and your git host.
-
-## Setting up agent notifications
-
-Working with an agent requires your attention once in a while to know when a job has completed or a question from the AI is pending an answer.
-
-Since the **Docker environment** doesn't have a native way to **propagate notifications downstream** to the host machine (at least to my knowledge), I use a bit more complex setup, which relies on:
-
-- Having a **shell script** that accepts messages via sockets and runs a command to show notifications on my **Docker host machine**.
-- Exposing the script using `socat` on port `4545`.
-- The agent's hooks, to emit a message to `host.docker.internal:4545` using `netcat`.
-
-### Propagating notifications
-
-To propagate messages from the **dev container** downstream to my machine, I pipe messages to the [notifier.sh script](#notifiersh) with [SOcket CAT](https://linux.die.net/man/1/socat) on port `4545`.
-
-> Start the listener
-
-```sh
-pgrep -f 'socat TCP-LISTEN:4545' >/dev/null || \
-    ( \
-        nohup socat TCP-LISTEN:4545,reuseaddr,fork \
-        EXEC:.devcontainer/notifier.sh >/tmp/hostcmd.log 2>&1 & \
-        echo '🔔 Notifier started.'
-    )
-```
-
-> Stop the listener
-
-```sh
-pkill -f 'socat TCP-LISTEN:4545' && \
-    echo '🔕 Notifier stopped.'
-```
-
-<Highlight block color="pink">
-  > Never point `socat` at a shell (e.g. `EXEC:/bin/bash`). It defeats the whole point of the sandbox: any `nc` message from the agent would run as a command on your machine.
+<Highlight block type="note">
+Using `git worktrees` to run multiple agent sessions is now much easier, especially since you can write your own tooling much better, plus you have things like `claude -w [worktree]`, but remember that the worktree paths on your local machine won't match the worktree paths on the dev container, which might lead to some serious issues!
 </Highlight>
+
+<Highlight block type="warning">
+**Given unrestricted access to your repository**, the agent could modify your commit tree and force push changes, potentially erasing commit history. In the case of GitHub, for example, if a token happens to carry further permissions, it could change the repository settings to grant itself capabilities it didn't have before (like disabling branch restrictions on **main** to allow `--force` push).
+</Highlight>
+
+## Setting up notifications
+
+Now this part is tricky. I started with the standard Mac `Terminal.app` with `tmux`. This didn't work out well. My goal was to have a notification that, when clicked, focuses the exact terminal tab of the agent that's calling me. `tmux` obscured that, as the session propagated the ID of the terminal that originally spawned it, which was long gone.
+
+I changed the setup and used `iTerm`, which made me code a little notification app for Mac that allowed me to have that experience. Nowadays I'm using something much better: [herdr](https://herdr.dev/) - it's like `tmux`, as it runs the shell sessions like a server, but it's made specifically for agentic development. It's written in **Rust**, so it's blazing fast and notifications are handled out of the box.
+
+In any case, streaming notifications from a **Docker container** to the host machine is a completely different problem. The goal was to allow the container to call code on the host, but not any code (I didn't want it to run something like `rm -rf /`), only the notifications. This is the setup I came up with:
+
+- A **notifier.sh** on my local machine that is executed with a notification parameter (i.e. no direct command execution, but rather saying "hey notification handler, here's the what's up")
+- Exposing the script via `socat` on port `4545`
+- Configuring the container's agent hooks to emit a message to `host.docker.internal:4545` using `netcat`
 
 ### notifier.sh
 
-The script is a whitelist. It reads one line from the socket, takes the first word as the command and the rest as its argument, and runs only the commands it knows. Mine knows one: `notify`. Anything else, such as `printf 'rm -rf ~' | nc host.docker.internal 4545`, gets `DENIED` and is never run.
+It doesn't get more simple than that. This is basically what it looked like:
 
 > `.devcontainer/notifier.sh`
 
@@ -159,17 +102,33 @@ case "$CMD" in
 esac
 ```
 
-[terminal-notifier](https://github.com/julienXX/terminal-notifier) shows a clickable notification titled "Agent", and clicking it focuses `iTerm`. Focusing the exact tab would be better, but I use `tmux`, and its sessions outlive the tabs they started in, so a session ID can point to a tab that's long gone.
+### The controls to start the listener
 
-### Connecting the agent's hooks
+> Start it up
 
-Every agent has a place to run a command when it finishes or needs you:
+```sh
+pgrep -f 'socat TCP-LISTEN:4545' >/dev/null || \
+    ( \
+        nohup socat TCP-LISTEN:4545,reuseaddr,fork \
+        EXEC:.devcontainer/notifier.sh >/tmp/hostcmd.log 2>&1 & \
+        echo '🔔 Notifier started.'
+    )
+```
 
-- **Claude Code**: [hooks](https://code.claude.com/docs/en/hooks), with `Notification` (matcher `permission_prompt`) when it waits for you and `Stop` when it's done.
-- **Codex**: [hooks](https://learn.chatgpt.com/codex/hooks) in `~/.codex/hooks.json`, with `PermissionRequest` and `Stop`.
-- **OpenCode**: a [plugin](https://opencode.ai/docs/plugins/) in `~/.config/opencode/plugins/`, listening for `permission.asked` and `session.idle`.
+> Switch it off
 
-Whichever you run, the hook does the same thing: [netcat](https://linux.die.net/man/1/nc) sends a line to the [notifier.sh script](#notifiersh) on port `4545`. Here's the Claude Code version:
+```sh
+pkill -f 'socat TCP-LISTEN:4545' && \
+    echo '🔕 Notifier stopped.'
+```
+
+<Highlight block type="warning">
+Never point `socat` at a shell (e.g. `EXEC:/bin/bash`). It defeats the purpose of the sandbox!
+</Highlight>
+
+### Setting up the notification trigger
+
+The last thing now was to have notifications being triggered once Claude was waiting for me. For this I had to modify the **Claude hooks** on the dev container itself.
 
 > `.devcontainer/.home/.claude/settings.json`
 
@@ -202,14 +161,18 @@ Whichever you run, the hook does the same thing: [netcat](https://linux.die.net/
 }
 ```
 
-## Run everything in the box
+That's pretty much it! Containerised execution with notifications.
 
-My container doesn't match my Mac: a different OS, and sometimes a different CPU architecture and tool versions. Dependencies installed on one side often need rebuilding on the other, so `pnpm install` gives different results inside the container and out. Pick one side, and make it the container, because that's where the agent works:
+## Containers for the real world
 
-- **Install, build and test inside the container.** That's where the agent does it, so you never rebuild dependencies to run tests on your machine. The same goes for local dev servers and, where possible, CI.
-- **Run your applications inside the container too.** Serve them from `0.0.0.0` and forward their ports, so you can open them on `localhost` on the host. This matters most on an **ARM** machine running containers built for **x86**, or when the host and the container run different versions of tools like `pnpm` or `mix`. Either way, you and the agent run, build and test the same code.
-- **Let agents push with their own, limited credentials**, never your personal `ssh` key. Protect `main` from merges and keep agents away from other agents' and people's pull requests. An access orchestrator is a viable extra module on top.
+Once your setup grows and you start building heavy automations, at one point you're going to challenge yourself with building a fully or semi-automated software factory. This is when things get serious. Building a factory in full automation, especially on-premises with production readiness, makes sandboxed execution non-negotiable. I won't go through this now, but here's a bunch of valuable projects that are worth your time once you get there:
 
-## Keep the box shut
+- [Daytona](https://github.com/daytonaio/daytona) - infrastructure for running AI-generated code in isolated sandboxes, with fast cold starts and no session time limit
+- [Coder](https://github.com/coder/coder) - self-hosted environments for developers and their agents
+- [OpenSandbox](https://github.com/opensandbox-group/OpenSandbox) - a sandbox control plane with Docker and Kubernetes backends, network policy, a credential broker and optional gVisor, Kata or Firecracker isolation
+- [E2B](https://github.com/e2b-dev/E2B) - open-source sandboxes for agents, which you can self-host
+- [Cube Sandbox](https://github.com/TencentCloud/CubeSandbox) - Tencent Cloud's open-sourced sandbox service: KVM microVMs with their own kernel that start in under 60ms, compatible with the E2B SDK
 
-The agent still reads everything, and not all of it was written for you. A dev container limits what a planted instruction can reach. Setting one up is almost effortless, and it pays off twice: the agent, CI and your team share one environment, and your machine stays out of reach.
+## Final thoughts
+
+We live in dangerous times. Multiple open-source projects and enterprise environments get hacked every day. Global attacks have increased by 18% year over year in 2026. Leaving an automation machine with full access to your computer is a serious risk, especially in production environments. Be cautious and sandbox your environments sooner rather than later.
