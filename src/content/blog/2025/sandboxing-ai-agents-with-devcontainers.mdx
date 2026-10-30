@@ -1,9 +1,9 @@
 ---
 title: "Sandboxing AI Agents with Dev Containers"
-description: Explore devcontainers as a means to protect yourself from losing valuable data, whilst working with AI coding agents
+description: Explore dev containers as a means to protect yourself from losing valuable data, whilst working with AI coding agents
 synopsis: >-
   Coding agents run shell commands with your user's privileges, whether it's
-  **Claude Code**, **Codex**, or an open-source harness like **OpenCode**
+  **Claude Code**, **Codex** or an open-source harness like **OpenCode**
   running against your own models. Their own guardrails have come a long way,
   but a prompt injection hidden in an open-source package can still turn the
   agent against your machine. Agents belong in a sandbox, especially when you
@@ -16,7 +16,7 @@ synopsis: >-
   front: containers are slower on macOS and Windows, where they run inside a
   virtual machine with limited access to the bare metal.
 pubDate: Dec 30 2025 12:30:00 GMT+0000 (UTC)
-updatedDate: Oct 05 2026 13:55:00 GMT+0000 (UTC)
+updatedDate: 2026-10-30
 heroImage: "@/assets/blog/2025/1230-devcontainers.png"
 tags: ["coding", "ai", "devcontainers", "agents", "claude", "devex", "howto"]
 ---
@@ -61,7 +61,7 @@ A swarm needs the second kind: a box per agent. If you self-host agents in an or
 
 ## Why a dev container
 
-Dev containers are a well-trodden path: they make onboarding new team members easier, simplify setting up CI pipelines, and put an end to "it works on my machine". There's an [open-source dev container toolchain](https://code.visualstudio.com/docs/devcontainers/containers) that integrates almost natively with VS Code.
+Dev containers are a well-trodden path: they make onboarding new team members easier, simplify setting up CI pipelines and put an end to "it works on my machine". There's an [open-source dev container toolchain](https://code.visualstudio.com/docs/devcontainers/containers) that integrates almost natively with VS Code.
 
 My reason is simpler and more serious. A Claude Code user on Reddit once [lost their entire home directory](https://www.reddit.com/r/ClaudeAI/comments/1pgxckk/claude_cli_deleted_my_entire_home_directory_wiped/) when the agent ran `rm -rf tests/ patches/ plan/ ~/` during a _supposedly controlled_ code cleanup. Guardrails have improved a lot since, but the same command can still arrive through a prompt injection, and a container keeps it away from your files.
 
@@ -80,7 +80,7 @@ You don't need my `Dockerfile`: any coding agent can generate one for your stack
   docker compose -f .devcontainer/docker-compose.yml exec devcontainer sh -lc 'opencode --continue'
   ```
 
-- **Everything the project needs.** The runtime, the package manager, `git`, and `netcat` for [notifications](#setting-up-agent-notifications). If the agent has to leave the box to build or test, the box has a hole.
+- **Everything the project needs.** The runtime, the package manager, `git` and `netcat` for [notifications](#setting-up-agent-notifications). If the agent has to leave the box to build or test, the box has a hole.
 
 - **A home that survives rebuilds.** Mount a folder from the repository as the container user's home. Auth sessions outlive an image rebuild, and dotfiles such as the agent's settings and hooks (e.g. `.claude/settings.json`) and `.zshrc` with your aliases stay versioned with the project. Whitelist those files in `.gitignore` and ignore the rest, so sessions and tokens never get committed. A clean rebuild keeps you signed in:
 
@@ -105,17 +105,17 @@ For a hardened starting point, look at Anthropic's [reference dev container](htt
 
 ## Setting up agent notifications
 
-Working with an agent would require your attention once in a while to know when a job has completed or a question by the AI is pending an answer.
+Working with an agent requires your attention once in a while to know when a job has completed or a question from the AI is pending an answer.
 
-Since the **docker environment** doesn't have a native way to **propagate notifications downstream** to the host machine (or at least to my knowledge), I use a bit more complex setup, which relies on:
+Since the **Docker environment** doesn't have a native way to **propagate notifications downstream** to the host machine (at least to my knowledge), I use a bit more complex setup, which relies on:
 
-- Having a **shell script** that accepts messages via sockets and runs a command to show notifications on my **docker host machine**.
+- Having a **shell script** that accepts messages via sockets and runs a command to show notifications on my **Docker host machine**.
 - Exposing the script using `socat` on port `4545`.
 - The agent's hooks, to emit a message to `host.docker.internal:4545` using `netcat`.
 
 ### Propagating notifications
 
-To propagate messages from the **devcontainer** downstream to my machine, I pipe messages to the [notifier.sh script](#notifiersh) with [SOcket CAT](https://linux.die.net/man/1/socat) on port `4545`.
+To propagate messages from the **dev container** downstream to my machine, I pipe messages to the [notifier.sh script](#notifiersh) with [SOcket CAT](https://linux.die.net/man/1/socat) on port `4545`.
 
 > Start the listener
 
