@@ -37,6 +37,12 @@
       "skillPath": "blog-post-proofreader/SKILL.md",
       "computedHash": "b23fe730187719ab0b9845ec82fba96b2e56318f6da45d05651070fbac19c7f1"
     },
+    "ci-pipeline": {
+      "source": "mifkata/dev-skills",
+      "sourceType": "github",
+      "skillPath": "ci-pipeline/SKILL.md",
+      "computedHash": "633cb00ac6af7085c844deccd4be09f854f1e65a4ad59a1733984ced5b2775b1"
+    },
     "frontend-astro-bootstrapper": {
       "source": "mifkata/dev-skills",
       "sourceType": "github",
