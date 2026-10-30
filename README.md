@@ -1,141 +1,122 @@
 # Mifkata.com
 
-## Generated with Astro Starter Kit: Blog
+Source for mifkata.com, a personal blog of long-form posts and short notes, built as a static Astro site.
 
-```sh
-npm create astro@latest -- --template blog
-```
+## 📑 Contents
 
-## ⚙️ Setup & Run
+- [📦 Requirements](#-requirements)
+- [🔧 Installation](#-installation)
+- [🔩 Configuration](#-configuration)
+- [📁 Project structure](#-project-structure)
+- [🧪 Development](#-development)
+- [🚀 Deployment](#-deployment)
 
-Configure `.env` from example:
+## 📦 Requirements
 
-```sh
-cp .env.example .env
-```
+- [Node.js](https://nodejs.org/en/download) 22.12+
+- [pnpm](https://pnpm.io/installation) 10.34.5+
 
-Install dependencies and start `dev` server:
+## 🔧 Installation
 
-```sh
-pnpm install
-pnpm dev
-```
+1. Get the code.
 
-This starts Astro at `localhost:4321`. Run `pnpm storybook` alongside it for Storybook.
+   ```sh
+   git clone git@github.com:mifkata/blog.git
+   cd blog
+   ```
 
-## 🧞 Commands
+2. Install dependencies.
 
-All commands are run from the root of the project, from a terminal:
+   ```sh
+   pnpm install
+   ```
 
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `pnpm install`         | Installs dependencies                            |
-| `pnpm dev`             | Starts Astro at `localhost:4321`                 |
-| `pnpm storybook`       | Starts Storybook only at `localhost:6006`        |
-| `pnpm storybook:build` | Build Storybook static site                      |
-| `pnpm build`           | Build production site to `./dist/`               |
-| `pnpm preview`         | Preview build locally before deploying           |
-| `pnpm test`            | Run tests in watch mode                          |
-| `pnpm test:run`        | Run tests once                                   |
-| `pnpm lint`            | Check for linting errors                         |
-| `pnpm lint:fix`        | Fix linting errors                               |
-| `pnpm format`          | Check formatting                                 |
-| `pnpm format:fix`      | Fix formatting                                   |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
+3. Create your local configuration. Every value in [`.env.example`](.env.example) is optional for local development.
 
-## 🐳 Dev Container
+   ```sh
+   cp .env.example .env
+   ```
 
-This project includes a dev container configuration for a consistent development environment.
+4. Start the development server.
 
-### Prerequisites
+   ```sh
+   pnpm dev
+   ```
 
-- Docker installed and running
-- `socat` and `terminal-notifier` for host notifications (macOS): `brew install socat terminal-notifier`
+5. Open <http://localhost:4321> and check that the home page loads.
 
-### What's Included
+## 🔩 Configuration
 
-- Node.js 22
-- pnpm 9.15.0
-- Claude Code CLI (pre-installed with plugins)
-- Git
-- Zsh with Oh My Zsh
+Set these in `.env`. [`terraform/main.tf`](terraform/main.tf) sets `SITE_URL` and the Giscus values for deployed builds.
 
-### Commands
+| Variable                    | Required | Default                 | Description                                                                                                                                        |
+| :-------------------------- | :------- | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SITE_URL`                  | No       | `http://localhost:4321` | Site address passed to Astro in [`astro.config.mjs`](astro.config.mjs).                                                                            |
+| `PUBLIC_GISCUS_REPO`        | No       | Empty                   | GitHub repository that stores post comments. Used in [`Comments.astro`](src/components/post/Comments/Comments.astro).                              |
+| `PUBLIC_GISCUS_REPO_ID`     | No       | Empty                   | Repository ID from [giscus.app](https://giscus.app).                                                                                               |
+| `PUBLIC_GISCUS_CATEGORY`    | No       | Empty                   | GitHub Discussions category for comments.                                                                                                          |
+| `PUBLIC_GISCUS_CATEGORY_ID` | No       | Empty                   | Category ID from [giscus.app](https://giscus.app).                                                                                                 |
+| `GITHUB_TOKEN`              | No       | Empty                   | Raises the GitHub API limit when the build reads star counts in [`linkActivity.ts`](src/helpers/linkActivity.ts). Any token works, with no scopes. |
 
-| Command                           | Action                                 |
-| :-------------------------------- | :------------------------------------- |
-| `pnpm devcontainer:build`         | Build the dev container                |
-| `pnpm devcontainer:rebuild`       | Rebuild the dev container (no cache)   |
-| `pnpm devcontainer:up`            | Start the dev container and notifier   |
-| `pnpm devcontainer:down`          | Stop the dev container and notifier    |
-| `pnpm devcontainer:exec <cmd>`    | Execute a command inside the container |
-| `pnpm devcontainer:shell`         | Open a zsh shell in the container      |
-| `pnpm devcontainer:claude`        | Start Claude Code in the container     |
-| `pnpm devcontainer:notifier:up`   | Start the macOS notification listener  |
-| `pnpm devcontainer:notifier:stop` | Stop the macOS notification listener   |
+## 📁 Project structure
 
-The `devcontainer:up` command automatically starts the notification listener so you receive macOS notifications when Claude Code needs attention or completes a task.
+| Path                                       | Purpose                                 |
+| :----------------------------------------- | :-------------------------------------- |
+| [`src/content/blog/`](src/content/blog/)   | Long-form posts in MDX                  |
+| [`src/content/notes/`](src/content/notes/) | Short notes in MDX                      |
+| [`src/data/`](src/data/)                   | Books, quotes, series and tags as JSON  |
+| [`src/components/`](src/components/)       | Components with their stories and tests |
+| [`src/pages/`](src/pages/)                 | Site routes                             |
+| [`public/`](public/)                       | Static files served as they are         |
+| [`.storybook/`](.storybook/)               | Storybook configuration                 |
+| [`terraform/`](terraform/)                 | Cloudflare Pages infrastructure         |
 
-## 🚀 Deployment to Cloudflare Pages
+## 🧪 Development
 
-```sh
-cd terraform
-cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars with your values
-terraform init && terraform apply
-```
+Run every command from the project root.
 
-### Required API Token Permissions
+| Command                | Action                                         |
+| :--------------------- | :--------------------------------------------- |
+| `pnpm storybook`       | Starts Storybook at `localhost:9009`           |
+| `pnpm storybook:build` | Builds Storybook to `./dist/storybook/`        |
+| `pnpm build`           | Builds the production site to `./dist/`        |
+| `pnpm preview`         | Previews the build locally                     |
+| `pnpm test`            | Runs tests in watch mode                       |
+| `pnpm test:run`        | Runs tests once                                |
+| `pnpm lint`            | Checks for linting errors                      |
+| `pnpm lint:fix`        | Fixes linting errors                           |
+| `pnpm format`          | Checks formatting                              |
+| `pnpm format:fix`      | Fixes formatting                               |
+| `pnpm astro ...`       | Runs Astro CLI commands, such as `astro check` |
+
+Git hooks run `lint-staged` before each commit and reject messages that do not follow Conventional Commits.
+
+## 🚀 Deployment
+
+The site runs on Cloudflare Pages, provisioned with [Terraform](https://developer.hashicorp.com/terraform/install) from [`terraform/`](terraform/). Cloudflare deploys `main` on each push once GitHub is connected.
+
+1. Create the variables file, then fill in your values.
+
+   ```sh
+   cd terraform
+   cp terraform.tfvars.example terraform.tfvars
+   ```
+
+2. Export a Cloudflare API token with the permissions in the table below. `<api-token>` is your token.
+
+   ```sh
+   export TF_VAR_cloudflare_api_token="<api-token>"
+   ```
+
+3. Create the infrastructure.
+
+   ```sh
+   terraform init && terraform apply
+   ```
+
+4. Authorize GitHub in Cloudflare: Workers & Pages → project → Settings → Builds & deployments → Connect to GitHub.
 
 | Scope   | Resource         | Permission |
 | :------ | :--------------- | :--------- |
 | Account | Cloudflare Pages | Edit       |
 | Zone    | DNS              | Edit       |
-
-After applying, authorize GitHub in Cloudflare: **Workers & Pages** → project → **Settings** → **Builds & deployments** → **Connect to GitHub**.
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## 🤖 Claude Commands
-
-Claude Code commands for this project. Run with `/command-name` in Claude Code.
-
-### Specs
-
-| Command                 | Description                            |
-| :---------------------- | :------------------------------------- |
-| `/spec-create [path]`   | Create new spec at `specs/[path].md`   |
-| `/spec-update [path]`   | Update existing spec with user changes |
-| `/spec-refine [path]`   | Analyze and improve spec quality       |
-| `/spec-apply [path]`    | Implement spec requirements            |
-| `/spec-verify [path]`   | Verify implementation matches spec     |
-| `/spec-compact [path]`  | Minimize spec token size               |
-| `/spec-refactor [path]` | Refactor codebase to use spec          |
-
-### Blog
-
-| Command               | Description                                 |
-| :-------------------- | :------------------------------------------ |
-| `/post-create [slug]` | Create new blog post at `src/content/blog/` |
-| `/tags-update`        | Sync `src/data/tags.json` with blog posts   |
-
-### Testing
-
-| Command               | Description           |
-| :-------------------- | :-------------------- |
-| `/test-create [path]` | Create tests for spec |
-
-### Git
-
-| Command          | Description                                  |
-| :--------------- | :------------------------------------------- |
-| `/commit-staged` | Commit staged changes with generated message |
-
-> **Note:** `/commit-staged` requires git config in the container:
->
-> ```sh
-> git config user.email "you@example.com"
-> git config user.name "Your Name"
-> ```
