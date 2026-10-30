@@ -1,47 +1,8 @@
 ---
 import { CONSENT_KEY, GA_ID } from "@/components/layout/CookieBanner/consent";
+import { gtagScript } from "./gtagScript";
 
 const isProd = import.meta.env.PROD;
-// Nothing reaches Google until the visitor accepts. gtag() then queues the
-// visit straight away; gtag.js, which sends it, waits until the page has
-// loaded and the browser is idle, so its download and start-up work never hold
-// up the page
-const gtagScript = `
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  let started = false;
-  window.enableAnalytics = () => {
-    window["ga-disable-${GA_ID}"] = false;
-    if (started) return;
-    started = true;
-    gtag("js", new Date());
-    gtag("config", "${GA_ID}");
-    const load = () => {
-      const script = document.createElement("script");
-      script.async = true;
-      script.src = "https://www.googletagmanager.com/gtag/js?id=${GA_ID}";
-      document.head.append(script);
-    };
-    const whenIdle = () => {
-      "requestIdleCallback" in window
-        ? requestIdleCallback(load, { timeout: 3000 })
-        : setTimeout(load, 500);
-    };
-    document.readyState === "complete"
-      ? whenIdle()
-      : addEventListener("load", whenIdle, { once: true });
-  };
-  window.disableAnalytics = () => {
-    window["ga-disable-${GA_ID}"] = true;
-  };
-  try {
-    if (localStorage.getItem("${CONSENT_KEY}") === "granted") {
-      window.enableAnalytics();
-    }
-  } catch {
-    // Storage blocked: no recorded consent.
-  }
-`;
 ---
 
-{isProd && <script is:inline set:html={gtagScript} />}
+{isProd && <script is:inline set:html={gtagScript(GA_ID, CONSENT_KEY)} />}

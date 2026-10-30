@@ -1,6 +1,7 @@
 import { afterEach, describe, it, expect, vi } from "vitest";
 import {
   analyticsCookies,
+  CONSENT_KEY,
   cookieDomains,
   parseConsent,
   setupCookieBanner,
@@ -16,25 +17,32 @@ function fakeControl() {
   };
 }
 
-function stubPage() {
-  const controls = {
-    "[data-cookie-accept]": fakeControl(),
-    "[data-cookie-decline]": fakeControl(),
-    "[data-cookie-settings]": fakeControl(),
-  };
+function stubPage(stored: string | null = null) {
+  const accept = fakeControl();
+  const decline = fakeControl();
+  const settings = fakeControl();
   const banner = {
     hidden: true,
-    querySelector: (selector: keyof typeof controls) => controls[selector],
+    querySelector: (selector: string) =>
+      selector === "[data-cookie-accept]" ? accept : decline,
   };
-  vi.stubGlobal("window", {});
+  const cookies = new Set(["_ga", "_ga_TEST", "keep"]);
+  const hooks = { enableAnalytics: vi.fn(), disableAnalytics: vi.fn() };
+  const setItem = vi.fn();
+  vi.stubGlobal("window", hooks);
   vi.stubGlobal("location", { hostname: "mifkata.com" });
-  vi.stubGlobal("localStorage", { getItem: () => null, setItem: vi.fn() });
+  vi.stubGlobal("localStorage", { getItem: () => stored, setItem });
   vi.stubGlobal("document", {
-    cookie: "",
-    querySelector: (selector: keyof typeof controls) =>
-      selector === "[data-cookie-settings]" ? controls[selector] : banner,
+    get cookie() {
+      return [...cookies].map((name) => `${name}=1`).join("; ");
+    },
+    set cookie(value: string) {
+      if (value.includes("1970")) cookies.delete(value.split("=")[0]);
+    },
+    querySelector: (selector: string) =>
+      selector === "[data-cookie-settings]" ? settings : banner,
   });
-  return { banner, ...controls };
+  return { accept, banner, cookies, decline, hooks, setItem, settings };
 }
 
 afterEach(() => {
@@ -48,17 +56,47 @@ describe("setupCookieBanner", () => {
     expect(banner.hidden).toBe(false);
   });
 
-  it("should never scroll the page when moving focus", () => {
-    const page = stubPage();
+  it("should keep the banner hidden after a recorded choice", () => {
+    const { banner } = stubPage("denied");
     setupCookieBanner();
-    page["[data-cookie-settings]"].click();
-    page["[data-cookie-accept]"].click();
-    expect(page["[data-cookie-accept]"].focus).toHaveBeenCalledWith({
-      preventScroll: true,
-    });
-    expect(page["[data-cookie-settings]"].focus).toHaveBeenCalledWith({
-      preventScroll: true,
-    });
+    expect(banner.hidden).toBe(true);
+  });
+
+  it("should enable analytics and remember it on Accept", () => {
+    const { accept, banner, hooks, setItem } = stubPage();
+    setupCookieBanner();
+    accept.click();
+    expect(hooks.enableAnalytics).toHaveBeenCalledOnce();
+    expect(setItem).toHaveBeenCalledWith(CONSENT_KEY, "granted");
+    expect(banner.hidden).toBe(true);
+  });
+
+  it("should disable analytics and clear its cookies on Decline", () => {
+    const { banner, cookies, decline, hooks, setItem } = stubPage();
+    setupCookieBanner();
+    decline.click();
+    expect(hooks.disableAnalytics).toHaveBeenCalledOnce();
+    expect(hooks.enableAnalytics).not.toHaveBeenCalled();
+    expect(setItem).toHaveBeenCalledWith(CONSENT_KEY, "denied");
+    expect([...cookies]).toEqual(["keep"]);
+    expect(banner.hidden).toBe(true);
+  });
+
+  it("should reopen from the footer and focus Accept", () => {
+    const { accept, banner, settings } = stubPage("denied");
+    setupCookieBanner();
+    settings.click();
+    expect(banner.hidden).toBe(false);
+    expect(accept.focus).toHaveBeenCalledOnce();
+  });
+
+  it("should never scroll the page when moving focus", () => {
+    const { accept, settings } = stubPage();
+    setupCookieBanner();
+    settings.click();
+    accept.click();
+    expect(accept.focus).toHaveBeenCalledWith({ preventScroll: true });
+    expect(settings.focus).toHaveBeenCalledWith({ preventScroll: true });
   });
 });
 

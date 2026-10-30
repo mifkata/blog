@@ -18,11 +18,12 @@ interface Props {
 const { title, description, card, class: className, outline } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="en" class="cookie-banner-open:scroll-pb-48">
   <head>
     <BaseHead title={title} description={description} card={card} />
   </head>
-  <body>
+  <body class="cookie-banner-open:pb-48 md:cookie-banner-open:pb-28">
+    <CookieBanner />
     <div class="content-wrapper">
       <Header outline={outline} />
       <main
@@ -35,6 +36,5 @@ const { title, description, card, class: className, outline } = Astro.props;
       </main>
       <Footer />
     </div>
-    <CookieBanner />
   </body>
 </html>

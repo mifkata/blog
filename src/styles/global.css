@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "./palettes.css";
 
+@custom-variant cookie-banner-open (&:has([data-cookie-banner]:not([hidden])));
+
 /* Every colour utility reads the active seasonal palette (palettes.css). */
 @theme inline {
   --color-accent: var(--palette-accent);

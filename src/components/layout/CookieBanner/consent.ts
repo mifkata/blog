@@ -1,7 +1,7 @@
 export const GA_ID = "G-SDS8ZJG4SS";
 export const CONSENT_KEY = "mifkata-analytics-consent";
 
-export type Consent = "granted" | "denied";
+type Consent = "granted" | "denied";
 
 declare global {
   interface Window {
@@ -21,7 +21,6 @@ export function analyticsCookies(cookies: string): string[] {
     .filter((name) => /^(_ga(_.+)?|_gid)$/.test(name));
 }
 
-/** The hostname and each parent domain, as gtag may have set its cookies on any */
 export function cookieDomains(hostname: string): string[] {
   const parts = hostname.split(".");
   return parts.slice(0, -1).flatMap((_, i) => {
