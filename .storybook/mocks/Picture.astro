@@ -1,0 +1,18 @@
+---
+import type { ComponentProps } from "astro/types";
+import Image from "./Image.astro";
+
+type Props = ComponentProps<typeof Image> & {
+  formats?: string[];
+  fallbackFormat?: string;
+  widths?: number[];
+  pictureAttributes?: Record<string, unknown>;
+};
+
+const { formats, fallbackFormat, widths, pictureAttributes, ...rest } =
+  Astro.props;
+---
+
+<picture {...pictureAttributes}>
+  <Image {...rest} />
+</picture>

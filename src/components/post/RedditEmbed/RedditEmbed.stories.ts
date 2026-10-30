@@ -13,7 +13,8 @@ const meta: Meta<typeof RedditEmbed> = {
   decorators: [
     (storyFn) => {
       const result = storyFn();
-      setTimeout(initRedditEmbeds, 0);
+      // Storybook also prerenders stories in Node at build time.
+      if (typeof document !== "undefined") setTimeout(initRedditEmbeds, 0);
       return result;
     },
   ],

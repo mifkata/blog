@@ -18,22 +18,40 @@ const config: StorybookConfig = {
     builder: "@storybook/builder-vite",
   },
   async viteFinal(config, options) {
+    // Vite hands the aliases over as an array once its config is resolved.
+    const existing = config.resolve?.alias ?? [];
+    const inherited = Array.isArray(existing)
+      ? existing
+      : Object.entries(existing).map(([find, replacement]) => ({
+          find,
+          replacement,
+        }));
+
     return {
       ...config,
       base: options.configType === "PRODUCTION" ? "/storybook/" : config.base,
       resolve: {
         ...config.resolve,
-        alias: {
-          ...config.resolve?.alias,
-          "@": resolve(__dirname, "../src"),
-          cssesc: resolve(__dirname, "patches/cssesc.mjs"),
-          "astro:assets": resolve(__dirname, "mocks/astro-assets.ts"),
-          "astro:content": resolve(__dirname, "mocks/astro-content.ts"),
-          "astro:scripts/before-hydration.js": resolve(
-            __dirname,
-            "mocks/astro-scripts.ts",
-          ),
-        },
+        alias: [
+          { find: "@", replacement: resolve(__dirname, "../src") },
+          {
+            find: "cssesc",
+            replacement: resolve(__dirname, "patches/cssesc.mjs"),
+          },
+          {
+            find: "astro:assets",
+            replacement: resolve(__dirname, "mocks/astro-assets.ts"),
+          },
+          {
+            find: "astro:content",
+            replacement: resolve(__dirname, "mocks/astro-content.ts"),
+          },
+          {
+            find: "astro:scripts/before-hydration.js",
+            replacement: resolve(__dirname, "mocks/astro-scripts.ts"),
+          },
+          ...inherited,
+        ],
       },
     };
   },

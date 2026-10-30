@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
-    "@storybook-astro/framework": "^1.8.0",
+    "@storybook-astro/framework": "^1.14.0",
     "@storybook/addon-a11y": "^10.5.0",
     "@storybook/addon-docs": "^10.5.0",
     "@storybook/html": "^10.5.0",
@@ -67,6 +67,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "storybook": "^10.5.0",
     "typescript": "^5.9.3",
+    "vite": "^8.3.5",
     "vitest": "^4.0.16"
   }
 }
