@@ -52,9 +52,6 @@ const shortDate = (date: Date) =>
             <a
               href={`/notes/#${note.id}`}
               class:list={["note-card", { "is-book-review": note.bookReview }]}
-              aria-label={
-                note.bookReview ? `${note.title} (book review)` : undefined
-              }
             >
               {note.bookReview && (
                 <BookOpen
@@ -63,7 +60,12 @@ const shortDate = (date: Date) =>
                 />
               )}
               <span class:list={["note-stack", { "pr-9": note.bookReview }]}>
-                <span class="note-title">{note.title}</span>
+                <span class="note-title">
+                  {note.title}
+                  {note.bookReview && (
+                    <span class="sr-only">(book review)</span>
+                  )}
+                </span>
                 <span class="note-text">{note.text}</span>
               </span>
               <span class="note-foot">

@@ -120,12 +120,12 @@ const PATTERNS = 7;
                 class:list={["spine", `pattern-${i % PATTERNS}`]}
                 style={`--hue: ${book.hue}; --tone: ${book.tone}; --wear: ${book.wear}%; --x: ${book.x}px; --shelf: ${shelfWidth}px; width: ${book.width}px; height: ${book.height}px`}
                 data-shelf-book
-                aria-label={`${book.title}${book.subtitle ? `: ${book.subtitle}` : ""} by ${book.author}`}
+                aria-label={`${book.title} ${spineAuthor(book.author)}${book.subtitle ? `: ${book.subtitle}` : ""}, by ${book.author}`}
               >
                 <span class="spine-light" aria-hidden="true" />
                 <span class="spine-title" aria-hidden="true">
                   {book.title}
-                </span>
+                </span>{" "}
                 <span class="spine-author" aria-hidden="true">
                   {spineAuthor(book.author)}
                 </span>
