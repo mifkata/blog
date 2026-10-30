@@ -11,6 +11,7 @@ export default [
       "worktrees/**",
       ".worktrees/**",
       ".agents/**",
+      ".claude/**",
       "node_modules/**",
     ],
   },
