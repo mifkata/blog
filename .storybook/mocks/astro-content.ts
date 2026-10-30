@@ -13,10 +13,10 @@ export async function getCollection(name: string) {
         },
       },
       {
-        id: "2026/01/agent-instructions-and-commands",
-        slug: "2026/01/agent-instructions-and-commands",
+        id: "2026/01/system-prompts-and-skills",
+        slug: "2026/01/system-prompts-and-skills",
         data: {
-          title: "Project Instructions and Reusable Commands",
+          title: "System prompts and skills",
           synopsis:
             "Best practices for organizing Claude Code commands and CLAUDE.md.",
           pubDate: new Date("2026-01-02"),

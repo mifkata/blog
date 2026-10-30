@@ -23,6 +23,6 @@ export const Default: Story = {
 export const WithCurrentArticle: Story = {
   args: {
     slug: "agentic-engineering-foundations",
-    current: "2026/01/agent-instructions-and-commands",
+    current: "2026/01/system-prompts-and-skills",
   },
 };

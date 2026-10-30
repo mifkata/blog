@@ -22,8 +22,8 @@ const POSTS: RecentPost[] = [
     minutes: 6,
   },
   {
-    id: "2026/01/agent-instructions-and-commands",
-    title: "Project Instructions and Reusable Commands",
+    id: "2026/01/system-prompts-and-skills",
+    title: "System prompts and skills",
     description:
       "Best practices for organising project instructions and reusable commands.",
     date: new Date("2026-01-02T17:15:00Z"),
@@ -45,7 +45,7 @@ const options = {
   counts: tagCounts(POSTS),
   seriesUrls: [
     "/blog/2025/sandboxing-ai-agents-with-devcontainers/",
-    "/blog/2026/01/agent-instructions-and-commands/",
+    "/blog/2026/01/system-prompts-and-skills/",
     "/blog/2026/01/spec-driven-development/",
   ],
 };

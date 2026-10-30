@@ -69,3 +69,4 @@ dolt-config.log
 
 # Agent records (audits, skill handoffs) stay local
 docs/
+.blog-review/
