@@ -53,7 +53,7 @@
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "frontend-astro-builder/SKILL.md",
-      "computedHash": "9e6c800c7fc797622865d899d1fd4e8d14b8e91f59662d5f1fd6d9b645e7072e"
+      "computedHash": "14a524264a6e7cf679ba40a2f1a005979d34313ce5095d6991ea8095eb2798b1"
     },
     "frontend-astro-reviewer": {
       "source": "mifkata/dev-skills",
@@ -83,7 +83,7 @@
       "source": "mifkata/repo-skills",
       "sourceType": "github",
       "skillPath": "skill-installer/SKILL.md",
-      "computedHash": "370e2b60b1bb1cb147a89c501d72ed2dc34a9f89614397bd7320ad0d477f30d0"
+      "computedHash": "ed5ae14cce366569857dbbf58adb1e9ba4ea00de8dd13540a984f77ac8115a03"
     }
   }
 }
