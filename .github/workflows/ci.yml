@@ -1,6 +1,6 @@
 # Generated from the ci-checks.yml manifests; change a manifest and regenerate, never this file.
-# sources: ci-checks.yml tools/repo/ci-checks.yml
-# hash: 2f16d2401d16c5eb
+# sources: ci-checks.yml
+# hash: c6c9b8ac0d785fc6
 name: ci
 on:
   pull_request:
@@ -43,32 +43,9 @@ jobs:
       - name: "storybook"
         run: "pnpm run storybook:build"
 
-  repo:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: tools/repo
-    env:
-      MISE_ENABLE_TOOLS: "yq"
-    steps:
-      - uses: actions/checkout@v7
-      - name: toolchain
-        run: |
-          curl -fsSL https://mise.run | sh
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          echo "$HOME/.local/share/mise/shims" >> "$GITHUB_PATH"
-      - name: tools
-        run: |
-          mise install
-          if command -v corepack >/dev/null; then corepack enable --install-directory "$HOME/.local/bin"; fi
-      - name: install
-        run: "true"
-      - name: "toolchain"
-        run: "./toolchain.sh"
-
   ci-ok:
     if: ${{ always() }}
-    needs: [web, repo]
+    needs: [web]
     runs-on: ubuntu-latest
     steps:
       - env:

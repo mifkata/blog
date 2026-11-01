@@ -16,8 +16,6 @@ pre-push:
   jobs:
     - name: check
       run: mise run check
-    - name: toolchain
-      run: mise x -- tools/repo/toolchain.sh
 commit-msg:
   jobs:
     - name: kept-commit-msg
