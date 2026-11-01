@@ -42,7 +42,7 @@
 # - github.repo
 
 export:
-    auto: true
-    git-add: true
+    auto: false
+    git-add: false
 sync:
     remote: "git+ssh://git@github.com/mifkata/blog.git"
