@@ -1,5 +1,24 @@
 import { describe, it, expect } from "vitest";
-import { WORDS_PER_MINUTE, firstParagraph, readingMinutes } from "./reading";
+import {
+  WORDS_PER_MINUTE,
+  firstParagraph,
+  readingMinutes,
+  unfoldParagraphs,
+} from "./reading";
+
+describe("unfoldParagraphs", () => {
+  it("turns the newline a folded scalar keeps into a paragraph break", () => {
+    expect(unfoldParagraphs("One.\nTwo.")).toBe("One.\n\nTwo.");
+  });
+
+  it("leaves paragraphs that are already split", () => {
+    expect(unfoldParagraphs("One.\n\nTwo.")).toBe("One.\n\nTwo.");
+  });
+
+  it("leaves a single paragraph alone", () => {
+    expect(unfoldParagraphs("Only one.")).toBe("Only one.");
+  });
+});
 
 const words = (count: number) => Array(count).fill("word").join(" ");
 

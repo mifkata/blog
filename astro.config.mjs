@@ -9,8 +9,7 @@ import rehypeExternalLinks from "rehype-external-links";
 
 import tailwindcss from "@tailwindcss/vite";
 import { rehypeCodeCaptions } from "./src/helpers/codeCaptions.ts";
-
-const OWN_HOSTS = new Set(["mifkata.com", "www.mifkata.com"]);
+import { isExternalHref } from "./src/helpers/externalLinks.ts";
 
 // https://astro.build/config
 export default defineConfig({
@@ -44,9 +43,7 @@ export default defineConfig({
             rel: ["noopener", "noreferrer"],
             // Absolute links back to this site stay in the same tab
             test: (/** @type {any} */ node) =>
-              !OWN_HOSTS.has(
-                new URL(String(node.properties.href), "https://x").hostname,
-              ),
+              isExternalHref(String(node.properties.href)),
             content: { type: "text", value: "(opens in new tab)" },
             contentProperties: { className: ["sr-only"] },
           },

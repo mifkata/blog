@@ -13,6 +13,11 @@ export function readingMinutes(body: string): number {
   return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
 }
 
+/** A folded YAML scalar (`>-`) reduces a blank line to one newline. */
+export function unfoldParagraphs(text: string): string {
+  return text.replace(/\n+/g, "\n\n");
+}
+
 export function firstParagraph(markdown?: string): string | undefined {
   return (
     markdown

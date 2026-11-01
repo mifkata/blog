@@ -2,9 +2,9 @@
 import { Picture } from "astro:assets";
 import { PICTURE_FORMATS } from "@/consts";
 import type { CollectionEntry } from "astro:content";
-import { marked } from "marked";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
 import Tag from "@/components/ui/Tag/Tag.astro";
+import { renderMarkdown } from "@/helpers/markdown";
 import { readingMinutes } from "@/helpers/reading";
 
 interface Props {
@@ -48,7 +48,7 @@ const minutes = readingMinutes(post.body ?? "");
   <div class="featured-body">
     <div
       class="featured-synopsis"
-      set:html={marked.parse(synopsis ?? description, { async: false })}
+      set:html={renderMarkdown(synopsis ?? description)}
     />
     {
       tags.length > 0 && (
