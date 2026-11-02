@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
+import { embedComponents } from "@/components/post";
 import { proseComponents } from "@/components/prose";
 import seriesData from "@/data/series.json";
 import tagsData from "@/data/tags.json";
@@ -77,5 +78,5 @@ const related: RelatedItem[] = picks.map(({ id, kind, reason }) => {
   stories={stories}
   filePath={post.filePath}
 >
-  <Content components={proseComponents} />
+  <Content components={{ ...proseComponents, ...embedComponents }} />
 </BlogPostLayout>

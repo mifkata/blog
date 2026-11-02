@@ -1,6 +1,7 @@
 ---
 import { BookOpen, LibraryBig, Notebook } from "@lucide/astro";
 import type { render } from "astro:content";
+import { embedComponents } from "@/components/post";
 import Link from "@/components/prose/Link.astro";
 import OrderedList from "@/components/prose/OrderedList.astro";
 import UnorderedList from "@/components/prose/UnorderedList.astro";
@@ -121,7 +122,12 @@ const rows = months.map((month) => {
               <div class="note-body">
                 {note.Content ? (
                   <note.Content
-                    components={{ a: Link, ul: UnorderedList, ol: OrderedList }}
+                    components={{
+                      a: Link,
+                      ul: UnorderedList,
+                      ol: OrderedList,
+                      ...embedComponents,
+                    }}
                   />
                 ) : (
                   <p>{note.text}</p>
