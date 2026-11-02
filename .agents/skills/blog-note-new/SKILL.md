@@ -12,57 +12,20 @@ metadata:
 
 # blog-note-new
 
-Create `src/content/notes/<YYYY-MM-DD>-<slug>.mdx` with `draft: true`.
+OUTPUT: `src/content/notes/<YYYY-MM-DD>-<slug>.mdx`, a draft that builds as is, written only by `scripts/new.mjs` from `assets/note.mdx`.
 
-## Gather the details
+## Procedure
 
-- Use the title, date and body the user already supplied. Ask for a missing title;
-  a note needs no description, synopsis or hero image.
-- Infer book-review intent from requests such as “book note,” “book-review note”
-  or “a note about the book I read,” including wording supplied as skill
-  arguments. Such a request needs `tags: [book-review]`; do not scaffold it as an
-  ordinary untagged note merely because the request also supplies a title.
-- If no date was supplied, use the current UTC calendar day. Treat a supplied
-  date as a calendar day, not a timestamp to shift into another time zone.
-- Derive the slug from the title: lowercase words joined by `-`, without trimming
-  stop words. Show the title, date and proposed path when asking for missing or
-  ambiguous details; do not ask again for choices the user already made.
-- If the destination exists, ask for a different title or slug. Do not overwrite
-  an existing note.
+1. Use the title, date, tags and body the user supplied; ask only for a missing title. A note has no description, synopsis or hero image.
+2. Book note, book-review note or a note about a book the user read, however it was worded → `--tag book-review`, kept alongside any other tags the user gave.
+3. Body text → saved verbatim to a temp file for `--body-file`, or piped with `--body-file -`. Never rewrite it, and never invent opinions, ratings or review text.
+4. `<new> --title "<title>" [--date <YYYY-MM-DD>] [--tag <tag>]… [--body-file <path|->] --dry-run`; show the title, date and path only when something was missing or ambiguous.
+5. `<new>` with the same arguments; a non-zero exit stops the run.
+6. `pnpm exec astro sync` validates the frontmatter.
+7. Report the `path`, the `url` and every `next` line of the script's JSON.
 
-## Create the draft
+`<new>` = `node <skill-dir>/scripts/new.mjs` (any folder inside the repo). No `--date` → the current UTC day; a supplied date is a calendar day, never shifted across time zones.
 
-Check the notes collection in `src/content.config.ts` for the current schema.
-Use the flat dated filename convention, not the blog's year/month directories.
+Exit: 0 done; 1 the note exists (never overwrite: ask for another title) or the body file is unreadable; 2 usage.
 
-```mdx
----
-title: "<title>"
-date: <YYYY-MM-DD>
-tags: []
-draft: true
----
-
-TODO: write the note.
-```
-
-Quote and escape the title as a YAML string. If the user supplied body text, put
-it in place of the placeholder without rewriting it. Do not invent the author's
-opinions, book ratings or review text.
-
-For a book note, replace `tags: []` with `tags: [book-review]`. Both
-`src/pages/index.astro` and `src/pages/notes/index.astro` consume this tag to
-identify reviews. Preserve other tags the user supplied. Do not add blog-only
-fields or register notes in `src/data/tags.json` or `src/data/series.json`.
-
-`draft: true` keeps a note out of production and visible in development. Check
-that the new file parses with the current schema using an available Astro check
-or build; there is no image asset to generate.
-
-## Report
-
-Give the file path and its development timeline link, using this blog's actual
-development-server address when it is running (check `astro dev status`); otherwise
-show the default `http://localhost:4321/notes/#<YYYY-MM-DD>-<slug>`. Notes have
-timeline anchors, not individual article routes. Mention that publishing requires
-replacing any placeholder text, checking the date, and removing `draft: true`.
+Notes have timeline anchors, not article routes. Never add blog-only fields, or register a note in `src/data/tags.json` or `src/data/series.json`.
