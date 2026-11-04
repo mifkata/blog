@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useId, type ReactNode } from "react";
 import { ExternalLinkIcon } from "@/components/ui/icons/ExternalLinkIcon";
+import { normalizeUrl } from "@/helpers/postLinks";
 
 interface Props {
   url: string;
@@ -161,7 +162,8 @@ export default function GithubLink({
           rel="noopener noreferrer"
           className="repo-card-host"
         >
-          github.com <ExternalLinkIcon size={11} />
+          {URL.canParse(url) ? normalizeUrl(url) : url}{" "}
+          <ExternalLinkIcon size={11} />
           <span className="sr-only">(opens in new tab)</span>
         </a>
       </div>
