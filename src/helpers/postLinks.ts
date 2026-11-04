@@ -1,4 +1,5 @@
-export type LinkKind = "github" | "npm" | "web";
+export type LinkKind =
+  "github" | "github-profile" | "wikipedia" | "npm" | "web";
 
 export interface PostLink {
   url: string;
@@ -6,7 +7,14 @@ export interface PostLink {
   label: string;
   /** `owner/repo`, for GitHub links */
   repo?: string;
+  /** A repository of the blog's author */
+  own?: true;
 }
+
+const OWN_OWNER = "mifkata";
+
+/** The author's repositories show their stars only from this count up. */
+export const MIN_OWN_STARS = 20;
 
 // The blog and its own repository aren't "elsewhere"
 const OWN = [/^mifkata\.com(\/|$)/, /^github\.com\/mifkata\/blog(\/|$)/];
@@ -29,7 +37,14 @@ export function classifyLink(url: string): PostLink {
       kind: "github",
       label: repo,
       repo,
+      ...(parts[0].toLowerCase() === OWN_OWNER && { own: true as const }),
     };
+  }
+  if (host === "github.com" && parts.length === 1) {
+    return { url, kind: "github-profile", label: parts[0] };
+  }
+  if (host.endsWith(".wikipedia.org") && parts[0] === "wiki" && parts[1]) {
+    return { url, kind: "wikipedia", label: wikiTitle(parts.slice(1)) };
   }
   if (host === "npmjs.com" && parts[0] === "package" && parts[1]) {
     const name =
@@ -41,10 +56,20 @@ export function classifyLink(url: string): PostLink {
   return { url, kind: "web", label: normalizeUrl(url) };
 }
 
+function wikiTitle(segments: string[]): string {
+  const title = segments.join("/");
+  try {
+    return decodeURIComponent(title).replace(/_/g, " ");
+  } catch {
+    return title.replace(/_/g, " ");
+  }
+}
+
 /**
- * External links in a post's MDX, in order of appearance: markdown links and
- * `url`/`href` props such as GithubLink's. Code blocks don't count, and every
- * GitHub repository appears once, however many of its files are linked.
+ * External links in a post's MDX: the author's repositories first, then the
+ * rest in order of appearance. Markdown links and `url`/`href` props such as
+ * GithubLink's count; code blocks don't, and every GitHub repository appears
+ * once, however many of its files are linked.
  */
 export function extractLinks(body: string): PostLink[] {
   const prose = body.replace(/```[\s\S]*?```/g, " ");
@@ -67,7 +92,14 @@ export function extractLinks(body: string): PostLink[] {
     seen.add(id);
     links.push(link);
   }
-  return links;
+  return [...links.filter((l) => l.own), ...links.filter((l) => !l.own)];
+}
+
+export function shownStars(
+  link: PostLink & { stars?: number },
+): number | undefined {
+  if (link.stars === undefined) return undefined;
+  return link.own && link.stars < MIN_OWN_STARS ? undefined : link.stars;
 }
 
 const compact = new Intl.NumberFormat("en", {

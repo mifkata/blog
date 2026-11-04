@@ -1,32 +1,46 @@
 ---
 import GitHub from "@/components/ui/icons/GitHub.astro";
 import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
-import { compactNumber, type PostLink } from "@/helpers/postLinks";
+import Wikipedia from "@/components/ui/icons/Wikipedia.astro";
+import { compactNumber, shownStars, type PostLink } from "@/helpers/postLinks";
 
 interface Props {
   link: PostLink & { stars?: number };
 }
 
 const { link } = Astro.props;
+const stars = shownStars(link);
 ---
 
-<a href={link.url}>
+<a
+  href={link.url}
+  title={link.url}
+  target={link.own ? undefined : "_blank"}
+  rel={link.own ? undefined : "noopener noreferrer nofollow"}
+  class:list={{ profile: link.kind === "github-profile" }}
+>
+  {link.own && <img src="/icons/favicon.svg" width="14" height="14" alt="" />}
   {
-    link.kind === "github" ? (
+    !link.own && (link.kind === "github" || link.kind === "github-profile") && (
       <GitHub size={14} />
-    ) : (
+    )
+  }
+  {link.kind === "wikipedia" && <Wikipedia size={14} />}
+  {
+    (link.kind === "npm" || link.kind === "web") && (
       <LucideIcon icon={link.kind === "npm" ? "package" : "globe"} size={14} />
     )
   }
   <span class="name">{link.label}</span>
   {
-    link.stars !== undefined && (
-      <span class="stars" title={`${link.stars} stars on GitHub`}>
+    stars !== undefined && (
+      <span class="stars" title={`${stars} stars on GitHub`}>
         <LucideIcon icon="star" size={12} />
-        {compactNumber(link.stars)}
+        {compactNumber(stars)}
       </span>
     )
   }
+  {!link.own && <span class="sr-only">(opens in new tab)</span>}
 </a>
 
 <style>
@@ -43,6 +57,13 @@ const { link } = Astro.props;
   }
   a > :global(svg:first-child) {
     color: var(--palette-muted);
+  }
+  a.profile > :global(svg:first-child) {
+    color: var(--palette-accent);
+  }
+  img {
+    display: block;
+    border-radius: 3px;
   }
   .name {
     overflow: hidden;

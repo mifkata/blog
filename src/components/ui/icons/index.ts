@@ -1,6 +1,7 @@
 export { default as GitHub } from "./GitHub.astro";
 export { default as LinkedIn } from "./LinkedIn.astro";
 export { default as LucideIcon } from "./LucideIcon.astro";
+export { default as Wikipedia } from "./Wikipedia.astro";
 export { iconNames, type IconName } from "./lucide";
 
 // React icons
