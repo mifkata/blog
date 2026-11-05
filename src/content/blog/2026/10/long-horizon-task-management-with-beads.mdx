@@ -1,0 +1,128 @@
+---
+title: Long horizon task management with Beads
+description: Using Beads to give your agentic workflows a durable task graph for long-term, continuous, high-scale development.
+synopsis: >-
+  Once you get introduced to vibe-coding, you start building with chat. You get excited and you try to build something bigger. You figure out [spec-driven development](/blog/2026/01/spec-driven-development/) to some extent and you give it a go. You either fail dramatically or create what is known in the IT industry as a **Frankenstein** - a re-animated code-stitchling.
+
+  You try again and get better at it, but your agents still get confused and often fail to stay on track. Then you find [beads, the Jira for agents](https://github.com/gastownhall/beads), and things start to look up.
+pubDate: "2026-11-05T03:48:00Z"
+heroImage: "@/assets/blog/2026/1105-long-horizon-task-management-beads.jpeg"
+tags: [workflow, devex, agents]
+---
+
+import {
+  ArticleSeries,
+  GithubLink,
+  Highlight,
+  WrapText,
+} from "@/components/post";
+
+## The dawn of Beads
+
+Some time around the middle of 2025, while Claude Code was still new and most software engineers were reluctant to try it, having experienced a rather horrific introduction to AI-driven development, [Steve Yegge](https://en.wikipedia.org/wiki/Steve_Yegge) felt exactly the opposite. He was so obsessed with vibe-coding that he couldn't stop talking about it. I remember that I read somewhere that he was voice-coding while driving, as to not miss a chance to spend them precious tokens.
+
+At the time, he was pushing hundreds of commits per week - and had 10k commits for the 6 months between October 2025 and April 2026, with only 656 commits since then at the time of writing this. [He seems to have stepped back from his intensive flow](https://github.com/steveyegge) or maybe he's just not sharing his commits with us anymore, or maybe he's just coding less and going to conferences and convincing people that programming by hand is dead.
+
+In his passion, he managed to create two things:
+* [beads](https://github.com/gastownhall/beads) - a task management and memory tool for agents.
+* [gastown](https://github.com/gastownhall/gastown) - a software factory for multi-model orchestration based on beads.
+
+<Highlight block type="note">
+I've been using `beads` since around version `0.40.0` when it switched from keeping everything in `JSONL` to [Dolt](https://www.dolthub.com/docs/concepts/dolt/rdbms/server/) only. Nowadays it supports both modes.
+</Highlight>
+
+## What is so special about beads
+
+If you're a software engineer, a product manager or basically any person working with project management tools, you probably have used Jira, Linear or some other tool for task management. Well, beads is just like that, but it's terminal-based and it's optimised to be used by agents. It has its own memory engine that on session start reminds the agent what it has worked on so far. Work can be organised in epics with various types such as tasks, bugs, features and so on.
+
+On top of that you can add `metadata` and `tags` to your liking, which can set off your creativity to the next level. For example, I tag beads that need my decisions as `human` and in the metadata, I add things like `grade`, which specifies if a task is either **easy**, **moderate**, **hard** or **complex** and this is used to decide what kind of model with what kind of effort/reasoning should be used for said task.
+
+Most importantly, **beads** allows for tasks to be linked as dependencies, which in terms of agentic workflows means that it creates a Directional Acyclic Graph (DAG) of work to be done. Now, agents love DAGs. Telling the agent to **swarm the beads** allows it to find everything that is unblocked and start working on those things in parallel.
+
+## How does it work
+
+### First things first, installation
+
+<GithubLink url="https://github.com/gastownhall/beads">
+    It was initially coded with `Node.js`, but was later reworked with `Golang`, whilst still installable through `npm`.
+    <WrapText>
+        ```sh
+        brew install beads           # macOS / Linux (recommended)
+        npm install -g @beads/bd     # Node.js users
+        ```
+    </WrapText>
+</GithubLink>
+
+### Setting up your project
+
+Once you have `beads` installed, go to your repository and run:
+
+<WrapText>
+    ```sh
+    # sets up beads storage and default config for different agents
+    # configures AGENTS.md and CLAUDE.md to use beads
+
+    bd init
+    ```
+</WrapText>
+
+It will ask you some questions and if it cannot detect a `Dolt` server to connect to, it will create an **embedded Dolt** inside your repository, which gets persisted with your codebase. You can still get the `.beads/issues.jsonl` file as well and use that mechanism to store your tasks; however, I don't recommend it, as the agent can read and manually modify it - pure waste of tokens.
+
+<Highlight block type="tip">
+    I've made a self-updating repository running **Dolt** on `localhost`, with a built-in **cron job** that dumps the database and pushes it to the repository at a set interval.
+    <GithubLink url="https://github.com/mifkata/beads-dolt">
+        1. Fork the `beads-dolt` repository and make it private
+        2. Clone it on your `local dev`, configure an `ssh` key or a `GITHUB_TOKEN`
+        3. Lift the solution with `docker compose` and you're good to go
+    </GithubLink>
+    From here on out, every database and the beads in it will be backed up every few hours with a managed cleanup, so your repository doesn't grow indefinitely.
+
+    Detailed installation instructions and configuration information can be found in the repository.
+</Highlight>
+
+## Tips for improving your beads experience
+
+### Creating a skill that works for you
+
+`beads` comes with a skill for **Codex**, but none for **Claude**, but there's a recommended **Claude** plugin to install, which you should. All hooks and skills end up injecting the instructions with available commands by running `bd prime`, which effectively outputs the contents of `.beads/PRIME.md` to the agent every time a new session is started and after context compaction.
+
+Now, while this is a viable approach, it's not really consistent across agents and I've noticed a workflow drift, such as not setting a bead in progress, whilst the agent is working on it, saving progress and handoff only occasionally and so on.
+
+### Writing your own skill
+
+My first suggestion is to [write an efficient agent skill](/blog/2026/10/writing-efficient-skills-for-llm-agents/) for `beads` and use it as a placeholder about how the tool should work for you, with explicit instructions about when a skill is picked up, how its comments are updated, plus adding efficient metadata such as effort grade to be used by sub-agents and so on.
+
+As you work with the package you will find there're numerous ways to tweak the flow for yourself, so the first core principle that you should follow is to add an **agent-agnostic** skill that describes it and to inject it into your [AGENTS.md system prompt](/blog/2026/01/system-prompts-and-skills/), as a **must use** behaviour. Keep updating that skill as you refine your workflow and reuse it across projects.
+
+<Highlight block type="tip">
+Add instructions to register **bug** types correctly, and keep changes as **chores**. This will allow you to work on fixes more easily, as you can tell the agent to focus on those first.
+</Highlight>
+
+### Organising your work
+
+Since `beads` supports **epics**, you can nest them indefinitely within each other. I personally like to go with a four-level depth - milestones, epics, features and tasks.
+
+Some people work with a flat backlog, others might go even more granular; for me this is the ideal state that allows me, as a human, to revise the requirements by hand, when need be.
+
+### Get a TUI/UI client
+
+Working with the `bd` commands is fine, but it might be slightly redundant after a while. Here is a list of a few clients with a user interface:
+
+* [Beadbox](https://beadbox.app/) - a macOS client, my first choice. It looks more like Jira than any of the others, works as a desktop application, UX is a little bit clunky, but overall a decent tool.
+* [Beads Viewer (bv)](https://github.com/Dicklesworthstone/beads_viewer) - a terminal client, with multiple view modes, excellent for keyboard jockeys. **Downside**: it exports `.beads/issues.jsonl` explicitly every time it starts.
+* [LazyBeads (lb)](https://github.com/lesliesrussell/lazybeads) - simple TUI client, works with **Dolt**, a little bit limited functionality, but works with **Dolt**.
+* [Pearl UI](https://getpearl.dev/) - simplified web-based UI, a lot of keyboard shortcuts. **Downside**: starts a web server inside the directory you run it in. Works with **Dolt**, but crashes unexpectedly.
+
+<Highlight block type="note">
+I'm not really pleased with any of those clients and will at one point fork one of them and try to make it mine, but until then it's better using one of them than nothing. Search Google for alternatives; it's pointless for me to list them all.
+</Highlight>
+
+## Conclusion
+
+No matter how you do it, in order to structure complex agentic workflows for long horizon development, you will need some way to structure a task DAG the agent can follow. Currently, **beads** is one of the most mature open-source tools out there. Remember the main principles:
+
+* Use **Dolt** and keep it synced and backed up with something like my [beads-dolt](https://github.com/mifkata/beads-dolt) setup.
+* Create your own skill to manage **beads** to create a **workflow that works for you** and is agent-agnostic.
+* Get a **TUI/UI client** to help you review how the agent is writing and updating the beads; it will help you make them more efficient.
+
+Happy beading!
