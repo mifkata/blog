@@ -19,6 +19,7 @@ Maintained with the `agentsmd-writer` skill and audited by `agentsmd-auditor`: c
 - Final spelling and grammar pass on a post → `blog-post-proofreader`
 - Frontend UI or client-side logic for a bead or spec → `frontend-astro-builder`; owns § Stack; review its bead → `frontend-astro-reviewer`; new Astro frontend → `frontend-astro-bootstrapper`
 - Root toolchain pins, git hooks, toolchain upgrades → `repo-manager`
+- CI workflow from `ci-checks.yml` → `ci-pipeline`
 - README create or rewrite → `readme-writer`
 - AGENTS.md or CLAUDE.md change, agents repeating a mistake → `agentsmd-writer`; audit → `agentsmd-auditor`
 - Task tracking, claims, handoffs → `beads`; owns the `beads:skill` block
@@ -31,7 +32,7 @@ Maintained with the `agentsmd-writer` skill and audited by `agentsmd-auditor`: c
 
 ## Commands
 
-- Build: `pnpm build`; test: `pnpm test:run`
+- Build: `pnpm build`; test: `pnpm test:run`; typecheck: `pnpm typecheck`
 - Lint/format: `pnpm lint`, `pnpm format`; fix `pnpm lint:fix`, `pnpm format:fix`
 
 ## Authority
@@ -42,15 +43,16 @@ Maintained with the `agentsmd-writer` skill and audited by `agentsmd-auditor`: c
 ## Subagents
 
 - Every subagent spawn, any skill or runner, follows this section; skills read the model per role and grade here.
-- Pick: `node .agents/skills/agentsmd-auditor/scripts/models.mjs pick <the role's models for the grade that this runner can spawn, in listed order>` → its `top` (the `model-pick` rubric: recorded success rate and runs; a tie → the first listed); `top` null → reported to the user; none it can spawn → its session model.
-- Record each run: `node .agents/skills/agentsmd-auditor/scripts/models.mjs record <provider/model> <role> <grade> success|failure|escalated` (failure: error, timeout, refusal, or work sent back; escalated: handed to the next grade).
-- Never pick a model `models.mjs stats` lists as excluded or `below` (under 60% after 15 runs; a model the registry keeps is never below).
-- Vendors: design and the workers' and reviewers' `escalation` entries from Anthropic only; a runner spawning several vendors takes easy and moderate workers from Cursor and OpenAI only.
-- Anthropic pacing (subscription limits, shared with every Claude session): at most 5 Anthropic subagents running at once, each start ≥5 s after the previous; "usage limit reached" or a rate-limit error → no new Anthropic subagent, the running ones finish, the rest go to Cursor or OpenAI when the role allows, else reported.
-- Grade (`easy` | `moderate` | `hard` | `complex`): the bead's `grade`; none → the `band` of `node .agents/skills/agentsmd-auditor/scripts/rubric.mjs score grade <scores.json>` (scope, files, risk, contracts, migrations scored 0–5 against the `grade` rubric's anchors), recorded on the bead with its score. The grade sets model and effort below; effort never above `medium` except complex's `high` (higher levels are for chat sessions).
+- Pick: `node .agents/skills/agentsmd-auditor/scripts/models.mjs pick --mode <the word after the grade's effort in its Workers or Reviewers line: rotate | prefer; none → rubric> --role <role> --grade <grade> <the role's models for the grade that this runner can spawn, in listed order>` → its `top` (`rubric`: the `model-pick` rubric over the recorded success rate and runs; `rotate`: the fewest recorded runs for the role and grade; `prefer`: the first listed; a tie → the first listed); several vendors → one pick per vendor; `top` null → reported to the user; none it can spawn → its session model.
+- Record each run: `node .agents/skills/agentsmd-auditor/scripts/models.mjs record <provider/model> <role> <grade> success|failure|escalated` (failure: error, timeout, refusal, or work sent back; escalated: handed to the next grade); `below: true` in its output → `agentsmd-auditor` at once: its R10 hand-off to agent-foundry takes the model out of the template, then it is excluded here. Exit 1 (a git dir with no work tree reachable, or the file is not JSON): reported in the final reply, no retry, the file never edited by hand.
+- Never pick a model `models.mjs stats` lists as excluded or `below` (under 60% after 8 runs; a model the registry keeps is never below).
+- Vendors: design and the workers' and reviewers' `escalation` entries from Anthropic only; every other grade, easy to complex, spread across the vendors its line lists; a model id names its maker, not the tool that runs it (a Cursor runner spawns `xai/grok-*`).
+- Anthropic pacing (subscription limits, shared with every Claude session): at most 4 Anthropic subagents running at once, each start ≥5 s after the previous; parallel work spread evenly across the vendors with a model for the grade, each vendor's model the top of its own pick; "usage limit reached" or a rate-limit error → no new Anthropic start, the running ones finish, the rest stays spread over the other vendors, else reported.
+- Vendor failure (a started run stops on a vendor's auth, session or quota error; unstarted Anthropic work: the pacing line): that vendor named to the user at once as needing a relogin, never silently rerouted; the user picks wait for the relogin | fail over; only the failed work stops, the rest goes on; after a relogin the same session continues; on a failover the new model resumes from the previous model's worktree and working record, never a fresh start.
+- Grade (`easy` | `moderate` | `hard` | `complex`): the bead's `grade`; none → the `band` of `node .agents/skills/agentsmd-auditor/scripts/rubric.mjs score grade <scores.json>` (scope, files, risk, contracts, migrations scored 0–5 against the `grade` rubric's anchors), recorded on the bead with its score. The grade sets model and effort below; a model followed by its own effort uses that one; grade effort never above `medium` except complex's `high`; a model's own effort up to `xhigh`; the escalation entry's effort as listed.
 - Escalation: a failed easy or moderate run or review → one grade up, picked again; a failed hard or complex run or review → one retry on the `escalation` entry (its effort); a failure there → reported to the user.
-- Workers: easy low `cursor/grok-4.3`, `cursor/grok-build-0.1`, `openai-codex/gpt-6-luna`, `anthropic/claude-haiku-5-5`, `anthropic/claude-haiku-4-5`; moderate medium `cursor/grok-4.5`, `cursor/grok-4.3`, `cursor/grok-build-0.1`, `openai-codex/gpt-6-sol`, `openai-codex/gpt-6-luna`, `anthropic/claude-sonnet-5-5`, `anthropic/claude-haiku-5-5`; hard medium `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6.1-sol`, `openai-codex/gpt-6-sol`, `cursor/grok-4.7`, `cursor/grok-4.6`, `cursor/grok-4.5`; complex high `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6-astra`, `openai-codex/gpt-6.1-sol`, `cursor/grok-4.7`; escalation medium `anthropic/claude-opus-5-5`.
-- Reviewers: easy low `anthropic/claude-haiku-4-5`, `anthropic/claude-haiku-5-5`, `openai-codex/gpt-6-luna`, `cursor/grok-4.3`; moderate medium `anthropic/claude-haiku-5-5`, `anthropic/claude-haiku-4-5`, `openai-codex/gpt-6-sol`, `openai-codex/gpt-6-luna`, `cursor/grok-4.3`; hard medium `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6.1-sol`, `cursor/grok-4.7`, `cursor/grok-4.6`; complex high `anthropic/claude-sonnet-5-5`, `openai-codex/gpt-6-astra`, `openai-codex/gpt-6.1-sol`, `cursor/grok-4.7`; escalation medium `anthropic/claude-opus-5-5`.
+- Workers: easy low prefer `xai/grok-4.7` high, `anthropic/claude-haiku-5-5` high, `openai-codex/gpt-6.1-sol` medium; moderate medium rotate `anthropic/claude-sonnet-5-5` medium, `openai-codex/gpt-6.1-sol` high, `xai/grok-4.7` xhigh; hard medium rotate `anthropic/claude-sonnet-5-5` high, `openai-codex/gpt-6-astra` medium; complex high rotate `anthropic/claude-opus-5-5` medium, `openai-codex/gpt-6-astra` xhigh; escalation high `anthropic/claude-opus-5-5`.
+- Reviewers: easy low prefer `xai/grok-4.7` high, `anthropic/claude-haiku-5-5` high, `openai-codex/gpt-6.1-sol` medium; moderate medium rotate `anthropic/claude-sonnet-5-5` medium, `openai-codex/gpt-6.1-sol` high, `xai/grok-4.7` xhigh; hard medium rotate `anthropic/claude-sonnet-5-5` high, `openai-codex/gpt-6-astra` medium; complex high rotate `anthropic/claude-opus-5-5` medium, `openai-codex/gpt-6-astra` xhigh; escalation high `anthropic/claude-opus-5-5`.
 - Design (`job: design`): medium `anthropic/claude-opus-5-5` only; no scored pick.
 
 ## Rules
@@ -64,6 +66,12 @@ Maintained with the `agentsmd-writer` skill and audited by `agentsmd-auditor`: c
 - Close on merge, not on coding done: a bead stays open until its code reaches `main`.
 - A defect in an installed skill (its text contradicts a tool, a script fails, a case is missing) or a capability it lacks that a workaround covered (a raw shell command its script has no subcommand for) → `skill-fix-handoff` (files a GitHub issue on agent-foundry; its URL to the user at once and in the final reply), never a local edit of the installed copy under `.agents/skills/` or a runtime skill dir.
 - Open skill handoffs: after a long chain of work and on request → `node .agents/skills/skill-fix-handoff/scripts/handoff.mjs check`; a fixed one → `skill-installer` reinstalls the skill and records the migration.
+
+## Docs
+
+- `docs/agents-md/`: AGENTS.md registers: rules, subagent models, model run stats, audit findings
+- `docs/repo/`: repo setup decisions and questions (`repo-manager`)
+- `docs/skills/`: skill install and migration records (`skill-installer`)
 
 <!-- beads:skill -->
 ## Task tracking (Beads)
