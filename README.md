@@ -84,6 +84,7 @@ Run every command from the project root.
 | `pnpm preview`         | Previews the build locally              |
 | `pnpm test`            | Runs tests in watch mode                |
 | `pnpm test:run`        | Runs tests once                         |
+| `pnpm fast`            | Runs typecheck, lint and format checks  |
 | `pnpm typecheck`       | Checks types with `astro check`         |
 | `pnpm lint`            | Checks for linting errors               |
 | `pnpm lint:fix`        | Fixes linting errors                    |
@@ -91,7 +92,7 @@ Run every command from the project root.
 | `pnpm format:fix`      | Fixes formatting                        |
 | `pnpm astro ...`       | Runs Astro CLI commands                 |
 
-Git hooks run `mise run fix` on staged files before each commit, reject messages that do not follow Conventional Commits, and run `mise run check` and the toolchain check before each push. Enable them in a fresh clone with `bd hooks install --beads`.
+Git hooks run `mise run fix` on staged files before each commit, reject messages that do not follow Conventional Commits, and run `mise run check` before each push. Enable them in a fresh clone with `bd hooks install --beads`.
 
 ## 🚀 Deployment
 
