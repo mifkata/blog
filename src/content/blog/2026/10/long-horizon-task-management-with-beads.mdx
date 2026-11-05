@@ -6,8 +6,9 @@ synopsis: >-
 
   You try again and get better at it, but your agents still get confused and often fail to stay on track. Then you find [beads, the Jira for agents](https://github.com/gastownhall/beads), and things start to look up.
 pubDate: "2026-11-05T03:48:00Z"
+updatedDate: "2026-11-05T19:02:53Z"
 heroImage: "@/assets/blog/2026/1105-long-horizon-task-management-beads.jpeg"
-tags: [workflow, devex, agents]
+tags: [workflow, devex, architecture, dag, sdd]
 ---
 
 import {
@@ -33,11 +34,15 @@ I've been using `beads` since around version `0.40.0` when it switched from keep
 
 ## What is so special about beads
 
-If you're a software engineer, a product manager or basically any person working with project management tools, you probably have used Jira, Linear or some other tool for task management. Well, beads is just like that, but it's terminal-based and it's optimised to be used by agents. It has its own memory engine that on session start reminds the agent what it has worked on so far. Work can be organised in epics with various types such as tasks, bugs, features and so on.
+If you're a software engineer, a product manager or basically any person working with project management tools, you probably have used [Jira](https://www.atlassian.com/software/jira), [Linear](https://linear.app/) or some other tool for task management. Well, beads is just like that, but it's terminal-based and it's optimised to be used by agents. It has its own memory engine that on session start reminds the agent what it has worked on so far. Work can be organised in epics with various types such as tasks, bugs, features and so on.
 
 On top of that you can add `metadata` and `tags` to your liking, which can set off your creativity to the next level. For example, I tag beads that need my decisions as `human` and in the metadata, I add things like `grade`, which specifies if a task is either **easy**, **moderate**, **hard** or **complex** and this is used to decide what kind of model with what kind of effort/reasoning should be used for said task.
 
-Most importantly, **beads** allows for tasks to be linked as dependencies, which in terms of agentic workflows means that it creates a Directional Acyclic Graph (DAG) of work to be done. Now, agents love DAGs. Telling the agent to **swarm the beads** allows it to find everything that is unblocked and start working on those things in parallel.
+Most importantly, **beads** allows for tasks to be linked as dependencies, which in terms of agentic workflows means that it creates a [Directed Acyclic Graph (DAG)](https://en.wikipedia.org/wiki/Directed_acyclic_graph) of work to be done. Now, agents love DAGs. Telling the agent to **swarm the beads** allows it to find everything that is unblocked and start working on those things in parallel.
+
+<Highlight block type="tip">
+The unblocked set comes from `bd ready`: open beads with no open blockers, excluding anything in progress, blocked or deferred. Add `--json` when an agent reads the list. See the [beads README](https://github.com/gastownhall/beads).
+</Highlight>
 
 ## How does it work
 
@@ -69,6 +74,10 @@ Once you have `beads` installed, go to your repository and run:
 It will ask you some questions and if it cannot detect a `Dolt` server to connect to, it will create an **embedded Dolt** inside your repository, which gets persisted with your codebase. You can still get the `.beads/issues.jsonl` file as well and use that mechanism to store your tasks; however, I don't recommend it, as the agent can read and manually modify it - pure waste of tokens.
 
 <Highlight block type="tip">
+The JSONL file is controlled by `export.auto` in `.beads/config.yaml`, off by default. Leave it off unless a tool needs fresh JSONL; `bd config set export.auto false` turns it back off.
+</Highlight>
+
+<Highlight block type="tip">
     I've made a self-updating repository running **Dolt** on `localhost`, with a built-in **cron job** that dumps the database and pushes it to the repository at a set interval.
     <GithubLink url="https://github.com/mifkata/beads-dolt">
         1. Fork the `beads-dolt` repository and make it private
@@ -80,13 +89,21 @@ It will ask you some questions and if it cannot detect a `Dolt` server to connec
     Detailed installation instructions and configuration information can be found in the repository.
 </Highlight>
 
-## Tips for improving your beads experience
+## How to improve your beads experience
 
 ### Creating a skill that works for you
 
 `beads` comes with a skill for **Codex**, but none for **Claude**, but there's a recommended **Claude** plugin to install, which you should. All hooks and skills end up injecting the instructions with available commands by running `bd prime`, which effectively outputs the contents of `.beads/PRIME.md` to the agent every time a new session is started and after context compaction.
 
+<Highlight block type="tip">
+Inside Claude Code, run `/plugin marketplace add gastownhall/beads`, then `/plugin install beads`, and restart the session to load its commands and hooks. Details in the [plugin docs](https://github.com/gastownhall/beads/blob/main/docs/integrations/claude-code-plugin.md).
+</Highlight>
+
 Now, while this is a viable approach, it's not really consistent across agents and I've noticed a workflow drift, such as not setting a bead in progress, whilst the agent is working on it, saving progress and handoff only occasionally and so on.
+
+<Highlight block type="tip">
+`.beads/PRIME.md` is yours to replace: `bd prime` prints it in place of its default text and still appends the memories saved with `bd remember`. `bd prime --export` prints the default as a starting point.
+</Highlight>
 
 ### Writing your own skill
 
