@@ -46,3 +46,5 @@ export:
     git-add: false
 sync:
     remote: "git+ssh://git@github.com/mifkata/blog.git"
+prime:
+    max-memory-chars: 8000
