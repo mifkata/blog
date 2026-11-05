@@ -6,6 +6,7 @@ pnpm-lock.yaml
 storybook-static
 worktrees
 .beads
+.blog-enhancer
 public/archive
 CLAUDE.md
 AGENTS.md

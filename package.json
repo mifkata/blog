@@ -18,8 +18,10 @@
     "format:fix": "prettier --write .",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:fast": "node scripts/gate-test.mjs --fast",
     "storybook": "storybook dev -p 9009 --no-open",
-    "storybook:build": "storybook build -o dist/storybook"
+    "storybook:build": "storybook build -o dist/storybook",
+    "fast": "pnpm run typecheck && pnpm run lint && pnpm run format && pnpm run test:fast"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.5",

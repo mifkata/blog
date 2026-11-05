@@ -9,3 +9,7 @@ checks:
   - { name: format, run: pnpm run format }
   - { name: build, run: pnpm run build }
   - { name: storybook, run: pnpm run storybook:build }
+gate:
+  fast: [{ name: fast, run: mise run fast }]
+  affected: node scripts/affected.mjs
+  caches: [dist, .astro]

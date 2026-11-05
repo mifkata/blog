@@ -8,3 +8,6 @@ run = "sh -c 'pnpm exec eslint --fix --no-warn-ignored \"$@\" && pnpm exec prett
 
 [tasks.check]
 run = "pnpm install --frozen-lockfile && pnpm run typecheck && pnpm run test:run"
+
+[tasks.fast]
+run = "pnpm run fast"
