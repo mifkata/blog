@@ -9,13 +9,13 @@ import { createRequire } from "node:module";
 import { join } from "node:path";
 import type satoriModule from "satori";
 import sharp from "sharp";
-import { DAY_PALETTES } from "@/helpers/palettes";
+import { DAY_PALETTES } from "@/helpers/palette/palettes";
 import {
   CARD_HEIGHT,
   CARD_WIDTH,
   titleSize,
   type CardContent,
-} from "@/helpers/socialCard";
+} from "@/helpers/socialCard/socialCard";
 
 // Satori's ES module build reads __dirname, which ES modules don't have, and
 // fails on import; its CommonJS build works

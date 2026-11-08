@@ -2,8 +2,8 @@ import {
   faviconDataUri,
   faviconSvg,
   type FaviconFrame,
-} from "@/helpers/favicon";
-import { DEFAULT_PALETTE, type Palette } from "@/helpers/season";
+} from "@/helpers/favicon/favicon";
+import { DEFAULT_PALETTE, type Palette } from "@/helpers/palette/season";
 
 /** Cursor blinks when the visitor comes back to the tab. */
 const RETURN_BLINKS = 4;

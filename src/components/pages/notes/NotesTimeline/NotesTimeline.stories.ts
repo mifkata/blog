@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@/helpers/storybook";
-import { groupByMonth } from "@/helpers/notes";
+import { groupByMonth } from "@/helpers/content/notes";
 import NotesTimeline from "./NotesTimeline.astro";
 
 const note = (id: string, title: string, date: string, text: string) => ({

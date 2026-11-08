@@ -8,8 +8,8 @@ import { defineConfig, sharpImageService } from "astro/config";
 import rehypeExternalLinks from "rehype-external-links";
 
 import tailwindcss from "@tailwindcss/vite";
-import { rehypeCodeCaptions } from "./src/helpers/codeCaptions.ts";
-import { isExternalHref } from "./src/helpers/externalLinks.ts";
+import { rehypeCodeCaptions } from "./src/helpers/markdown/codeCaptions.ts";
+import { isExternalHref } from "./src/helpers/markdown/externalLinks.ts";
 
 // https://astro.build/config
 export default defineConfig({

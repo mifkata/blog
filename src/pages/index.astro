@@ -1,9 +1,9 @@
 ---
 import { getCollection } from "astro:content";
-import { isPublished } from "@/helpers/posts";
-import { readingMinutes } from "@/helpers/reading";
-import { getFeaturedSeries } from "@/helpers/series";
-import { isShownSeries } from "@/helpers/seriesPosition";
+import { isPublished } from "@/helpers/content/posts";
+import { readingMinutes } from "@/helpers/reading/reading";
+import { getFeaturedSeries } from "@/helpers/content/series";
+import { isShownSeries } from "@/helpers/content/seriesPosition";
 import {
   recentIndex,
   tagCounts,
@@ -13,7 +13,7 @@ import {
   isPublishedNote,
   newestFirst,
   plainText,
-} from "@/helpers/notes";
+} from "@/helpers/content/notes";
 import ReadingShelf from "@/components/pages/home/CurrentlyReading/ReadingShelf.astro";
 import NotesWidget from "@/components/pages/home/NotesWidget/NotesWidget.astro";
 import FeaturedSeries from "@/components/pages/home/FeaturedSeries/FeaturedSeries.astro";

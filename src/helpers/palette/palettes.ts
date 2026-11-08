@@ -5,7 +5,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { DEFAULT_PALETTE, type Palette } from "@/helpers/season";
+import { DEFAULT_PALETTE, type Palette } from "@/helpers/palette/season";
 
 /** A palette's colours by token name without the prefix: "accent" for --palette-accent. */
 export type PaletteColors = Record<string, string>;

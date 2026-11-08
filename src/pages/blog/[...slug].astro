@@ -4,17 +4,17 @@ import { embedComponents } from "@/components/post";
 import { proseComponents } from "@/components/prose";
 import seriesData from "@/data/series.json";
 import tagsData from "@/data/tags.json";
-import { discussions, withStars } from "@/helpers/linkActivity";
-import { extractLinks } from "@/helpers/postLinks";
-import { isPublished } from "@/helpers/posts";
-import { readingMinutes } from "@/helpers/reading";
+import { discussions, withStars } from "@/helpers/content/linkActivity";
+import { extractLinks } from "@/helpers/content/postLinks";
+import { isPublished } from "@/helpers/content/posts";
+import { readingMinutes } from "@/helpers/reading/reading";
 import {
   relatedForAll,
   type RelatedItem,
   type RelatedPick,
-} from "@/helpers/related";
-import { seriesForPost } from "@/helpers/series";
-import { seriesPosition } from "@/helpers/seriesPosition";
+} from "@/helpers/content/related";
+import { seriesForPost } from "@/helpers/content/series";
+import { seriesPosition } from "@/helpers/content/seriesPosition";
 import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
 
 export async function getStaticPaths() {

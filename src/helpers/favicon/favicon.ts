@@ -1,4 +1,4 @@
-import { PALETTE_BY_SEASON, type Palette } from "./season";
+import { PALETTE_BY_SEASON, type Palette } from "../palette/season";
 
 /** Each season's terminal colours (tile, prompt, cursor), as in palettes.css. */
 export const FAVICON_COLORS: Record<

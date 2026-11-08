@@ -8,12 +8,12 @@ import RelatedPosts from "@/components/post/RelatedPosts/RelatedPosts.astro";
 import TableOfContents from "@/components/post/TableOfContents/TableOfContents.astro";
 import Prose from "@/components/prose/Prose.astro";
 import { tocOutline } from "@/components/post/TableOfContents/toc";
-import type { Story } from "@/helpers/linkActivity";
-import type { RelatedItem } from "@/helpers/related";
-import type { PostLink } from "@/helpers/postLinks";
-import type { SeriesForPost } from "@/helpers/series";
-import type { SeriesPosition } from "@/helpers/seriesPosition";
-import { postCardId } from "@/helpers/socialCard";
+import type { Story } from "@/helpers/content/linkActivity";
+import type { RelatedItem } from "@/helpers/content/related";
+import type { PostLink } from "@/helpers/content/postLinks";
+import type { SeriesForPost } from "@/helpers/content/series";
+import type { SeriesPosition } from "@/helpers/content/seriesPosition";
+import { postCardId } from "@/helpers/socialCard/socialCard";
 import PageLayout from "./PageLayout.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {

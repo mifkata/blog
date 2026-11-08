@@ -1,6 +1,6 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import { isPublished } from "./posts";
-import { firstParagraph, readingMinutes } from "./reading";
+import { firstParagraph, readingMinutes } from "../reading/reading";
 import seriesData from "@/data/series.json";
 import { isShownSeries } from "./seriesPosition";
 

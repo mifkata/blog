@@ -8,7 +8,7 @@
  * press fast-forwards to the end.
  */
 
-import { PALETTE_BY_SEASON, type Season } from "@/helpers/season";
+import { PALETTE_BY_SEASON, type Season } from "@/helpers/palette/season";
 import { BOOT_TIMING, type BootTiming } from "./timing.data";
 import {
   showFrame,

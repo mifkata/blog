@@ -4,8 +4,8 @@ import { PICTURE_FORMATS } from "@/consts.data";
 import type { CollectionEntry } from "astro:content";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
 import Tag from "@/components/ui/Tag/Tag.astro";
-import { renderMarkdown } from "@/helpers/markdown";
-import { readingMinutes } from "@/helpers/reading";
+import { renderMarkdown } from "@/helpers/markdown/markdown";
+import { readingMinutes } from "@/helpers/reading/reading";
 
 interface Props {
   post: CollectionEntry<"blog">;

@@ -1,7 +1,11 @@
 import type { APIRoute, GetStaticPaths } from "astro";
 import sharp from "sharp";
-import { DEFAULT_PALETTE, PALETTE_BY_SEASON } from "@/helpers/season";
-import { encodeIco, faviconSvg, type FaviconShape } from "@/helpers/favicon";
+import { DEFAULT_PALETTE, PALETTE_BY_SEASON } from "@/helpers/palette/season";
+import {
+  encodeIco,
+  faviconSvg,
+  type FaviconShape,
+} from "@/helpers/favicon/favicon";
 
 const png = async (size: number, shape: FaviconShape = "tile") =>
   new Uint8Array(

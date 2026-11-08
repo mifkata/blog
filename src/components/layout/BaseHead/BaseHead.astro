@@ -4,7 +4,11 @@
 import "@/styles/global.css";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics/GoogleAnalytics.astro";
 import { SITE_TITLE } from "@/consts.data";
-import { CARD_HEIGHT, CARD_WIDTH, cardPath } from "@/helpers/socialCard";
+import {
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  cardPath,
+} from "@/helpers/socialCard/socialCard";
 
 interface Props {
   title: string;
@@ -22,8 +26,8 @@ import {
   PALETTE_BY_MONTH,
   PALETTE_BY_SEASON,
   THEME_COLORS,
-} from "@/helpers/season";
-import { FAVICON_BY_PALETTE } from "@/helpers/favicon";
+} from "@/helpers/palette/season";
+import { FAVICON_BY_PALETTE } from "@/helpers/favicon/favicon";
 ---
 
 <!-- Global Metadata -->

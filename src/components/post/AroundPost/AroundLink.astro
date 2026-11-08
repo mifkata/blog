@@ -2,7 +2,11 @@
 import GitHub from "@/components/ui/icons/GitHub.astro";
 import LucideIcon from "@/components/ui/icons/LucideIcon.astro";
 import Wikipedia from "@/components/ui/icons/Wikipedia.astro";
-import { compactNumber, shownStars, type PostLink } from "@/helpers/postLinks";
+import {
+  compactNumber,
+  shownStars,
+  type PostLink,
+} from "@/helpers/content/postLinks";
 
 interface Props {
   link: PostLink & { stars?: number };

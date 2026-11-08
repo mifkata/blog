@@ -3,7 +3,7 @@
  * card wears the palette of the season it was published in; the home, about
  * and blog cards wear the season of the build.
  */
-import { PALETTE_BY_MONTH, type Palette } from "@/helpers/season";
+import { PALETTE_BY_MONTH, type Palette } from "@/helpers/palette/season";
 
 /** Social card size in px: the 1.91:1 that link previews expect */
 export const CARD_WIDTH = 1200;

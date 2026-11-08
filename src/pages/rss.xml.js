@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import { isPublished } from "@/helpers/posts";
+import { isPublished } from "@/helpers/content/posts";
 import rss from "@astrojs/rss";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts.data";
 

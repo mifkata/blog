@@ -1,5 +1,5 @@
 import React from "react";
-import { renderMarkdown } from "@/helpers/markdown";
+import { renderMarkdown } from "@/helpers/markdown/markdown";
 
 interface Props {
   text?: string;

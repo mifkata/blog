@@ -3,8 +3,8 @@ import { Picture } from "astro:assets";
 import { PICTURE_FORMATS } from "@/consts.data";
 import RailDots from "@/components/ui/RailDots/RailDots.astro";
 import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
-import { renderInlineMarkdown } from "@/helpers/markdown";
-import type { SeriesPart } from "@/helpers/series";
+import { renderInlineMarkdown } from "@/helpers/markdown/markdown";
+import type { SeriesPart } from "@/helpers/content/series";
 
 interface Props {
   title: string;

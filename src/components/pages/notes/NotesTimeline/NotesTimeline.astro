@@ -6,7 +6,11 @@ import Link from "@/components/prose/Link.astro";
 import OrderedList from "@/components/prose/OrderedList.astro";
 import UnorderedList from "@/components/prose/UnorderedList.astro";
 import Button from "@/components/ui/Button/Button.astro";
-import { isoDay, NOTES_PAGE_SIZE, type NoteMonth } from "@/helpers/notes";
+import {
+  isoDay,
+  NOTES_PAGE_SIZE,
+  type NoteMonth,
+} from "@/helpers/content/notes";
 
 export interface TimelineNote {
   id: string;

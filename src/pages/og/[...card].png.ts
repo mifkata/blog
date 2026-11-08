@@ -1,14 +1,14 @@
 import type { APIRoute, GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
-import { isPublished } from "@/helpers/posts";
-import { readingMinutes } from "@/helpers/reading";
+import { isPublished } from "@/helpers/content/posts";
+import { readingMinutes } from "@/helpers/reading/reading";
 import {
   pageCards,
   postCard,
   postCardId,
   type CardContent,
-} from "@/helpers/socialCard";
-import { renderCard } from "@/helpers/socialCardImage";
+} from "@/helpers/socialCard/socialCard";
+import { renderCard } from "@/helpers/socialCard/socialCardImage";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("blog", isPublished);

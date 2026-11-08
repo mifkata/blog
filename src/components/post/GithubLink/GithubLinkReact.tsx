@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useId, type ReactNode } from "react";
 import { ExternalLinkIcon } from "@/components/ui/icons/ExternalLinkIcon";
-import { normalizeUrl } from "@/helpers/postLinks";
+import { normalizeUrl } from "@/helpers/content/postLinks";
 
 interface Props {
   url: string;
