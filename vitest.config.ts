@@ -6,6 +6,7 @@ export default defineConfig({
     // Same "@/" alias as tsconfig.json.
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
   },
+  oxc: { jsx: { runtime: "automatic" } },
   test: {
     include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
     exclude: ["node_modules"],

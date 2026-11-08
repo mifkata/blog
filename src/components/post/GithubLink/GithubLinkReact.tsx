@@ -2,6 +2,12 @@ import React, { useState, useEffect, useId, type ReactNode } from "react";
 import { ExternalLinkIcon } from "@/components/ui/icons/ExternalLinkIcon";
 import { normalizeUrl } from "@/helpers/content/postLinks";
 
+export function footerText(url: string) {
+  return URL.canParse(url)
+    ? normalizeUrl(url).replace(/\/(?:tree|blob)\/[^/]+/, "")
+    : url;
+}
+
 interface Props {
   url: string;
   expanded?: boolean;
@@ -162,8 +168,7 @@ export default function GithubLink({
           rel="noopener noreferrer"
           className="repo-card-host"
         >
-          {URL.canParse(url) ? normalizeUrl(url) : url}{" "}
-          <ExternalLinkIcon size={11} />
+          {footerText(url)} <ExternalLinkIcon size={11} />
           <span className="sr-only">(opens in new tab)</span>
         </a>
       </div>
