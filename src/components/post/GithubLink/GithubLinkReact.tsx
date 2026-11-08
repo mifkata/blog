@@ -2,9 +2,12 @@ import React, { useState, useEffect, useId, type ReactNode } from "react";
 import { ExternalLinkIcon } from "@/components/ui/icons/ExternalLinkIcon";
 import { normalizeUrl } from "@/helpers/content/postLinks";
 
-export function footerText(url: string) {
+function footerText(url: string) {
   return URL.canParse(url)
-    ? normalizeUrl(url).replace(/\/(?:tree|blob)\/[^/]+/, "")
+    ? normalizeUrl(url).replace(
+        /^([^/]+\/[^/]+\/[^/]+)\/(?:tree|blob)\/[^/]+/,
+        "$1",
+      )
     : url;
 }
 

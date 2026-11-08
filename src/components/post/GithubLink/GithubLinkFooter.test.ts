@@ -19,6 +19,18 @@ describe("GithubLink footer", () => {
     );
   });
 
+  it("keeps blob-less and owner-named paths intact", () => {
+    expect(footerText("https://github.com/mifkata/blog")).toBe(
+      "github.com/mifkata/blog",
+    );
+    expect(footerText("https://github.com/tree/blob")).toBe(
+      "github.com/tree/blob",
+    );
+    expect(footerText("https://github.com/mifkata/blog/blob/main/a.ts")).toBe(
+      "github.com/mifkata/blog/a.ts",
+    );
+  });
+
   it("shows the raw string when the URL does not parse", () => {
     expect(footerText("not a url")).toBe("not a url");
   });
