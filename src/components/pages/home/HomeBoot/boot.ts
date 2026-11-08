@@ -9,7 +9,7 @@
  */
 
 import { PALETTE_BY_SEASON, type Season } from "@/helpers/season";
-import { BOOT_TIMING, type BootTiming } from "./timing";
+import { BOOT_TIMING, type BootTiming } from "./timing.data";
 import {
   showFrame,
   startBlinking,

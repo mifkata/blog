@@ -6,7 +6,7 @@ import {
   seasonOfPalette,
   themeVersion,
 } from "./boot";
-import { BOOT_TIMING } from "./timing";
+import { BOOT_TIMING } from "./timing.data";
 
 describe("greeting", () => {
   it("should greet by the visitor's time of day", () => {

@@ -21,7 +21,7 @@ import HomeHero from "@/components/pages/home/HomeHero/HomeHero.astro";
 import HomeTerminal from "@/components/pages/home/HomeTerminal/HomeTerminal.astro";
 import RecentPosts from "@/components/pages/home/RecentPosts/RecentPosts.astro";
 import PageLayout from "@/layouts/PageLayout.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts.data";
 import FeaturedPost from "@/components/pages/blog/FeaturedPost/FeaturedPost.astro";
 
 const posts = (await getCollection("blog", isPublished)).sort(
