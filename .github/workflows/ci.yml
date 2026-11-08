@@ -1,6 +1,6 @@
 # Generated from the ci-checks.yml manifests; change a manifest and regenerate, never this file.
 # sources: ci-checks.yml
-# hash: c6c9b8ac0d785fc6
+# hash: 3149cb4f8bc0a3b0
 name: ci
 on:
   pull_request:
@@ -32,14 +32,14 @@ jobs:
         run: "pnpm install --frozen-lockfile"
       - name: "typecheck"
         run: "pnpm run typecheck"
+      - name: "build"
+        run: "pnpm run build"
       - name: "test"
         run: "pnpm run test:run"
       - name: "lint"
         run: "pnpm run lint"
       - name: "format"
         run: "pnpm run format"
-      - name: "build"
-        run: "pnpm run build"
       - name: "storybook"
         run: "pnpm run storybook:build"
 

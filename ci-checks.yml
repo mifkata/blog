@@ -4,10 +4,10 @@ runner: linux
 install: pnpm install --frozen-lockfile
 checks:
   - { name: typecheck, run: pnpm run typecheck }
+  - { name: build, run: pnpm run build }
   - { name: test, run: pnpm run test:run }
   - { name: lint, run: pnpm run lint }
   - { name: format, run: pnpm run format }
-  - { name: build, run: pnpm run build }
   - { name: storybook, run: pnpm run storybook:build }
 gate:
   fast: [{ name: fast, run: mise run fast }]

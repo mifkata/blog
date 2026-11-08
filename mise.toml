@@ -7,7 +7,7 @@ yq = "4.54.1"
 run = "sh -c 'pnpm exec eslint --fix --no-warn-ignored \"$@\" && pnpm exec prettier --write --ignore-unknown \"$@\"' fix"
 
 [tasks.check]
-run = "pnpm install --frozen-lockfile && pnpm run typecheck && pnpm run test:run"
+run = "pnpm install --frozen-lockfile && pnpm run typecheck && pnpm run build && pnpm run test:run"
 
 [tasks.fast]
 run = "pnpm run fast"
