@@ -1,6 +1,6 @@
 # Generated from the ci-checks.yml manifests; change a manifest and regenerate, never this file.
 # sources: ci-checks.yml
-# hash: 3149cb4f8bc0a3b0
+# hash: 5463b868233a2c42
 name: ci
 on:
   pull_request:
@@ -30,12 +30,16 @@ jobs:
           if command -v corepack >/dev/null; then corepack enable --install-directory "$HOME/.local/bin"; fi
       - name: install
         run: "pnpm install --frozen-lockfile"
+      - name: setup 1
+        run: "pnpm exec playwright install --with-deps chromium"
       - name: "typecheck"
         run: "pnpm run typecheck"
       - name: "build"
         run: "pnpm run build"
       - name: "test"
         run: "pnpm run test:run"
+      - name: "e2e"
+        run: "pnpm run test:e2e"
       - name: "lint"
         run: "pnpm run lint"
       - name: "format"

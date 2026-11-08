@@ -37,6 +37,10 @@ terraform/*.tfvars
 terraform/.terraform.lock.hcl
 
 
+# Playwright
+playwright-report/
+test-results/
+
 # Storybook
 storybook-static/
 

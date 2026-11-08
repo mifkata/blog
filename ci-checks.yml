@@ -2,10 +2,12 @@ version: 1
 deployable: web
 runner: linux
 install: pnpm install --frozen-lockfile
+setup: [pnpm exec playwright install --with-deps chromium]
 checks:
   - { name: typecheck, run: pnpm run typecheck }
   - { name: build, run: pnpm run build }
   - { name: test, run: pnpm run test:run }
+  - { name: e2e, run: pnpm run test:e2e }
   - { name: lint, run: pnpm run lint }
   - { name: format, run: pnpm run format }
   - { name: storybook, run: pnpm run storybook:build }
