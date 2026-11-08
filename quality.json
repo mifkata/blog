@@ -1,0 +1,20 @@
+{
+  "serve": "static",
+  "paths": [],
+  "size": {
+    "softPercent": 10,
+    "hardPercent": 25,
+    "floorBytes": 1024,
+    "routes": {}
+  },
+  "lighthouse": {
+    "floor": 90,
+    "runs": 3
+  },
+  "axe": {
+    "critical": "blocker",
+    "serious": "major",
+    "moderate": "minor",
+    "minor": "nit"
+  }
+}
