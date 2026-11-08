@@ -41,25 +41,25 @@
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "ci-pipeline/SKILL.md",
-      "computedHash": "6426ecddb5e0b58579e9397a2588694b206144aeb3075e4bae1e0d68ed25d959"
+      "computedHash": "d0b4fec1192b57d7127c6f3a22a67fe093e7eaea711a1721db89fd5b65f70323"
     },
     "frontend-astro-bootstrapper": {
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "frontend-astro-bootstrapper/SKILL.md",
-      "computedHash": "85339ef1844a56ab775ac29b8ac2b490e54d29510cf4fde478404d16e2dbf8b4"
+      "computedHash": "302cc19a5d68558bf857d7d5d73d2c76b7f2669eaf614fa3230cd5c777541fa3"
     },
     "frontend-astro-builder": {
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "frontend-astro-builder/SKILL.md",
-      "computedHash": "69e8a0b568ad20afab8c2bd7c8b33cd55a87e6bfc22da33c4c4db162226e53e8"
+      "computedHash": "6923e41cc4d408a80053459f931df1bc1d2b8275c7e84179612c05e4971c1178"
     },
     "frontend-astro-reviewer": {
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "frontend-astro-reviewer/SKILL.md",
-      "computedHash": "7893d565bcce7b112f79489c2ddbbd9ee88851ed74c0a4df02f6b2dce2dda9c9"
+      "computedHash": "45e8ccd264d3e68f3b3e1e8ed4f84d0ec1f454ca7ac4f510ce2730ff6d7dd458"
     },
     "readme-writer": {
       "source": "mifkata/repo-skills",
@@ -71,7 +71,7 @@
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "repo-manager/SKILL.md",
-      "computedHash": "953e404e2a3c79328d595730c4a58a2a600d4b0d584d82ac4f0d8415acf8cef5"
+      "computedHash": "beb4a9d9b9b5cf537b0c508e1e6e1199caabbf25e8ad28621b5e60fe04f583cc"
     },
     "skill-fix-handoff": {
       "source": "mifkata/repo-skills",
@@ -83,7 +83,7 @@
       "source": "mifkata/repo-skills",
       "sourceType": "github",
       "skillPath": "skill-installer/SKILL.md",
-      "computedHash": "7bfd9459153333a997fb522c9f8f3ab0d32e2623d6f5e599fe00f69bf88073b7"
+      "computedHash": "77a31f4c91217166ec71545386636e20f4e36194c69213427927c86f3a8db03f"
     }
   }
 }
