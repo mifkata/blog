@@ -22,7 +22,7 @@ Before saying done or stopping: every bead this session claimed is closed or han
 | Work found outside the claimed bead | `B followup <from-id> "<title>" --description "<why, what>" --grade <g>` |
 | Done and verified, leftovers filed | `B close <id> --reason "<what was done, how verified>"` |
 | Stop unfinished | `B handoff <id> "<where it stopped>"` |
-| A choice only the user can make, outliving the session | `B question <blocked-id> "<question>" --options "<a> \| <b>"`, then `B handoff <blocked-id> …` |
+| A choice only the user can make, outliving the session | `B question <blocked-id> "<question>" --options "<a> \| <b>"`, then `B handoff <blocked-id> …` (a `blocks` dependency stops the bead and every descendant: name the stopped bead, not its epic) |
 | The user's answer to a human bead | `B respond <id> "<their verbatim words>"` |
 | Durable project knowledge, after the user accepts it | `B remember "<insight>"` |
 | A gate's condition is met | `B gate-check [--type <t>]` |
