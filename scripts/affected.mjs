@@ -1,8 +1,9 @@
 // Prints `none` when every changed repo-relative path on stdin is non-code (Markdown, `docs/`, `.beads/`); otherwise
-// the files `vitest related` starts from, one per line, or `full` when a path reaches tests beyond the import graph
-// (config, lockfile, assets, styles, a deleted file, a file outside this folder).
+// the files `vitest related` starts from, one per line (every path under `src/` or `test/`: code, styles, assets,
+// `.astro` files, and deleted files, whose remaining importers `vitest related` finds), or `full` when a path reaches
+// tests beyond the import graph (config, lockfile, a file outside this folder).
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import process from "node:process";
 
 const full = () => {
@@ -28,12 +29,7 @@ for (const path of readFileSync(0, "utf8")
   const rel = inside ? path.slice(prefix.length) : path;
   if (/\.md$/.test(rel) || /^(?:\.beads|docs)\//.test(rel)) continue;
   code += 1;
-  if (
-    !inside ||
-    !/^(?:src|test)\/.+\.[cm]?[jt]sx?$/.test(rel) ||
-    !existsSync(rel)
-  )
-    full();
+  if (!inside || !/^(?:src|test)\/./.test(rel)) full();
   if (/\s/.test(rel)) full();
   targets.add(rel);
 }

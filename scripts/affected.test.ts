@@ -18,13 +18,15 @@ describe("affected", () => {
     );
   });
 
-  it("is full for an .astro file, which the import graph does not reach", () => {
-    expect(affected("src/pages/index.astro")).toBe("full");
+  it("lists .astro files, styles and deleted files under src as targets", () => {
+    expect(
+      affected("src/pages/index.astro", "src/styles/global.css", "src/gone.ts"),
+    ).toBe("src/gone.ts\nsrc/pages/index.astro\nsrc/styles/global.css");
   });
 
-  it("is full for a lockfile, a deleted file or a path outside the folder", () => {
+  it("is full for a lockfile, a config file or a path outside the folder", () => {
     expect(affected("pnpm-lock.yaml")).toBe("full");
-    expect(affected("src/gone.ts")).toBe("full");
+    expect(affected("astro.config.mjs")).toBe("full");
     expect(affected("../outside/file.ts")).toBe("full");
   });
 });
