@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@lhci/cli": "0.16.1",
     "@playwright/test": "^1.65.0",
     "@storybook-astro/framework": "^1.16.0",
     "@storybook/addon-a11y": "^10.6.7",

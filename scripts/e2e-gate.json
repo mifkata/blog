@@ -1,0 +1,19 @@
+{
+  "runner": "playwright",
+  "config": "playwright.config.ts",
+  "testDir": "e2e",
+  "specPattern": "\\.(?:spec|test)\\.[cm]?[jt]sx?$",
+  "suiteTrees": ["e2e"],
+  "appDirs": ["."],
+  "testIdAttributes": [],
+  "baseUrl": "http://localhost:{port}",
+  "server": {
+    "command": "ASTRO_PREVIEW_BACKGROUND=1 pnpm preview --port $E2E_PORT",
+    "path": "/",
+    "modes": ["lighthouse"]
+  },
+  "browsers": ["chromium"],
+  "lighthouse": {
+    "pages": []
+  }
+}

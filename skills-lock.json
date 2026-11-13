@@ -43,6 +43,12 @@
       "skillPath": "ci-pipeline/SKILL.md",
       "computedHash": "0a969643501fccdfbda0a064a3286fb7c4bae65adf86b9dd4413a634bfddff8f"
     },
+    "e2e-web-bootstrapper": {
+      "source": "mifkata/dev-skills",
+      "sourceType": "github",
+      "skillPath": "e2e-web-bootstrapper/SKILL.md",
+      "computedHash": "2984eda4e2a44f0438af87c351b517dd619e94652211b879fc489a522cc3d5a7"
+    },
     "frontend-astro-bootstrapper": {
       "source": "mifkata/dev-skills",
       "sourceType": "github",

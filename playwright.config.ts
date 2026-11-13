@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = 4329;
+const port = Number(process.env.E2E_PORT ?? 4329);
 
 export default defineConfig({
   testDir: "e2e",
@@ -13,6 +13,7 @@ export default defineConfig({
   webServer: {
     command: `pnpm preview --port ${port}`,
     url: `http://localhost:${port}`,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: !process.env.E2E_PORT,
+    env: { ASTRO_PREVIEW_BACKGROUND: "1" },
   },
 });

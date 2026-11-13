@@ -2,16 +2,20 @@ version: 1
 deployable: web
 runner: linux
 install: pnpm install --frozen-lockfile
-setup: [pnpm exec playwright install --with-deps chromium]
+setup: [node scripts/e2e-gate.mjs setup]
 checks:
   - { name: typecheck, run: pnpm run typecheck }
   - { name: build, run: pnpm run build }
   - { name: test, run: pnpm run test:run }
-  - { name: e2e, run: pnpm run test:e2e }
   - { name: lint, run: pnpm run lint }
   - { name: format, run: pnpm run format }
   - { name: storybook, run: pnpm run storybook:build }
+e2e:
+  - { name: e2e, run: node scripts/e2e-gate.mjs all }
+  - { name: lighthouse, run: node scripts/e2e-gate.mjs lighthouse }
 gate:
   fast: [{ name: fast, run: mise run fast }]
   affected: node scripts/affected.mjs
+  fast_e2e: [{ name: e2e, run: node scripts/e2e-gate.mjs affected }]
+  affected_e2e: node scripts/affected-specs.mjs
   caches: [dist, .astro]
