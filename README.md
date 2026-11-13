@@ -13,6 +13,7 @@ Source for mifkata.com, a personal blog of long-form posts and short notes, buil
 
 ## 📦 Requirements
 
+- [make](https://www.gnu.org/software/make/), preinstalled on macOS and Linux; on Windows, use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
 - [mise](https://mise.jdx.dev/getting-started.html), which installs the Node.js version pinned in [`mise.toml`](mise.toml)
 - [pnpm](https://pnpm.io/installation) 10.34.5+
 
@@ -28,7 +29,7 @@ Source for mifkata.com, a personal blog of long-form posts and short notes, buil
 2. Install dependencies.
 
    ```sh
-   mise install
+   make install
    pnpm install
    ```
 
@@ -41,7 +42,7 @@ Source for mifkata.com, a personal blog of long-form posts and short notes, buil
 4. Start the development server.
 
    ```sh
-   pnpm dev
+   make dev
    ```
 
 5. Open <http://localhost:4321> and check that the home page loads.
@@ -74,25 +75,26 @@ Set these in `.env`. [`terraform/main.tf`](terraform/main.tf) sets `SITE_URL` an
 
 ## 🧪 Development
 
-Run every command from the project root.
+Run every command from the project root. `make help` lists the `make` targets.
 
-| Command                | Action                                  |
-| :--------------------- | :-------------------------------------- |
-| `pnpm storybook`       | Starts Storybook at `localhost:9009`    |
-| `pnpm storybook:build` | Builds Storybook to `./dist/storybook/` |
-| `pnpm build`           | Builds the production site to `./dist/` |
-| `pnpm preview`         | Previews the build locally              |
-| `pnpm test`            | Runs tests in watch mode                |
-| `pnpm test:run`        | Runs tests once                         |
-| `pnpm fast`            | Runs typecheck, lint and format checks  |
-| `pnpm typecheck`       | Checks types with `astro check`         |
-| `pnpm lint`            | Checks for linting errors               |
-| `pnpm lint:fix`        | Fixes linting errors                    |
-| `pnpm format`          | Checks formatting                       |
-| `pnpm format:fix`      | Fixes formatting                        |
-| `pnpm astro ...`       | Runs Astro CLI commands                 |
+| Command                | Action                                   |
+| :--------------------- | :--------------------------------------- |
+| `pnpm storybook`       | Starts Storybook at `localhost:9009`     |
+| `pnpm storybook:build` | Builds Storybook to `./dist/storybook/`  |
+| `make build`           | Builds the production site to `./dist/`  |
+| `make start`           | Builds the site, then previews it        |
+| `pnpm test`            | Runs tests in watch mode                 |
+| `pnpm test:run`        | Runs tests once                          |
+| `make fast`            | Runs typecheck, lint and format checks   |
+| `make check`           | Typechecks, builds, then runs every test |
+| `pnpm typecheck`       | Checks types with `astro check`          |
+| `pnpm lint`            | Checks for linting errors                |
+| `pnpm lint:fix`        | Fixes linting errors                     |
+| `pnpm format`          | Checks formatting                        |
+| `pnpm format:fix`      | Fixes formatting                         |
+| `pnpm astro ...`       | Runs Astro CLI commands                  |
 
-Git hooks run `mise run fix` on staged files before each commit, reject messages that do not follow Conventional Commits, and run `mise run check` before each push. Enable them in a fresh clone with `bd hooks install --beads`.
+Git hooks fix lint and formatting in staged files before each commit, reject messages that do not follow Conventional Commits, and run `make check` before each push. Enable them in a fresh clone with `bd hooks install --beads`.
 
 ## 🚀 Deployment
 

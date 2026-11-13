@@ -94,5 +94,5 @@ Work is tracked with Beads (`bd`). Load the `beads` skill before any `bd` comman
 - A limit in a deployable's `AGENTS.md` § Thresholds changes only through a decision the user accepted, applied in its home in its own commit.
 - Generated files are never edited by hand: Compose files come from each `dev-services.yml`, CI workflows from each `ci-checks.yml`; change the source in the same commit and regenerate.
 - Code comments are minimal and technical; never a decision, question, rule or bead ID, a skill name, or design reasoning in code.
-- `AGENTS.md` lines state rules and facts only; never a bead, decision, question or spec ID: the decision stays on its bead or spec file.
+- `AGENTS.md` lines state rules and facts only; never a bead, decision or question ID; baseline item IDs (a bootstrapper's baseline keys) are facts: the decision stays on its bead or spec file.
 <!-- /repo-manager -->
