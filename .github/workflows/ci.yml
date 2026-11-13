@@ -1,6 +1,6 @@
 # Generated from the ci-checks.yml manifests; change a manifest and regenerate, never this file.
 # sources: ci-checks.yml
-# hash: 5463b868233a2c42
+# hash: d25d2afe2674f4e4
 name: ci
 on:
   pull_request:
@@ -31,15 +31,13 @@ jobs:
       - name: install
         run: "pnpm install --frozen-lockfile"
       - name: setup 1
-        run: "pnpm exec playwright install --with-deps chromium"
+        run: "node scripts/e2e-gate.mjs setup"
       - name: "typecheck"
         run: "pnpm run typecheck"
       - name: "build"
         run: "pnpm run build"
       - name: "test"
         run: "pnpm run test:run"
-      - name: "e2e"
-        run: "pnpm run test:e2e"
       - name: "lint"
         run: "pnpm run lint"
       - name: "format"
@@ -47,9 +45,33 @@ jobs:
       - name: "storybook"
         run: "pnpm run storybook:build"
 
+  web-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: toolchain
+        run: |
+          curl -fsSL https://mise.run | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          echo "$HOME/.local/share/mise/shims" >> "$GITHUB_PATH"
+      - name: tools
+        run: |
+          mise install
+          if command -v corepack >/dev/null; then corepack enable --install-directory "$HOME/.local/bin"; fi
+      - name: install
+        run: "pnpm install --frozen-lockfile"
+      - name: setup 1
+        run: "node scripts/e2e-gate.mjs setup"
+      - name: "build"
+        run: "pnpm run build"
+      - name: "e2e"
+        run: "node scripts/e2e-gate.mjs all"
+      - name: "lighthouse"
+        run: "node scripts/e2e-gate.mjs lighthouse"
+
   ci-ok:
     if: ${{ always() }}
-    needs: [web]
+    needs: [web, web-e2e]
     runs-on: ubuntu-latest
     steps:
       - env:

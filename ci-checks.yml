@@ -11,6 +11,7 @@ checks:
   - { name: format, run: pnpm run format }
   - { name: storybook, run: pnpm run storybook:build }
 e2e:
+  - { name: build, run: pnpm run build }
   - { name: e2e, run: node scripts/e2e-gate.mjs all }
   - { name: lighthouse, run: node scripts/e2e-gate.mjs lighthouse }
 gate:
