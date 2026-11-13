@@ -11,3 +11,13 @@ run = "pnpm install --frozen-lockfile && pnpm run typecheck && pnpm run build &&
 
 [tasks.fast]
 run = "pnpm run fast"
+
+[tasks.build]
+run = "pnpm run build"
+
+[tasks.dev]
+run = "pnpm run dev"
+
+[tasks.start]
+depends = ["build"]
+run = "pnpm run preview"
