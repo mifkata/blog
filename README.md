@@ -90,7 +90,7 @@ Run every command from the project root. `make help` lists the `make` targets.
 | `pnpm typecheck`       | Checks types with `astro check`          |
 | `pnpm lint`            | Checks for linting errors                |
 | `pnpm lint:fix`        | Fixes linting errors                     |
-| `pnpm format`          | Checks formatting                        |
+| `pnpm format`          | Fixes formatting; only checks it in CI   |
 | `pnpm format:fix`      | Fixes formatting                         |
 | `pnpm astro ...`       | Runs Astro CLI commands                  |
 
