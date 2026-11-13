@@ -3,6 +3,9 @@ import { expect, test, type Page } from "@playwright/test";
 const GA_ID = "G-SDS8ZJG4SS";
 const CONSENT_KEY = "mifkata-analytics-consent";
 
+// The home page boot overlay hides the banner while it plays; reduced motion skips it.
+test.use({ reducedMotion: "reduce" });
+
 test.beforeEach(async ({ page }) => {
   await page.route("https://www.googletagmanager.com/**", (route) =>
     route.fulfill({ body: "" }),
