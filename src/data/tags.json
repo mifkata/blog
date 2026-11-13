@@ -1,7 +1,15 @@
 {
+  "agents": {
+    "title": "AI Agents",
+    "description": "Posts about AI coding agents: how they work, how to steer them and how to keep them in check."
+  },
   "ai": {
     "title": "Artificial Intelligence",
     "description": "Posts about AI, machine learning, LLMs, and using them for creative purposes."
+  },
+  "architecture": {
+    "title": "Architecture",
+    "description": "Software architecture and system design."
   },
   "astro": {
     "title": "Astro",
@@ -19,6 +27,10 @@
     "title": "Coding",
     "description": "General programming topics, best practices, and development techniques."
   },
+  "dag": {
+    "title": "Task Graphs",
+    "description": "Directed acyclic graphs for planning and tracking dependent work."
+  },
   "devcontainers": {
     "title": "Dev Containers",
     "description": "Development containers, VS Code remote development, and containerized dev environments."
@@ -31,12 +43,40 @@
     "title": "How-To",
     "description": "Step-by-step guides and tutorials."
   },
+  "llm": {
+    "title": "Large Language Models",
+    "description": "Posts about large language models, prompts and how they behave."
+  },
+  "openclaw": {
+    "title": "OpenClaw",
+    "description": "Posts about OpenClaw, the open-source agent that took off in early 2026."
+  },
   "productivity": {
     "title": "Productivity",
     "description": "Tips and insights on improving workflow and getting things done."
   },
+  "sdd": {
+    "title": "Spec-Driven Development",
+    "description": "Writing the spec first and letting agents build from it."
+  },
+  "skills": {
+    "title": "Agent Skills",
+    "description": "Skills that regulate how agents work, for consistent quality and efficiency."
+  },
   "terraform": {
     "title": "Terraform",
     "description": "Infrastructure as code with Terraform and cloud provisioning."
+  },
+  "tokens": {
+    "title": "Tokens & Context",
+    "description": "Managing token spend and context windows for AI agents."
+  },
+  "tools": {
+    "title": "Tools",
+    "description": "Software development tools that improve the engineering process."
+  },
+  "workflow": {
+    "title": "Workflow",
+    "description": "Creating and orchestrating agentic workflows."
   }
 }
