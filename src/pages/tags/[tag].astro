@@ -1,48 +1,60 @@
 ---
 import { getCollection } from "astro:content";
 import { isPublished } from "@/helpers/content/posts";
-import ArticleCard from "@/components/post/ArticleCard/ArticleCard.astro";
+import { postsByYear, relatedTags } from "@/helpers/content/tags";
 import PageLayout from "@/layouts/PageLayout.astro";
+import TagOverview from "@/components/pages/tags/TagOverview/TagOverview.astro";
+import TagPostsByYear from "@/components/pages/tags/TagPostsByYear/TagPostsByYear.astro";
 import { SITE_TITLE } from "@/consts.data";
 import tagsData from "@/data/tags.json";
 
 type TagInfo = { title?: string; description?: string };
-const tagsInfo = tagsData as Record<string, TagInfo>;
+const tagsInfo: Record<string, TagInfo> = tagsData;
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", isPublished);
   const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  const entries = posts.map((post) => ({
+    id: post.id,
+    title: post.data.title,
+    description: post.data.description,
+    date: post.data.pubDate,
+    tags: post.data.tags,
+  }));
 
   return tags.map((tag) => ({
     params: { tag },
     props: {
-      posts: posts
-        .filter((post) => post.data.tags.includes(tag))
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+      posts: entries.filter((post) => post.tags.includes(tag)),
+      related: relatedTags(entries, tag),
     },
   }));
 }
 
 const { tag } = Astro.params;
-const { posts } = Astro.props;
-const tagInfo = tag ? tagsInfo[tag] : undefined;
-const pageTitle = tagInfo?.title || tag;
-const pageDescription = tagInfo?.description || `Posts tagged with ${tag}`;
+const { posts, related } = Astro.props;
+const tagInfo = tagsInfo[tag];
+const pageTitle = tagInfo?.title ?? tag;
+const pageDescription = tagInfo?.description ?? `Posts tagged with ${tag}`;
+const years = postsByYear(posts);
 ---
 
 <PageLayout
   title={`${pageTitle} | ${SITE_TITLE}`}
   description={pageDescription}
 >
-  <section>
-    <h1>{pageTitle}</h1>
-    {
-      tagInfo?.description && (
-        <p class="text-gray text-xl mt-2">{tagInfo.description}</p>
-      )
-    }
-    <div class="space-y-12 mt-8">
-      {posts.map((post) => <ArticleCard post={post} heading="h2" />)}
-    </div>
+  <section
+    class="grid grid-cols-1 items-start gap-7 md:grid-cols-[18.75rem_minmax(0,1fr)] md:gap-14"
+  >
+    <TagOverview
+      slug={tag}
+      title={pageTitle}
+      description={tagInfo?.description}
+      count={posts.length}
+      updated={years[0].posts[0].date}
+      related={related}
+      class="border-b border-gray-light pb-6 md:border-r md:border-b-0 md:pr-10 md:pb-0"
+    />
+    <TagPostsByYear years={years} />
   </section>
 </PageLayout>

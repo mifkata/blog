@@ -1,0 +1,57 @@
+---
+import { cloudWeight } from "@/helpers/content/tags";
+
+interface Props {
+  tags: { slug: string; count: number }[];
+  /** The list's accessible name */
+  label: string;
+  size?: "sm" | "lg";
+  /** Shows each tag's count next to it */
+  showCounts?: boolean;
+  class?: string;
+}
+
+const {
+  tags,
+  label,
+  size = "sm",
+  showCounts = false,
+  class: className,
+} = Astro.props;
+
+const max = Math.max(0, ...tags.map((tag) => tag.count));
+const textSize = {
+  sm: { 1: "text-sm", 2: "text-base", 3: "text-lg", 4: "text-2xl" },
+  lg: { 1: "text-base", 2: "text-xl", 3: "text-2xl", 4: "text-4xl" },
+}[size];
+---
+
+<ul
+  aria-label={label}
+  class:list={[
+    "m-0 flex list-none flex-wrap items-baseline gap-x-2.5 gap-y-2 p-0",
+    className,
+  ]}
+>
+  {
+    tags.map((tag) => (
+      <li>
+        <a
+          href={`/tags/${tag.slug}/`}
+          class:list={[
+            "inline-flex items-baseline gap-1.5 rounded-full bg-tag px-2.5 py-0.5 leading-snug font-bold text-tag-text! no-underline hover:bg-accent hover:text-surface!",
+            textSize[cloudWeight(tag.count, max)],
+          ]}
+        >
+          {tag.slug}
+          {showCounts && (
+            <span class="text-[0.8125rem] font-normal">
+              {tag.count}
+              <span class="sr-only">{tag.count === 1 ? "post" : "posts"}</span>
+            </span>
+          )}
+        </a>
+      </li>
+    ))
+  }
+</ul>

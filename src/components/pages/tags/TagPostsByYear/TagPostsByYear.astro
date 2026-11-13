@@ -1,0 +1,62 @@
+---
+interface YearPost {
+  id: string;
+  title: string;
+  description: string;
+  date: Date;
+}
+
+interface Props {
+  years: { year: number; posts: YearPost[] }[];
+  class?: string;
+}
+
+const { years, class: className } = Astro.props;
+
+const day = (date: Date) =>
+  date.toLocaleDateString("en-us", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+---
+
+<div class={className}>
+  {
+    years.map(({ year, posts }) => (
+      <section class="mb-8" aria-labelledby={`posts-${year}`}>
+        <h2
+          id={`posts-${year}`}
+          class="mb-1! border-b-2 border-gray-light pb-1.5 text-3xl! text-gray-dark!"
+        >
+          {year}
+        </h2>
+        <ol class="m-0 list-none p-0">
+          {posts.map((post) => (
+            <li class="grid grid-cols-1 gap-0.5 border-b border-gray-light py-4.5 sm:grid-cols-[6rem_minmax(0,1fr)] sm:gap-5">
+              <time
+                datetime={post.date.toISOString()}
+                class="pt-1 text-[0.9375rem] whitespace-nowrap text-gray"
+              >
+                {day(post.date)}
+              </time>
+              <div>
+                <h3 class="m-0! text-2xl!">
+                  <a
+                    href={`/blog/${post.id}/`}
+                    class="text-black! no-underline hover:text-accent!"
+                  >
+                    {post.title}
+                  </a>
+                </h3>
+                <p class="mt-1.5! mb-0! text-base leading-normal!">
+                  {post.description}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    ))
+  }
+</div>

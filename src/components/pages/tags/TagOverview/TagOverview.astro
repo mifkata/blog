@@ -1,0 +1,71 @@
+---
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import TagCloud from "@/components/pages/tags/TagCloud/TagCloud.astro";
+
+interface Props {
+  slug: string;
+  title: string;
+  description?: string;
+  count: number;
+  updated: Date;
+  /** Tags sharing posts with this one, most shared first */
+  related: { slug: string; count: number }[];
+  class?: string;
+}
+
+const {
+  slug,
+  title,
+  description,
+  count,
+  updated,
+  related,
+  class: className,
+} = Astro.props;
+---
+
+<header class:list={["tag-overview", className]}>
+  <p class="mt-0! mb-5! text-[0.9375rem] leading-normal!">
+    <a href="/tags/">← All tags</a>
+  </p>
+  <p
+    class="tag-overview-count m-0! text-7xl leading-none! text-accent md:text-8xl"
+  >
+    {count}
+  </p>
+  <p class="mt-2! mb-5! text-[0.9375rem] leading-normal! text-gray">
+    {count === 1 ? "post" : "posts"} · updated <FormattedDate date={updated} />
+  </p>
+  <h1 class="m-0! text-4xl!">{title}</h1>
+  <p class="mt-1! mb-3! text-[0.9375rem] leading-normal! text-gray">#{slug}</p>
+  {
+    description && (
+      <p class="mt-0! mb-6! text-[1.0625rem] leading-relaxed!">{description}</p>
+    )
+  }
+  {
+    related.length > 0 && (
+      <>
+        <h2 class="tag-overview-label m-0! text-[0.8125rem]! leading-normal! font-bold tracking-[0.08em] text-gray! uppercase">
+          Tagged together
+        </h2>
+        <TagCloud
+          tags={related}
+          label={`Tagged together with ${slug}`}
+          class="mt-2.5"
+        />
+      </>
+    )
+  }
+</header>
+
+<style>
+  .tag-overview-count {
+    font-family: "Zilla Slab", Rockwell, Georgia, serif;
+    font-weight: 700;
+  }
+
+  .tag-overview-label {
+    font-family: "Kedebideri", sans-serif;
+  }
+</style>

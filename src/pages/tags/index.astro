@@ -1,47 +1,43 @@
 ---
 import { getCollection } from "astro:content";
 import { isPublished } from "@/helpers/content/posts";
+import { activityMonths, summarizeTags } from "@/helpers/content/tags";
 import PageLayout from "@/layouts/PageLayout.astro";
-import Tag from "@/components/ui/Tag/Tag.astro";
+import PageHeader from "@/components/pages/common/PageHeader/PageHeader.astro";
+import TagCloud from "@/components/pages/tags/TagCloud/TagCloud.astro";
+import TagsTimeline from "@/components/pages/tags/TagsTimeline/TagsTimeline.astro";
 import { SITE_TITLE } from "@/consts.data";
 import tagsData from "@/data/tags.json";
 
-type TagInfo = { title?: string; description?: string };
-const tagsInfo = tagsData as Record<string, TagInfo>;
-
 const posts = await getCollection("blog", isPublished);
-const tagCounts = posts
-  .flatMap((post) => post.data.tags)
-  .reduce(
-    (acc, tag) => {
-      acc[tag] = (acc[tag] || 0) + 1;
-      return acc;
-    },
-    {} as Record<string, number>,
-  );
-const tags = Object.entries(tagCounts).sort((a, b) => a[0].localeCompare(b[0]));
+const now = new Date();
+const tags = summarizeTags(
+  posts.map((post) => ({
+    id: post.id,
+    title: post.data.title,
+    date: post.data.pubDate,
+    tags: post.data.tags,
+  })),
+  tagsData,
+  now,
+);
+const cloud = [...tags].sort((a, b) => a.slug.localeCompare(b.slug));
 ---
 
 <PageLayout title={`Tags | ${SITE_TITLE}`} description="Browse posts by tag">
   <section>
-    <h1>Tags</h1>
-    <div class="space-y-4 my-8">
-      {
-        tags.map(([tag, count]) => {
-          const info = tagsInfo[tag];
-          return (
-            <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-              <div class="inline-flex items-center gap-2">
-                <Tag tag={tag} />
-                <span class="text-gray text-sm">({count})</span>
-              </div>
-              {info?.description && (
-                <span class="text-gray-dark text-sm">{info.description}</span>
-              )}
-            </div>
-          );
-        })
-      }
-    </div>
+    <PageHeader
+      title="Tags"
+      subtitle="What the blog has been writing about. Bigger tags have more posts; dots show posts per month over the last year."
+      class="mb-8"
+    />
+    <TagCloud
+      tags={cloud}
+      label="Tags by number of posts"
+      size="lg"
+      showCounts
+      class="mb-10 rounded-xl bg-hero p-5 md:p-7"
+    />
+    <TagsTimeline tags={tags} months={activityMonths(now)} />
   </section>
 </PageLayout>

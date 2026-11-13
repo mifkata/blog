@@ -1,0 +1,141 @@
+---
+import FormattedDate from "@/components/ui/FormattedDate/FormattedDate.astro";
+import TagActivityRail from "@/components/pages/tags/TagActivityRail/TagActivityRail.astro";
+import type {
+  ActivityMonth,
+  TaggedPost,
+  TagSummary,
+} from "@/helpers/content/tags";
+
+interface Props {
+  tags: TagSummary<TaggedPost>[];
+  months: ActivityMonth[];
+}
+
+const { tags, months } = Astro.props;
+
+const sorts = [
+  { sort: "recent", label: "Recent" },
+  { sort: "posts", label: "Most posts" },
+  { sort: "az", label: "A–Z" },
+];
+---
+
+<div data-tags-timeline>
+  <div
+    class="mb-6 flex flex-wrap gap-1.5"
+    role="group"
+    aria-label="Sort tags"
+    data-tags-sorts
+    hidden
+  >
+    {
+      sorts.map(({ sort, label }, i) => (
+        <button
+          type="button"
+          class="cursor-pointer rounded-full border border-gray-light bg-transparent px-3 py-1.5 text-[0.9375rem] leading-none text-gray-dark hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent aria-pressed:border-black aria-pressed:bg-black aria-pressed:text-surface aria-pressed:hover:text-surface"
+          data-sort={sort}
+          aria-pressed={i === 0 ? "true" : "false"}
+        >
+          {label}
+        </button>
+      ))
+    }
+  </div>
+  <ol class="m-0 list-none border-t border-gray-light p-0" data-tags-list>
+    {
+      tags.map((tag) => (
+        <li
+          class="grid grid-cols-1 items-center gap-3.5 border-b border-gray-light py-5 md:grid-cols-[minmax(0,1fr)_19.5rem_8.25rem] md:gap-7"
+          data-slug={tag.slug}
+          data-title={tag.title}
+          data-count={tag.count}
+          data-updated={tag.updated.toISOString()}
+        >
+          <div>
+            <h2 class="m-0! text-2xl!">
+              <a
+                href={`/tags/${tag.slug}/`}
+                class="text-black! no-underline hover:text-accent!"
+              >
+                {tag.title}
+              </a>{" "}
+              <span class="tags-body-font text-sm text-gray">#{tag.slug}</span>
+            </h2>
+            {tag.description && (
+              <p class="mt-1.5! mb-0! text-base leading-normal!">
+                {tag.description}
+              </p>
+            )}
+            <ul class="mt-2 mb-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-sm">
+              {tag.latest.map((post) => (
+                <li>
+                  <a href={`/blog/${post.id}/`}>{post.title}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <TagActivityRail activity={tag.activity} months={months} />
+          <div class="order-first flex items-baseline gap-2.5 md:order-none md:block md:text-right">
+            <p class="tags-count m-0! text-3xl leading-tight! text-black">
+              {tag.count}{" "}
+              <span class="tags-body-font text-[0.9375rem] text-gray">
+                {tag.count === 1 ? "post" : "posts"}
+              </span>
+            </p>
+            <FormattedDate date={tag.updated} class="text-sm text-gray" />
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<script>
+  import {
+    compareTags,
+    isTagSort,
+    tagRowFromData,
+  } from "@/helpers/content/tags";
+
+  for (const root of document.querySelectorAll<HTMLElement>(
+    "[data-tags-timeline]",
+  )) {
+    const list = root.querySelector<HTMLElement>("[data-tags-list]");
+    const group = root.querySelector<HTMLElement>("[data-tags-sorts]");
+    if (!list || !group) continue;
+    const buttons = [
+      ...group.querySelectorAll<HTMLButtonElement>("[data-sort]"),
+    ];
+    const rows = [...list.querySelectorAll<HTMLElement>(":scope > li")].flatMap(
+      (el) => {
+        const row = tagRowFromData(el.dataset);
+        return row ? [{ ...row, el }] : [];
+      },
+    );
+
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        const sort = button.dataset.sort;
+        if (!isTagSort(sort)) return;
+        list.append(...rows.sort(compareTags(sort)).map((row) => row.el));
+        for (const other of buttons) {
+          other.setAttribute("aria-pressed", String(other === button));
+        }
+      });
+    }
+    group.hidden = false;
+  }
+</script>
+
+<style>
+  .tags-count {
+    font-family: "Zilla Slab", Rockwell, Georgia, serif;
+    font-weight: 700;
+  }
+
+  .tags-body-font {
+    font-family: "Kedebideri", sans-serif;
+    font-weight: 400;
+  }
+</style>

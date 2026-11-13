@@ -1,0 +1,44 @@
+---
+import { activityLabel, type ActivityMonth } from "@/helpers/content/tags";
+
+interface Props {
+  /** Posts per month, one entry per month, oldest first */
+  activity: number[];
+  months: ActivityMonth[];
+  class?: string;
+}
+
+const { activity, months, class: className } = Astro.props;
+
+const dotSize = (count: number) => {
+  if (count >= 3) return "size-4.5";
+  if (count === 2) return "size-3.5";
+  return "size-2.5";
+};
+---
+
+<div
+  role="img"
+  aria-label={activityLabel(activity, months)}
+  class:list={["grid grid-cols-12 items-end", className]}
+>
+  {
+    months.map((month, i) => (
+      <div
+        class="flex flex-col items-center gap-1.5 text-xs leading-none text-gray"
+        aria-hidden="true"
+      >
+        <span class="flex h-5 items-center justify-center">
+          {activity[i] ? (
+            <span
+              class:list={["rounded-full bg-accent", dotSize(activity[i])]}
+            />
+          ) : (
+            <span class="size-2 rounded-full border-[1.5px] border-gray-light" />
+          )}
+        </span>
+        <span>{month.initial}</span>
+      </div>
+    ))
+  }
+</div>
