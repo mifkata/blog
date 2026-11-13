@@ -5,19 +5,19 @@
       "source": "mifkata/repo-skills",
       "sourceType": "github",
       "skillPath": "agentsmd-auditor/SKILL.md",
-      "computedHash": "111857dea85fe92059cc08b70a9c0d54fc2dbe4ce497ad04e2e7ab21f67f9cfa"
+      "computedHash": "ae0af2b6a3e270ec5e8f1f3f7fff3340ff6f14c8443a7a92a417e0cf77b8275a"
     },
     "agentsmd-writer": {
       "source": "mifkata/repo-skills",
       "sourceType": "github",
       "skillPath": "agentsmd-writer/SKILL.md",
-      "computedHash": "7ecd1ec1bde303469bdeef831ffbf63d5eaecea9b8d3b3d00353dcc33c14ec0d"
+      "computedHash": "5d0c6e16421eb10b5fece20e4d45377e14e486a421f1019fbfa15bbe300332e4"
     },
     "beads": {
       "source": "mifkata/repo-skills",
       "sourceType": "github",
       "skillPath": "beads/SKILL.md",
-      "computedHash": "515aa952a4ff2919e35e0e8a00819daaa05968b8431dfbaaabee04474d1a042d"
+      "computedHash": "98967dcdde1408d04706a441d6235fdc6077a80475517798f7dbf11356ab75fd"
     },
     "blog-post-editor": {
       "source": "mifkata/blog-skills",
@@ -41,25 +41,25 @@
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "ci-pipeline/SKILL.md",
-      "computedHash": "ce2c3ef0d14cebe23883a865a35beca73f741a31179f4a16a98eb718586745b1"
+      "computedHash": "0a969643501fccdfbda0a064a3286fb7c4bae65adf86b9dd4413a634bfddff8f"
     },
     "frontend-astro-bootstrapper": {
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "frontend-astro-bootstrapper/SKILL.md",
-      "computedHash": "deee0cc8017f7b97b53ff9ec18c7b63ce3a193be1d3beef8b58fec5d60061996"
+      "computedHash": "564565d3452bcccceed3fb61120697ae15dbe9735ced1f77e7058354cd7ddffe"
     },
     "frontend-astro-builder": {
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "frontend-astro-builder/SKILL.md",
-      "computedHash": "557d0cb3ce999044fc271da19f04d856ab224f81fb967672e3aeae8532266089"
+      "computedHash": "dcc88f9c91a3da2e7a33063b9806ef782c6a53f2bf7f7b2c89c3c85bb1ea1e3b"
     },
     "frontend-astro-reviewer": {
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "frontend-astro-reviewer/SKILL.md",
-      "computedHash": "192f3ddb10f1b6c7fdc375e4e63d9d56e8e36b65024a0aba9118038cdaee8de3"
+      "computedHash": "4d8fbadefdbe82409496e71551b960c6fb9993819bf10dabe5a4928d0a6a1921"
     },
     "readme-writer": {
       "source": "mifkata/repo-skills",
@@ -71,19 +71,19 @@
       "source": "mifkata/dev-skills",
       "sourceType": "github",
       "skillPath": "repo-manager/SKILL.md",
-      "computedHash": "b87eb566e894a939eda4b8f25eeebf0289a5c54674aaa9d825d725ea49aa89bf"
+      "computedHash": "373103d3f06365612501b3d06b578bd7adf9c723e50c87f435bb8e9d5c6be715"
     },
     "skill-fix-handoff": {
       "source": "mifkata/repo-skills",
       "sourceType": "github",
       "skillPath": "skill-fix-handoff/SKILL.md",
-      "computedHash": "1ea6bdadbd8d807ab0b1c3d2a8eecc3ac3fad42816926ea2d149ea62927503af"
+      "computedHash": "1f5b3ba8a4091df86db070eaeb48edd240fe9d4c4f7fb02f611dc695f7ecc0a7"
     },
     "skill-installer": {
       "source": "mifkata/repo-skills",
       "sourceType": "github",
       "skillPath": "skill-installer/SKILL.md",
-      "computedHash": "964511d4fc859085f970c518364a46c67e4b9c32d603fd674a098246a1af80af"
+      "computedHash": "d276d2583893897a06f2e9185c6cf3badfe1600ff08cc7c5d7c611e0c9c60d34"
     }
   }
 }
