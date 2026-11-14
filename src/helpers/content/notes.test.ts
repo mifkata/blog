@@ -39,6 +39,18 @@ describe("groupByMonth", () => {
 });
 
 describe("plainText", () => {
+  it("should leave no tag start, also from an unclosed or nested tag", () => {
+    const text = plainText(
+      "Hi <scr<script>ipt>x</script> and <script alert(1)",
+    );
+
+    expect(text).not.toMatch(/<[a-z/!?]/i);
+  });
+
+  it("should keep a less-than sign used as text", () => {
+    expect(plainText("When a < b, swap them.")).toBe("When a < b, swap them.");
+  });
+
   it("should keep link text and drop the URL", () => {
     expect(plainText("Read [the docs](https://astro.build) first.")).toBe(
       "Read the docs first.",

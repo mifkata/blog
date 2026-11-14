@@ -53,13 +53,17 @@ export function groupByMonth<T extends { date: Date }>(
  * like a card that is itself a link.
  */
 export function plainText(body: string): string {
-  return body
-    .replace(/^(import|export)\s.*$/gm, "")
-    .replace(/<[^>]+>/g, "")
-    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/(\*\*|__|\*|_|`)/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
+  return (
+    body
+      .replace(/^(import|export)\s.*$/gm, "")
+      .replace(/<[^>]+>/g, "")
+      // An unclosed tag survives the line above; drop every "<" that could open one.
+      .replace(/<(?=[a-zA-Z/!?])/g, "")
+      .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
+      .replace(/(\*\*|__|\*|_|`)/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+  );
 }
 
 /** "2026-10-12", the day a note is dated */
