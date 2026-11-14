@@ -2,4 +2,5 @@ allowBuilds:
   esbuild: true
   sharp: true
 overrides:
+  basic-ftp: ^6.2.6
   fflate: 0.7.5
